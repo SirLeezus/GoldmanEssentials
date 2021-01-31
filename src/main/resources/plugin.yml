@@ -1,0 +1,37 @@
+name: TheEssentials
+main: lee.code.essentials.TheEssentials
+version: ${project.version}
+api-version: 1.16
+author: Lee
+commands:
+  spawn:
+    description: Teleport to spawn.
+    permission: essentials.command.spawn
+  setspawn:
+    description: Set the server spawn point.
+    permission: essentails.command.setspawn
+  gamemode:
+    description: Set your gamemode.
+    permission: essentails.command.gamemode
+    aliases: [gm]
+  fly:
+    description: Toggle your ability to fly.
+    permission: essentails.command.fly
+  flyspeed:
+    description: Change your fly speed.
+    permission: essentails.command.flyspeed
+  world:
+    description: Change the world you're in.
+    permission: essentails.command.world
+  balance:
+    description: Check your balance.
+    permission: essentails.command.balance
+    aliases: [bal]
+  balancetop:
+    description: Check the server balance leaderboard.
+    permission: essentails.command.balancetop
+    aliases: [baltop]
+  money:
+    description: Change a players balance.
+    permission: essentails.command.money
+    aliases: [eco]
