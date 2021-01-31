@@ -61,6 +61,7 @@ public class TheEssentials extends JavaPlugin {
         getCommand("balance").setExecutor(new BalanceCMD());
         getCommand("balancetop").setExecutor(new BalanceTopCMD());
         getCommand("money").setExecutor(new MoneyCMD());
+        getCommand("invsee").setExecutor(new InvseeCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());

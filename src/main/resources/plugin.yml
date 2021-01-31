@@ -35,3 +35,6 @@ commands:
     description: Change a players balance.
     permission: essentails.command.money
     aliases: [eco]
+  invsee:
+    description: Opens a players inventory.
+    permission: essentails.command.invsee
