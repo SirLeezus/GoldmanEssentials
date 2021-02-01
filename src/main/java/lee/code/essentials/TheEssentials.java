@@ -9,6 +9,7 @@ import lee.code.essentials.files.defaults.*;
 import lee.code.essentials.listeners.ChatListener;
 import lee.code.essentials.listeners.EntityListener;
 import lee.code.essentials.listeners.JoinListener;
+import lee.code.essentials.listeners.TameListener;
 import lee.code.essentials.permissions.RegisterPermissions;
 import lee.code.essentials.tablist.TabManager;
 import lombok.Getter;
@@ -62,6 +63,7 @@ public class TheEssentials extends JavaPlugin {
         getCommand("balancetop").setExecutor(new BalanceTopCMD());
         getCommand("money").setExecutor(new MoneyCMD());
         getCommand("invsee").setExecutor(new InvseeCMD());
+        getCommand("color").setExecutor(new ColorCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -79,6 +81,7 @@ public class TheEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
+        getServer().getPluginManager().registerEvents(new TameListener(), this);
     }
 
 

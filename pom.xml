@@ -37,11 +37,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <!-- Mojang API -->
+        <!-- ProtocolLib API -->
         <repository>
-            <id>mojang-libraries</id>
-            <url>https://libraries.minecraft.net/</url>
-            <layout>default</layout>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
         </repository>
     </repositories>
 
@@ -54,18 +53,18 @@
             <scope>system</scope>
             <systemPath>C:\Users\Lee\Documents\APIs\spigot-1.16.5.jar</systemPath>
         </dependency>
-        <!-- Mojang API -->
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>authlib</artifactId>
-            <version>1.5.25</version>
-            <scope>provided</scope>
-        </dependency>
+
         <!-- Lombok API -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
+        </dependency>
+        <!-- ProtocolLib API -->
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.5.0</version>
         </dependency>
     </dependencies>
 </project>

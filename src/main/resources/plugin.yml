@@ -38,3 +38,6 @@ commands:
   invsee:
     description: Opens a players inventory.
     permission: essentails.command.invsee
+  color:
+    description: Test color command.
+    permission: essentails.command.color

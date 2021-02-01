@@ -15,6 +15,7 @@ public class RegisterPermissions {
         //default perms
         //TODO make groups
         attachment.setPermission("essentials.command.spawn", true);
+        attachment.setPermission("pets.command.use", true);
 
         player.updateCommands();
     }
