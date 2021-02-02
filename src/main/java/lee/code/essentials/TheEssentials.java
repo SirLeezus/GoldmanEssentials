@@ -10,7 +10,7 @@ import lee.code.essentials.listeners.ChatListener;
 import lee.code.essentials.listeners.EntityListener;
 import lee.code.essentials.listeners.JoinListener;
 import lee.code.essentials.listeners.TameListener;
-import lee.code.essentials.permissions.RegisterPermissions;
+import lee.code.essentials.permissions.PermissionManager;
 import lee.code.essentials.tablist.TabManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,7 +19,7 @@ public class TheEssentials extends JavaPlugin {
 
     @Getter private FileManager fileManager;
     @Getter private PluginUtility pluginUtility;
-    @Getter private RegisterPermissions registerPermissions;
+    @Getter private PermissionManager permissionManager;
     @Getter private Data data;
     @Getter private SQLite sqLite;
     @Getter private TabManager tabManager;
@@ -28,7 +28,7 @@ public class TheEssentials extends JavaPlugin {
     public void onEnable() {
         this.fileManager = new FileManager();
         this.pluginUtility = new PluginUtility();
-        this.registerPermissions = new RegisterPermissions();
+        this.permissionManager = new PermissionManager();
         this.data = new Data();
         this.sqLite = new SQLite();
         this.tabManager = new TabManager();

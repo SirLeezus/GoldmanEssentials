@@ -24,7 +24,7 @@ public class ColorCMD implements CommandExecutor {
 
             if (player.hasPermission("essentials.command.color")) {
 
-                new NameTagBuilder(player, ChatColor.GREEN).setPrefix("&d&l[VIP SON WHATS GOOD]").setSuffix("&bWOO").build();
+                SQL.setPrefix(uuid, "&c[Owner] ");
 
                 player.sendMessage("Test!");
             }

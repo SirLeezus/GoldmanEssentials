@@ -2,6 +2,8 @@ package lee.code.essentials.listeners;
 
 import lee.code.essentials.TheEssentials;
 import lee.code.essentials.database.SQLite;
+import lee.code.essentials.nametags.NameTagBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,14 +20,21 @@ public class JoinListener implements Listener {
         UUID uuid = player.getUniqueId();
         SQLite SQL = plugin.getSqLite();
 
-        //register perms
-        if (!player.isOp()) {
-            plugin.getRegisterPermissions().registerDefault(player);
-        }
-
         //create SQL player profile
         if (!SQL.hasPlayerProfile(uuid)) {
-            SQL.createPlayerProfile(uuid, 0);
+            SQL.createPlayerProfile(uuid, 0, "DEFAULT", "n", "n", "n", "YELLOW");
         }
+
+        //register perms
+        if (!player.isOp()) {
+            plugin.getPermissionManager().register(player);
+        }
+
+
+        ChatColor color = ChatColor.valueOf(SQL.getColor(uuid));
+        String prefix = SQL.getPrefix(uuid);
+        String suffix = SQL.getSuffix(uuid);
+
+        new NameTagBuilder(player).setColor(color).setPrefix(prefix).setSuffix(suffix).build();
     }
 }

@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import lee.code.essentials.TheEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,32 +22,43 @@ public class NameTagBuilder {
     String suffix;
     String prefix;
 
-    public NameTagBuilder(Player player, ChatColor color) {
+    public NameTagBuilder(Player player) {
         this.player = player;
-        this.color = color;
         this.packet = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
         String name = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
         this.packet.getIntegers().write(1, 0);
         this.packet.getStrings().write(0, name);
         this.packet.getChatComponents().write(0, WrappedChatComponent.fromText(player.toString()));
         this.packet.getSpecificModifier(Collection.class).write(0, Collections.singletonList(player.getName()));
-        this.packet.getEnumModifier(ChatColor.class, MinecraftReflection.getMinecraftClass("EnumChatFormat")).write(0, color);
     }
 
     public NameTagBuilder setPrefix(String prefix) {
         this.prefix = prefix;
-        this.packet.getChatComponents().write(1, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', prefix + " ")));
+        this.packet.getChatComponents().write(1, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', prefix)));
+        return this;
+    }
+
+    public NameTagBuilder setColor(ChatColor color) {
+        this.color = color;
+        this.packet.getEnumModifier(ChatColor.class, MinecraftReflection.getMinecraftClass("EnumChatFormat")).write(0, color);
         return this;
     }
 
     public NameTagBuilder setSuffix(String suffix) {
         this.suffix = suffix;
-        this.packet.getChatComponents().write(2, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', " " + suffix)));
+        this.packet.getChatComponents().write(2, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', suffix)));
         return this;
     }
 
     public void build() {
+        TheEssentials plugin = TheEssentials.getPlugin();
+        UUID uuid = player.getUniqueId();
+
         updateChatAndTabList();
+
+        plugin.getData().setPlayerNameTagPacketContainer(uuid, packet);
+
+        //send packet to all online players
         for (Player p : Bukkit.getOnlinePlayers()) {
             try {
                 ProtocolLibrary.getProtocolManager().sendServerPacket(p, packet);
@@ -54,10 +66,19 @@ public class NameTagBuilder {
                 throw new RuntimeException("Cannot send packet " + packet, e);
             }
         }
+
+        //send all saved packets to new player
+        for (PacketContainer savedPlayerPackets : plugin.getData().getPlayerNameTagPacketContainers()) {
+            try {
+                ProtocolLibrary.getProtocolManager().sendServerPacket(player, savedPlayerPackets);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException("Cannot send packet " + savedPlayerPackets, e);
+            }
+        }
     }
 
     private void updateChatAndTabList() {
-        player.setDisplayName(ChatColor.translateAlternateColorCodes('&',prefix + " " + color + player.getName() + " " + suffix));
-        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&',prefix + " " + color + player.getName() + " " + suffix));
+        player.setDisplayName(ChatColor.translateAlternateColorCodes('&',prefix + color + player.getName() + suffix));
+        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&',prefix + color + player.getName() + suffix));
     }
 }

@@ -2,6 +2,8 @@ package lee.code.essentials.database;
 
 import lee.code.essentials.TheEssentials;
 import lombok.SneakyThrows;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,12 +65,19 @@ public class SQLite {
         //chunk table
         update("CREATE TABLE IF NOT EXISTS player_data (" +
                 "`player` varchar PRIMARY KEY," +
-                "`balance` int NOT NULL" +
+                "`balance` int NOT NULL," +
+                "`ranked` varchar NOT NULL," +
+                "`perms` varchar NOT NULL," +
+                "`prefix` varchar NOT NULL," +
+                "`suffix` varchar NOT NULL," +
+                "`color` varchar NOT NULL" +
                 ");");
     }
 
-    public void createPlayerProfile(UUID player, int value) {
-        update("INSERT INTO player_data (player, balance) VALUES( '" + player + "','" + value + "');");
+    //table
+
+    public void createPlayerProfile(UUID player, int balance, String ranked, String perms, String prefix, String suffix, String color) {
+        update("INSERT INTO player_data (player, balance, ranked, perms, prefix, suffix, color) VALUES( '" + player + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "');");
     }
 
     @SneakyThrows
@@ -76,6 +85,8 @@ public class SQLite {
         ResultSet rs = getResult("SELECT player FROM player_data WHERE player = '" + player + "';");
         return rs.next();
     }
+
+    //eco
 
     @SneakyThrows
     public int getBalance(UUID player) {
@@ -134,4 +145,84 @@ public class SQLite {
         ResultSet rs = getResult(" WITH player_rank as (SELECT player, balance, RANK() OVER (ORDER BY balance DESC) AS rank FROM player_data) SELECT * FROM player_rank WHERE player = '" + player + "';");
         return rs.getInt("rank");
     }
+
+    @SneakyThrows
+    public String getPrefix(UUID player) {
+        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+        String prefix = rs.getString("prefix");
+        if (!prefix.equals("n")) return prefix;
+        else return "";
+    }
+
+    public void setPrefix(UUID player, String prefix) {
+        update("UPDATE player_data SET prefix ='" + prefix + "' WHERE player ='" + player + "';");
+    }
+
+    @SneakyThrows
+    public String getSuffix(UUID player) {
+        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+        String suffix = rs.getString("suffix");
+        if (!suffix.equals("n")) return suffix;
+        else return "";
+    }
+
+    public void setSuffix(UUID player, String suffix) {
+        update("UPDATE player_data SET suffix ='" + suffix + "' WHERE player ='" + player + "';");
+    }
+
+    @SneakyThrows
+    public String getColor(UUID player) {
+        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+        return rs.getString("color");
+    }
+
+    public void setColor(UUID player, String color) {
+        update("UPDATE player_data SET color ='" + color + "' WHERE player ='" + player + "';");
+    }
+
+    @SneakyThrows
+    public String getRank(UUID player) {
+        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+        return rs.getString("ranked");
+    }
+
+    public void setRank(UUID player, String rank) {
+        update("UPDATE player_data SET ranked ='" + rank + "' WHERE player ='" + player + "';");
+    }
+
+    @SneakyThrows
+    public List<String> getPerms(UUID player) {
+        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+        String perms = rs.getString("perms");
+        String[] split = StringUtils.split(perms, ',');
+        return new ArrayList<>(Arrays.asList(split));
+    }
+
+    @SneakyThrows
+    public void addPerm(UUID player, String perm) {
+        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+
+        if (!rs.getString("perms").equals("n")) {
+            String perms = rs.getString("perms") + "," + perm;
+            update("UPDATE player_data SET perms ='" + perms + "' WHERE player ='" + player + "';");
+        } else update("UPDATE player_data SET perms ='" + perm + "' WHERE player ='" + player + "';");
+    }
+
+    @SneakyThrows
+    public void removePerm(UUID player, String perm) {
+        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+
+        String perms = rs.getString("perms");
+
+        if (!perms.equals("n")) {
+
+            String[] split = StringUtils.split(perms, ',');
+            List<String> permList = new ArrayList<>();
+            for (String permission : split) if (!permission.equals(perm)) permList.add(permission);
+            String playerPerms = StringUtils.join(permList, ",");
+
+            update("UPDATE player_data SET perms ='" + playerPerms + "' WHERE player ='" + player + "';");
+        }
+    }
+
 }
