@@ -11,7 +11,7 @@ import lee.code.essentials.listeners.EntityListener;
 import lee.code.essentials.listeners.JoinListener;
 import lee.code.essentials.listeners.TameListener;
 import lee.code.essentials.permissions.PermissionManager;
-import lee.code.essentials.tablist.TabManager;
+import lee.code.essentials.tablist.TabListManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,7 +22,7 @@ public class TheEssentials extends JavaPlugin {
     @Getter private PermissionManager permissionManager;
     @Getter private Data data;
     @Getter private SQLite sqLite;
-    @Getter private TabManager tabManager;
+    @Getter private TabListManager tabListManager;
 
     @Override
     public void onEnable() {
@@ -31,14 +31,14 @@ public class TheEssentials extends JavaPlugin {
         this.permissionManager = new PermissionManager();
         this.data = new Data();
         this.sqLite = new SQLite();
-        this.tabManager = new TabManager();
+        this.tabListManager = new TabListManager();
 
         fileManager.addConfig("config");
         fileManager.addConfig("lang");
         sqLite.connect();
         sqLite.loadTables();
         data.loadWorldNames();
-        tabManager.loadTab();
+        tabListManager.scheduleTabListUpdater();
 
         loadDefaults();
         registerCommands();

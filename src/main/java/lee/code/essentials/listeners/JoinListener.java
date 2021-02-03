@@ -3,6 +3,7 @@ package lee.code.essentials.listeners;
 import lee.code.essentials.TheEssentials;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.nametags.NameTagBuilder;
+import lee.code.essentials.tablist.TabListManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,11 +31,11 @@ public class JoinListener implements Listener {
             plugin.getPermissionManager().register(player);
         }
 
-
         ChatColor color = ChatColor.valueOf(SQL.getColor(uuid));
         String prefix = SQL.getPrefix(uuid);
         String suffix = SQL.getSuffix(uuid);
 
         new NameTagBuilder(player).setColor(color).setPrefix(prefix).setSuffix(suffix).build();
+        plugin.getTabListManager().updatePlayerHeaderFooter(player);
     }
 }

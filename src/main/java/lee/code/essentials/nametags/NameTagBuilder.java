@@ -6,7 +6,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import lee.code.essentials.TheEssentials;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import java.lang.reflect.InvocationTargetException;
@@ -58,14 +57,8 @@ public class NameTagBuilder {
 
         plugin.getData().setPlayerNameTagPacketContainer(uuid, packet);
 
-        //send packet to all online players
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            try {
-                ProtocolLibrary.getProtocolManager().sendServerPacket(p, packet);
-            } catch (InvocationTargetException e) {
-                throw new RuntimeException("Cannot send packet " + packet, e);
-            }
-        }
+        //send new packet to all online players
+        ProtocolLibrary.getProtocolManager().broadcastServerPacket(packet);
 
         //send all saved packets to new player
         for (PacketContainer savedPlayerPackets : plugin.getData().getPlayerNameTagPacketContainers()) {

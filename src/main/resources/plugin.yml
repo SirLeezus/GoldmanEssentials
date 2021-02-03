@@ -3,6 +3,7 @@ main: lee.code.essentials.TheEssentials
 version: ${project.version}
 api-version: 1.16
 author: Lee
+depend: [ProtocolLib]
 commands:
   spawn:
     description: Teleport to spawn.
