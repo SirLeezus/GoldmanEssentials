@@ -1,6 +1,6 @@
 package lee.code.essentials.listeners;
 
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ public class TameListener implements Listener {
     @EventHandler
     public void onPlayerTame(EntityTameEvent e) {
         Entity tamedEntity = e.getEntity();
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         Player owner = Bukkit.getPlayer(e.getOwner().getUniqueId());
         tamedEntity.setCustomName(plugin.getPluginUtility().format("&e" + owner.getName() + "'s Tamed " + tamedEntity.getName()));

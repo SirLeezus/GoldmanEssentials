@@ -1,11 +1,11 @@
-package lee.code.essentials.nametags;
+package lee.code.essentials.builders;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import java.lang.reflect.InvocationTargetException;
@@ -50,7 +50,7 @@ public class NameTagBuilder {
     }
 
     public void build() {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         UUID uuid = player.getUniqueId();
 
         updateChatAndTabList();

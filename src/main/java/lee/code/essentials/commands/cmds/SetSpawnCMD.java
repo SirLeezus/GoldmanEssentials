@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.files.defaults.Lang;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -14,7 +14,7 @@ public class SetSpawnCMD implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         if (sender instanceof Player) {
             Player player = (Player) sender;

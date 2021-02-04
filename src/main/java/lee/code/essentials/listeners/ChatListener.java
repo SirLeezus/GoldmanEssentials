@@ -1,6 +1,6 @@
 package lee.code.essentials.listeners;
 
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +12,7 @@ public class ChatListener implements Listener {
 
     @EventHandler (priority= EventPriority.MONITOR)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = e.getPlayer();
 
         if (!e.isCancelled()) {

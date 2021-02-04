@@ -10,12 +10,12 @@ import lee.code.essentials.listeners.ChatListener;
 import lee.code.essentials.listeners.EntityListener;
 import lee.code.essentials.listeners.JoinListener;
 import lee.code.essentials.listeners.TameListener;
-import lee.code.essentials.permissions.PermissionManager;
-import lee.code.essentials.tablist.TabListManager;
+import lee.code.essentials.managers.PermissionManager;
+import lee.code.essentials.managers.TabListManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class TheEssentials extends JavaPlugin {
+public class GoldmanEssentials extends JavaPlugin {
 
     @Getter private FileManager fileManager;
     @Getter private PluginUtility pluginUtility;
@@ -63,7 +63,6 @@ public class TheEssentials extends JavaPlugin {
         getCommand("balancetop").setExecutor(new BalanceTopCMD());
         getCommand("money").setExecutor(new MoneyCMD());
         getCommand("invsee").setExecutor(new InvseeCMD());
-        getCommand("color").setExecutor(new ColorCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -130,7 +129,7 @@ public class TheEssentials extends JavaPlugin {
         fileManager.reloadAll();
     }
 
-    public static TheEssentials getPlugin() {
-        return TheEssentials.getPlugin(TheEssentials.class);
+    public static GoldmanEssentials getPlugin() {
+        return GoldmanEssentials.getPlugin(GoldmanEssentials.class);
     }
 }

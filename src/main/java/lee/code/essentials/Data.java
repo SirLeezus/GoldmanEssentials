@@ -1,8 +1,6 @@
 package lee.code.essentials;
 
 import com.comphenix.protocol.events.PacketContainer;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -21,7 +19,6 @@ public class Data {
     public void setPlayerNameTagPacketContainer(UUID player, PacketContainer packetContainer) {
         playerNameTagPacketContainers.put(player, packetContainer);
     }
-    @Getter @Setter public boolean tabHeaderFooterUpdaterScheduled;
 
     public List<String> getWorlds() {
         return worldNames;

@@ -23,6 +23,7 @@ public class GameModeCMD implements CommandExecutor {
                     String gamemode = args[0].toLowerCase();
 
                     switch (gamemode) {
+
                         case "survival":
                         case "0":
                             player.setGameMode(GameMode.SURVIVAL);
@@ -44,7 +45,7 @@ public class GameModeCMD implements CommandExecutor {
                             player.setGameMode(GameMode.SPECTATOR);
                             break;
                         default:
-                            player.sendMessage(Lang.ERROR_COMMAND_GAMEMODE_NOT_FOUND.getConfigValue(new String[] { args[0] }));
+                            player.sendMessage(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getConfigValue(new String[]{ gamemode }));
                             break;
                     }
                 } else player.sendMessage(Lang.ERROR_COMMAND_GAMEMODE_ARGS.getConfigValue(null));

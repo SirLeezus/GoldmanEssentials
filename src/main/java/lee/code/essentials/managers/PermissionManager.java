@@ -1,6 +1,6 @@
-package lee.code.essentials.permissions;
+package lee.code.essentials.managers;
 
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.SQLite;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -10,7 +10,7 @@ import java.util.UUID;
 public class PermissionManager {
 
     public void register(Player player) {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         UUID uuid = player.getUniqueId();
 

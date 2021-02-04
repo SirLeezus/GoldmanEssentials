@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -14,12 +14,12 @@ public class FileManager {
     private final Map<String, CustomFile> configs = new HashMap<>();
 
     public void addConfig(String name) {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         configs.put(name, new CustomFile(name + ".yml", "", plugin.getResource(name + ".yml"), plugin));
     }
 
     public void addConfig(String name, String path) {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         configs.put(name, new CustomFile(name + ".yml", path, plugin.getResource(name + ".yml"), plugin));
     }
 
@@ -32,7 +32,7 @@ public class FileManager {
     }
 
     public void loadConfigFolder(String path) {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         final File folder = new File(path);
         File[] files = folder.listFiles();
         if (files == null) return;

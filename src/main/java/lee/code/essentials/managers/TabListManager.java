@@ -1,10 +1,10 @@
-package lee.code.essentials.tablist;
+package lee.code.essentials.managers;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public class TabListManager {
     }
 
     public void scheduleTabListUpdater() {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 

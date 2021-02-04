@@ -1,5 +1,5 @@
-name: TheEssentials
-main: lee.code.essentials.TheEssentials
+name: GoldmanEssentials
+main: lee.code.essentials.GoldmanEssentials
 version: ${project.version}
 api-version: 1.16
 author: Lee
@@ -39,6 +39,3 @@ commands:
   invsee:
     description: Opens a players inventory.
     permission: essentails.command.invsee
-  color:
-    description: Test color command.
-    permission: essentails.command.color

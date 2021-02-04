@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.files.defaults.Lang;
 import org.bukkit.Bukkit;
@@ -19,7 +19,7 @@ public class BalanceTopCMD implements CommandExecutor {
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            TheEssentials plugin = TheEssentials.getPlugin();
+            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             UUID uuid = player.getUniqueId();
             SQLite SQL = plugin.getSqLite();
 

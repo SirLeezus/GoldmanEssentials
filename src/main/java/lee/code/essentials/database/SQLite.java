@@ -1,9 +1,8 @@
 package lee.code.essentials.database;
 
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +15,7 @@ public class SQLite {
     private Statement statement;
 
     public void connect() {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         connection = null;
 
         try {
@@ -110,6 +109,10 @@ public class SQLite {
         balance = balance - value;
         if (balance < 0) balance = 0;
         update("UPDATE player_data SET balance ='" + balance + "' WHERE player ='" + player + "';");
+    }
+
+    public void setBalance(UUID player, int value) {
+        update("UPDATE player_data SET balance ='" + value + "' WHERE player ='" + player + "';");
     }
 
     @SneakyThrows

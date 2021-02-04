@@ -1,9 +1,8 @@
 package lee.code.essentials.listeners;
 
-import lee.code.essentials.TheEssentials;
+import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.SQLite;
-import lee.code.essentials.nametags.NameTagBuilder;
-import lee.code.essentials.tablist.TabListManager;
+import lee.code.essentials.builders.NameTagBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +15,7 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        TheEssentials plugin = TheEssentials.getPlugin();
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
         SQLite SQL = plugin.getSqLite();
