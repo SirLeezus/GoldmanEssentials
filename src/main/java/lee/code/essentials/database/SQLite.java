@@ -206,8 +206,15 @@ public class SQLite {
         ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
 
         if (!rs.getString("perms").equals("n")) {
-            String perms = rs.getString("perms") + "," + perm;
-            update("UPDATE player_data SET perms ='" + perms + "' WHERE player ='" + player + "';");
+            String perms = rs.getString("perms");
+            String[] split = StringUtils.split(perms, ',');
+            List<String> playerPerms = new ArrayList<>(Arrays.asList(split));
+            if (!playerPerms.contains(perm)) {
+                playerPerms.add(perm);
+                String updatedPerms = StringUtils.join(playerPerms, ",");
+                update("UPDATE player_data SET perms ='" + updatedPerms + "' WHERE player ='" + player + "';");
+            }
+
         } else update("UPDATE player_data SET perms ='" + perm + "' WHERE player ='" + player + "';");
     }
 

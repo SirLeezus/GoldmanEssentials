@@ -26,6 +26,8 @@ public class PermissionManager {
             case "DEFAULT":
                 attachment.setPermission("essentials.command.spawn", true);
                 attachment.setPermission("pets.command.use", true);
+                attachment.setPermission("pets.use.sheep", true);
+                attachment.setPermission("pets.use.whitesheep", true);
                 break;
 
             case "MOD":
