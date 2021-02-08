@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.files.defaults.Lang;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,11 +19,11 @@ public class FlyCMD implements CommandExecutor {
                 if (!player.isFlying()) {
                     player.setAllowFlight(true);
                     player.setFlying(true);
-                    player.sendMessage(Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getConfigValue(new String[] { Lang.ON.getConfigValue(null) }));
+                    player.sendMessage(Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
                 } else {
                     player.setAllowFlight(false);
                     player.setFlying(false);
-                    player.sendMessage(Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getConfigValue(new String[] { Lang.OFF.getConfigValue(null) }));
+                    player.sendMessage(Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
                 }
             }
         }

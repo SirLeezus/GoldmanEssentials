@@ -1,12 +1,11 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.files.defaults.Lang;
-import org.bukkit.Location;
+import lee.code.essentials.database.SQLite;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class SetSpawnCMD implements CommandExecutor {
@@ -15,25 +14,14 @@ public class SetSpawnCMD implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
             if (player.hasPermission("essentials.command.setspawn")) {
-
-                FileConfiguration file = plugin.getFile("config").getData();
-
-                Location location = player.getLocation();
-
-                file.set("spawn.world", location.getWorld().getName());
-                file.set("spawn.x", location.getX());
-                file.set("spawn.y", location.getY());
-                file.set("spawn.z", location.getZ());
-                file.set("spawn.pitch", location.getPitch());
-                file.set("spawn.yaw", location.getYaw());
-                plugin.saveFile("config");
-
-                player.sendMessage(Lang.COMMAND_SETSPAWN_SUCCESSFUL.getConfigValue(null));
+                SQL.setSpawn(plugin.getPU().formatPlayerLocation(player.getLocation()));
+                player.sendMessage(Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
             }
         }
         return true;

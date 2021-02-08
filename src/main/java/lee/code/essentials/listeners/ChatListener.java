@@ -18,7 +18,7 @@ public class ChatListener implements Listener {
         if (!e.isCancelled()) {
 
             e.setCancelled(true);
-            Bukkit.broadcastMessage(plugin.getPluginUtility().format(player.getDisplayName() + "&8: &f" + e.getMessage()));
+            Bukkit.broadcastMessage(plugin.getPU().format(player.getDisplayName() + "&8: &f" + e.getMessage()));
         }
     }
 }

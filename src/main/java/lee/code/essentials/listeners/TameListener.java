@@ -16,7 +16,7 @@ public class TameListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         Player owner = Bukkit.getPlayer(e.getOwner().getUniqueId());
-        tamedEntity.setCustomName(plugin.getPluginUtility().format("&e" + owner.getName() + "'s Tamed " + tamedEntity.getName()));
+        tamedEntity.setCustomName(plugin.getPU().format("&e" + owner.getName() + "'s Tamed " + tamedEntity.getName()));
         tamedEntity.setCustomNameVisible(true);
     }
 

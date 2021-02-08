@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.files.defaults.Lang;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,28 +27,28 @@ public class GameModeCMD implements CommandExecutor {
                         case "survival":
                         case "0":
                             player.setGameMode(GameMode.SURVIVAL);
-                            player.sendMessage(Lang.COMMAND_GAMEMODE_SUCCESSFUL.getConfigValue(new String[] { "Survival" }));
+                            player.sendMessage(Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Survival" }));
                             break;
                         case "creative":
                         case "1":
-                            player.sendMessage(Lang.COMMAND_GAMEMODE_SUCCESSFUL.getConfigValue(new String[] { "Creative" }));
+                            player.sendMessage(Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Creative" }));
                             player.setGameMode(GameMode.CREATIVE);
                             break;
                         case "adventure":
                         case "2":
-                            player.sendMessage(Lang.COMMAND_GAMEMODE_SUCCESSFUL.getConfigValue(new String[] { "Adventure" }));
+                            player.sendMessage(Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Adventure" }));
                             player.setGameMode(GameMode.ADVENTURE);
                             break;
                         case "spectator":
                         case "3":
-                            player.sendMessage(Lang.COMMAND_GAMEMODE_SUCCESSFUL.getConfigValue(new String[] { "Spectator" }));
+                            player.sendMessage(Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Spectator" }));
                             player.setGameMode(GameMode.SPECTATOR);
                             break;
                         default:
-                            player.sendMessage(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getConfigValue(new String[]{ gamemode }));
+                            player.sendMessage(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ gamemode }));
                             break;
                     }
-                } else player.sendMessage(Lang.ERROR_COMMAND_GAMEMODE_ARGS.getConfigValue(null));
+                } else player.sendMessage(Lang.ERROR_COMMAND_GAMEMODE_ARGS.getString(null));
             }
         }
         return true;

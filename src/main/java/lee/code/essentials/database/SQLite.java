@@ -3,6 +3,7 @@ package lee.code.essentials.database;
 import lee.code.essentials.GoldmanEssentials;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Location;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,9 @@ public class SQLite {
         connection = null;
 
         try {
+            if (!plugin.getDataFolder().exists()) {
+                plugin.getDataFolder().mkdir();
+            }
             File dbFile = new File(plugin.getDataFolder(), "database.db");
             if (!dbFile.exists()) {
                 dbFile.createNewFile();
@@ -61,7 +65,7 @@ public class SQLite {
     }
 
     public void loadTables() {
-        //chunk table
+        //player data table
         update("CREATE TABLE IF NOT EXISTS player_data (" +
                 "`player` varchar PRIMARY KEY," +
                 "`balance` int NOT NULL," +
@@ -71,9 +75,33 @@ public class SQLite {
                 "`suffix` varchar NOT NULL," +
                 "`color` varchar NOT NULL" +
                 ");");
+
+        //server data table
+        update("CREATE TABLE IF NOT EXISTS server (" +
+                "`server` varchar PRIMARY KEY," +
+                "`spawn` varchar NOT NULL" +
+                ");");
+
     }
 
-    //table
+    //server data table
+
+    @SneakyThrows
+    public void setSpawn(String location) {
+
+        ResultSet rs = getResult("SELECT * FROM server WHERE server = 'server';");
+        if (rs.next()) update("DELETE FROM server WHERE server = 'server';");
+
+        update("INSERT INTO server (server, spawn) VALUES( 'server','" + location + "');");
+    }
+
+    @SneakyThrows
+    public String getSpawn() {
+        ResultSet rs = getResult("SELECT * FROM server WHERE server = 'server';");
+        return rs.getString("spawn");
+    }
+
+    //player data table
 
     public void createPlayerProfile(UUID player, int balance, String ranked, String perms, String prefix, String suffix, String color) {
         update("INSERT INTO player_data (player, balance, ranked, perms, prefix, suffix, color) VALUES( '" + player + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "');");

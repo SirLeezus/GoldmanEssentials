@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.files.defaults.Lang;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -56,9 +56,9 @@ public class FlySpeedCMD implements CommandExecutor {
                                 break;
                         }
                         player.setFlySpeed(speed);
-                        player.sendMessage(Lang.COMMAND_FLYSPEED_SUCCESSFUL.getConfigValue(new String[] { String.valueOf(number) }));
-                    } else player.sendMessage(Lang.ERROR_COMMAND_FLYSPEED_LIMIT.getConfigValue(null));
-                } else player.sendMessage(Lang.ERROR_COMMAND_FLYSPEED_ARGS.getConfigValue(null));
+                        player.sendMessage(Lang.COMMAND_FLYSPEED_SUCCESSFUL.getString(new String[] { String.valueOf(number) }));
+                    } else player.sendMessage(Lang.ERROR_COMMAND_FLYSPEED_LIMIT.getString(null));
+                } else player.sendMessage(Lang.ERROR_COMMAND_FLYSPEED_ARGS.getString(null));
             }
         }
         return true;

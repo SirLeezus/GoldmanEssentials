@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.files.defaults.Lang;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,13 +27,13 @@ public class WorldCMD implements CommandExecutor {
                         if (world.equals(selectedWorld.getName().toLowerCase())) {
                             Location loc = new Location(selectedWorld, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
                             player.teleport(loc);
-                            player.sendMessage(Lang.COMMAND_WORLD_SUCCESSFUL.getConfigValue(new String[] { world }));
+                            player.sendMessage(Lang.COMMAND_WORLD_SUCCESSFUL.getString(new String[] { world }));
                             return true;
                         }
                     }
 
-                    player.sendMessage(Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getConfigValue(new String[] { world }));
-                } else player.sendMessage(Lang.ERROR_COMMAND_WORLD_ARGS.getConfigValue(null));
+                    player.sendMessage(Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { world }));
+                } else player.sendMessage(Lang.ERROR_COMMAND_WORLD_ARGS.getString(null));
             }
         }
         return true;

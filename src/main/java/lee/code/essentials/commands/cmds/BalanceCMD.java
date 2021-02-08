@@ -2,7 +2,7 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.SQLite;
-import lee.code.essentials.files.defaults.Lang;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +22,7 @@ public class BalanceCMD implements CommandExecutor {
             SQLite SQL = plugin.getSqLite();
 
             if (player.hasPermission("essentials.command.balance")) {
-                player.sendMessage(Lang.COMMAND_BALANCE_SUCCESSFUL.getConfigValue(new String[] { plugin.getPluginUtility().formatAmount(SQL.getBalance(uuid)) }));
+                player.sendMessage(Lang.COMMAND_BALANCE_SUCCESSFUL.getString(new String[] { plugin.getPU().formatAmount(SQL.getBalance(uuid)) }));
             }
         }
         return true;

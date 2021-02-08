@@ -16,7 +16,7 @@ public class TabListManager {
     public void updatePlayerHeaderFooter(Player player) {
 
         PacketContainer packet = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_LIST_HEADER_FOOTER);
-        packet.getChatComponents().write(0, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', "&e-= &2&lJourney Survival &e=-"))).write( 1, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', "&a&lOnline: &b&l" + Bukkit.getOnlinePlayers().size())));
+        packet.getChatComponents().write(0, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', "\n&e-= &2&lJourney Survival &e=-\n"))).write( 1, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', "\n&a&lONLINE&7: &2" + Bukkit.getOnlinePlayers().size() + "\n")));
 
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
@@ -32,7 +32,7 @@ public class TabListManager {
 
             if (!Bukkit.getOnlinePlayers().isEmpty()) {
                 PacketContainer packet = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_LIST_HEADER_FOOTER);
-                packet.getChatComponents().write(0, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', "&e-= &2&lJourney Survival &e=-"))).write(1, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', "&a&lOnline: &b&l" + Bukkit.getOnlinePlayers().size())));
+                packet.getChatComponents().write(0, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', "\n&e-= &2&lJourney Survival &e=-\n"))).write(1, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', "\n&a&lONLINE&7: &2" + Bukkit.getOnlinePlayers().size() + "\n")));
                 ProtocolLibrary.getProtocolManager().broadcastServerPacket(packet);
             }
         }, 10, 40);

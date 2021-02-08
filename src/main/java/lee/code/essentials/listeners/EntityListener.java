@@ -1,6 +1,6 @@
 package lee.code.essentials.listeners;
 
-import lee.code.essentials.files.defaults.Lang;
+import lee.code.essentials.lists.Lang;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
@@ -23,7 +23,7 @@ public class EntityListener implements Listener {
             if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ARMOR_STAND)) {
                 if (checkChunk(e.getPlayer().getLocation().getChunk(), Material.ARMOR_STAND)) {
 
-                    TextComponent message = new TextComponent(Lang.ERROR_CHUNK_MAX_ENTITIES.getConfigValue(new String[] { String.valueOf(5) }));
+                    TextComponent message = new TextComponent(Lang.ERROR_CHUNK_MAX_ENTITIES.getString(new String[] { String.valueOf(5) }));
                     e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
 
                     e.setCancelled(true);
@@ -33,7 +33,7 @@ public class EntityListener implements Listener {
 
                 if (checkChunk(e.getPlayer().getLocation().getChunk(), Material.ITEM_FRAME)) {
 
-                    TextComponent message = new TextComponent(Lang.ERROR_CHUNK_MAX_ENTITIES.getConfigValue(new String[] { String.valueOf(5) }));
+                    TextComponent message = new TextComponent(Lang.ERROR_CHUNK_MAX_ENTITIES.getString(new String[] { String.valueOf(5) }));
                     e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
 
                     e.setCancelled(true);

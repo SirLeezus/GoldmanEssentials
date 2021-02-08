@@ -3,9 +3,6 @@ package lee.code.essentials;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.SQLite;
-import lee.code.essentials.files.CustomFile;
-import lee.code.essentials.files.FileManager;
-import lee.code.essentials.files.defaults.*;
 import lee.code.essentials.listeners.ChatListener;
 import lee.code.essentials.listeners.EntityListener;
 import lee.code.essentials.listeners.JoinListener;
@@ -17,8 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class GoldmanEssentials extends JavaPlugin {
 
-    @Getter private FileManager fileManager;
-    @Getter private PluginUtility pluginUtility;
+    @Getter private PU pU;
     @Getter private PermissionManager permissionManager;
     @Getter private Data data;
     @Getter private SQLite sqLite;
@@ -26,21 +22,17 @@ public class GoldmanEssentials extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.fileManager = new FileManager();
-        this.pluginUtility = new PluginUtility();
+        this.pU = new PU();
         this.permissionManager = new PermissionManager();
         this.data = new Data();
         this.sqLite = new SQLite();
         this.tabListManager = new TabListManager();
 
-        fileManager.addConfig("config");
-        fileManager.addConfig("lang");
         sqLite.connect();
         sqLite.loadTables();
         data.loadWorldNames();
         tabListManager.scheduleTabListUpdater();
 
-        loadDefaults();
         registerCommands();
         registerListeners();
     }
@@ -81,52 +73,6 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
         getServer().getPluginManager().registerEvents(new TameListener(), this);
-    }
-
-
-    public void loadDefaults() {
-
-        //config
-        Config.setFile(fileManager.getConfig("config").getData());
-        for (Config value : Config.values()) fileManager.getConfig("config").getData().addDefault(value.getPath(), value.getDefault());
-        fileManager.getConfig("config").getData().options().copyDefaults(true);
-        fileManager.getConfig("config").save();
-
-        //config settings
-        BooleanValues.setFile(fileManager.getConfig("config").getData());
-        for (BooleanValues value : BooleanValues.values()) fileManager.getConfig("config").getData().addDefault(value.getPath(), value.getDefault());
-        fileManager.getConfig("config").getData().options().copyDefaults(true);
-        fileManager.getConfig("config").save();
-
-        //config int values
-        IntegerValues.setFile(fileManager.getConfig("config").getData());
-        for (IntegerValues value : IntegerValues.values()) fileManager.getConfig("config").getData().addDefault(value.getPath(), value.getDefault());
-        fileManager.getConfig("config").getData().options().copyDefaults(true);
-        fileManager.getConfig("config").save();
-
-        //config double values
-        DoubleValues.setFile(fileManager.getConfig("config").getData());
-        for (IntegerValues value : IntegerValues.values()) fileManager.getConfig("config").getData().addDefault(value.getPath(), value.getDefault());
-        fileManager.getConfig("config").getData().options().copyDefaults(true);
-        fileManager.getConfig("config").save();
-
-        //lang
-        Lang.setFile(fileManager.getConfig("lang").getData());
-        for (Lang value : Lang.values()) fileManager.getConfig("lang").getData().addDefault(value.getPath(), value.getDefault());
-        fileManager.getConfig("lang").getData().options().copyDefaults(true);
-        fileManager.getConfig("lang").save();
-    }
-
-    public void saveFile(String file) {
-        fileManager.getConfig(file).save();
-    }
-
-    public CustomFile getFile(String file) {
-        return fileManager.getConfig(file);
-    }
-
-    public void reloadFiles() {
-        fileManager.reloadAll();
     }
 
     public static GoldmanEssentials getPlugin() {

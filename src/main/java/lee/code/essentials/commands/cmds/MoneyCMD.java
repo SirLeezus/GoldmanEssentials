@@ -2,7 +2,7 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.SQLite;
-import lee.code.essentials.files.defaults.Lang;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,7 +37,7 @@ public class MoneyCMD implements CommandExecutor {
                         //target player
                         target = Bukkit.getPlayer(args[1]);
                     } else {
-                        player.sendMessage(Lang.ERROR_PLAYER_NOT_ONLINE.getConfigValue(new String[]{args[2]}));
+                        player.sendMessage(Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[2]}));
                         return true;
                     }
 
@@ -46,7 +46,7 @@ public class MoneyCMD implements CommandExecutor {
                     if (buyScanner.hasNextInt()) {
                         amount = Integer.parseInt(args[2]);
                     } else {
-                        player.sendMessage(Lang.ERROR_COMMAND_MONEY_VALUE.getConfigValue(new String[]{ args[3] } ));
+                        player.sendMessage(Lang.ERROR_COMMAND_MONEY_VALUE.getString(new String[]{ args[3] } ));
                         return true;
                     }
 
@@ -74,7 +74,7 @@ public class MoneyCMD implements CommandExecutor {
                             break;
 
                         default:
-                            player.sendMessage(Lang.PREFIX.getConfigValue(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getConfigValue(new String[]{ args[0] }));
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ args[0] }));
                             break;
                     }
                 }
