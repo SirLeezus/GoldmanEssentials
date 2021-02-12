@@ -103,12 +103,4 @@ public class PU {
         }
         return players;
     }
-
-    public List<String> getColors() {
-        List<String> colors = new ArrayList<>();
-        for (org.bukkit.ChatColor color : org.bukkit.ChatColor.values()) {
-            colors.add(color.name());
-        }
-        return colors;
-    }
 }

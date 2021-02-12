@@ -48,3 +48,17 @@ commands:
   setcolor:
     description: Set a player's color.
     permission: essentails.command.setcolor
+  teleport:
+    description: Teleport to a player.
+    permission: essentails.command.teleport
+    aliases: [tp]
+  teleportaccept:
+    description: Accept a teleport request.
+    permission: essentails.command.teleport
+    aliases: [tpaccept]
+  sound:
+    description: Play a sound for a player.
+    permission: essentails.command.sound
+  glow:
+    description: Toggle if you're glowing.
+    permission: essentails.command.glow

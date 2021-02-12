@@ -1,8 +1,12 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,23 +19,24 @@ public class WorldCMD implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (sender instanceof Player) {
+            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             Player player = (Player) sender;
 
             if (player.hasPermission("essentials.command.world")) {
 
                 if (args.length > 0) {
 
-                    String world = args[0].toLowerCase();
+                    String worldString = args[0].toLowerCase();
 
-                    for (World selectedWorld : Bukkit.getWorlds()) {
-                        if (world.equals(selectedWorld.getName().toLowerCase())) {
-                            Location loc = new Location(selectedWorld, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
-                            player.teleport(loc);
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_WORLD_SUCCESSFUL.getString(new String[] { world }));
-                            return true;
-                        }
-                    }
-                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { world }));
+                    if (plugin.getData().getWorlds().contains(worldString)) {
+                        World world = Bukkit.getWorld(worldString);
+                        Location loc = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
+                        player.teleport(loc);
+                        TextComponent message = new TextComponent(Lang.TELEPORT.getString(null));
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
+                        player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
+                        return true;
+                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { worldString }));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_ARGS.getString(null));
             }
         }

@@ -10,7 +10,7 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetColorTab implements TabCompleter {
+public class TeleportTab implements TabCompleter {
 
     private final List<String> blank = new ArrayList<>();
     
@@ -21,8 +21,6 @@ public class SetColorTab implements TabCompleter {
         if (sender instanceof Player) {
             if (args.length == 1) {
                 return StringUtil.copyPartialMatches(args[0], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
-            } else if (args.length == 2) {
-                return StringUtil.copyPartialMatches(args[1], plugin.getData().getChatColors(), new ArrayList<>());
             } else return blank;
         } else return blank;
     }

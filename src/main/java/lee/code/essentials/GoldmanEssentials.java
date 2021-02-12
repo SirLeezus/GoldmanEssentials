@@ -30,7 +30,7 @@ public class GoldmanEssentials extends JavaPlugin {
 
         sqLite.connect();
         sqLite.loadTables();
-        data.loadWorldNames();
+        data.loadListData();
         tabListManager.scheduleTabListUpdater();
 
         registerCommands();
@@ -58,6 +58,10 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("rankup").setExecutor(new RankupCMD());
         getCommand("setprefix").setExecutor(new SetPrefixCMD());
         getCommand("setcolor").setExecutor(new SetColorCMD());
+        getCommand("teleport").setExecutor(new TeleportCMD());
+        getCommand("teleportaccept").setExecutor(new TeleportAcceptCMD());
+        getCommand("sound").setExecutor(new SoundCMD());
+        getCommand("glow").setExecutor(new GlowCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -71,6 +75,10 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("money").setTabCompleter(new MoneyTab());
         getCommand("setprefix").setTabCompleter(new SetPrefixTab());
         getCommand("setcolor").setTabCompleter(new SetColorTab());
+        getCommand("teleport").setTabCompleter(new TeleportTab());
+        getCommand("teleportaccept").setTabCompleter(new TeleportAcceptTab());
+        getCommand("sound").setTabCompleter(new SoundTab());
+        getCommand("glow").setTabCompleter(new GlowTab());
     }
 
     private void registerListeners() {

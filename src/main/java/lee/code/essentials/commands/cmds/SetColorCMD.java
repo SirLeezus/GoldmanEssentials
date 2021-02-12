@@ -27,7 +27,7 @@ public class SetColorCMD implements CommandExecutor {
 
                     if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
                         Player target = Bukkit.getPlayer(args[0]);
-                        if (plugin.getPU().getColors().contains(args[1]) && target != null) {
+                        if (plugin.getData().getChatColors().contains(args[1]) && target != null) {
                             String color = args[1];
                             SQL.setColor(target.getUniqueId(), color);
                             new NameTagBuilder(target).setColor(ChatColor.valueOf(color)).setPrefix(SQL.getPrefix(target.getUniqueId())).setSuffix(SQL.getSuffix(target.getUniqueId())).build();
