@@ -60,6 +60,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("setcolor").setExecutor(new SetColorCMD());
         getCommand("teleport").setExecutor(new TeleportCMD());
         getCommand("teleportaccept").setExecutor(new TeleportAcceptCMD());
+        getCommand("teleportdeny").setExecutor(new TeleportDenyCMD());
         getCommand("sound").setExecutor(new SoundCMD());
         getCommand("glow").setExecutor(new GlowCMD());
 
@@ -79,6 +80,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("teleportaccept").setTabCompleter(new TeleportAcceptTab());
         getCommand("sound").setTabCompleter(new SoundTab());
         getCommand("glow").setTabCompleter(new GlowTab());
+        getCommand("teleportdeny").setTabCompleter(new TeleportDenyTab());
     }
 
     private void registerListeners() {

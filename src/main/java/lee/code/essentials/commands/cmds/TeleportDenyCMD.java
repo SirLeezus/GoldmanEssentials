@@ -1,15 +1,8 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.Lang;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class TeleportAcceptCMD implements CommandExecutor {
+public class TeleportDenyCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,7 +20,7 @@ public class TeleportAcceptCMD implements CommandExecutor {
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             UUID uuid = player.getUniqueId();
 
-            if (player.hasPermission("essentials.command.teleportaccept")) {
+            if (player.hasPermission("essentials.command.teleportdeny")) {
 
                 if (args.length > 0) {
                     if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
@@ -35,17 +28,14 @@ public class TeleportAcceptCMD implements CommandExecutor {
                         if (target != null && target != player) {
                             if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
 
-                                target.teleport(player.getLocation());
-                                TextComponent message = new TextComponent(Lang.TELEPORT.getString(null));
-                                target.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
-                                target.playSound(target.getLocation(), Sound.UI_TOAST_OUT, 1,1);
                                 plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
+                                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_DENY_SUCCESSFUL.getString(new String[] { target.getName() }));
+                                target.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTDENY_DENIED.getString(new String[] { player.getName() }));
 
-                                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL.getString(new String[] { target.getName() }));
                             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getString(new String[] { target.getName() }));
                         } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
                     } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[] { args[0] }));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTACCEPT_ARG.getString(null));
+                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTDENY_ARG.getString(null));
             }
         }
         return true;

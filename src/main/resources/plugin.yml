@@ -56,6 +56,10 @@ commands:
     description: Accept a teleport request.
     permission: essentails.command.teleport
     aliases: [tpaccept]
+  teleportdeny:
+    description: Deny a teleport request.
+    permission: essentails.command.teleport
+    aliases: [tpdeny]
   sound:
     description: Play a sound for a player.
     permission: essentails.command.sound

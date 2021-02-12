@@ -1,16 +1,19 @@
 package lee.code.essentials;
 
+import lee.code.essentials.lists.Lang;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,5 +105,19 @@ public class PU {
             players.add(player.getName());
         }
         return players;
+    }
+
+    public void teleportTimer(Player player, Player target) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+
+        scheduler.runTaskLater(plugin, () -> {
+
+            if (Bukkit.getOnlinePlayers().contains(player) && plugin.getData().isPlayerRequestingTeleportForTarget(player.getUniqueId(), target.getUniqueId())) {
+                plugin.getData().removePlayerRequestingTeleport(player.getUniqueId());
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_REQUEST_EXPIRED.getString(new String[] { target.getName() }));
+            }
+
+        },1200L);
     }
 }

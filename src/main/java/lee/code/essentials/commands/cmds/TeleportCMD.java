@@ -33,7 +33,7 @@ public class TeleportCMD implements CommandExecutor {
                 if (args.length > 0) {
                     if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
                         Player target = Bukkit.getPlayer(args[0]);
-                        if (target != null) {
+                        if (target != null && target != player) {
 
                             if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, target.getUniqueId())) {
 
@@ -51,10 +51,11 @@ public class TeleportCMD implements CommandExecutor {
 
                                 target.spigot().sendMessage(targetMessage, confirmTeleport, denyTeleport);
                                 target.playSound(target.getLocation(), Sound.UI_TOAST_IN, 1,1);
+                                plugin.getPU().teleportTimer(player, target);
                                 player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));
 
                             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED.getString(new String[] { target.getName() }));
-                        }
+                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
                     }
                 }
             }
