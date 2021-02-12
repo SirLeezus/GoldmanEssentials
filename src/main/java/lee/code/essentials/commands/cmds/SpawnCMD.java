@@ -20,7 +20,7 @@ public class SpawnCMD implements CommandExecutor {
 
             if (player.hasPermission("essentials.command.spawn")) {
                 player.teleport(plugin.getPU().unFormatPlayerLocation(SQL.getSpawn()));
-                player.sendMessage(Lang.COMMAND_SPAWN_SUCCESSFUL.getString(null));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SPAWN_SUCCESSFUL.getString(null));
             }
         }
         return true;

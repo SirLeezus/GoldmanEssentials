@@ -27,13 +27,12 @@ public class WorldCMD implements CommandExecutor {
                         if (world.equals(selectedWorld.getName().toLowerCase())) {
                             Location loc = new Location(selectedWorld, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
                             player.teleport(loc);
-                            player.sendMessage(Lang.COMMAND_WORLD_SUCCESSFUL.getString(new String[] { world }));
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_WORLD_SUCCESSFUL.getString(new String[] { world }));
                             return true;
                         }
                     }
-
-                    player.sendMessage(Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { world }));
-                } else player.sendMessage(Lang.ERROR_COMMAND_WORLD_ARGS.getString(null));
+                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { world }));
+                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_ARGS.getString(null));
             }
         }
         return true;

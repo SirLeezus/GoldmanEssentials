@@ -55,6 +55,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("balancetop").setExecutor(new BalanceTopCMD());
         getCommand("money").setExecutor(new MoneyCMD());
         getCommand("invsee").setExecutor(new InvseeCMD());
+        getCommand("rankup").setExecutor(new RankupCMD());
+        getCommand("setprefix").setExecutor(new SetPrefixCMD());
+        getCommand("setcolor").setExecutor(new SetColorCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -66,6 +69,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("balance").setTabCompleter(new BalanceTab());
         getCommand("balanceTop").setTabCompleter(new BalanceTopTab());
         getCommand("money").setTabCompleter(new MoneyTab());
+        getCommand("setprefix").setTabCompleter(new SetPrefixTab());
+        getCommand("setcolor").setTabCompleter(new SetColorTab());
     }
 
     private void registerListeners() {

@@ -27,13 +27,14 @@ public class NameTagBuilder {
         String name = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
         this.packet.getIntegers().write(1, 0);
         this.packet.getStrings().write(0, name);
-        this.packet.getChatComponents().write(0, WrappedChatComponent.fromText(player.toString()));
+        this.packet.getChatComponents().write(0, WrappedChatComponent.fromText(player.getName()));
         this.packet.getSpecificModifier(Collection.class).write(0, Collections.singletonList(player.getName()));
     }
 
     public NameTagBuilder setPrefix(String prefix) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         this.prefix = prefix;
-        this.packet.getChatComponents().write(1, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', prefix)));
+        this.packet.getChatComponents().write(1, WrappedChatComponent.fromJson(plugin.getPU().legacyToJson(plugin.getPU().format(prefix))));
         return this;
     }
 
@@ -44,8 +45,9 @@ public class NameTagBuilder {
     }
 
     public NameTagBuilder setSuffix(String suffix) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         this.suffix = suffix;
-        this.packet.getChatComponents().write(2, WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', suffix)));
+        this.packet.getChatComponents().write(2, WrappedChatComponent.fromJson(plugin.getPU().legacyToJson(plugin.getPU().format(suffix))));
         return this;
     }
 
@@ -71,7 +73,8 @@ public class NameTagBuilder {
     }
 
     private void updateChatAndTabList() {
-        player.setDisplayName(ChatColor.translateAlternateColorCodes('&',prefix + color + player.getName() + suffix));
-        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&',prefix + color + player.getName() + suffix));
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        player.setDisplayName(plugin.getPU().format(prefix + color + player.getName() + suffix));
+        player.setPlayerListName(plugin.getPU().format(prefix + color + player.getName() + suffix));
     }
 }

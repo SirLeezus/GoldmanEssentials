@@ -21,7 +21,7 @@ public class SetSpawnCMD implements CommandExecutor {
 
             if (player.hasPermission("essentials.command.setspawn")) {
                 SQL.setSpawn(plugin.getPU().formatPlayerLocation(player.getLocation()));
-                player.sendMessage(Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
             }
         }
         return true;

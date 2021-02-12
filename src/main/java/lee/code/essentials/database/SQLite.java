@@ -3,7 +3,6 @@ package lee.code.essentials.database;
 import lee.code.essentials.GoldmanEssentials;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Location;
 
 import java.io.File;
 import java.io.IOException;

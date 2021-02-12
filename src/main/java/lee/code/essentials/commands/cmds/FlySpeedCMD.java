@@ -56,9 +56,9 @@ public class FlySpeedCMD implements CommandExecutor {
                                 break;
                         }
                         player.setFlySpeed(speed);
-                        player.sendMessage(Lang.COMMAND_FLYSPEED_SUCCESSFUL.getString(new String[] { String.valueOf(number) }));
-                    } else player.sendMessage(Lang.ERROR_COMMAND_FLYSPEED_LIMIT.getString(null));
-                } else player.sendMessage(Lang.ERROR_COMMAND_FLYSPEED_ARGS.getString(null));
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_FLYSPEED_SUCCESSFUL.getString(new String[] { String.valueOf(number) }));
+                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_FLYSPEED_LIMIT.getString(null));
+                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_FLYSPEED_ARGS.getString(null));
             }
         }
         return true;

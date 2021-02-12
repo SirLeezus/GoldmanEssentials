@@ -35,6 +35,5 @@ public class JoinListener implements Listener {
         String suffix = SQL.getSuffix(uuid);
 
         new NameTagBuilder(player).setColor(color).setPrefix(prefix).setSuffix(suffix).build();
-        plugin.getTabListManager().updatePlayerHeaderFooter(player);
     }
 }

@@ -39,3 +39,12 @@ commands:
   invsee:
     description: Opens a players inventory.
     permission: essentails.command.invsee
+  rankup:
+    description: Rankup player info.
+    permission: essentails.command.rankup
+  setprefix:
+    description: Set a player's prefix.
+    permission: essentails.command.setprefix
+  setcolor:
+    description: Set a player's color.
+    permission: essentails.command.setcolor
