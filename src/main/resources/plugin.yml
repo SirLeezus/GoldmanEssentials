@@ -66,3 +66,6 @@ commands:
   glow:
     description: Toggle if you're glowing.
     permission: essentails.command.glow
+  itemrename:
+    description: Rename the item you're holding.
+    permission: essentails.command.rename
