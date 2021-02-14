@@ -23,4 +23,9 @@ public class EssentialsAPI {
         SQLite SQL = plugin.getSqLite();
         return SQL.getBalance(uuid);
     }
+
+    public String formatColor(String message) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        return plugin.getPU().format(message);
+    }
 }
