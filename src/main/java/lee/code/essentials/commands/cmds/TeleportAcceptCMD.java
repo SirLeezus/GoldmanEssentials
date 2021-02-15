@@ -30,7 +30,7 @@ public class TeleportAcceptCMD implements CommandExecutor {
                             if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
 
                                 target.teleportAsync(player.getLocation());
-                                player.sendActionBar(Lang.TELEPORT.getString(null));
+                                target.sendActionBar(Lang.TELEPORT.getString(null));
                                 target.playSound(target.getLocation(), Sound.UI_TOAST_OUT, 1,1);
                                 plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
 

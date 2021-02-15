@@ -46,8 +46,8 @@ public class TeleportCMD implements CommandExecutor {
                                 denyTeleport.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(plugin.getPU().format("&6&l[&e&l!&6&l] &cClick to deny &6&l" + player.getName() + "'s &cteleport request."))));
 
                                 plugin.getData().setPlayerRequestingTeleport(uuid, target.getUniqueId());
-                                player.sendActionBar(targetMessage, confirmTeleport, denyTeleport);
 
+                                target.spigot().sendMessage(targetMessage, confirmTeleport, denyTeleport);
                                 target.playSound(target.getLocation(), Sound.UI_TOAST_IN, 1,1);
                                 plugin.getPU().teleportTimer(player, target);
                                 player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));
