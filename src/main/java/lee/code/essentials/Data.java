@@ -24,10 +24,6 @@ public class Data {
     public void setPlayerNameTagPacketContainer(UUID player, PacketContainer packetContainer) {
         playerNameTagPacketContainers.put(player, packetContainer);
     }
-
-    public boolean isPlayerRequestingTeleport(UUID player) {
-        return playersRequestingTeleport.containsKey(player);
-    }
     public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) {
         return playersRequestingTeleport.get(player) == target;
     }

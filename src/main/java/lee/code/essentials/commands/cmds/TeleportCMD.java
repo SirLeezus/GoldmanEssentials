@@ -1,7 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.Lang;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -25,7 +24,6 @@ public class TeleportCMD implements CommandExecutor {
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             Player player = (Player) sender;
             UUID uuid = player.getUniqueId();
-            SQLite SQL = plugin.getSqLite();
 
             if (player.hasPermission("essentials.command.teleport")) {
 
@@ -48,8 +46,8 @@ public class TeleportCMD implements CommandExecutor {
                                 denyTeleport.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(plugin.getPU().format("&6&l[&e&l!&6&l] &cClick to deny &6&l" + player.getName() + "'s &cteleport request."))));
 
                                 plugin.getData().setPlayerRequestingTeleport(uuid, target.getUniqueId());
+                                player.sendActionBar(targetMessage, confirmTeleport, denyTeleport);
 
-                                target.spigot().sendMessage(targetMessage, confirmTeleport, denyTeleport);
                                 target.playSound(target.getLocation(), Sound.UI_TOAST_IN, 1,1);
                                 plugin.getPU().teleportTimer(player, target);
                                 player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));

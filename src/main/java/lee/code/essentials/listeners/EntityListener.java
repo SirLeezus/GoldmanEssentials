@@ -1,8 +1,6 @@
 package lee.code.essentials.listeners;
 
 import lee.code.essentials.lists.Lang;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -22,20 +20,12 @@ public class EntityListener implements Listener {
         if (e.hasBlock()) {
             if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ARMOR_STAND)) {
                 if (checkChunk(e.getPlayer().getLocation().getChunk(), Material.ARMOR_STAND)) {
-
-                    TextComponent message = new TextComponent(Lang.ERROR_CHUNK_MAX_ENTITIES.getString(new String[] { String.valueOf(5) }));
-                    e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
-
+                    e.getPlayer().sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getString(new String[] { String.valueOf(5) }));
                     e.setCancelled(true);
                 }
-
             } else if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ITEM_FRAME)) {
-
                 if (checkChunk(e.getPlayer().getLocation().getChunk(), Material.ITEM_FRAME)) {
-
-                    TextComponent message = new TextComponent(Lang.ERROR_CHUNK_MAX_ENTITIES.getString(new String[] { String.valueOf(5) }));
-                    e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
-
+                    e.getPlayer().sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getString(new String[] { String.valueOf(5) }));
                     e.setCancelled(true);
                 }
 

@@ -1,13 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.Lang;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -35,9 +29,8 @@ public class TeleportAcceptCMD implements CommandExecutor {
                         if (target != null && target != player) {
                             if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
 
-                                target.teleport(player.getLocation());
-                                TextComponent message = new TextComponent(Lang.TELEPORT.getString(null));
-                                target.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
+                                target.teleportAsync(player.getLocation());
+                                player.sendActionBar(Lang.TELEPORT.getString(null));
                                 target.playSound(target.getLocation(), Sound.UI_TOAST_OUT, 1,1);
                                 plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
 

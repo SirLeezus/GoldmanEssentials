@@ -3,8 +3,6 @@ package lee.code.essentials.commands.cmds;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.Lang;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,10 +20,8 @@ public class SpawnCMD implements CommandExecutor {
             Player player = (Player) sender;
 
             if (player.hasPermission("essentials.command.spawn")) {
-                player.teleport(plugin.getPU().unFormatPlayerLocation(SQL.getSpawn()));
-
-                TextComponent message = new TextComponent(Lang.TELEPORT.getString(null));
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
+                player.teleportAsync(plugin.getPU().unFormatPlayerLocation(SQL.getSpawn()));
+                player.sendActionBar(Lang.TELEPORT.getString(null));
                 player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
             }
         }

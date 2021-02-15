@@ -6,7 +6,6 @@ import lee.code.essentials.database.SQLite;
 import lee.code.essentials.listeners.ChatListener;
 import lee.code.essentials.listeners.EntityListener;
 import lee.code.essentials.listeners.JoinListener;
-import lee.code.essentials.listeners.TameListener;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.TabListManager;
 import lombok.Getter;
@@ -91,7 +90,6 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
-        getServer().getPluginManager().registerEvents(new TameListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

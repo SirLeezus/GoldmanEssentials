@@ -2,8 +2,6 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -31,9 +29,8 @@ public class WorldCMD implements CommandExecutor {
                     if (plugin.getData().getWorlds().contains(worldString)) {
                         World world = Bukkit.getWorld(worldString);
                         Location loc = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
-                        player.teleport(loc);
-                        TextComponent message = new TextComponent(Lang.TELEPORT.getString(null));
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
+                        player.teleportAsync(loc);
+                        player.sendActionBar(Lang.TELEPORT.getString(null));
                         player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
                         return true;
                     } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { worldString }));
