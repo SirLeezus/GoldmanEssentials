@@ -3,7 +3,7 @@ main: lee.code.essentials.GoldmanEssentials
 version: ${project.version}
 api-version: 1.16
 author: Lee
-depend: [ProtocolLib]
+depend: [ProtocolLib, RedisCache]
 commands:
   spawn:
     description: Teleport to spawn.

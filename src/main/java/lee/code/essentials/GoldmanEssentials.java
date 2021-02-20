@@ -1,7 +1,9 @@
 package lee.code.essentials;
 
+import lee.code.cache.CacheAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.listeners.ChatListener;
 import lee.code.essentials.listeners.EntityListener;
@@ -18,7 +20,9 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private Data data;
     @Getter private SQLite sqLite;
     @Getter private TabListManager tabListManager;
-    @Getter private EssentialsAPI aPI;
+    @Getter private Cache cache;
+    @Getter private CacheAPI cacheAPI;
+    @Getter private EssentialsAPI essentialsAPI;
 
     @Override
     public void onEnable() {
@@ -27,11 +31,16 @@ public class GoldmanEssentials extends JavaPlugin {
         this.data = new Data();
         this.sqLite = new SQLite();
         this.tabListManager = new TabListManager();
-        this.aPI = new EssentialsAPI();
+        this.cacheAPI = new CacheAPI();
+        this.cache = new Cache();
+        this.essentialsAPI = new EssentialsAPI();
 
         sqLite.connect();
         sqLite.loadTables();
+
+        data.cacheDatabase();
         data.loadListData();
+
         tabListManager.scheduleTabListUpdater();
 
         registerCommands();

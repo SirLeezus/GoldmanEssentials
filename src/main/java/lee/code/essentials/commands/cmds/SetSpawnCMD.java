@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.SQLite;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,13 +14,13 @@ public class SetSpawnCMD implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        SQLite SQL = plugin.getSqLite();
+        Cache cache = plugin.getCache();
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
             if (player.hasPermission("essentials.command.setspawn")) {
-                SQL.setSpawn(plugin.getPU().formatPlayerLocation(player.getLocation()));
+                cache.setSpawn(player.getLocation(), true);
                 player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
             }
         }

@@ -1,6 +1,6 @@
 package lee.code.essentials;
 
-import lee.code.essentials.database.SQLite;
+import lee.code.essentials.database.Cache;
 
 import java.util.UUID;
 
@@ -8,24 +8,19 @@ public class EssentialsAPI {
 
     public void deposit(UUID uuid, int amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        SQLite SQL = plugin.getSqLite();
-        SQL.deposit(uuid, amount);
+        Cache cache = plugin.getCache();
+        cache.deposit(uuid, amount, true);
     }
 
     public void withdraw(UUID uuid, int amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        SQLite SQL = plugin.getSqLite();
-        SQL.withdraw(uuid, amount);
+        Cache cache = plugin.getCache();
+        cache.withdraw(uuid, amount, true);
     }
 
     public int getBalance(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        SQLite SQL = plugin.getSqLite();
-        return SQL.getBalance(uuid);
-    }
-
-    public String formatColor(String message) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        return plugin.getPU().format(message);
+        Cache cache = plugin.getCache();
+        return cache.getBalance(uuid);
     }
 }

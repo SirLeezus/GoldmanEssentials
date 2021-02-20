@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.SQLite;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -20,9 +20,8 @@ public class MoneyCMD implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+            Cache cache = plugin.getCache();
             UUID uuid = player.getUniqueId();
-            SQLite SQL = plugin.getSqLite();
-
 
             ///money set {player} {amount}
             if (player.hasPermission("essentials.command.money")) {
@@ -37,7 +36,7 @@ public class MoneyCMD implements CommandExecutor {
                         //target player
                         target = Bukkit.getPlayer(args[1]);
                     } else {
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[2]}));
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[1]}));
                         return true;
                     }
 
@@ -46,7 +45,7 @@ public class MoneyCMD implements CommandExecutor {
                     if (buyScanner.hasNextInt()) {
                         amount = Integer.parseInt(args[2]);
                     } else {
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_MONEY_VALUE.getString(new String[]{ args[3] } ));
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_MONEY_VALUE.getString(new String[]{ args[2] } ));
                         return true;
                     }
 
@@ -56,19 +55,19 @@ public class MoneyCMD implements CommandExecutor {
                     switch (subCommand) {
 
                         case "set":
-                            SQL.setBalance(target.getUniqueId(), amount);
+                            cache.setBalance(target.getUniqueId(), amount, true);
                             player.sendMessage("Money sent.");
                             target.sendMessage("Your balance has been set to " + amount + " by " + player.getName() + ".");
                             break;
 
                         case "remove":
-                            SQL.withdraw(target.getUniqueId(), amount);
+                            cache.withdraw(target.getUniqueId(), amount, true);
                             player.sendMessage("Money taken.");
                             target.sendMessage("The amount " + amount + " has been taken from your account by " + player.getName() + ".");
                             break;
 
                         case "add":
-                            SQL.deposit(target.getUniqueId(), amount);
+                            cache.deposit(target.getUniqueId(), amount, true);
                             player.sendMessage("Money added.");
                             target.sendMessage("You received " + amount + " from " + player.getName() + ".");
                             break;

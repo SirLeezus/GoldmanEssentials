@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Sound;
@@ -15,12 +16,13 @@ public class SpawnCMD implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
+        Cache cache = plugin.getCache();
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
             if (player.hasPermission("essentials.command.spawn")) {
-                player.teleportAsync(plugin.getPU().unFormatPlayerLocation(SQL.getSpawn()));
+                player.teleportAsync(cache.getSpawn());
                 player.sendActionBar(Lang.TELEPORT.getString(null));
                 player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
             }

@@ -2,7 +2,7 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.builders.NameTagBuilder;
-import lee.code.essentials.database.SQLite;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +19,7 @@ public class SetColorCMD implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-            SQLite SQL = plugin.getSqLite();
+            Cache cache = plugin.getCache();
 
             if (player.hasPermission("essentials.command.setcolor")) {
 
@@ -29,8 +29,8 @@ public class SetColorCMD implements CommandExecutor {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (plugin.getData().getChatColors().contains(args[1]) && target != null) {
                             String color = args[1];
-                            SQL.setColor(target.getUniqueId(), color);
-                            new NameTagBuilder(target).setColor(ChatColor.valueOf(color)).setPrefix(SQL.getPrefix(target.getUniqueId())).setSuffix(SQL.getSuffix(target.getUniqueId())).build();
+                            cache.setColor(target.getUniqueId(), color, true);
+                            new NameTagBuilder(target).setColor(ChatColor.valueOf(color)).setPrefix(cache.getPrefix(target.getUniqueId())).setSuffix(cache.getSuffix(target.getUniqueId())).build();
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETCOLOR_SUCCESSFUL.getString(new String[] { target.getName(), ChatColor.valueOf(color) + color }));
                         }
                     } else {

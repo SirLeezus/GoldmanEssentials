@@ -2,7 +2,7 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.builders.NameTagBuilder;
-import lee.code.essentials.database.SQLite;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +19,7 @@ public class SetPrefixCMD implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-            SQLite SQL = plugin.getSqLite();
+            Cache cache = plugin.getCache();
 
             if (player.hasPermission("essentials.command.setprefix")) {
 
@@ -29,8 +29,8 @@ public class SetPrefixCMD implements CommandExecutor {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
                             String prefix = plugin.getPU().buildStringFromArgs(args, 1) + " ";
-                            SQL.setPrefix(target.getUniqueId(), prefix);
-                            new NameTagBuilder(target).setColor(ChatColor.valueOf(SQL.getColor(target.getUniqueId()))).setPrefix(prefix).setSuffix(SQL.getSuffix(target.getUniqueId())).build();
+                            cache.setPrefix(target.getUniqueId(), prefix, true);
+                            new NameTagBuilder(target).setColor(ChatColor.valueOf(cache.getColor(target.getUniqueId()))).setPrefix(prefix).setSuffix(cache.getSuffix(target.getUniqueId())).build();
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETPREFIX_SUCCESSFUL.getString(new String[] { target.getName(), plugin.getPU().format(prefix) }));
                         }
                     } else {

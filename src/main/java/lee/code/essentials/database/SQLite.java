@@ -87,11 +87,9 @@ public class SQLite {
 
     @SneakyThrows
     public void setSpawn(String location) {
-
         ResultSet rs = getResult("SELECT * FROM server WHERE server = 'server';");
-        if (rs.next()) update("DELETE FROM server WHERE server = 'server';");
-
-        update("INSERT INTO server (server, spawn) VALUES( 'server','" + location + "');");
+        if (!rs.next()) update("UPDATE server SET spawn ='" + location + "' WHERE server = server';");
+        else update("INSERT INTO server (server, spawn) VALUES( 'server','" + location + "');");
     }
 
     @SneakyThrows
@@ -102,7 +100,7 @@ public class SQLite {
 
     //player data table
 
-    public void createPlayerProfile(UUID player, int balance, String ranked, String perms, String prefix, String suffix, String color) {
+    public void setPlayerData(UUID player, int balance, String ranked, String perms, String prefix, String suffix, String color) {
         update("INSERT INTO player_data (player, balance, ranked, perms, prefix, suffix, color) VALUES( '" + player + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "');");
     }
 
@@ -228,37 +226,47 @@ public class SQLite {
         return new ArrayList<>(Arrays.asList(split));
     }
 
-    @SneakyThrows
-    public void addPerm(UUID player, String perm) {
-        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+    public void addPerm(UUID player, String perms) {
+        update("UPDATE player_data SET perms ='" + perms + "' WHERE player ='" + player + "';");
+    }
 
-        if (!rs.getString("perms").equals("n")) {
-            String perms = rs.getString("perms");
-            String[] split = StringUtils.split(perms, ',');
-            List<String> playerPerms = new ArrayList<>(Arrays.asList(split));
-            if (!playerPerms.contains(perm)) {
-                playerPerms.add(perm);
-                String updatedPerms = StringUtils.join(playerPerms, ",");
-                update("UPDATE player_data SET perms ='" + updatedPerms + "' WHERE player ='" + player + "';");
-            }
-
-        } else update("UPDATE player_data SET perms ='" + perm + "' WHERE player ='" + player + "';");
+    public void removePerm(UUID player, String perms) {
+        update("UPDATE player_data SET perms ='" + perms + "' WHERE player ='" + player + "';");
     }
 
     @SneakyThrows
-    public void removePerm(UUID player, String perm) {
-        ResultSet rs = getResult("SELECT * FROM player_data WHERE player = '" + player + "';");
+    public void loadPlayerData() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
 
-        String perms = rs.getString("perms");
+        ResultSet rs = getResult("SELECT * FROM player_data;");
 
-        if (!perms.equals("n")) {
+        int count = 0;
+        while(rs.next()) {
+            UUID uuid = UUID.fromString(rs.getString("player"));
+            int balance = rs.getInt("balance");
+            String ranked = rs.getString("ranked");
+            String perms = rs.getString("perms");
+            String prefix = rs.getString("prefix");
+            String suffix = rs.getString("suffix");
+            String color = rs.getString("color");
+            cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, false);
+            count++;
+        }
+        System.out.println(plugin.getPU().format("&bPlayers Loaded: &3" + count));
+    }
 
-            String[] split = StringUtils.split(perms, ',');
-            List<String> permList = new ArrayList<>();
-            for (String permission : split) if (!permission.equals(perm)) permList.add(permission);
-            String playerPerms = StringUtils.join(permList, ",");
+    @SneakyThrows
+    public void loadServerData() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
 
-            update("UPDATE player_data SET perms ='" + playerPerms + "' WHERE player ='" + player + "';");
+        ResultSet rs = getResult("SELECT * FROM server WHERE server = 'server';");
+
+        if (rs.next()) {
+            String spawn = rs.getString("spawn");
+            cache.setServerData(spawn);
+            if (spawn != null) System.out.println(plugin.getPU().format("&bSpawn loaded!"));
         }
     }
 

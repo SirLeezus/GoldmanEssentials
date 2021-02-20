@@ -28,6 +28,9 @@ public class PermissionManager {
                 attachment.setPermission("pets.command.use", true);
                 attachment.setPermission("pets.use.sheep", true);
                 attachment.setPermission("pets.use.whitesheep", true);
+                attachment.setPermission("chunk.command.maxclaims", true);
+                attachment.setPermission("chunk.command.use", true);
+                attachment.setPermission("chunk.command.claim", true);
                 break;
 
             case "MOD":
