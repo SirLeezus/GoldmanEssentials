@@ -48,7 +48,7 @@ public class Cache {
             String sNewBalance = String.valueOf(balance + amount);
             jedis.hset("balance", sUUID, sNewBalance);
 
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.deposit(uuid, amount));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.deposit(uuid, balance + amount));
         }
     }
 
@@ -61,10 +61,12 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             int balance = Integer.parseInt(jedis.hget("balance", sUUID));
-            String sNewBalance = String.valueOf(balance - amount);
+            int newBalance = balance - amount;
+            if (newBalance < 0) newBalance = 0;
+            String sNewBalance = String.valueOf(newBalance);
             jedis.hset("balance", sUUID, sNewBalance);
 
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.withdraw(uuid, amount));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.withdraw(uuid, balance - amount));
         }
     }
 

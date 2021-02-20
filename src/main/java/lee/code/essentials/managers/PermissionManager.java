@@ -1,6 +1,7 @@
 package lee.code.essentials.managers;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -11,13 +12,13 @@ public class PermissionManager {
 
     public void register(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        SQLite SQL = plugin.getSqLite();
+        Cache cache = plugin.getCache();
         UUID uuid = player.getUniqueId();
 
         PermissionAttachment attachment = player.addAttachment(plugin);
         attachment.getPermissions().clear();
 
-        String group = SQL.getRank(uuid);
+        String group = cache.getRank(uuid);
 
         //TODO add perms and setrank command
 
