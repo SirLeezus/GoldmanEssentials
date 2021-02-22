@@ -29,7 +29,7 @@ public class SetColorCMD implements CommandExecutor {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (plugin.getData().getChatColors().contains(args[1]) && target != null) {
                             String color = args[1];
-                            cache.setColor(target.getUniqueId(), color, true);
+                            cache.setColor(target.getUniqueId(), color);
                             new NameTagBuilder(target).setColor(ChatColor.valueOf(color)).setPrefix(cache.getPrefix(target.getUniqueId())).setSuffix(cache.getSuffix(target.getUniqueId())).build();
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETCOLOR_SUCCESSFUL.getString(new String[] { target.getName(), ChatColor.valueOf(color) + color }));
                         }

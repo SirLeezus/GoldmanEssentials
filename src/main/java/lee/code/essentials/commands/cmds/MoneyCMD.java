@@ -55,19 +55,19 @@ public class MoneyCMD implements CommandExecutor {
                     switch (subCommand) {
 
                         case "set":
-                            cache.setBalance(target.getUniqueId(), amount, true);
+                            cache.setBalance(target.getUniqueId(), amount);
                             player.sendMessage("Money sent.");
                             target.sendMessage("Your balance has been set to " + amount + " by " + player.getName() + ".");
                             break;
 
                         case "remove":
-                            cache.withdraw(target.getUniqueId(), amount, true);
+                            cache.withdraw(target.getUniqueId(), amount);
                             player.sendMessage("Money taken.");
                             target.sendMessage("The amount " + amount + " has been taken from your account by " + player.getName() + ".");
                             break;
 
                         case "add":
-                            cache.deposit(target.getUniqueId(), amount, true);
+                            cache.deposit(target.getUniqueId(), amount);
                             player.sendMessage("Money added.");
                             target.sendMessage("You received " + amount + " from " + player.getName() + ".");
                             break;

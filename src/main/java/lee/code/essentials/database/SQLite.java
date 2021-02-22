@@ -46,7 +46,7 @@ public class SQLite {
 
     public void update(String sql) {
         try {
-            statement.execute(sql);
+            statement.executeUpdate(sql);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

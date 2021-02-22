@@ -20,7 +20,7 @@ public class SetSpawnCMD implements CommandExecutor {
             Player player = (Player) sender;
 
             if (player.hasPermission("essentials.command.setspawn")) {
-                cache.setSpawn(player.getLocation(), true);
+                cache.setSpawn(player.getLocation());
                 player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
             }
         }

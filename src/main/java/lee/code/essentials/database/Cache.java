@@ -23,7 +23,7 @@ public class Cache {
         }
     }
 
-    public void setSpawn(Location location, boolean sql) {
+    public void setSpawn(Location location) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -32,11 +32,11 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.set("spawn", sLocation);
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setSpawn(sLocation));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setSpawn(sLocation));
         }
     }
 
-    public void deposit(UUID uuid, int amount, boolean sql) {
+    public void deposit(UUID uuid, int amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -48,11 +48,11 @@ public class Cache {
             String sNewBalance = String.valueOf(balance + amount);
             jedis.hset("balance", sUUID, sNewBalance);
 
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.deposit(uuid, balance + amount));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.deposit(uuid, balance + amount));
         }
     }
 
-    public void withdraw(UUID uuid, int amount, boolean sql) {
+    public void withdraw(UUID uuid, int amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -66,11 +66,11 @@ public class Cache {
             String sNewBalance = String.valueOf(newBalance);
             jedis.hset("balance", sUUID, sNewBalance);
 
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.withdraw(uuid, balance - amount));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.withdraw(uuid, balance - amount));
         }
     }
 
-    public void setBalance(UUID uuid, int amount, boolean sql) {
+    public void setBalance(UUID uuid, int amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -81,7 +81,7 @@ public class Cache {
             String sNewBalance = String.valueOf(amount);
             jedis.hset("balance", sUUID, sNewBalance);
 
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBalance(uuid, amount));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBalance(uuid, amount));
         }
     }
 
@@ -96,7 +96,7 @@ public class Cache {
         }
     }
 
-    public void setPrefix(UUID uuid, String prefix, boolean sql) {
+    public void setPrefix(UUID uuid, String prefix) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -105,7 +105,7 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("prefix", sUUID, prefix);
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPrefix(uuid, prefix));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPrefix(uuid, prefix));
         }
     }
 
@@ -120,7 +120,7 @@ public class Cache {
         }
     }
 
-    public void setSuffix(UUID uuid, String suffix, boolean sql) {
+    public void setSuffix(UUID uuid, String suffix) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -129,7 +129,7 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("suffix", sUUID, suffix);
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setSuffix(uuid, suffix));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setSuffix(uuid, suffix));
         }
     }
 
@@ -144,7 +144,7 @@ public class Cache {
         }
     }
 
-    public void setColor(UUID uuid, String color, boolean sql) {
+    public void setColor(UUID uuid, String color) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -153,7 +153,7 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("color", sUUID, color);
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setColor(uuid, color));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setColor(uuid, color));
         }
     }
 
@@ -168,7 +168,7 @@ public class Cache {
         }
     }
 
-    public void setRank(UUID uuid, String rank, boolean sql) {
+    public void setRank(UUID uuid, String rank) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -177,7 +177,7 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("rank", sUUID, rank);
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setRank(uuid, rank));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setRank(uuid, rank));
         }
     }
 
@@ -192,7 +192,7 @@ public class Cache {
         }
     }
 
-    public void addPerm(UUID uuid, String perm, boolean sql) {
+    public void addPerm(UUID uuid, String perm) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -208,12 +208,12 @@ public class Cache {
                 playerPerms.add(perm);
                 String newPerms = StringUtils.join(playerPerms, ",");
                 jedis.hset(perms, sUUID, newPerms);
-                if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.addPerm(uuid, newPerms));
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.addPerm(uuid, newPerms));
             }
         }
     }
 
-    public void removePerm(UUID uuid, String perm, boolean sql) {
+    public void removePerm(UUID uuid, String perm) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -230,7 +230,7 @@ public class Cache {
 
             jedis.hset("perms", sUUID, newPerms);
 
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.removePerm(uuid, newPerms));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.removePerm(uuid, newPerms));
         }
     }
 
@@ -251,6 +251,7 @@ public class Cache {
     public boolean hasPlayerData(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {

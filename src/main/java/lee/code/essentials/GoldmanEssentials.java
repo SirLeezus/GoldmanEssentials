@@ -31,8 +31,8 @@ public class GoldmanEssentials extends JavaPlugin {
         this.data = new Data();
         this.sqLite = new SQLite();
         this.tabListManager = new TabListManager();
-        this.cacheAPI = new CacheAPI();
         this.cache = new Cache();
+        this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
 
         sqLite.connect();

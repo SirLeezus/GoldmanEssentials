@@ -29,7 +29,7 @@ public class SetPrefixCMD implements CommandExecutor {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
                             String prefix = plugin.getPU().buildStringFromArgs(args, 1) + " ";
-                            cache.setPrefix(target.getUniqueId(), prefix, true);
+                            cache.setPrefix(target.getUniqueId(), prefix);
                             new NameTagBuilder(target).setColor(ChatColor.valueOf(cache.getColor(target.getUniqueId()))).setPrefix(prefix).setSuffix(cache.getSuffix(target.getUniqueId())).build();
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETPREFIX_SUCCESSFUL.getString(new String[] { target.getName(), plugin.getPU().format(prefix) }));
                         }

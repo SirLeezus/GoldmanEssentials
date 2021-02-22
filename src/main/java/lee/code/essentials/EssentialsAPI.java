@@ -9,13 +9,13 @@ public class EssentialsAPI {
     public void deposit(UUID uuid, int amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
-        cache.deposit(uuid, amount, true);
+        cache.deposit(uuid, amount);
     }
 
     public void withdraw(UUID uuid, int amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
-        cache.withdraw(uuid, amount, true);
+        cache.withdraw(uuid, amount);
     }
 
     public int getBalance(UUID uuid) {
