@@ -65,7 +65,7 @@ public class SQLite {
         //player data table
         update("CREATE TABLE IF NOT EXISTS player_data (" +
                 "`player` varchar PRIMARY KEY," +
-                "`balance` int NOT NULL," +
+                "`balance` varchar NOT NULL," +
                 "`ranked` varchar NOT NULL," +
                 "`perms` varchar NOT NULL," +
                 "`prefix` varchar NOT NULL," +
@@ -81,38 +81,28 @@ public class SQLite {
 
     }
 
-    //server data table
-
+    //SERVER TABLE
 
     public void setSpawn(String location) {
-        try {
-            ResultSet rs = getResult("SELECT * FROM server WHERE server = 'server';");
-            if (!rs.next()) update("UPDATE server SET spawn ='" + location + "' WHERE server = server';");
-            else update("INSERT INTO server (server, spawn) VALUES( 'server','" + location + "');");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        update("INSERT OR REPLACE INTO server (server, spawn) VALUES( 'server','" + location + "');");
     }
 
-    //player data table
+    //PLAYER DATA TABLE
 
-    public void setPlayerData(UUID player, int balance, String ranked, String perms, String prefix, String suffix, String color) {
-        update("INSERT INTO player_data (player, balance, ranked, perms, prefix, suffix, color) VALUES( '" + player + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "');");
+    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color) {
+        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "');");
     }
 
-    //eco
-
-    public void deposit(UUID player, int value) {
-        update("UPDATE player_data SET balance ='" + value + "' WHERE player ='" + player + "';");
+    public void deposit(String uuid, String value) {
+        update("UPDATE player_data SET balance ='" + value + "' WHERE player ='" + uuid + "';");
     }
 
-    public void withdraw(UUID player, int value) {
-        if (value < 0) value = 0;
-        update("UPDATE player_data SET balance ='" + value + "' WHERE player ='" + player + "';");
+    public void withdraw(String uuid, String value) {
+        update("UPDATE player_data SET balance ='" + value + "' WHERE player ='" + uuid + "';");
     }
 
-    public void setBalance(UUID player, int value) {
-        update("UPDATE player_data SET balance ='" + value + "' WHERE player ='" + player + "';");
+    public void setBalance(String uuid, String value) {
+        update("UPDATE player_data SET balance ='" + value + "' WHERE player ='" + uuid + "';");
     }
 
     public List<Integer> getBalanceTopValues() {
@@ -159,28 +149,28 @@ public class SQLite {
         return 0;
     }
 
-    public void setPrefix(UUID player, String prefix) {
-        update("UPDATE player_data SET prefix ='" + prefix + "' WHERE player ='" + player + "';");
+    public void setPrefix(String uuid, String prefix) {
+        update("UPDATE player_data SET prefix ='" + prefix + "' WHERE player ='" + uuid + "';");
     }
 
-    public void setSuffix(UUID player, String suffix) {
-        update("UPDATE player_data SET suffix ='" + suffix + "' WHERE player ='" + player + "';");
+    public void setSuffix(String uuid, String suffix) {
+        update("UPDATE player_data SET suffix ='" + suffix + "' WHERE player ='" + uuid + "';");
     }
 
-    public void setColor(UUID player, String color) {
-        update("UPDATE player_data SET color ='" + color + "' WHERE player ='" + player + "';");
+    public void setColor(String uuid, String color) {
+        update("UPDATE player_data SET color ='" + color + "' WHERE player ='" + uuid + "';");
     }
 
-    public void setRank(UUID player, String rank) {
-        update("UPDATE player_data SET ranked ='" + rank + "' WHERE player ='" + player + "';");
+    public void setRank(String uuid, String rank) {
+        update("UPDATE player_data SET ranked ='" + rank + "' WHERE player ='" + uuid + "';");
     }
 
-    public void addPerm(UUID player, String perms) {
-        update("UPDATE player_data SET perms ='" + perms + "' WHERE player ='" + player + "';");
+    public void addPerm(String uuid, String perms) {
+        update("UPDATE player_data SET perms ='" + perms + "' WHERE player ='" + uuid + "';");
     }
 
-    public void removePerm(UUID player, String perms) {
-        update("UPDATE player_data SET perms ='" + perms + "' WHERE player ='" + player + "';");
+    public void removePerm(String uuid, String perms) {
+        update("UPDATE player_data SET perms ='" + perms + "' WHERE player ='" + uuid + "';");
     }
 
     public void loadPlayerData() {

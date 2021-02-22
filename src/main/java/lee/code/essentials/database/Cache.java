@@ -48,7 +48,7 @@ public class Cache {
             String sNewBalance = String.valueOf(balance + amount);
             jedis.hset("balance", sUUID, sNewBalance);
 
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.deposit(uuid, balance + amount));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.deposit(sUUID, sNewBalance));
         }
     }
 
@@ -66,7 +66,7 @@ public class Cache {
             String sNewBalance = String.valueOf(newBalance);
             jedis.hset("balance", sUUID, sNewBalance);
 
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.withdraw(uuid, balance - amount));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.withdraw(sUUID, sNewBalance));
         }
     }
 
@@ -81,7 +81,7 @@ public class Cache {
             String sNewBalance = String.valueOf(amount);
             jedis.hset("balance", sUUID, sNewBalance);
 
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBalance(uuid, amount));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBalance(sUUID, sNewBalance));
         }
     }
 
@@ -105,7 +105,7 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("prefix", sUUID, prefix);
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPrefix(uuid, prefix));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPrefix(sUUID, prefix));
         }
     }
 
@@ -129,7 +129,7 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("suffix", sUUID, suffix);
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setSuffix(uuid, suffix));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setSuffix(sUUID, suffix));
         }
     }
 
@@ -153,7 +153,7 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("color", sUUID, color);
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setColor(uuid, color));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setColor(sUUID, color));
         }
     }
 
@@ -177,7 +177,7 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("rank", sUUID, rank);
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setRank(uuid, rank));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setRank(sUUID, rank));
         }
     }
 
@@ -208,7 +208,7 @@ public class Cache {
                 playerPerms.add(perm);
                 String newPerms = StringUtils.join(playerPerms, ",");
                 jedis.hset(perms, sUUID, newPerms);
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.addPerm(uuid, newPerms));
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.addPerm(sUUID, newPerms));
             }
         }
     }
@@ -230,7 +230,7 @@ public class Cache {
 
             jedis.hset("perms", sUUID, newPerms);
 
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.removePerm(uuid, newPerms));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.removePerm(sUUID, newPerms));
         }
     }
 
@@ -276,7 +276,7 @@ public class Cache {
             pipe.hset("suffix", sUUID, suffix);
             pipe.hset("color", sUUID, color);
             pipe.sync();
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(uuid, balance, ranked, prefix, suffix, suffix, color));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, sBalance, ranked, prefix, suffix, suffix, color));
         }
     }
 
