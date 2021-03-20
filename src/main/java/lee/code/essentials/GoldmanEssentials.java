@@ -1,5 +1,7 @@
 package lee.code.essentials;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import lee.code.cache.CacheAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
@@ -23,6 +25,7 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private Cache cache;
     @Getter private CacheAPI cacheAPI;
     @Getter private EssentialsAPI essentialsAPI;
+    @Getter private ProtocolManager protocolManager;
 
     @Override
     public void onEnable() {
@@ -34,6 +37,7 @@ public class GoldmanEssentials extends JavaPlugin {
         this.cache = new Cache();
         this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
+        this.protocolManager = ProtocolLibrary.getProtocolManager();
 
         sqLite.connect();
         sqLite.loadTables();
@@ -45,10 +49,14 @@ public class GoldmanEssentials extends JavaPlugin {
 
         registerCommands();
         registerListeners();
+
+
+        pU.registerTamedEntityPrefixFix();
     }
 
     @Override
     public void onDisable() {
+        pU.kickOnlinePlayers();
         sqLite.disconnect();
     }
 
@@ -74,6 +82,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("sound").setExecutor(new SoundCMD());
         getCommand("glow").setExecutor(new GlowCMD());
         getCommand("itemrename").setExecutor(new ItemRenameCMD());
+        getCommand("zap").setExecutor(new ZapCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -93,6 +102,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("glow").setTabCompleter(new GlowTab());
         getCommand("teleportdeny").setTabCompleter(new TeleportDenyTab());
         getCommand("itemrename").setTabCompleter(new ItemRenameTab());
+        getCommand("zap").setTabCompleter(new ZapTab());
     }
 
     private void registerListeners() {

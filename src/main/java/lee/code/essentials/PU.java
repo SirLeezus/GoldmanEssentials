@@ -1,18 +1,31 @@
 package lee.code.essentials;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import lee.code.essentials.lists.Lang;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -118,5 +131,35 @@ public class PU {
             }
 
         },1200L);
+    }
+
+    public void kickOnlinePlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.kickPlayer(Lang.SERVER_RESTART.getString(null));
+        }
+    }
+
+    public void registerTamedEntityPrefixFix() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        plugin.getProtocolManager().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_METADATA) {
+
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                if (event.getPacketType() == PacketType.Play.Server.ENTITY_METADATA) {
+                    PacketContainer packet = event.getPacket();
+
+                    List<WrappedWatchableObject> watchableCollection = packet.getWatchableCollectionModifier().read(0);
+
+                    for (WrappedWatchableObject object : watchableCollection) {
+                        if (object.getIndex() == 17) {
+                            String value = object.getValue().toString();
+                            if (value.startsWith("Optional")) {
+                                object.setValue(Optional.of(UUID.randomUUID()));
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 }

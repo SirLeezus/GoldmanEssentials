@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.builders.NameTagBuilder;
+import lee.code.essentials.builders.NameBuilder;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
@@ -30,13 +30,10 @@ public class SetPrefixCMD implements CommandExecutor {
                         if (target != null) {
                             String prefix = plugin.getPU().buildStringFromArgs(args, 1) + " ";
                             cache.setPrefix(target.getUniqueId(), prefix);
-                            new NameTagBuilder(target).setColor(ChatColor.valueOf(cache.getColor(target.getUniqueId()))).setPrefix(prefix).setSuffix(cache.getSuffix(target.getUniqueId())).build();
+                            new NameBuilder(target).setColor(ChatColor.valueOf(cache.getColor(target.getUniqueId()))).setPrefix(prefix).setSuffix(cache.getSuffix(target.getUniqueId())).build();
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETPREFIX_SUCCESSFUL.getString(new String[] { target.getName(), plugin.getPU().format(prefix) }));
                         }
-                    } else {
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{ args[0] }));
-                        return true;
-                    }
+                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{ args[0] }));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_SETPREFIX_ARG.getString(null));
             }
         }

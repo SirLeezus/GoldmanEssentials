@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.builders.NameTagBuilder;
+import lee.code.essentials.builders.NameBuilder;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
@@ -30,7 +30,7 @@ public class SetColorCMD implements CommandExecutor {
                         if (plugin.getData().getChatColors().contains(args[1]) && target != null) {
                             String color = args[1];
                             cache.setColor(target.getUniqueId(), color);
-                            new NameTagBuilder(target).setColor(ChatColor.valueOf(color)).setPrefix(cache.getPrefix(target.getUniqueId())).setSuffix(cache.getSuffix(target.getUniqueId())).build();
+                            new NameBuilder(target).setColor(ChatColor.valueOf(color)).setPrefix(cache.getPrefix(target.getUniqueId())).setSuffix(cache.getSuffix(target.getUniqueId())).build();
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETCOLOR_SUCCESSFUL.getString(new String[] { target.getName(), ChatColor.valueOf(color) + color }));
                         }
                     } else {

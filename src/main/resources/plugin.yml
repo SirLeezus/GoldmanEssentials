@@ -69,3 +69,6 @@ commands:
   itemrename:
     description: Rename the item you're holding.
     permission: essentails.command.rename
+  zap:
+    description: Strike a location or player with lightning.
+    permission: essentails.command.zap

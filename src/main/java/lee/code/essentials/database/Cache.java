@@ -116,7 +116,9 @@ public class Cache {
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            return jedis.hget("prefix", sUUID);
+            String prefix = jedis.hget("prefix", sUUID);
+            if (prefix.equals("n")) return "";
+            else return prefix;
         }
     }
 
@@ -140,7 +142,9 @@ public class Cache {
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            return jedis.hget("suffix", sUUID);
+            String suffix = jedis.hget("suffix", sUUID);
+            if (suffix.equals("n")) return "";
+            else return suffix;
         }
     }
 

@@ -10,6 +10,7 @@ public enum Lang {
     ON("&2&lON"),
     OFF("&c&lOFF"),
     TELEPORT("&eWhooosh!"),
+    SERVER_RESTART("&2The server is restarting! Journey will be back online soon!"),
     COMMAND_SETSPAWN_SUCCESSFUL("&aYou have successfully set the new spawn!"),
     COMMAND_GAMEMODE_SUCCESSFUL("&aYou successfully changed your gamemode to &6{0}&a!"),
     COMMAND_FLY_TOGGLE_SUCCESSFUL("&aYou successfully toggled your fly {0}&a!"),
