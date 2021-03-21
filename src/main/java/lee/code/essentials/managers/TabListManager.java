@@ -13,7 +13,6 @@ public class TabListManager {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-
             if (!Bukkit.getOnlinePlayers().isEmpty()) {
                 PacketContainer packet = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_LIST_HEADER_FOOTER);
                 packet.getChatComponents().write(0, WrappedChatComponent.fromJson(plugin.getPU().legacyToJson(plugin.getPU().format(

@@ -50,7 +50,14 @@
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
+        <!-- Spigot API -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Lee\Documents\APIs\spigot-1.16.5.jar</systemPath>
+        </dependency>
         <!-- Lombok API -->
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -26,7 +26,7 @@ public class WorldCMD implements CommandExecutor {
 
                     String worldString = args[0].toLowerCase();
 
-                    if (plugin.getData().getWorlds().contains(worldString)) {
+                    if (plugin.getData().getWorldNames().contains(worldString)) {
                         World world = Bukkit.getWorld(worldString);
                         Location loc = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
                         player.teleportAsync(loc);

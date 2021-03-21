@@ -1,11 +1,8 @@
 package lee.code.essentials;
 
-import com.comphenix.protocol.events.PacketContainer;
 import lee.code.essentials.database.SQLite;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import lombok.Getter;
+import org.bukkit.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,18 +11,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Data {
 
-    private final List<String> worldNames = new ArrayList<>();
-    private final List<String> chatColors = new ArrayList<>();
-    private final List<String> gameSounds = new ArrayList<>();
-    private final ConcurrentHashMap<UUID, PacketContainer> playerNameTagPacketContainers = new ConcurrentHashMap<>();
+    @Getter private final List<String> worldNames = new ArrayList<>();
+    @Getter private final List<String> chatColors = new ArrayList<>();
+    @Getter private final List<String> gameSounds = new ArrayList<>();
+    @Getter private final List<Location> chairLocations = new ArrayList<>();
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
 
-    public List<PacketContainer> getPlayerNameTagPacketContainers () {
-        return new ArrayList<>(playerNameTagPacketContainers.values());
-    }
-    public void setPlayerNameTagPacketContainer(UUID player, PacketContainer packetContainer) {
-        playerNameTagPacketContainers.put(player, packetContainer);
-    }
     public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) {
         return playersRequestingTeleport.get(player) == target;
     }
@@ -35,15 +26,8 @@ public class Data {
     public void removePlayerRequestingTeleport(UUID player) {
         playersRequestingTeleport.remove(player);
     }
-    public List<String> getWorlds() {
-        return worldNames;
-    }
-    public List<String> getChatColors() {
-        return chatColors;
-    }
-    public List<String> getGameSounds() {
-        return gameSounds;
-    }
+    public void addChairLocation(Location location) { chairLocations.add(location);}
+    public void removeChairLocation(Location location) { chairLocations.remove(location);}
 
     public void cacheDatabase() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();

@@ -21,7 +21,7 @@ public class WorldTab implements TabCompleter {
 
         if (sender instanceof Player) {
             if (args.length == 1) {
-                return StringUtil.copyPartialMatches(args[0], plugin.getData().getWorlds(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[0], plugin.getData().getWorldNames(), new ArrayList<>());
             } else return blank;
         } else return blank;
     }
