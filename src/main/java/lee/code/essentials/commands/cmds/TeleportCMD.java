@@ -48,6 +48,7 @@ public class TeleportCMD implements CommandExecutor {
                                 plugin.getData().setPlayerRequestingTeleport(uuid, target.getUniqueId());
 
                                 target.spigot().sendMessage(targetMessage, confirmTeleport, denyTeleport);
+
                                 target.playSound(target.getLocation(), Sound.UI_TOAST_IN, 1,1);
                                 plugin.getPU().teleportTimer(player, target);
                                 player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));

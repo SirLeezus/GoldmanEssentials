@@ -28,21 +28,25 @@ public class GameModeCMD implements CommandExecutor {
                         case "0":
                             player.setGameMode(GameMode.SURVIVAL);
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Survival" }));
+                            player.updateInventory();
                             break;
                         case "creative":
                         case "1":
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Creative" }));
                             player.setGameMode(GameMode.CREATIVE);
+                            player.updateInventory();
                             break;
                         case "adventure":
                         case "2":
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Adventure" }));
                             player.setGameMode(GameMode.ADVENTURE);
+                            player.updateInventory();
                             break;
                         case "spectator":
                         case "3":
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Spectator" }));
                             player.setGameMode(GameMode.SPECTATOR);
+                            player.updateInventory();
                             break;
                         default:
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ gamemode }));

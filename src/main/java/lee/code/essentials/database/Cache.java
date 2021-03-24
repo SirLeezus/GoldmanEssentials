@@ -180,7 +180,7 @@ public class Cache {
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            jedis.hset("rank", sUUID, rank);
+            jedis.hset("ranked", sUUID, rank);
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setRank(sUUID, rank));
         }
     }
@@ -192,7 +192,34 @@ public class Cache {
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            return jedis.hget("rank", sUUID);
+            return jedis.hget("ranked", sUUID);
+        }
+    }
+
+    public int getLevel(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return Integer.parseInt(jedis.hget("level", sUUID));
+        }
+    }
+
+    public void addLevel(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            int level = Integer.parseInt(jedis.hget("level", sUUID)) + 1;
+            String sLevel = String.valueOf(level);
+            jedis.hset("level", sUUID, sLevel);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setLevel(sUUID, sLevel));
         }
     }
 
@@ -263,7 +290,7 @@ public class Cache {
         }
     }
 
-    public void setPlayerData(UUID uuid, int balance, String ranked, String perms, String prefix, String suffix, String color, boolean sql) {
+    public void setPlayerData(UUID uuid, int balance, String ranked, String perms, String prefix, String suffix, String color, String level, boolean sql) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -279,8 +306,9 @@ public class Cache {
             pipe.hset("prefix", sUUID, prefix);
             pipe.hset("suffix", sUUID, suffix);
             pipe.hset("color", sUUID, color);
+            pipe.hset("level", sUUID, level);
             pipe.sync();
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, sBalance, ranked, prefix, suffix, suffix, color));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, sBalance, ranked, prefix, suffix, suffix, color, level));
         }
     }
 

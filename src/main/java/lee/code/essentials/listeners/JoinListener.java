@@ -3,6 +3,7 @@ package lee.code.essentials.listeners;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.builders.NameBuilder;
 import lee.code.essentials.database.Cache;
+import lee.code.essentials.lists.RankList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +22,7 @@ public class JoinListener implements Listener {
         Cache cache = plugin.getCache();
 
         //create SQL player profile
-        if (!cache.hasPlayerData(uuid)) cache.setPlayerData(uuid, 0, "DEFAULT", "n", "n", "n", "YELLOW", true);
+        if (!cache.hasPlayerData(uuid)) cache.setPlayerData(uuid, 0, "NOMAD", "n", RankList.NOMAD.getPrefix() + " ", "n", "YELLOW", "0", true);
 
         //register perms
         if (!player.isOp()) plugin.getPermissionManager().register(player);
@@ -29,7 +30,5 @@ public class JoinListener implements Listener {
         //set player prefix, suffix, color
         ChatColor color = ChatColor.valueOf(cache.getColor(uuid)); String prefix = cache.getPrefix(uuid); String suffix = cache.getSuffix(uuid);
         new NameBuilder(player).setColor(color).setPrefix(prefix).setSuffix(suffix).build();
-
-        //Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> new NameTagBuilder(player).setColor(color).setPrefix(prefix).setSuffix(suffix).build());
     }
 }

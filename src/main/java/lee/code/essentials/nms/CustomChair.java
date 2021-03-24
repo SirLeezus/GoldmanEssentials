@@ -12,8 +12,15 @@ public class CustomChair extends EntityArmorStand {
         this.setNoGravity(true);
         this.setInvulnerable(true);
         this.setSilent(true);
+        this.setMarker(true);
         this.setInvisible(true);
+        this.setSmall(true);
         this.setCustomName(new ChatComponentText("chair"));
+    }
+
+    @Override
+    public NBTTagCompound save(NBTTagCompound nbttagcompound){
+        return nbttagcompound;
     }
 
     @Override
@@ -31,7 +38,6 @@ public class CustomChair extends EntityArmorStand {
                 this.aK = this.yaw;
             }
         }
-
         return 0.0F;
     }
 }

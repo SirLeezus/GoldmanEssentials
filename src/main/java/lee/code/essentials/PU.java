@@ -6,8 +6,8 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import com.google.common.base.Strings;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.SupportedSittingBlocks;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -22,7 +22,6 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class PU {
 
@@ -143,7 +142,7 @@ public class PU {
         }
     }
 
-    public void registerTamedEntityPrefixFix() {
+    public void registerTamedEntityFix() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         plugin.getProtocolManager().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_METADATA) {
 
@@ -165,5 +164,11 @@ public class PU {
                 }
             }
         });
+    }
+
+    public String getProgressBar(int current, int max, int totalBars, String symbol, String completedColor, String notCompletedColor) {
+        float percent = (float) current / max;
+        int progressBars = (int) (totalBars * percent);
+        return Strings.repeat("" + completedColor + symbol, progressBars) + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
     }
 }

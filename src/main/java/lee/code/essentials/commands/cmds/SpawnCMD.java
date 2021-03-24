@@ -2,7 +2,6 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
-import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -15,7 +14,6 @@ public class SpawnCMD implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        SQLite SQL = plugin.getSqLite();
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player) {
