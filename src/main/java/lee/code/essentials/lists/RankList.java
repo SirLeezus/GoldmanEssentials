@@ -7,14 +7,14 @@ import lombok.Getter;
 public enum RankList {
 
     //NORMAL
-    NOMAD("&7[&bNomad&7]", 5, "ADVENTURER"),
-    ADVENTURER("&e[&aAdventurer&e]", 10, "CONQUER"),
-    CONQUER("&e[&aConquer&e]", 20, "HERO"),
-    HERO("&e[&aHero&e]", 30, "LEGEND"),
-    LEGEND("&e[&aLegend&e]", 40, "MYTH"),
-    MYTH("&e[&aMyth&e]", 50, "IMMORTAL"),
-    IMMORTAL("&e[&aImmortal&e]", 60, "GOD"),
-    GOD("&e[&aGod&e]", 75, "LAST"),
+    NOMAD("&7[#00C1FENomad&7]", 5, "ADVENTURER"),
+    ADVENTURER("&e[#2DE364Adventurer&e]", 10, "CONQUER"),
+    CONQUER("&e[#FFC300Conquer&e]", 20, "HERO"),
+    HERO("&e[#00A2FFHero&e]", 30, "LEGEND"),
+    LEGEND("&e[#FF7800Legend&e]", 40, "MYTH"),
+    MYTH("&e[#FF3909Myth&e]", 50, "IMMORTAL"),
+    IMMORTAL("&e[#0074F6Immortal&e]", 60, "GOD"),
+    GOD("&e[#00FFA2God&e]", 75, "LAST"),
 
     //STAFF
     MOD("&d[&5&lMod&d]", 0, "STAFF"),

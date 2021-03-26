@@ -1,17 +1,21 @@
 package lee.code.essentials.lists;
 
+import lee.code.essentials.GoldmanEssentials;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 @AllArgsConstructor
 public enum Lang {
     PREFIX("&2&lEssentials &e➔ &r"),
     ANNOUNCEMENT("&e&lAnnouncement &6➔ &r"),
+    WARNING("&4&lWarning &6➔ &r"),
     ON("&2&lON"),
     OFF("&c&lOFF"),
     TELEPORT("&eWhooosh!"),
-    SERVER_RESTART("&2The server is restarting! Journey will be back online soon!"),
+    ERROR_NO_PERMISSION("&cYou sadly do not have permission for this."),
+    SERVER_RESTART("&aThe server is restarting! Journey will be back online soon!"),
     COMMAND_SETSPAWN_SUCCESSFUL("&aYou have successfully set the new spawn!"),
     COMMAND_GAMEMODE_SUCCESSFUL("&aYou successfully changed your gamemode to &6{0}&a!"),
     COMMAND_FLY_TOGGLE_SUCCESSFUL("&aYou successfully toggled your fly {0}&a!"),
@@ -29,10 +33,18 @@ public enum Lang {
     COMMAND_BALANCETOP_SPLITTER("&a----------------------------------"),
     COMMAND_RANKUP_TITLE("&a-------------- &e[ &2&lRankup &e] &a--------------"),
     COMMAND_RANKUP_SPLITTER("&a---------------------------------------"),
+    COMMAND_RANKLIST_TITLE("&a------------ &e[ &2&lRank List &e] &a------------"),
+    COMMAND_RANKLIST_SPLITTER("&a-------------------------------------"),
+    COMMAND_RANKLIST_SERVER_RANKS("&6&lServer Ranks&7:"),
+    COMMAND_RANKLIST_STAFF_RANKS("&b&lSraff Ranks&7:"),
     COMMAND_RANKUP_HOVER("&e&lTotal Advancements&7: &a{0}&7/&a{1}"),
-    COMMAND_RANKUP_CONFIRM_MESSAGE("&6&l[&e&l!&6&l] &aClick confirm to rank up&7: "),
+    COMMAND_RANKUP_CONFIRM_RANKUP_MESSAGE("&6&l[&e&l!&6&l] &aClick confirm to rank up&7: "),
+    COMMAND_RANKUP_CONFIRM_PRESTIGE("&6&l[&e&l!&6&l] &aClick confirm to prestige&7: "),
+    COMMAND_RANKUP_CONFIRM_PRESTIGE_WARNING("&cYou will lose all your advancement progress if you prestige."),
+    COMMAND_RANKUP_PRESTIGE_BROADCAST("&2Player &6{0} &2is now prestige &a&l{1}&2!"),
     COMMAND_RANKUP_CONFIRM_BUTTON("&6[&e&lCONFIRM&6]"),
-    COMMAND_RANKUP_CONFIRM_HOVER("&aClick to rank up to {0}&a!"),
+    COMMAND_RANKUP_CONFIRM_RANKUP_HOVER("&aClick to rank up to {0}&a!"),
+    COMMAND_RANKUP_CONFIRM_PRESTIGE_HOVER("&aClick to prestige to level {0}&a!"),
     COMMAND_RANKUP_BROADCAST("&aPlayer &6{0} &ahas ranked up to {1}&a!"),
     ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED("&cYou already have a pending teleport request sent to &6{0}&c."),
     ERROR_COMMAND_TELEPORT_NOT_REQUESTING("&cThe player &6{0} &cis not currently requesting teleportation."),
@@ -57,10 +69,20 @@ public enum Lang {
     @Getter private final String string;
 
     public String getString(String[] variables) {
-        String value = ChatColor.translateAlternateColorCodes('&', string);
-        if (variables == null) return value;
-        else if (variables.length == 0) return value;
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        if (variables == null) return plugin.getPU().format(string);
+        else if (variables.length == 0) return plugin.getPU().format(string);
+        String value = string;
         for (int i = 0; i < variables.length; i++) value = value.replace("{" + i + "}", variables[i]);
-        return ChatColor.translateAlternateColorCodes('&', value);
+        return plugin.getPU().format(value);
+    }
+
+    public Component getComponent(String[] variables) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        if (variables == null) return GsonComponentSerializer.gson().deserialize(plugin.getPU().legacyToJson(plugin.getPU().format(string)));
+        else if (variables.length == 0) return GsonComponentSerializer.gson().deserialize(plugin.getPU().legacyToJson(plugin.getPU().format(string)));
+        String value = string;
+        for (int i = 0; i < variables.length; i++) value = value.replace("{" + i + "}", variables[i]);
+        return GsonComponentSerializer.gson().deserialize(plugin.getPU().legacyToJson(plugin.getPU().format(value)));
     }
 }

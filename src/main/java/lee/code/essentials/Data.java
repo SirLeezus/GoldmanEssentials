@@ -54,8 +54,8 @@ public class Data {
             gameSounds.add(sound.name());
         }
 
+        //advancements
         Iterator<Advancement> it = plugin.getServer().advancementIterator();
-
         while (it.hasNext()) {
             String key = it.next().getKey().getKey();
             if (!key.contains("/root")) {

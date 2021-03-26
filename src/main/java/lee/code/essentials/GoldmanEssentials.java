@@ -23,7 +23,7 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private Cache cache;
     @Getter private CacheAPI cacheAPI;
     @Getter private EssentialsAPI essentialsAPI;
-    @Getter private ProtocolManager protocolManager;
+    @Getter private ProtocolManager protocolManagerAPI;
 
     @Override
     public void onEnable() {
@@ -35,7 +35,7 @@ public class GoldmanEssentials extends JavaPlugin {
         this.cache = new Cache();
         this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
-        this.protocolManager = ProtocolLibrary.getProtocolManager();
+        this.protocolManagerAPI = ProtocolLibrary.getProtocolManager();
 
         sqLite.connect();
         sqLite.loadTables();
@@ -81,6 +81,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("glow").setExecutor(new GlowCMD());
         getCommand("itemrename").setExecutor(new ItemRenameCMD());
         getCommand("zap").setExecutor(new ZapCMD());
+        getCommand("grantadvancement").setExecutor(new GrantAdvancementCMD());
+        getCommand("revokeadvancement").setExecutor(new RevokeAdvancementCMD());
+        getCommand("ranklist").setExecutor(new RankListCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -92,6 +95,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("balance").setTabCompleter(new BalanceTab());
         getCommand("balanceTop").setTabCompleter(new BalanceTopTab());
         getCommand("money").setTabCompleter(new MoneyTab());
+        getCommand("rankup").setTabCompleter(new RankupTab());
         getCommand("setprefix").setTabCompleter(new SetPrefixTab());
         getCommand("setcolor").setTabCompleter(new SetColorTab());
         getCommand("teleport").setTabCompleter(new TeleportTab());
@@ -101,6 +105,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("teleportdeny").setTabCompleter(new TeleportDenyTab());
         getCommand("itemrename").setTabCompleter(new ItemRenameTab());
         getCommand("zap").setTabCompleter(new ZapTab());
+        getCommand("grantadvancement").setTabCompleter(new GrantAdvancementTab());
+        getCommand("revokeadvancement").setTabCompleter(new RevokeAdvancementTab());
+        getCommand("ranklist").setTabCompleter(new RankListTab());
     }
 
     private void registerListeners() {
@@ -109,6 +116,10 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
         getServer().getPluginManager().registerEvents(new ChairListener(), this);
         getServer().getPluginManager().registerEvents(new AchievementListener(), this);
+        getServer().getPluginManager().registerEvents(new EnderPearlListener(), this);
+        getServer().getPluginManager().registerEvents(new SignListener(), this);
+        getServer().getPluginManager().registerEvents(new AnvilListener(), this);
+        getServer().getPluginManager().registerEvents(new BookListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

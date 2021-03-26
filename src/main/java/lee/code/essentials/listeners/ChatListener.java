@@ -1,24 +1,23 @@
 package lee.code.essentials.listeners;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import lee.code.essentials.GoldmanEssentials;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
 
     @EventHandler (priority= EventPriority.MONITOR)
-    public void onPlayerChat(AsyncPlayerChatEvent e) {
+    public void onPlayerChat(AsyncChatEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = e.getPlayer();
 
         if (!e.isCancelled()) {
-
             e.setCancelled(true);
-            Bukkit.broadcastMessage(plugin.getPU().format(player.getDisplayName() + "&8: &f" + e.getMessage()));
+            plugin.getServer().sendMessage(player.displayName().append(Component.text(plugin.getPU().format("&8: &f"))).append(e.message()));
         }
     }
 }

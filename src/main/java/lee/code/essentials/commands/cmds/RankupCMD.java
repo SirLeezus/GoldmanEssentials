@@ -1,20 +1,21 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.builders.NameBuilder;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.RankList;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.UUID;
 public class RankupCMD implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
@@ -36,40 +37,63 @@ public class RankupCMD implements CommandExecutor {
             int level = cache.getLevel(uuid);
             int rankupLevel = RankList.valueOf(rank).getRankupLevel();
             String nextRank = RankList.valueOf(rank).getNextRank();
-            String nextRankPrefix = RankList.valueOf(nextRank).getPrefix();
 
             if (args.length < 1) {
-                if (level < rankupLevel) {
-                    int percent = level * 100 / rankupLevel;
-                    double b = Math.round(percent * 10.0) / 10.0;
+                if (!nextRank.equals("LAST")) {
+                    String nextRankPrefix = RankList.valueOf(nextRank).getPrefix();
+                    if (level < rankupLevel) {
+                        List<String> lines = new ArrayList<>();
+                        Component title = Lang.COMMAND_RANKUP_TITLE.getComponent(null).hoverEvent(Lang.COMMAND_RANKUP_HOVER.getComponent(new String[]{plugin.getPU().formatAmount(level), plugin.getPU().formatAmount(plugin.getData().getGameAdvancements().size())}));
+                        lines.add("");
+                        lines.add(plugin.getPU().format("&a&lAdvancements&7: &8[" + plugin.getPU().getProgressBar(level, rankupLevel, 50, "|", "#00E835", "&7") + "&8] &2" + plugin.getPU().formatAmount(level) + "&7/&2" + plugin.getPU().formatAmount(rankupLevel)));
+                        lines.add("");
+                        lines.add(plugin.getPU().format("&9&lNext Rank&7: " + nextRankPrefix));
+                        lines.add("");
+                        lines.add(plugin.getPU().format("&5&lReward&7: &ex1 Mystery Box Key"));
+                        lines.add("");
+                        lines.add(Lang.COMMAND_RANKUP_SPLITTER.getString(null));
 
-                    List<String> lines = new ArrayList<>();
-
-                    TextComponent title = Component.text().content(Lang.COMMAND_RANKUP_TITLE.getString(null)).hoverEvent(Component.text(Lang.COMMAND_RANKUP_HOVER.getString(new String[] { plugin.getPU().formatAmount(level), plugin.getPU().formatAmount(plugin.getData().getGameAdvancements().size()) }))).build();
-                    lines.add("");
-                    lines.add(plugin.getPU().format("&a&lAdvancements Required&7: &2" + plugin.getPU().formatAmount(level) + "&7/&2" + plugin.getPU().formatAmount(rankupLevel)));
-                    lines.add(plugin.getPU().format("&6&lProgress&7: &8[" + plugin.getPU().getProgressBar(level, rankupLevel, 50, "|", "&a", "&7") + "&8] &e" + b + "%"));
-                    lines.add("");
-                    lines.add(plugin.getPU().format("&9&lNext Rank&7: " + nextRankPrefix));
-                    lines.add("");
-                    lines.add(Lang.COMMAND_RANKUP_SPLITTER.getString(null));
-
-                    player.sendMessage(title);
-                    for (String line : lines) player.sendMessage(line);
+                        player.sendMessage(title);
+                        for (String line : lines) player.sendMessage(line);
+                    } else {
+                        Component rankup = Lang.COMMAND_RANKUP_CONFIRM_RANKUP_MESSAGE.getComponent(null).append(Lang.COMMAND_RANKUP_CONFIRM_BUTTON.getComponent(null).hoverEvent(Lang.COMMAND_RANKUP_CONFIRM_RANKUP_HOVER.getComponent(new String[]{nextRankPrefix})).clickEvent(ClickEvent.runCommand("/rankup confirm")));
+                        player.sendMessage(rankup);
+                    }
                 } else {
-                    TextComponent rankup = Component.text().content(Lang.COMMAND_RANKUP_CONFIRM_MESSAGE.getString(null)).append(Component.text(Lang.COMMAND_RANKUP_CONFIRM_BUTTON.getString(null))).hoverEvent(Component.text(Lang.COMMAND_RANKUP_CONFIRM_HOVER.getString(new String[] { nextRankPrefix } ))).clickEvent(ClickEvent.runCommand("/rankup confirm")).build();
-                    player.sendMessage(rankup);
+                    String playerNextPrestige = String.valueOf(cache.getPrestige(uuid) + 1);
+                    Component prestige = Lang.COMMAND_RANKUP_CONFIRM_PRESTIGE.getComponent(null).append(Lang.COMMAND_RANKUP_CONFIRM_BUTTON.getComponent(null).hoverEvent(Lang.COMMAND_RANKUP_CONFIRM_PRESTIGE_HOVER.getComponent(new String[]{playerNextPrestige})).clickEvent(ClickEvent.runCommand("/rankup confirm")));
+                    player.sendMessage(prestige);
+                    player.sendMessage(Lang.WARNING.getString(null) + Lang.COMMAND_RANKUP_CONFIRM_PRESTIGE_WARNING.getString(null));
                 }
             } else if (args[0].equalsIgnoreCase("confirm")) {
-
+                System.out.println(level);
                 if (level >= rankupLevel) {
-                    cache.setRank(uuid, nextRank);
-                    cache.setPrefix(uuid, nextRankPrefix + " ");
-                    new NameBuilder(player).setColor(ChatColor.valueOf(cache.getColor(uuid))).setPrefix(nextRankPrefix + " ").setSuffix(cache.getSuffix(uuid)).build();
-                    Bukkit.broadcastMessage(Lang.ANNOUNCEMENT.getString(null) + Lang.COMMAND_RANKUP_BROADCAST.getString(new String[] { player.getName(), nextRankPrefix }));
+                    if (!nextRank.equals("LAST")) {
+                        String nextRankPrefix = RankList.valueOf(nextRank).getPrefix();
+                        cache.setRank(uuid, nextRank);
+                        cache.setPrefix(uuid, nextRankPrefix);
+                        plugin.getPU().updateDisplayName(player);
+                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_BROADCAST.getComponent(new String[]{player.getName(), nextRankPrefix})));
+                        for (Player oPlayer : Bukkit.getOnlinePlayers()) oPlayer.playSound(oPlayer.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, 1);
 
-                    for (Player oPlayer : Bukkit.getOnlinePlayers()) {
-                        oPlayer.playSound(oPlayer.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, 1);
+                    } else {
+                        String playerNextPrestige = String.valueOf(cache.getPrestige(uuid) + 1);
+                        cache.addPrestige(uuid);
+                        cache.setLevel(uuid, "0");
+                        cache.setRank(uuid, "NOMAD");
+                        cache.setPrefix(uuid, RankList.NOMAD.getPrefix());
+
+                        for (String sKey : plugin.getData().getGameAdvancements()) {
+                            NamespacedKey key = NamespacedKey.minecraft(sKey);
+                            Advancement advancement = Bukkit.getAdvancement(key);
+                            if (advancement != null) {
+                                AdvancementProgress progress = player.getAdvancementProgress(advancement);
+                                for (String criteria : progress.getAwardedCriteria()) progress.revokeCriteria(criteria);
+                            }
+                        }
+                        plugin.getPU().updateDisplayName(player);
+                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_PRESTIGE_BROADCAST.getComponent(new String[]{player.getName(), playerNextPrestige})));
+                        for (Player oPlayer : Bukkit.getOnlinePlayers()) oPlayer.playSound(oPlayer.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, 1);
                     }
                 }
             }

@@ -8,13 +8,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class TeleportAcceptCMD implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
@@ -24,7 +25,7 @@ public class TeleportAcceptCMD implements CommandExecutor {
             if (player.hasPermission("essentials.command.teleportaccept")) {
 
                 if (args.length > 0) {
-                    if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+                    if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target != player) {
                             if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {

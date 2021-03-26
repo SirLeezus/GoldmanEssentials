@@ -7,7 +7,10 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.google.common.base.Strings;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
+import lee.code.essentials.lists.RankList;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -15,19 +18,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
-
-import java.awt.*;
+import org.bukkit.scoreboard.*;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class PU {
 
     private final Pattern HEX_REGEX = Pattern.compile("#[a-fA-F0-9]{6}");
 
     public String format(String message) {
+        if (message == null) return "";
         Matcher matcher = HEX_REGEX.matcher(message);
 
         while (matcher.find()) {
@@ -36,40 +40,6 @@ public class PU {
             matcher = HEX_REGEX.matcher(message);
         }
         return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
-    public String format(String msg, String fromHex, String toHex, boolean bold, boolean italic, boolean underlined, boolean strikethrough, boolean magic) {
-        int length = msg.length();
-        Color fromRGB = Color.decode(fromHex);
-        Color toRGB = Color.decode(toHex);
-        double rStep = Math.abs((double) (fromRGB.getRed() - toRGB.getRed()) / length);
-        double gStep = Math.abs((double) (fromRGB.getGreen() - toRGB.getGreen()) / length);
-        double bStep = Math.abs((double) (fromRGB.getBlue() - toRGB.getBlue()) / length);
-        if (fromRGB.getRed() > toRGB.getRed()) rStep = -rStep;
-        if (fromRGB.getGreen() > toRGB.getGreen()) gStep = -gStep;
-        if (fromRGB.getBlue() > toRGB.getBlue()) bStep = -bStep;
-        Color finalColor = new Color(fromRGB.getRGB());
-        String GradientHexRegex = "<\\$#[A-Fa-f0-9]{6}>";
-        msg = msg.replaceAll(GradientHexRegex, "");
-        msg = msg.replace("", "<$>");
-        for (int index = 0; index <= length; index++) {
-            int red = (int) Math.round(finalColor.getRed() + rStep);
-            int green = (int) Math.round(finalColor.getGreen() + gStep);
-            int blue = (int) Math.round(finalColor.getBlue() + bStep);
-            if (red > 255) red = 255; if (red < 0) red = 0;
-            if (green > 255) green = 255; if (green < 0) green = 0;
-            if (blue > 255) blue = 255; if (blue < 0) blue = 0;
-            finalColor = new Color(red, green, blue);
-            String hex = "#" + Integer.toHexString(finalColor.getRGB()).substring(2);
-            String formats = "";
-            if (bold) formats += ChatColor.BOLD;
-            if (italic) formats += ChatColor.ITALIC;
-            if (underlined) formats += ChatColor.UNDERLINE;
-            if (strikethrough) formats += ChatColor.STRIKETHROUGH;
-            if (magic) formats += ChatColor.MAGIC;
-            msg = msg.replaceFirst("<\\$>", "" + ChatColor.of(hex) + formats);
-        }
-        return msg;
     }
 
     public String legacyToJson(String legacyString) {
@@ -87,6 +57,10 @@ public class PU {
         return formatter.format(value);
     }
 
+    public List<String> getRanks() {
+        return EnumSet.allOf(RankList.class).stream().map(RankList::name).collect(Collectors.toList());
+    }
+
     public String buildStringFromArgs(String[] args, int start) {
         StringBuilder w = new StringBuilder();
         for(int i = start; i < args.length; i++) {
@@ -100,18 +74,9 @@ public class PU {
         return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
     }
 
-    public String formatBlockLocation(Location location) {
-        return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ();
-    }
-
     public Location unFormatPlayerLocation(String location) {
         String[] split = location.split(",", 6);
         return new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), (float) Double.parseDouble(split[4]), (float) Double.parseDouble(split[5]));
-    }
-
-    public Location unFormatBlockLocation(String location) {
-        String[] split = location.split(",", 4);
-        return new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]));
     }
 
     public List<String> getOnlinePlayers() {
@@ -138,13 +103,13 @@ public class PU {
 
     public void kickOnlinePlayers() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.kickPlayer(Lang.SERVER_RESTART.getString(null));
+            player.kick(Component.text(Lang.SERVER_RESTART.getString(null)));
         }
     }
 
     public void registerTamedEntityFix() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        plugin.getProtocolManager().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_METADATA) {
+        plugin.getProtocolManagerAPI().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_METADATA) {
 
             @Override
             public void onPacketSending(PacketEvent event) {
@@ -170,5 +135,46 @@ public class PU {
         float percent = (float) current / max;
         int progressBars = (int) (totalBars * percent);
         return Strings.repeat("" + completedColor + symbol, progressBars) + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void updateDisplayName(Player player) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+        UUID uuid = player.getUniqueId();
+
+        ScoreboardManager boardManager = Bukkit.getScoreboardManager();
+        Scoreboard board = boardManager.getMainScoreboard();
+
+        Objective health = board.getObjective("health");
+
+        if (health == null) {
+            Objective o = board.registerNewObjective("health", "health", Component.text(format("&c❤")), RenderType.HEARTS);
+            o.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        }
+
+        if (board.getTeam(player.getName()) == null) {
+            board.registerNewTeam(player.getName());
+        }
+
+        Team team = board.getTeam(player.getName());
+
+        if (team != null) {
+            team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+            team.addEntry(player.getName());
+
+            String prefix = cache.getPrefix(uuid) + " ";
+            String suffix = cache.getSuffix(uuid);
+            org.bukkit.ChatColor color = org.bukkit.ChatColor.valueOf(cache.getColor(uuid));
+            String prestige = "";
+            int prestigeLevel = cache.getPrestige(uuid);
+            if (prestigeLevel != 0) prestige = " &7[&a&l" + prestigeLevel + "&7]";
+            team.setColor(color);
+            team.setSuffix(format(prestige + suffix));
+            team.setPrefix(format(prefix));
+
+            player.setDisplayName(format(prefix + color + player.getName() + prestige + suffix));
+            player.setPlayerListName(format(prefix + color + player.getName() + prestige + suffix));
+        }
     }
 }

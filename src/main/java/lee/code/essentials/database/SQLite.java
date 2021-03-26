@@ -71,7 +71,8 @@ public class SQLite {
                 "`prefix` varchar NOT NULL," +
                 "`suffix` varchar NOT NULL," +
                 "`color` varchar NOT NULL," +
-                "`level` varchar NOT NULL" +
+                "`level` varchar NOT NULL," +
+                "`prestige` varchar NOT NULL" +
                 ");");
 
         //server data table
@@ -90,8 +91,8 @@ public class SQLite {
 
     //PLAYER DATA TABLE
 
-    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level) {
-        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color, level) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "','" + level + "');");
+    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige) {
+        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color, level, prestige) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "','" + level + "','" + prestige + "');");
     }
 
     public void deposit(String uuid, String value) {
@@ -178,6 +179,10 @@ public class SQLite {
         update("UPDATE player_data SET level ='" + level + "' WHERE player ='" + uuid + "';");
     }
 
+    public void setPrestige(String uuid, String prestige) {
+        update("UPDATE player_data SET prestige ='" + prestige + "' WHERE player ='" + uuid + "';");
+    }
+
     public void loadPlayerData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
@@ -194,7 +199,8 @@ public class SQLite {
                 String suffix = rs.getString("suffix");
                 String color = rs.getString("color");
                 String level = rs.getString("level");
-                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, false);
+                String prestige = rs.getString("prestige");
+                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, false);
                 count++;
             }
             System.out.println(plugin.getPU().format("&bPlayers Loaded: &3" + count));

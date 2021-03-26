@@ -72,3 +72,12 @@ commands:
   zap:
     description: Strike a location or player with lightning.
     permission: essentails.command.zap
+  grantadvancement:
+    description: Give a player an advancement.
+    permission: essentails.command.grantadvancement
+  revokeadvancement:
+    description: Remove a player's advancement.
+    permission: essentails.command.revokeadvancement
+  ranklist:
+    description: Lists all the ranks in the server.
+    permission: essentails.command.ranklist
