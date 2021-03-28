@@ -48,7 +48,7 @@ public class GoldmanEssentials extends JavaPlugin {
         registerCommands();
         registerListeners();
 
-
+        permissionManager.loadPerms();
         pU.registerTamedEntityFix();
     }
 
@@ -81,9 +81,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("glow").setExecutor(new GlowCMD());
         getCommand("itemrename").setExecutor(new ItemRenameCMD());
         getCommand("zap").setExecutor(new ZapCMD());
-        getCommand("grantadvancement").setExecutor(new GrantAdvancementCMD());
-        getCommand("revokeadvancement").setExecutor(new RevokeAdvancementCMD());
+        getCommand("advancement").setExecutor(new AdvancementCMD());
         getCommand("ranklist").setExecutor(new RankListCMD());
+        getCommand("setrank").setExecutor(new SetRankCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -105,14 +105,15 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("teleportdeny").setTabCompleter(new TeleportDenyTab());
         getCommand("itemrename").setTabCompleter(new ItemRenameTab());
         getCommand("zap").setTabCompleter(new ZapTab());
-        getCommand("grantadvancement").setTabCompleter(new GrantAdvancementTab());
-        getCommand("revokeadvancement").setTabCompleter(new RevokeAdvancementTab());
+        getCommand("advancement").setTabCompleter(new AdvancementTab());
         getCommand("ranklist").setTabCompleter(new RankListTab());
+        getCommand("setrank").setTabCompleter(new SetRankTab());
     }
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        getServer().getPluginManager().registerEvents(new QuitListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
         getServer().getPluginManager().registerEvents(new ChairListener(), this);
         getServer().getPluginManager().registerEvents(new AchievementListener(), this);
@@ -120,6 +121,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SignListener(), this);
         getServer().getPluginManager().registerEvents(new AnvilListener(), this);
         getServer().getPluginManager().registerEvents(new BookListener(), this);
+        getServer().getPluginManager().registerEvents(new CommandTabListener(), this);
+
     }
 
     public static GoldmanEssentials getPlugin() {

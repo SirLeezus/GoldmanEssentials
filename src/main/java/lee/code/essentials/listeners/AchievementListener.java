@@ -20,11 +20,10 @@ public class AchievementListener implements Listener {
 
         if (player.getAdvancementProgress(advancement).isDone()) {
             String key = advancement.getKey().getKey();
-
             if (plugin.getData().getGameAdvancements().contains(key)) {
                 cache.addLevel(e.getPlayer().getUniqueId());
                 System.out.println("Point added! " + key);
-            } else System.out.println("Point NOOOT added! " + key);
+            }
         }
     }
 }

@@ -20,17 +20,16 @@ public class ItemRenameCMD implements CommandExecutor {
             Player player = (Player) sender;
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-            if (player.hasPermission("essentials.command.balance")) {
+            if (args.length > 0) {
+                String name = plugin.getPU().buildStringFromArgs(args, 0);
+                ItemStack item = player.getInventory().getItemInMainHand();
 
-                if (args.length > 0) {
-                    String name = plugin.getPU().buildStringFromArgs(args, 0);
-                    ItemStack item = player.getInventory().getItemInMainHand();
-
-                    if (item.getType() != Material.AIR) {
-                        ItemMeta itemMeta = item.getItemMeta();
-                        itemMeta.displayName(Component.text(plugin.getPU().format(name)));
-                        item.setItemMeta(itemMeta);
-                    }
+                if (item.getType() != Material.AIR) {
+                    ItemMeta itemMeta = item.getItemMeta();
+                    itemMeta.displayName(Component.text(plugin.getPU().format(name)));
+                    //TODO for testing
+                    itemMeta.setCustomModelData(1);
+                    item.setItemMeta(itemMeta);
                 }
             }
         }

@@ -20,20 +20,18 @@ public class SetPrefixCMD implements CommandExecutor {
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             Cache cache = plugin.getCache();
 
-            if (player.hasPermission("essentials.command.setprefix")) {
+            if (args.length > 1) {
+                if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target != null) {
+                        String prefix = plugin.getPU().buildStringFromArgs(args, 1) + " ";
+                        cache.setPrefix(target.getUniqueId(), prefix);
+                        plugin.getPU().updateDisplayName(target);
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETPREFIX_SUCCESSFUL.getString(new String[]{target.getName(), plugin.getPU().format(prefix)}));
+                    }
+                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[0]}));
+            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_SETPREFIX_ARG.getString(null));
 
-                if (args.length > 1) {
-                    if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        if (target != null) {
-                            String prefix = plugin.getPU().buildStringFromArgs(args, 1) + " ";
-                            cache.setPrefix(target.getUniqueId(), prefix);
-                            plugin.getPU().updateDisplayName(player);
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETPREFIX_SUCCESSFUL.getString(new String[] { target.getName(), plugin.getPU().format(prefix) }));
-                        }
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{ args[0] }));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_SETPREFIX_ARG.getString(null));
-            }
         }
         return true;
     }

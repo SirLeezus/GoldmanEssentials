@@ -9,6 +9,7 @@ import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.google.common.base.Strings;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
+import lee.code.essentials.lists.PremiumRankList;
 import lee.code.essentials.lists.RankList;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
@@ -59,6 +60,10 @@ public class PU {
 
     public List<String> getRanks() {
         return EnumSet.allOf(RankList.class).stream().map(RankList::name).collect(Collectors.toList());
+    }
+
+    public List<String> getPremiumRanks() {
+        return EnumSet.allOf(PremiumRankList.class).stream().map(PremiumRankList::name).collect(Collectors.toList());
     }
 
     public String buildStringFromArgs(String[] args, int start) {

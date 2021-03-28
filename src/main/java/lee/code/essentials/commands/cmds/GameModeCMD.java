@@ -17,40 +17,37 @@ public class GameModeCMD implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (player.hasPermission("essentials.command.gamemode")) {
+            if (args.length > 0) {
 
-                if (args.length > 0) {
+                String gamemode = args[0].toLowerCase();
 
-                    String gamemode = args[0].toLowerCase();
+                switch (gamemode) {
 
-                    switch (gamemode) {
-
-                        case "survival":
-                        case "0":
-                            player.setGameMode(GameMode.SURVIVAL);
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Survival" }));
-                            break;
-                        case "creative":
-                        case "1":
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Creative" }));
-                            player.setGameMode(GameMode.CREATIVE);
-                            break;
-                        case "adventure":
-                        case "2":
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Adventure" }));
-                            player.setGameMode(GameMode.ADVENTURE);
-                            break;
-                        case "spectator":
-                        case "3":
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Spectator" }));
-                            player.setGameMode(GameMode.SPECTATOR);
-                            break;
-                        default:
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ gamemode }));
-                            break;
-                    }
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_GAMEMODE_ARGS.getString(null));
-            }
+                    case "survival":
+                    case "0":
+                        player.setGameMode(GameMode.SURVIVAL);
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Survival" }));
+                        break;
+                    case "creative":
+                    case "1":
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Creative" }));
+                        player.setGameMode(GameMode.CREATIVE);
+                        break;
+                    case "adventure":
+                    case "2":
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Adventure" }));
+                        player.setGameMode(GameMode.ADVENTURE);
+                        break;
+                    case "spectator":
+                    case "3":
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Spectator" }));
+                        player.setGameMode(GameMode.SPECTATOR);
+                        break;
+                    default:
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ gamemode }));
+                        break;
+                }
+            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_GAMEMODE_ARGS.getString(null));
         }
         return true;
     }

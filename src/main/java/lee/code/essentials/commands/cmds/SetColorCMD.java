@@ -21,20 +21,19 @@ public class SetColorCMD implements CommandExecutor {
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             Cache cache = plugin.getCache();
 
-            if (player.hasPermission("essentials.command.setcolor")) {
-
-                if (args.length > 1) {
-                    if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        if (plugin.getData().getChatColors().contains(args[1]) && target != null) {
+            if (args.length > 1) {
+                if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target != null) {
+                        if (plugin.getData().getChatColors().contains(args[1])) {
                             String color = args[1];
                             cache.setColor(target.getUniqueId(), color);
-                            plugin.getPU().updateDisplayName(player);
+                            plugin.getPU().updateDisplayName(target);
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETCOLOR_SUCCESSFUL.getString(new String[] { target.getName(), ChatColor.valueOf(color) + color }));
                         }
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{ args[0] }));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_SETCOLOR_ARG.getString(null));
-            }
+                    }
+                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{ args[0] }));
+            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_SETCOLOR_ARG.getString(null));
         }
         return true;
     }

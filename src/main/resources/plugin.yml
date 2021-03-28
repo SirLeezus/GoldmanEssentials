@@ -54,11 +54,11 @@ commands:
     aliases: [tp]
   teleportaccept:
     description: Accept a teleport request.
-    permission: essentails.command.teleport
+    permission: essentails.command.teleportaccept
     aliases: [tpaccept]
   teleportdeny:
     description: Deny a teleport request.
-    permission: essentails.command.teleport
+    permission: essentails.command.teleportdeny
     aliases: [tpdeny]
   sound:
     description: Play a sound for a player.
@@ -68,16 +68,16 @@ commands:
     permission: essentails.command.glow
   itemrename:
     description: Rename the item you're holding.
-    permission: essentails.command.rename
+    permission: essentails.command.itemrename
   zap:
     description: Strike a location or player with lightning.
     permission: essentails.command.zap
-  grantadvancement:
+  advancement:
     description: Give a player an advancement.
-    permission: essentails.command.grantadvancement
-  revokeadvancement:
-    description: Remove a player's advancement.
-    permission: essentails.command.revokeadvancement
+    permission: essentails.command.advancement
   ranklist:
     description: Lists all the ranks in the server.
     permission: essentails.command.ranklist
+  setrank:
+    description: Set a player's rank.
+    permission: essentails.command.setrank

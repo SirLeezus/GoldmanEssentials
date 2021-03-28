@@ -16,17 +16,14 @@ public class InvseeCMD implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (player.hasPermission("essentials.command.invsee")) {
+            //TODO better check for online player
+            if (args.length > 0) {
+                Player target = Bukkit.getPlayer(args[0]);
 
-                //TODO better check for online player
-                if (args.length > 0) {
-                    Player target = Bukkit.getPlayer(args[0]);
-
-                    if (!player.equals(target)) {
-                        PlayerInventory targetInv = target.getInventory();
-                        player.openInventory(targetInv);
-                        //TODO send message
-                    }
+                if (!player.equals(target)) {
+                    PlayerInventory targetInv = target.getInventory();
+                    player.openInventory(targetInv);
+                    //TODO send message
                 }
             }
         }

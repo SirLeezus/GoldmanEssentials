@@ -19,19 +19,15 @@ public class SoundCMD implements CommandExecutor {
             Player player = (Player) sender;
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-            if (player.hasPermission("essentials.command.sound")) {
+            if (args.length > 1) {
+                if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target != null) {
 
-                //sound <player> sound
-                if (args.length > 1) {
-                    if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        if (target != null) {
-
-                            if (plugin.getData().getGameSounds().contains(args[1])) {
-                                String sound = args[1];
-                                target.playSound(target.getLocation(), Sound.valueOf(sound), 1, 1);
-                                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SOUND_SUCCESSFUL.getString(new String[] { sound, target.getName() }));
-                            }
+                        if (plugin.getData().getGameSounds().contains(args[1])) {
+                            String sound = args[1];
+                            target.playSound(target.getLocation(), Sound.valueOf(sound), 1, 1);
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SOUND_SUCCESSFUL.getString(new String[] { sound, target.getName() }));
                         }
                     }
                 }

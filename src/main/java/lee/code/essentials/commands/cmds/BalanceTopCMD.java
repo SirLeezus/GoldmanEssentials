@@ -26,27 +26,24 @@ public class BalanceTopCMD implements CommandExecutor {
             SQLite SQL = plugin.getSqLite();
             Cache cache = plugin.getCache();
 
-            if (player.hasPermission("essentials.command.balancetop")) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                List<Integer> balances = SQL.getBalanceTopValues();
+                List<UUID> players = SQL.getBalanceTopPlayers();
 
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    List<Integer> balances = SQL.getBalanceTopValues();
-                    List<UUID> players = SQL.getBalanceTopPlayers();
+                player.sendMessage(Lang.COMMAND_BALANCETOP_TITLE.getString(null));
+                player.sendMessage("");
 
-                    player.sendMessage(Lang.COMMAND_BALANCETOP_TITLE.getString(null));
-                    player.sendMessage("");
+                int number = 1;
+                for (int i = 0; i < players.size(); i++) {
+                    if (players.get(i).equals(uuid)) player.sendMessage(Lang.COMMAND_BALANCETOP_SUCCESSFUL.getString(new String[] { plugin.getPU().format("&2" + SQL.getBalanceTopRank(uuid)), plugin.getPU().format("&a&l" +  player.getName()), plugin.getPU().formatAmount(cache.getBalance(uuid)) }));
+                    else player.sendMessage(Lang.COMMAND_BALANCETOP_SUCCESSFUL.getString(new String[] { plugin.getPU().format("&e" + number), plugin.getPU().format("&b&l" +  Bukkit.getOfflinePlayer(players.get(i)).getName()), plugin.getPU().formatAmount(balances.get(i)) }));
+                    number++;
+                }
 
-                    int number = 1;
-                    for (int i = 0; i < players.size(); i++) {
-                        if (players.get(i).equals(uuid)) player.sendMessage(Lang.COMMAND_BALANCETOP_SUCCESSFUL.getString(new String[] { plugin.getPU().format("&2" + SQL.getBalanceTopRank(uuid)), plugin.getPU().format("&a&l" +  player.getName()), plugin.getPU().formatAmount(cache.getBalance(uuid)) }));
-                        else player.sendMessage(Lang.COMMAND_BALANCETOP_SUCCESSFUL.getString(new String[] { plugin.getPU().format("&e" + number), plugin.getPU().format("&b&l" +  Bukkit.getOfflinePlayer(players.get(i)).getName()), plugin.getPU().formatAmount(balances.get(i)) }));
-                        number++;
-                    }
-
-                    if (!players.contains(uuid)) player.sendMessage(Lang.COMMAND_BALANCETOP_SUCCESSFUL.getString(new String[] { plugin.getPU().format("&2" + SQL.getBalanceTopRank(uuid)), plugin.getPU().format("&a&l" +  player.getName()), plugin.getPU().formatAmount(cache.getBalance(uuid)) }));
-                    player.sendMessage("");
-                    player.sendMessage(Lang.COMMAND_BALANCETOP_SPLITTER.getString(null));
-                });
-            }
+                if (!players.contains(uuid)) player.sendMessage(Lang.COMMAND_BALANCETOP_SUCCESSFUL.getString(new String[] { plugin.getPU().format("&2" + SQL.getBalanceTopRank(uuid)), plugin.getPU().format("&a&l" +  player.getName()), plugin.getPU().formatAmount(cache.getBalance(uuid)) }));
+                player.sendMessage("");
+                player.sendMessage(Lang.COMMAND_BALANCETOP_SPLITTER.getString(null));
+            });
         }
         return true;
     }

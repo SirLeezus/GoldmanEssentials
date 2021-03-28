@@ -20,11 +20,9 @@ public class SpawnCMD implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (player.hasPermission("essentials.command.spawn")) {
-                player.teleportAsync(cache.getSpawn());
-                player.sendActionBar(Lang.TELEPORT.getString(null));
-                player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
-            }
+            player.teleportAsync(cache.getSpawn());
+            player.sendActionBar(Lang.TELEPORT.getString(null));
+            player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
         }
         return true;
     }

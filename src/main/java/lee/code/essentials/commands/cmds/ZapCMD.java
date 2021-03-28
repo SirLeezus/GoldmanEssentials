@@ -15,13 +15,11 @@ public class ZapCMD implements CommandExecutor {
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
-
-            if (player.hasPermission("essentials.command.zap")) {
-                Block block = player.getTargetBlock(120);
-                if (block != null) {
-                    Location location = block.getLocation();
-                    location.getWorld().strikeLightning(location);
-                }
+            
+            Block block = player.getTargetBlock(120);
+            if (block != null) {
+                Location location = block.getLocation();
+                location.getWorld().strikeLightning(location);
             }
         }
         return true;

@@ -26,37 +26,33 @@ public class TeleportCMD implements CommandExecutor {
             Player player = (Player) sender;
             UUID uuid = player.getUniqueId();
 
-            if (player.hasPermission("essentials.command.teleport")) {
+            if (args.length > 0) {
+                if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target != null && target != player) {
 
+                        if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, target.getUniqueId())) {
 
-                if (args.length > 0) {
-                    if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        if (target != null && target != player) {
+                            TextComponent targetMessage = new TextComponent(plugin.getPU().format("&6&l[&e&l!&6&l] &ePlayer &6&l" + player.getName() +  " &eis requesting teleportation: "));
 
-                            if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, target.getUniqueId())) {
+                            TextComponent confirmTeleport = new TextComponent(plugin.getPU().format("                           &a&l[&2&lACCEPT&a&l]          "));
+                            confirmTeleport.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + player.getName()));
+                            confirmTeleport.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(plugin.getPU().format("&6&l[&e&l!&6&l] &2Click to accept &6&l" + player.getName() + "'s &2teleport request."))));
 
-                                TextComponent targetMessage = new TextComponent(plugin.getPU().format("&6&l[&e&l!&6&l] &ePlayer &6&l" + player.getName() +  " &eis requesting teleportation: "));
+                            TextComponent denyTeleport = new TextComponent(plugin.getPU().format("&4&l[&c&lDENY&4&l]"));
+                            denyTeleport.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny " + player.getName()));
+                            denyTeleport.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(plugin.getPU().format("&6&l[&e&l!&6&l] &cClick to deny &6&l" + player.getName() + "'s &cteleport request."))));
 
-                                TextComponent confirmTeleport = new TextComponent(plugin.getPU().format("                           &a&l[&2&lACCEPT&a&l]          "));
-                                confirmTeleport.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + player.getName()));
-                                confirmTeleport.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(plugin.getPU().format("&6&l[&e&l!&6&l] &2Click to accept &6&l" + player.getName() + "'s &2teleport request."))));
+                            plugin.getData().setPlayerRequestingTeleport(uuid, target.getUniqueId());
 
-                                TextComponent denyTeleport = new TextComponent(plugin.getPU().format("&4&l[&c&lDENY&4&l]"));
-                                denyTeleport.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny " + player.getName()));
-                                denyTeleport.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(plugin.getPU().format("&6&l[&e&l!&6&l] &cClick to deny &6&l" + player.getName() + "'s &cteleport request."))));
+                            target.spigot().sendMessage(targetMessage, confirmTeleport, denyTeleport);
 
-                                plugin.getData().setPlayerRequestingTeleport(uuid, target.getUniqueId());
+                            target.playSound(target.getLocation(), Sound.UI_TOAST_IN, 1,1);
+                            plugin.getPU().teleportTimer(player, target);
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));
 
-                                target.spigot().sendMessage(targetMessage, confirmTeleport, denyTeleport);
-
-                                target.playSound(target.getLocation(), Sound.UI_TOAST_IN, 1,1);
-                                plugin.getPU().teleportTimer(player, target);
-                                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));
-
-                            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED.getString(new String[] { target.getName() }));
-                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
-                    }
+                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED.getString(new String[] { target.getName() }));
+                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
                 }
             }
         }

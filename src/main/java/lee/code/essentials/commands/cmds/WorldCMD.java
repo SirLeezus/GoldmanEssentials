@@ -21,22 +21,19 @@ public class WorldCMD implements CommandExecutor {
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             Player player = (Player) sender;
 
-            if (player.hasPermission("essentials.command.world")) {
+            if (args.length > 0) {
 
-                if (args.length > 0) {
+                String worldString = args[0].toLowerCase();
 
-                    String worldString = args[0].toLowerCase();
-
-                    if (plugin.getData().getWorldNames().contains(worldString)) {
-                        World world = Bukkit.getWorld(worldString);
-                        Location loc = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
-                        player.teleportAsync(loc);
-                        player.sendActionBar(Lang.TELEPORT.getString(null));
-                        player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
-                        return true;
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { worldString }));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_ARGS.getString(null));
-            }
+                if (plugin.getData().getWorldNames().contains(worldString)) {
+                    World world = Bukkit.getWorld(worldString);
+                    Location loc = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
+                    player.teleportAsync(loc);
+                    player.sendActionBar(Lang.TELEPORT.getString(null));
+                    player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
+                    return true;
+                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { worldString }));
+            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_ARGS.getString(null));
         }
         return true;
     }

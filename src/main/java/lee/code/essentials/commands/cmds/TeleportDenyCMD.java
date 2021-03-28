@@ -21,23 +21,20 @@ public class TeleportDenyCMD implements CommandExecutor {
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             UUID uuid = player.getUniqueId();
 
-            if (player.hasPermission("essentials.command.teleportdeny")) {
+            if (args.length > 0) {
+                if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target != null && target != player) {
+                        if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
 
-                if (args.length > 0) {
-                    if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        if (target != null && target != player) {
-                            if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
+                            plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_DENY_SUCCESSFUL.getString(new String[] { target.getName() }));
+                            target.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTDENY_DENIED.getString(new String[] { player.getName() }));
 
-                                plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
-                                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_DENY_SUCCESSFUL.getString(new String[] { target.getName() }));
-                                target.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTDENY_DENIED.getString(new String[] { player.getName() }));
-
-                            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getString(new String[] { target.getName() }));
-                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[] { args[0] }));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTDENY_ARG.getString(null));
-            }
+                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getString(new String[] { target.getName() }));
+                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
+                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[] { args[0] }));
+            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTDENY_ARG.getString(null));
         }
         return true;
     }

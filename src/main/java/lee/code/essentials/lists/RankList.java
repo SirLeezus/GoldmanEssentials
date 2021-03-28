@@ -14,12 +14,12 @@ public enum RankList {
     LEGEND("&e[#FF7800Legend&e]", 40, "MYTH"),
     MYTH("&e[#FF3909Myth&e]", 50, "IMMORTAL"),
     IMMORTAL("&e[#0074F6Immortal&e]", 60, "GOD"),
-    GOD("&e[#00FFA2God&e]", 75, "LAST"),
+    GOD("#FF7800[&e&lGod#FF7800]", 75, "LAST"),
 
     //STAFF
     MOD("&d[&5&lMod&d]", 0, "STAFF"),
     ADMIN("&2[&a&lAdmin&2]", 0, "STAFF"),
-    OWNER("&2[&c&lOwner&2]", 0, "STAFF"),
+    OWNER("&6[#F40000&lOwner&6]", 0, "STAFF"),
     ;
 
     @Getter private final String prefix;
