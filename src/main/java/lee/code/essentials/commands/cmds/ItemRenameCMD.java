@@ -1,7 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemRenameCMD implements CommandExecutor {
 
-    @Override
+    @Override @SuppressWarnings("deprecation")
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         if (sender instanceof Player) {
@@ -26,9 +25,7 @@ public class ItemRenameCMD implements CommandExecutor {
 
                 if (item.getType() != Material.AIR) {
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.displayName(Component.text(plugin.getPU().format(name)));
-                    //TODO for testing
-                    itemMeta.setCustomModelData(1);
+                    itemMeta.setDisplayName(plugin.getPU().format(name));
                     item.setItemMeta(itemMeta);
                 }
             }

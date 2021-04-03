@@ -29,8 +29,8 @@ public class WorldCMD implements CommandExecutor {
                     World world = Bukkit.getWorld(worldString);
                     Location loc = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
                     player.teleportAsync(loc);
-                    player.sendActionBar(Lang.TELEPORT.getString(null));
-                    player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 1,1);
+                    player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                    player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
                     return true;
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { worldString }));
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_ARGS.getString(null));

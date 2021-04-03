@@ -11,12 +11,20 @@ import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.PremiumRankList;
 import lee.code.essentials.lists.RankList;
+import lee.code.essentials.lists.Settings;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
@@ -43,8 +51,15 @@ public class PU {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    public Component formatC(String message) {
+        return GsonComponentSerializer.gson().deserialize(legacyToJson(format(message)));
+    }
+
+    public Component formatI(String message) {
+        return Component.text(format(message));
+    }
+
     public String legacyToJson(String legacyString) {
-        if (legacyString == null) return "";
         return ComponentSerializer.toString(TextComponent.fromLegacyText(legacyString));
     }
 
@@ -181,5 +196,24 @@ public class PU {
             player.setDisplayName(format(prefix + color + player.getName() + prestige + suffix));
             player.setPlayerListName(format(prefix + color + player.getName() + prestige + suffix));
         }
+    }
+
+    public int countEntitiesInChunk(Chunk chunk, EntityType type) {
+        int count = 0;
+        for (Entity e : chunk.getEntities()) if (type.equals(e.getType()) && !e.isDead()) count++;
+        return count;
+    }
+
+    public void scheduleEntityChunkCleaner() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            for (World world : Bukkit.getWorlds()) {
+                for (Chunk chunk : world.getLoadedChunks()) {
+                    for (Entity entity : chunk.getEntities()) {
+                        if (countEntitiesInChunk(chunk, entity.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+                    }
+                }
+            }
+        }, 0L, 20L * 30);
     }
 }

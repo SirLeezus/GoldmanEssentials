@@ -25,11 +25,11 @@ public class JoinListener implements Listener {
         //first time joining
         if (!cache.hasPlayerData(uuid)) {
             cache.setPlayerData(uuid, 0, "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0",true);
-        } else {
-            //set custom attack speed
-            AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
-            if (attribute != null) attribute.setBaseValue(23.4);
         }
+
+        //set custom attack speed
+        AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
+        if (attribute != null) attribute.setBaseValue(23.4);
 
         //register perms
         if (!player.isOp()) plugin.getPermissionManager().register(player);

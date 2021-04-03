@@ -3,14 +3,15 @@ package lee.code.essentials.commands.cmds;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class SpawnCMD implements CommandExecutor {
+import java.util.UUID;
+
+public class GodCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -19,10 +20,15 @@ public class SpawnCMD implements CommandExecutor {
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
+            UUID uuid = player.getUniqueId();
 
-            player.sendActionBar(Lang.TELEPORT.getComponent(null));
-            player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
-            player.teleportAsync(cache.getSpawn());
+            if (cache.isGodMode(uuid)) {
+                cache.removeGodMode(uuid);
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
+            } else {
+                cache.setGodMode(uuid);
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
+            }
         }
         return true;
     }

@@ -67,12 +67,14 @@ public class RankupCMD implements CommandExecutor {
                     } else {
                         Component rankup = Lang.COMMAND_RANKUP_CONFIRM_RANKUP_MESSAGE.getComponent(null).append(Lang.COMMAND_RANKUP_CONFIRM_BUTTON.getComponent(null).hoverEvent(Lang.COMMAND_RANKUP_CONFIRM_RANKUP_HOVER.getComponent(new String[]{nextRankPrefix})).clickEvent(ClickEvent.runCommand("/rankup confirm")));
                         player.sendMessage(rankup);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1,1);
                     }
                 } else {
                     String playerNextPrestige = String.valueOf(cache.getPrestige(uuid) + 1);
                     Component prestige = Lang.COMMAND_RANKUP_CONFIRM_PRESTIGE.getComponent(null).append(Lang.COMMAND_RANKUP_CONFIRM_BUTTON.getComponent(null).hoverEvent(Lang.COMMAND_RANKUP_CONFIRM_PRESTIGE_HOVER.getComponent(new String[]{playerNextPrestige})).clickEvent(ClickEvent.runCommand("/rankup confirm")));
                     player.sendMessage(prestige);
                     player.sendMessage(Lang.WARNING.getString(null) + Lang.COMMAND_RANKUP_CONFIRM_PRESTIGE_WARNING.getString(null));
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1,1);
                 }
             } else if (args[0].equalsIgnoreCase("confirm")) {
                 System.out.println(level);

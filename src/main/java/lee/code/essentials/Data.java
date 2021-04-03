@@ -4,6 +4,7 @@ import lee.code.essentials.database.SQLite;
 import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
+import org.bukkit.enchantments.Enchantment;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Data {
 
     @Getter private final List<String> worldNames = new ArrayList<>();
+    @Getter private final List<String> enchantNames = new ArrayList<>();
     @Getter private final List<String> chatColors = new ArrayList<>();
     @Getter private final List<String> gameSounds = new ArrayList<>();
     @Getter private final List<String> gameAdvancements = new ArrayList<>();
@@ -52,6 +54,11 @@ public class Data {
         //sounds
         for (Sound sound : Sound.values()) {
             gameSounds.add(sound.name());
+        }
+
+        //enchants
+        for (Enchantment enchantment : Enchantment.values()) {
+            enchantNames.add(enchantment.getKey().value());
         }
 
         //advancements

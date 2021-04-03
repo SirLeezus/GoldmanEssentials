@@ -81,3 +81,23 @@ commands:
   setrank:
     description: Set a player's rank.
     permission: essentails.command.setrank
+  summon:
+    description: Spawn an entity.
+    permission: essentails.command.summon
+  message:
+    description: Message a online player.
+    permission: essentails.command.message
+    aliases: [msg, tell]
+  reply:
+    description: Reply to a online player.
+    permission: essentails.command.reply
+    aliases: [r]
+  enchant:
+    description: Enchant the item you're holding.
+    permission: essentails.command.enchant
+  heal:
+    description: Give yourself full health.
+    permission: essentails.command.heal
+  god:
+    description: Toggle being in god mode.
+    permission: essentails.command.god

@@ -4,7 +4,6 @@ import lee.code.essentials.GoldmanEssentials;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 @AllArgsConstructor
 public enum Lang {
@@ -21,6 +20,7 @@ public enum Lang {
     COMMAND_SETSPAWN_SUCCESSFUL("&aYou have successfully set the new spawn!"),
     COMMAND_GAMEMODE_SUCCESSFUL("&aYou successfully changed your gamemode to &6{0}&a!"),
     COMMAND_FLY_TOGGLE_SUCCESSFUL("&aYou successfully toggled your fly {0}&a!"),
+    COMMAND_GOD_TOGGLE_SUCCESSFUL("&aYou successfully toggled god mode {0}&a!"),
     COMMAND_FLYSPEED_SUCCESSFUL("&aYour fly speed is now set to &6{0}&a!"),
     COMMAND_BALANCE_SUCCESSFUL("&2&lBalance&7: &6${0}"),
     COMMAND_SETPREFIX_SUCCESSFUL("&aYou successfully set &6{0}'s &aprefix to: &f{1}"),
@@ -29,6 +29,8 @@ public enum Lang {
     COMMAND_TELEPORT_REQUEST_SUCCESSFUL("&aYou successfully sent &6{0} &aa teleport request."),
     COMMAND_TELEPORT_DENY_SUCCESSFUL("&aYou successfully denied &6{0}'s &ateleport request."),
     COMMAND_TELEPORT_ACCEPT_SUCCESSFUL("&aYou successfully accepted &6{0}'s &ateleport request."),
+    COMMAND_TELEPORT_ACCEPT_SUCCESSFUL_TARGET("&aThe player &6{0} &aaccepted your teleport request!"),
+    COMMAND_TELEPORT_ADMIN_SUCCESSFUL("&aYou successfully teleported to the player &6{0}&a!"),
     COMMAND_SOUND_SUCCESSFUL("&aYou successfully played the sound &b{0} &afor &6{1}&a!"),
     COMMAND_BALANCETOP_SUCCESSFUL("{0}&7. {1} &e- &6${2}"),
     COMMAND_BALANCETOP_TITLE("&a--------- &e[ &2&lTop Balances &e] &a---------"),
@@ -59,10 +61,12 @@ public enum Lang {
     ERROR_COMMAND_TELEPORTACCEPT_ARG("&cYou need to input a player to run this command."),
     ERROR_COMMAND_TELEPORTDENY_ARG("&cYou need to input a player to run this command."),
     ERROR_COMMAND_TELEPORT_TO_SELF("&cYou can't teleport to yourself."),
+    ERROR_COMMAND_MESSAGE_TO_SELF("&cYou can't message yourself."),
     ERROR_COMMAND_TELEPORT_REQUEST_EXPIRED("&7Your teleport request to &6{0} &7has now expired."),
     ERROR_COMMAND_TELEPORTDENY_DENIED("&cSadly the player &6{0} &chas denied your teleport request."),
     ERROR_COMMAND_SETPREFIX_ARG("&cYou need to input a target player and new prefix to run this command."),
     ERROR_COMMAND_SETCOLOR_ARG("&cYou need to input a target player and new color to run this command."),
+    ERROR_COMMAND_REPLY_NO_PLAYER("&cNo player was found for a reply."),
     ERROR_PLAYER_NOT_ONLINE("&cThe player &6{0} &cis not online."),
     ERROR_COMMAND_WORLD_NOT_FOUND("&cThe world &6{0} &ccould not be found."),
     ERROR_CHUNK_MAX_ENTITIES("&cYou can only have {0} of each entity in each chunk."),
@@ -76,19 +80,19 @@ public enum Lang {
 
     public String getString(String[] variables) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        String value = string;
         if (variables == null) return plugin.getPU().format(string);
         else if (variables.length == 0) return plugin.getPU().format(string);
-        String value = string;
         for (int i = 0; i < variables.length; i++) value = value.replace("{" + i + "}", variables[i]);
         return plugin.getPU().format(value);
     }
 
     public Component getComponent(String[] variables) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        if (variables == null) return GsonComponentSerializer.gson().deserialize(plugin.getPU().legacyToJson(plugin.getPU().format(string)));
-        else if (variables.length == 0) return GsonComponentSerializer.gson().deserialize(plugin.getPU().legacyToJson(plugin.getPU().format(string)));
         String value = string;
+        if (variables == null) return plugin.getPU().formatC(string);
+        else if (variables.length == 0) return plugin.getPU().formatC(string);
         for (int i = 0; i < variables.length; i++) value = value.replace("{" + i + "}", variables[i]);
-        return GsonComponentSerializer.gson().deserialize(plugin.getPU().legacyToJson(plugin.getPU().format(value)));
+        return plugin.getPU().formatC(value);
     }
 }

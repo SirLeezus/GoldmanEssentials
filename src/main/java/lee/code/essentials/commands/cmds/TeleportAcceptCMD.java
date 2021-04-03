@@ -28,12 +28,14 @@ public class TeleportAcceptCMD implements CommandExecutor {
                     if (target != null && target != player) {
                         if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
 
+                            target.sendActionBar(Lang.TELEPORT.getComponent(null));
+                            target.playSound(target.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
                             target.teleportAsync(player.getLocation());
-                            target.sendActionBar(Lang.TELEPORT.getString(null));
-                            target.playSound(target.getLocation(), Sound.UI_TOAST_OUT, 1,1);
+
                             plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
 
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL.getString(new String[] { target.getName() }));
+                            target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL_TARGET.getString(new String[] { player.getName() }));
                         } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getString(new String[] { target.getName() }));
                     } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[] { args[0] }));

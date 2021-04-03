@@ -7,6 +7,8 @@ import lee.code.essentials.GoldmanEssentials;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -335,6 +337,73 @@ public class Cache {
 
             String[] split = StringUtils.split(perms, ',');
             return new ArrayList<>(Arrays.asList(split));
+        }
+    }
+
+    public boolean hasLastReplied(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hexists("lastReplied", sUUID);
+        }
+    }
+
+    public void setLastReplied(UUID uuid, UUID target) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+        String sTarget = String.valueOf(target);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("lastReplied", sUUID, sTarget);
+        }
+    }
+
+    public UUID getLastReplied(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return UUID.fromString(jedis.hget("lastReplied", sUUID));
+        }
+    }
+
+    public void setGodMode(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("godMode", sUUID, "1");
+        }
+    }
+
+    public void removeGodMode(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hdel("godMode", sUUID);
+        }
+    }
+
+    public boolean isGodMode(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hexists("godMode", sUUID);
         }
     }
 

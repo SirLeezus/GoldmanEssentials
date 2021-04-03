@@ -3,6 +3,7 @@ package lee.code.essentials.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lee.code.essentials.GoldmanEssentials;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,7 +18,7 @@ public class ChatListener implements Listener {
 
         if (!e.isCancelled()) {
             e.setCancelled(true);
-            plugin.getServer().sendMessage(player.displayName().append(Component.text(plugin.getPU().format("&8: &f"))).append(e.message()));
+            plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(plugin.getPU().format("&8: &f"))).append(e.message()));
         }
     }
 }
