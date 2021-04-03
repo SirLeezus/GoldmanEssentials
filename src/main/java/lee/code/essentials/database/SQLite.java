@@ -72,7 +72,9 @@ public class SQLite {
                 "`suffix` varchar NOT NULL," +
                 "`color` varchar NOT NULL," +
                 "`level` varchar NOT NULL," +
-                "`prestige` varchar NOT NULL" +
+                "`prestige` varchar NOT NULL," +
+                "`vanish` varchar NOT NULL," +
+                "`god` varchar NOT NULL" +
                 ");");
 
         //server data table
@@ -80,7 +82,6 @@ public class SQLite {
                 "`server` varchar PRIMARY KEY," +
                 "`spawn` varchar NOT NULL" +
                 ");");
-
     }
 
     //SERVER TABLE
@@ -91,8 +92,8 @@ public class SQLite {
 
     //PLAYER DATA TABLE
 
-    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige) {
-        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color, level, prestige) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "','" + level + "','" + prestige + "');");
+    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god) {
+        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "','" + level + "','" + prestige + "','" + vanish + "','" + god + "');");
     }
 
     public void deposit(String uuid, String value) {
@@ -105,6 +106,14 @@ public class SQLite {
 
     public void setBalance(String uuid, String value) {
         update("UPDATE player_data SET balance ='" + value + "' WHERE player ='" + uuid + "';");
+    }
+
+    public void setVanish(String uuid, String value) {
+        update("UPDATE player_data SET vanish ='" + value + "' WHERE player ='" + uuid + "';");
+    }
+
+    public void setGod(String uuid, String value) {
+        update("UPDATE player_data SET god ='" + value + "' WHERE player ='" + uuid + "';");
     }
 
     public List<Integer> getBalanceTopValues() {
@@ -192,7 +201,7 @@ public class SQLite {
             int count = 0;
             while(rs.next()) {
                 UUID uuid = UUID.fromString(rs.getString("player"));
-                int balance = rs.getInt("balance");
+                String balance = rs.getString("balance");
                 String ranked = rs.getString("ranked");
                 String perms = rs.getString("perms");
                 String prefix = rs.getString("prefix");
@@ -200,7 +209,9 @@ public class SQLite {
                 String color = rs.getString("color");
                 String level = rs.getString("level");
                 String prestige = rs.getString("prestige");
-                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, false);
+                String vanish = rs.getString("vanish");
+                String god = rs.getString("god");
+                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, false);
                 count++;
             }
             System.out.println(plugin.getPU().format("&bPlayers Loaded: &3" + count));

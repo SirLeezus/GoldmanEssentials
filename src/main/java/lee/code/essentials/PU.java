@@ -100,10 +100,9 @@ public class PU {
     }
 
     public List<String> getOnlinePlayers() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         List<String> players = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            players.add(player.getName());
-        }
+        for (Player player : Bukkit.getOnlinePlayers()) if (!plugin.getData().getVanishedPlayers().contains(player.getUniqueId())) players.add(player.getName());
         return players;
     }
 
@@ -141,9 +140,7 @@ public class PU {
                     for (WrappedWatchableObject object : watchableCollection) {
                         if (object.getIndex() == 17) {
                             String value = object.getValue().toString();
-                            if (value.startsWith("Optional")) {
-                                object.setValue(Optional.of(UUID.randomUUID()));
-                            }
+                            if (value.startsWith("Optional")) event.setCancelled(true);
                         }
                     }
                 }

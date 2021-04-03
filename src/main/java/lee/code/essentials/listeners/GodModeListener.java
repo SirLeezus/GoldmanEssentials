@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.UUID;
 
-public class DamageListener implements Listener {
+public class GodModeListener implements Listener {
 
     @EventHandler
     public void onGodModeEntityDamageByEntity(EntityDamageByEntityEvent e) {
@@ -21,7 +21,7 @@ public class DamageListener implements Listener {
         if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
             UUID uuid = player.getUniqueId();
-            if (cache.isGodMode(uuid)) e.setCancelled(true);
+            if (cache.isGodPlayer(uuid)) e.setCancelled(true);
         }
     }
 
@@ -33,7 +33,7 @@ public class DamageListener implements Listener {
         if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
             UUID uuid = player.getUniqueId();
-            if (cache.isGodMode(uuid)) e.setCancelled(true);
+            if (cache.isGodPlayer(uuid)) e.setCancelled(true);
         }
     }
 
@@ -45,7 +45,7 @@ public class DamageListener implements Listener {
         if (e.getEntity() instanceof Player) {
             Player player = (Player) e.getEntity();
             UUID uuid = player.getUniqueId();
-            if (cache.isGodMode(uuid)) e.setCancelled(true);
+            if (cache.isGodPlayer(uuid)) e.setCancelled(true);
         }
     }
 }

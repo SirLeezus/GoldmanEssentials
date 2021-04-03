@@ -22,11 +22,11 @@ public class GodCMD implements CommandExecutor {
             Player player = (Player) sender;
             UUID uuid = player.getUniqueId();
 
-            if (cache.isGodMode(uuid)) {
-                cache.removeGodMode(uuid);
+            if (cache.isGodPlayer(uuid)) {
+                cache.setGodPlayer(uuid, false);
                 player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
             } else {
-                cache.setGodMode(uuid);
+                cache.setGodPlayer(uuid, true);
                 player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
             }
         }

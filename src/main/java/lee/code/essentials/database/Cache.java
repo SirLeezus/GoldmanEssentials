@@ -374,36 +374,60 @@ public class Cache {
         }
     }
 
-    public void setGodMode(UUID uuid) {
+    public void setGodPlayer(UUID uuid, boolean isGod) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
 
+        String result; if (isGod) result = "1"; else result = "0";
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            jedis.hset("godMode", sUUID, "1");
+            jedis.hset("god", sUUID, result);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setGod(sUUID, result));
         }
     }
 
-    public void removeGodMode(UUID uuid) {
+    public boolean isGodPlayer(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            jedis.hdel("godMode", sUUID);
+            String isGod = jedis.hget("god", sUUID);
+            return !isGod.equals("0");
         }
     }
 
-    public boolean isGodMode(UUID uuid) {
+    public void setVanishPlayer(UUID uuid, boolean isVanish) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String result; if (isVanish) result = "1"; else result = "0";
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("vanish", sUUID, result);
+
+            if (result.equals("1")) plugin.getData().addVanishedPlayer(uuid);
+            else plugin.getData().removeVanishedPlayer(uuid);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setVanish(sUUID, result));
+        }
+    }
+
+    public boolean isVanishPlayer(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            return jedis.hexists("godMode", sUUID);
+            String isVanish = jedis.hget("vanish", sUUID);
+            return !isVanish.equals("0");
         }
     }
 
@@ -418,17 +442,16 @@ public class Cache {
         }
     }
 
-    public void setPlayerData(UUID uuid, int balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, boolean sql) {
+    public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, boolean sql) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 
         String sUUID = String.valueOf(uuid);
-        String sBalance = String.valueOf(balance);
 
         try (Jedis jedis = pool.getResource()) {
             Pipeline pipe = jedis.pipelined();
-            pipe.hset("balance", sUUID, sBalance);
+            pipe.hset("balance", sUUID, balance);
             pipe.hset("ranked", sUUID, ranked);
             pipe.hset("perms", sUUID, perms);
             pipe.hset("prefix", sUUID, prefix);
@@ -436,8 +459,10 @@ public class Cache {
             pipe.hset("color", sUUID, color);
             pipe.hset("level", sUUID, level);
             pipe.hset("prestige", sUUID, prestige);
+            pipe.hset("vanish", sUUID, vanish);
+            pipe.hset("god", sUUID, god);
             pipe.sync();
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, sBalance, ranked, perms, prefix, suffix, color, level, prestige));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god));
         }
     }
 

@@ -21,6 +21,7 @@ public enum Lang {
     COMMAND_GAMEMODE_SUCCESSFUL("&aYou successfully changed your gamemode to &6{0}&a!"),
     COMMAND_FLY_TOGGLE_SUCCESSFUL("&aYou successfully toggled your fly {0}&a!"),
     COMMAND_GOD_TOGGLE_SUCCESSFUL("&aYou successfully toggled god mode {0}&a!"),
+    COMMAND_VANISH_TOGGLE_SUCCESSFUL("&aYou successfully toggled vanish mode {0}&a!"),
     COMMAND_FLYSPEED_SUCCESSFUL("&aYour fly speed is now set to &6{0}&a!"),
     COMMAND_BALANCE_SUCCESSFUL("&2&lBalance&7: &6${0}"),
     COMMAND_SETPREFIX_SUCCESSFUL("&aYou successfully set &6{0}'s &aprefix to: &f{1}"),

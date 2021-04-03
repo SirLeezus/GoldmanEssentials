@@ -91,6 +91,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("enchant").setExecutor(new EnchantCMD());
         getCommand("heal").setExecutor(new HealCMD());
         getCommand("god").setExecutor(new GodCMD());
+        getCommand("vanish").setExecutor(new VanishCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -121,6 +122,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("enchant").setTabCompleter(new EnchantTab());
         getCommand("heal").setTabCompleter(new HealTab());
         getCommand("god").setTabCompleter(new GodTab());
+        getCommand("vanish").setTabCompleter(new VanishTab());
     }
 
     private void registerListeners() {
@@ -136,7 +138,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BookListener(), this);
         getServer().getPluginManager().registerEvents(new CommandTabListener(), this);
         getServer().getPluginManager().registerEvents(new HatListener(), this);
-        getServer().getPluginManager().registerEvents(new DamageListener(), this);
+        getServer().getPluginManager().registerEvents(new GodModeListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

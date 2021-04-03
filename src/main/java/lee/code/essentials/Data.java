@@ -19,8 +19,9 @@ public class Data {
     @Getter private final List<String> chatColors = new ArrayList<>();
     @Getter private final List<String> gameSounds = new ArrayList<>();
     @Getter private final List<String> gameAdvancements = new ArrayList<>();
-    private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
+    @Getter private final List<UUID> vanishedPlayers = new ArrayList<>();
 
+    private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
     public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) {
         return playersRequestingTeleport.get(player) == target;
     }
@@ -29,6 +30,16 @@ public class Data {
     }
     public void removePlayerRequestingTeleport(UUID player) {
         playersRequestingTeleport.remove(player);
+    }
+
+    public void addVanishedPlayer(UUID uuid) {
+        vanishedPlayers.add(uuid);
+    }
+    public void removeVanishedPlayer(UUID uuid) {
+        vanishedPlayers.remove(uuid);
+    }
+    public boolean arePlayersVanished() {
+        return !vanishedPlayers.isEmpty();
     }
 
     public void cacheDatabase() {

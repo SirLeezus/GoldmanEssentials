@@ -101,3 +101,6 @@ commands:
   god:
     description: Toggle being in god mode.
     permission: essentails.command.god
+  vanish:
+    description: Toggle being vanished.
+    permission: essentails.command.vanish
