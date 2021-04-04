@@ -13,16 +13,11 @@ import lee.code.essentials.lists.PremiumRankList;
 import lee.code.essentials.lists.RankList;
 import lee.code.essentials.lists.Settings;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -53,10 +48,6 @@ public class PU {
 
     public Component formatC(String message) {
         return GsonComponentSerializer.gson().deserialize(legacyToJson(format(message)));
-    }
-
-    public Component formatI(String message) {
-        return Component.text(format(message));
     }
 
     public String legacyToJson(String legacyString) {
@@ -203,7 +194,8 @@ public class PU {
 
     public void scheduleEntityChunkCleaner() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             for (World world : Bukkit.getWorlds()) {
                 for (Chunk chunk : world.getLoadedChunks()) {
                     for (Entity entity : chunk.getEntities()) {
@@ -211,6 +203,24 @@ public class PU {
                     }
                 }
             }
-        }, 0L, 20L * 30);
+        }), 0L, 20L * 30);
+    }
+
+    public String formatTime(long time) {
+        long hours = time / 1000 + 6;
+        long minutes = (time % 1000) * 60 / 1000;
+        String ampm = "AM";
+        if (hours >= 12) {
+            hours -= 12;
+            ampm = "PM";
+        }
+        if (hours >= 12) {
+            hours -= 12;
+            ampm = "AM";
+        }
+        if (hours == 0) hours = 12;
+        String mm = "0" + minutes;
+        mm = mm.substring(mm.length() - 2);
+        return hours + ":" + mm + " " + ampm;
     }
 }

@@ -2,9 +2,11 @@ package lee.code.essentials;
 
 import lee.code.essentials.database.SQLite;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,6 +22,8 @@ public class Data {
     @Getter private final List<String> gameSounds = new ArrayList<>();
     @Getter private final List<String> gameAdvancements = new ArrayList<>();
     @Getter private final List<UUID> vanishedPlayers = new ArrayList<>();
+    @Getter private final List<UUID> sleepingPlayers = new ArrayList<>();
+    @Getter @Setter private BukkitTask sleepTask = null;
 
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
     public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) {
@@ -40,6 +44,13 @@ public class Data {
     }
     public boolean arePlayersVanished() {
         return !vanishedPlayers.isEmpty();
+    }
+
+    public void addSleepingPlayer(UUID uuid) {
+        sleepingPlayers.add(uuid);
+    }
+    public void removeSleepingPlayer(UUID uuid) {
+        sleepingPlayers.remove(uuid);
     }
 
     public void cacheDatabase() {

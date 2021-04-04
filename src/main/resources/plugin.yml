@@ -104,3 +104,12 @@ commands:
   vanish:
     description: Toggle being vanished.
     permission: essentails.command.vanish
+  head:
+    description: Give yourself any player head.
+    permission: essentails.command.head
+  feed:
+    description: Feed yourself.
+    permission: essentails.command.feed
+  time:
+    description: Set the time of the current world you're in.
+    permission: essentails.command.time
