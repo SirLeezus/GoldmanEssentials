@@ -13,6 +13,7 @@ import lee.code.essentials.lists.PremiumRankList;
 import lee.code.essentials.lists.RankList;
 import lee.code.essentials.lists.Settings;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -47,7 +48,7 @@ public class PU {
     }
 
     public Component formatC(String message) {
-        return GsonComponentSerializer.gson().deserialize(legacyToJson(format(message)));
+        return GsonComponentSerializer.gson().deserialize(legacyToJson(format(message))).decoration(TextDecoration.ITALIC, false);
     }
 
     public String legacyToJson(String legacyString) {
@@ -61,6 +62,11 @@ public class PU {
 
     public String formatAmount(double value) {
         DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(value);
+    }
+
+    public String shortenDouble(double value) {
+        DecimalFormat formatter = new DecimalFormat("#.##");
         return formatter.format(value);
     }
 
@@ -192,19 +198,18 @@ public class PU {
         return count;
     }
 
-    public void scheduleEntityChunkCleaner() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            for (World world : Bukkit.getWorlds()) {
-                for (Chunk chunk : world.getLoadedChunks()) {
-                    for (Entity entity : chunk.getEntities()) {
-                        if (countEntitiesInChunk(chunk, entity.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
-                    }
-                }
-            }
-        }), 0L, 20L * 30);
-    }
+//    public void scheduleEntityChunkCleaner() {
+//        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+//        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+//            for (World world : Bukkit.getWorlds()) {
+//                for (Chunk chunk : world.getLoadedChunks()) {
+//                    for (Entity entity : chunk.getEntities()) {
+//                        if (countEntitiesInChunk(chunk, entity.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+//                    }
+//                }
+//            }
+//        }), 0L, 20L * 30);
+//    }
 
     public String formatTime(long time) {
         long hours = time / 1000 + 6;
@@ -222,5 +227,13 @@ public class PU {
         String mm = "0" + minutes;
         mm = mm.substring(mm.length() - 2);
         return hours + ":" + mm + " " + ampm;
+    }
+
+    public void addPlayerClickDelay(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        plugin.getData().addPlayerClickDelay(uuid);
+        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        scheduler.runTaskLater(plugin, () -> plugin.getData().removePlayerClickDelay(uuid), Settings.CLICK_DELAY.getValue());
+
     }
 }

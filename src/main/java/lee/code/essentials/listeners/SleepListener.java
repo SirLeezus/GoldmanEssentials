@@ -71,7 +71,7 @@ public class SleepListener implements Listener {
                 e.setUseBed(Event.Result.ALLOW);
                 Title.Times weatherTimes = Title.Times.of(Ticks.duration(20), Ticks.duration(100), Ticks.duration(20));
                 world.setClearWeatherDuration(18000);
-                player.showTitle(Title.title(plugin.getPU().formatC("#FF8300" + plugin.getPU().formatTime(world.getTime())), plugin.getPU().formatC("#00D1FFWeather has been cleared!"), weatherTimes));
+                player.showTitle(Title.title(plugin.getPU().formatC("#FF8300" + plugin.getPU().formatTime(world.getTime())), plugin.getPU().formatC("#00E0FFWeather has been cleared!"), weatherTimes));
             }
         }
     }

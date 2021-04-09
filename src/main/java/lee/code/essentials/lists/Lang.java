@@ -12,6 +12,8 @@ public enum Lang {
     WARNING("&4&lWarning &6➔ &r"),
     ON("&2&lON"),
     OFF("&c&lOFF"),
+    TRUE("&2True"),
+    FALSE("&cFalse"),
     TELEPORT("&eWhooosh!"),
     PLAYER_JOIN(" &ajoined the server!"),
     PLAYER_QUIT(" &7left the server."),
@@ -54,6 +56,7 @@ public enum Lang {
     COMMAND_RANKUP_CONFIRM_PRESTIGE_HOVER("&aClick to prestige to level {0}&a!"),
     COMMAND_RANKUP_BROADCAST("&aPlayer &6{0} &ahas ranked up to {1}&a!"),
     COMMAND_RANKUP_CHECK("&aAdvancement check completed successfully! You currently have &2{0}&7/&2{1} &aadvancements completed."),
+    ERROR_ARMOR_STAND_EDIT("&cThat armor stand is currently being edited by another player."),
     ERROR_COMMAND_RANKUP_CONFIRM("&cYou only have &2{0} &cadvancements completed and you need &2{1} &cto rankup."),
     ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED("&cYou already have a pending teleport request sent to &6{0}&c."),
     ERROR_COMMAND_TELEPORT_NOT_REQUESTING("&cThe player &6{0} &cis not currently requesting teleportation."),
@@ -75,6 +78,25 @@ public enum Lang {
     ERROR_COMMAND_GAMEMODE_ARGS("&cYou need to input a gamemode to use this command."),
     ERROR_COMMAND_FLYSPEED_LIMIT("&cYou can only adjust your fly speed between 1 and 10."),
     ERROR_COMMAND_FLYSPEED_ARGS("&cYou need to input a number between 1 and 10 to use this command."),
+    MENU_ARMOR_STAND_POSITION_LORE("&7» Left-Click +0.01\n&7» Right-Click -0.01\n&7» Shift-Click x10"),
+    MENU_ARMOR_STAND_DIRECTION_POSITION_LORE("&7» Left-Click +0.50\n&7» Right-Click -0.50\n&7» Shift-Click x50"),
+    MENU_ARMOR_STAND_SETTING_INVULNERABLE("&6&lInvulnerable&7: {0}"),
+    MENU_ARMOR_STAND_SETTING_ARMS("&6&lArms&7: {0}"),
+    MENU_ARMOR_STAND_SETTING_PLATE("&6&lPlate&7: {0}"),
+    MENU_ARMOR_STAND_SETTING_SMALL("&6&lSmall&7: {0}"),
+    MENU_ARMOR_STAND_SETTING_VISIBLE("&6&lVisible&7: {0}"),
+    MENU_ARMOR_STAND_SETTING_GLOWING("&6&lGlowing&7: {0}"),
+    MENU_ARMOR_STAND_SETTING_NAME_VISIBLE("&6&lName Visible&7: {0}"),
+    MENU_ARMOR_STAND_SETTING_GRAVITY("&6&lGravity&7: {0}"),
+    MENU_ARMOR_STAND_POSITION("#0049bf&lPosition {0}"),
+    MENU_ARMOR_STAND_HEAD_POSITION("#ffee05&lHead Position {0}"),
+    MENU_ARMOR_STAND_TORSO_POSITION("#FF7C00&lTorso Position {0}"),
+    MENU_ARMOR_STAND_LEFT_ARM_POSITION("#FF00EC&lLeft Arm Position {0}"),
+    MENU_ARMOR_STAND_LEFT_LEG_POSITION("#00CDFF&lLeft Leg Position {0}"),
+    MENU_ARMOR_STAND_RIGHT_LEG_POSITION("#00CDFF&lRight Leg Position {0}"),
+    MENU_ARMOR_STAND_DIRECTION_POSITION("#0D7E00&lDirection&7 &cYaw&7: &6{0}"),
+    MENU_ARMOR_STAND_RIGHT_ARM_POSITION("#FF00EC&lRight Arm Position {0}"),
+    MENU_ARMOR_STAND_TITLE("#0D7E00&lArmor Stand Editor"),
     ;
 
     @Getter private final String string;
@@ -82,8 +104,7 @@ public enum Lang {
     public String getString(String[] variables) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         String value = string;
-        if (variables == null) return plugin.getPU().format(string);
-        else if (variables.length == 0) return plugin.getPU().format(string);
+        if (variables == null || variables.length == 0) return plugin.getPU().format(value);
         for (int i = 0; i < variables.length; i++) value = value.replace("{" + i + "}", variables[i]);
         return plugin.getPU().format(value);
     }
@@ -91,8 +112,7 @@ public enum Lang {
     public Component getComponent(String[] variables) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         String value = string;
-        if (variables == null) return plugin.getPU().formatC(string);
-        else if (variables.length == 0) return plugin.getPU().formatC(string);
+        if (variables == null || variables.length == 0) return plugin.getPU().formatC(value);
         for (int i = 0; i < variables.length; i++) value = value.replace("{" + i + "}", variables[i]);
         return plugin.getPU().formatC(value);
     }

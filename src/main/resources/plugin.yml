@@ -10,106 +10,110 @@ commands:
     permission: essentials.command.spawn
   setspawn:
     description: Set the server spawn point.
-    permission: essentails.command.setspawn
+    permission: essentials.command.setspawn
   gamemode:
     description: Set your gamemode.
-    permission: essentails.command.gamemode
+    permission: essentials.command.gamemode
     aliases: [gm]
   fly:
     description: Toggle your ability to fly.
-    permission: essentails.command.fly
+    permission: essentials.command.fly
   flyspeed:
     description: Change your fly speed.
-    permission: essentails.command.flyspeed
+    permission: essentials.command.flyspeed
   world:
     description: Change the world you're in.
-    permission: essentails.command.world
+    permission: essentials.command.world
   balance:
     description: Check your balance.
-    permission: essentails.command.balance
+    permission: essentials.command.balance
     aliases: [bal]
   balancetop:
     description: Check the server balance leaderboard.
-    permission: essentails.command.balancetop
+    permission: essentials.command.balancetop
     aliases: [baltop]
   money:
     description: Change a players balance.
-    permission: essentails.command.money
+    permission: essentials.command.money
     aliases: [eco]
   invsee:
     description: Opens a players inventory.
-    permission: essentails.command.invsee
+    permission: essentials.command.invsee
   rankup:
     description: Rankup player info.
-    permission: essentails.command.rankup
+    permission: essentials.command.rankup
   setprefix:
     description: Set a player's prefix.
-    permission: essentails.command.setprefix
+    permission: essentials.command.setprefix
   setcolor:
     description: Set a player's color.
-    permission: essentails.command.setcolor
+    permission: essentials.command.setcolor
   teleport:
     description: Teleport to a player.
-    permission: essentails.command.teleport
+    permission: essentials.command.teleport
     aliases: [tp]
   teleportaccept:
     description: Accept a teleport request.
-    permission: essentails.command.teleportaccept
+    permission: essentials.command.teleportaccept
     aliases: [tpaccept]
   teleportdeny:
     description: Deny a teleport request.
-    permission: essentails.command.teleportdeny
+    permission: essentials.command.teleportdeny
     aliases: [tpdeny]
   sound:
     description: Play a sound for a player.
-    permission: essentails.command.sound
+    permission: essentials.command.sound
   glow:
     description: Toggle if you're glowing.
-    permission: essentails.command.glow
+    permission: essentials.command.glow
   itemrename:
     description: Rename the item you're holding.
-    permission: essentails.command.itemrename
+    permission: essentials.command.itemrename
   zap:
     description: Strike a location or player with lightning.
-    permission: essentails.command.zap
+    permission: essentials.command.zap
   advancement:
     description: Give a player an advancement.
-    permission: essentails.command.advancement
+    permission: essentials.command.advancement
   ranklist:
     description: Lists all the ranks in the server.
-    permission: essentails.command.ranklist
+    permission: essentials.command.ranklist
   setrank:
     description: Set a player's rank.
-    permission: essentails.command.setrank
+    permission: essentials.command.setrank
   summon:
     description: Spawn an entity.
-    permission: essentails.command.summon
+    permission: essentials.command.summon
   message:
     description: Message a online player.
-    permission: essentails.command.message
+    permission: essentials.command.message
     aliases: [msg, tell]
   reply:
     description: Reply to a online player.
-    permission: essentails.command.reply
+    permission: essentials.command.reply
     aliases: [r]
   enchant:
     description: Enchant the item you're holding.
-    permission: essentails.command.enchant
+    permission: essentials.command.enchant
   heal:
     description: Give yourself full health.
-    permission: essentails.command.heal
+    permission: essentials.command.heal
   god:
     description: Toggle being in god mode.
-    permission: essentails.command.god
+    permission: essentials.command.god
   vanish:
     description: Toggle being vanished.
-    permission: essentails.command.vanish
+    permission: essentials.command.vanish
   head:
     description: Give yourself any player head.
-    permission: essentails.command.head
+    permission: essentials.command.head
   feed:
     description: Feed yourself.
-    permission: essentails.command.feed
+    permission: essentials.command.feed
   time:
     description: Set the time of the current world you're in.
-    permission: essentails.command.time
+    permission: essentials.command.time
+  staffchat:
+    description: Talk in the staff chat channel.
+    permission: essentials.command.staffchat
+    aliases: [sc]

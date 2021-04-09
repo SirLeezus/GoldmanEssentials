@@ -1,6 +1,7 @@
 package lee.code.essentials;
 
 import lee.code.essentials.database.SQLite;
+import lee.code.essentials.menusystem.PlayerMU;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
@@ -23,9 +24,13 @@ public class Data {
     @Getter private final List<String> gameAdvancements = new ArrayList<>();
     @Getter private final List<UUID> vanishedPlayers = new ArrayList<>();
     @Getter private final List<UUID> sleepingPlayers = new ArrayList<>();
+    @Getter private final List<UUID> playerClickDelay = new ArrayList<>();
     @Getter @Setter private BukkitTask sleepTask = null;
 
+    private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, UUID> activeArmorStands = new ConcurrentHashMap<>();
+
     public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) {
         return playersRequestingTeleport.get(player) == target;
     }
@@ -34,6 +39,16 @@ public class Data {
     }
     public void removePlayerRequestingTeleport(UUID player) {
         playersRequestingTeleport.remove(player);
+    }
+
+    public boolean isArmorStandActive(UUID target) {
+        return activeArmorStands.containsValue(target);
+    }
+    public void setArmorStandActive(UUID player, UUID target) {
+        activeArmorStands.put(player, target);
+    }
+    public void removeArmorStandActive(UUID player) {
+        activeArmorStands.remove(player);
     }
 
     public void addVanishedPlayer(UUID uuid) {
@@ -53,11 +68,31 @@ public class Data {
         sleepingPlayers.remove(uuid);
     }
 
+    public boolean hasPlayerClickDelay(UUID uuid) {
+        return playerClickDelay.contains(uuid);
+    }
+    public void addPlayerClickDelay(UUID uuid) {
+        playerClickDelay.add(uuid);
+    }
+    public void removePlayerClickDelay(UUID uuid) {
+        playerClickDelay.remove(uuid);
+    }
+
     public void cacheDatabase() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         SQL.loadPlayerData();
         SQL.loadServerData();
+    }
+
+    public PlayerMU getPlayerMU(UUID uuid) {
+        if (playerMUList.containsKey(uuid)) {
+            return playerMUList.get(uuid);
+        } else {
+            PlayerMU pmu = new PlayerMU(uuid);
+            playerMUList.put(uuid, pmu);
+            return pmu;
+        }
     }
 
     public void loadListData() {

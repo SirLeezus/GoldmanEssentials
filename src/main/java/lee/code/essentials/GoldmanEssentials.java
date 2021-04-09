@@ -50,7 +50,6 @@ public class GoldmanEssentials extends JavaPlugin {
 
         permissionManager.loadPerms();
         pU.registerTamedEntityFix();
-        pU.scheduleEntityChunkCleaner();
     }
 
     @Override
@@ -95,6 +94,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("head").setExecutor(new HeadCMD());
         getCommand("feed").setExecutor(new FeedCMD());
         getCommand("time").setExecutor(new TimeCMD());
+        getCommand("staffchat").setExecutor(new StaffChatCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -129,6 +129,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("head").setTabCompleter(new HeadTab());
         getCommand("feed").setTabCompleter(new FeedTab());
         getCommand("time").setTabCompleter(new TimeTab());
+        getCommand("staffchat").setTabCompleter(new StaffChatTab());
     }
 
     private void registerListeners() {
@@ -138,7 +139,6 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChunkEntityListener(), this);
         getServer().getPluginManager().registerEvents(new ChairListener(), this);
         getServer().getPluginManager().registerEvents(new AchievementListener(), this);
-        getServer().getPluginManager().registerEvents(new EnderPearlListener(), this);
         getServer().getPluginManager().registerEvents(new SignListener(), this);
         getServer().getPluginManager().registerEvents(new AnvilListener(), this);
         getServer().getPluginManager().registerEvents(new BookListener(), this);
@@ -146,6 +146,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HatListener(), this);
         getServer().getPluginManager().registerEvents(new GodModeListener(), this);
         getServer().getPluginManager().registerEvents(new SleepListener(), this);
+        getServer().getPluginManager().registerEvents(new MenuListener(), this);
+        getServer().getPluginManager().registerEvents(new ArmorStandListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {
