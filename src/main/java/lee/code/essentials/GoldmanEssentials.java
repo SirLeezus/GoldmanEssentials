@@ -50,6 +50,7 @@ public class GoldmanEssentials extends JavaPlugin {
 
         permissionManager.loadPerms();
         pU.registerTamedEntityFix();
+        pU.scheduleEntityChunkCleaner();
     }
 
     @Override
@@ -95,6 +96,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("feed").setExecutor(new FeedCMD());
         getCommand("time").setExecutor(new TimeCMD());
         getCommand("staffchat").setExecutor(new StaffChatCMD());
+        getCommand("give").setExecutor(new GiveCMD());
+        getCommand("weather").setExecutor(new WeatherCMD());
+        getCommand("help").setExecutor(new HelpCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -130,6 +134,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("feed").setTabCompleter(new FeedTab());
         getCommand("time").setTabCompleter(new TimeTab());
         getCommand("staffchat").setTabCompleter(new StaffChatTab());
+        getCommand("give").setTabCompleter(new GiveTab());
+        getCommand("weather").setTabCompleter(new WeatherTab());
+        getCommand("help").setTabCompleter(new HelpTab());
     }
 
     private void registerListeners() {
@@ -148,6 +155,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SleepListener(), this);
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new ArmorStandListener(), this);
+        getServer().getPluginManager().registerEvents(new HeadDropListener(), this);
+        getServer().getPluginManager().registerEvents(new HopperFilterListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

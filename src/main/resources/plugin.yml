@@ -8,112 +8,158 @@ commands:
   spawn:
     description: Teleport to spawn.
     permission: essentials.command.spawn
+    usage: "/spawn"
   setspawn:
     description: Set the server spawn point.
     permission: essentials.command.setspawn
+    usage: "/setspawn"
   gamemode:
     description: Set your gamemode.
     permission: essentials.command.gamemode
     aliases: [gm]
+    usage: "/gamemode &f<gamemode>"
   fly:
     description: Toggle your ability to fly.
     permission: essentials.command.fly
+    usage: "/fly"
   flyspeed:
     description: Change your fly speed.
     permission: essentials.command.flyspeed
+    usage: "/flyspeed &f<amount>"
   world:
     description: Change the world you're in.
     permission: essentials.command.world
+    usage: "/world &f<world>"
   balance:
     description: Check your balance.
     permission: essentials.command.balance
     aliases: [bal]
+    usage: "/balance"
   balancetop:
     description: Check the server balance leaderboard.
     permission: essentials.command.balancetop
     aliases: [baltop]
+    usage: "/balancetop"
   money:
     description: Change a players balance.
     permission: essentials.command.money
     aliases: [eco]
+    usage: "/money"
   invsee:
     description: Opens a players inventory.
     permission: essentials.command.invsee
+    usage: "/invsee &f<player>"
   rankup:
     description: Rankup player info.
     permission: essentials.command.rankup
+    usage: "/rankup"
   setprefix:
     description: Set a player's prefix.
     permission: essentials.command.setprefix
+    usage: "/setprefix &f<player> <prefix>"
   setcolor:
     description: Set a player's color.
     permission: essentials.command.setcolor
+    usage: "/setcolor &f<player> <color>"
   teleport:
     description: Teleport to a player.
     permission: essentials.command.teleport
     aliases: [tp]
+    usage: "/teleport &f<player>"
   teleportaccept:
     description: Accept a teleport request.
     permission: essentials.command.teleportaccept
     aliases: [tpaccept]
+    usage: "/teleportaccept &f<player>"
   teleportdeny:
     description: Deny a teleport request.
     permission: essentials.command.teleportdeny
     aliases: [tpdeny]
+    usage: "/teleportdeny &f<player>"
   sound:
     description: Play a sound for a player.
     permission: essentials.command.sound
+    usage: "/sound"
   glow:
     description: Toggle if you're glowing.
     permission: essentials.command.glow
+    usage: "/glow"
   itemrename:
     description: Rename the item you're holding.
     permission: essentials.command.itemrename
+    usage: "/itemname &f<name>"
   zap:
     description: Strike a location or player with lightning.
     permission: essentials.command.zap
+    usage: "/zap"
   advancement:
     description: Give a player an advancement.
     permission: essentials.command.advancement
+    usage: "/advancement &f<grant/revoke> <player> <advancement>"
   ranklist:
     description: Lists all the ranks in the server.
     permission: essentials.command.ranklist
+    usage: "/ranklist"
   setrank:
     description: Set a player's rank.
     permission: essentials.command.setrank
+    usage: "/setrank &f<player> <rank>"
   summon:
     description: Spawn an entity.
     permission: essentials.command.summon
+    usage: "/summon &f<entity>"
   message:
     description: Message a online player.
     permission: essentials.command.message
     aliases: [msg, tell]
+    usage: "/message &f<message>"
   reply:
     description: Reply to a online player.
     permission: essentials.command.reply
     aliases: [r]
+    usage: "/r &f<message>"
   enchant:
     description: Enchant the item you're holding.
     permission: essentials.command.enchant
+    usage: "/enchant &f<enchant> <level>"
   heal:
     description: Give yourself full health.
     permission: essentials.command.heal
+    usage: "/heal"
   god:
     description: Toggle being in god mode.
     permission: essentials.command.god
+    usage: "/god"
   vanish:
     description: Toggle being vanished.
     permission: essentials.command.vanish
+    usage: "/vanish"
   head:
     description: Give yourself any player head.
     permission: essentials.command.head
+    usage: "/head &f<player>"
   feed:
     description: Feed yourself.
     permission: essentials.command.feed
+    usage: "/feed"
   time:
     description: Set the time of the current world you're in.
     permission: essentials.command.time
+    usage: "/time &f<setting>"
   staffchat:
     description: Talk in the staff chat channel.
     permission: essentials.command.staffchat
     aliases: [sc]
+    usage: "/sc &f<message>"
+  give:
+    description: Give a user a item.
+    permission: essentials.command.give
+    usage: "/give &f<material> <player> <amount>"
+  weather:
+    description: Change the weather in the world you're in.
+    permission: essentials.command.weather
+    usage: "/weather &f<setting>"
+  help:
+    description: Plugin info for plugins installed.
+    permission: essentials.command.help
+    usage: "/help"

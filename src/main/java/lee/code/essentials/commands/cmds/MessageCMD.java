@@ -19,10 +19,10 @@ public class MessageCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
 
         if (sender instanceof Player) {
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-            Cache cache = plugin.getCache();
             Player player = (Player) sender;
             UUID uuid = player.getUniqueId();
 

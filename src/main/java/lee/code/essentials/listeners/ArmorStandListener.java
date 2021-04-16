@@ -41,8 +41,6 @@ public class ArmorStandListener implements Listener {
     public void onArmorStandMenuClose(InventoryCloseEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         InventoryHolder holder = e.getInventory().getHolder();
-        if (holder instanceof Menu) {
-            plugin.getData().removeArmorStandActive(e.getPlayer().getUniqueId());
-        }
+        if (holder instanceof Menu) plugin.getData().removeArmorStandActive(e.getPlayer().getUniqueId());
     }
 }

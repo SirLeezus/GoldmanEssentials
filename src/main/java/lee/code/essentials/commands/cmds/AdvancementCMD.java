@@ -36,7 +36,7 @@ public class AdvancementCMD implements CommandExecutor {
                                         for (String criteria : progress.getRemainingCriteria()) progress.awardCriteria(criteria);
                                     }
                                 } else {
-                                    for (String sKey : plugin.getData().getGameAdvancements()) {
+                                    for (String sKey : plugin.getData().getAdvancementNames()) {
                                         NamespacedKey key = NamespacedKey.minecraft(sKey);
                                         Advancement advancement = Bukkit.getAdvancement(key);
                                         if (advancement != null) {
@@ -56,7 +56,7 @@ public class AdvancementCMD implements CommandExecutor {
                                         for (String criteria : progress.getAwardedCriteria()) progress.revokeCriteria(criteria);
                                     }
                                 } else {
-                                    for (String sKey : plugin.getData().getGameAdvancements()) {
+                                    for (String sKey : plugin.getData().getAdvancementNames()) {
                                         NamespacedKey key = NamespacedKey.minecraft(sKey);
                                         Advancement advancement = Bukkit.getAdvancement(key);
                                         if (advancement != null) {

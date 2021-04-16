@@ -7,23 +7,28 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.google.common.base.Strings;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import lee.code.essentials.database.Cache;
-import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.PremiumRankList;
-import lee.code.essentials.lists.RankList;
-import lee.code.essentials.lists.Settings;
+import lee.code.essentials.lists.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
@@ -44,11 +49,12 @@ public class PU {
             message = message.replace(color, ChatColor.of(color) + "");
             matcher = HEX_REGEX.matcher(message);
         }
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return ChatColor.translateAlternateColorCodes('&', message).replaceAll("&", "");
     }
 
     public Component formatC(String message) {
-        return GsonComponentSerializer.gson().deserialize(legacyToJson(format(message))).decoration(TextDecoration.ITALIC, false);
+        LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
+        return Component.empty().decoration(TextDecoration.ITALIC, false).append(serializer.deserialize(message));
     }
 
     public String legacyToJson(String legacyString) {
@@ -65,6 +71,11 @@ public class PU {
         return formatter.format(value);
     }
 
+    public int rng() {
+        SecureRandom sr = new SecureRandom();
+        return sr.nextInt(1000);
+    }
+
     public String shortenDouble(double value) {
         DecimalFormat formatter = new DecimalFormat("#.##");
         return formatter.format(value);
@@ -76,6 +87,10 @@ public class PU {
 
     public List<String> getPremiumRanks() {
         return EnumSet.allOf(PremiumRankList.class).stream().map(PremiumRankList::name).collect(Collectors.toList());
+    }
+
+    public List<String> getEntityHeads() {
+        return EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).collect(Collectors.toList());
     }
 
     public String buildStringFromArgs(String[] args, int start) {
@@ -194,22 +209,26 @@ public class PU {
 
     public int countEntitiesInChunk(Chunk chunk, EntityType type) {
         int count = 0;
-        for (Entity e : chunk.getEntities()) if (type.equals(e.getType()) && !e.isDead()) count++;
+        for (Entity e : chunk.getEntities()) if (type.equals(e.getType()) && !e.isDead() && !(e instanceof Player)) count++;
         return count;
     }
 
-//    public void scheduleEntityChunkCleaner() {
-//        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-//        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-//            for (World world : Bukkit.getWorlds()) {
-//                for (Chunk chunk : world.getLoadedChunks()) {
-//                    for (Entity entity : chunk.getEntities()) {
-//                        if (countEntitiesInChunk(chunk, entity.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
-//                    }
-//                }
-//            }
-//        }), 0L, 20L * 30);
-//    }
+    public void scheduleEntityChunkCleaner() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                for (World world : Bukkit.getWorlds()) {
+                    for (Chunk chunk : world.getLoadedChunks()) {
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            for (Entity entity : chunk.getEntities()) {
+                                if (entity.getCustomName() == null && countEntitiesInChunk(chunk, entity.getType()) > Settings.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+                            }
+                        });
+                    }
+                }
+            }
+        }), 0L, 20L * 30);
+    }
 
     public String formatTime(long time) {
         long hours = time / 1000 + 6;
@@ -234,6 +253,21 @@ public class PU {
         plugin.getData().addPlayerClickDelay(uuid);
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         scheduler.runTaskLater(plugin, () -> plugin.getData().removePlayerClickDelay(uuid), Settings.CLICK_DELAY.getValue());
+    }
 
+    public void applyHeadSkin(ItemStack head, String base64, UUID uuid) {
+        try {
+            SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+            GameProfile profile = new GameProfile(uuid, null);
+            profile.getProperties().put("textures", new Property("textures", base64));
+            if (skullMeta != null) {
+                Method mtd = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
+                mtd.setAccessible(true);
+                mtd.invoke(skullMeta, profile);
+            }
+            head.setItemMeta(skullMeta);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
     }
 }

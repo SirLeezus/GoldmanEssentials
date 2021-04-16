@@ -19,9 +19,10 @@ public class Data {
 
     @Getter private final List<String> worldNames = new ArrayList<>();
     @Getter private final List<String> enchantNames = new ArrayList<>();
-    @Getter private final List<String> chatColors = new ArrayList<>();
-    @Getter private final List<String> gameSounds = new ArrayList<>();
-    @Getter private final List<String> gameAdvancements = new ArrayList<>();
+    @Getter private final List<String> colorNames = new ArrayList<>();
+    @Getter private final List<String> soundNames = new ArrayList<>();
+    @Getter private final List<String> advancementNames = new ArrayList<>();
+    @Getter private final List<String> materialNames = new ArrayList<>();
     @Getter private final List<UUID> vanishedPlayers = new ArrayList<>();
     @Getter private final List<UUID> sleepingPlayers = new ArrayList<>();
     @Getter private final List<UUID> playerClickDelay = new ArrayList<>();
@@ -105,12 +106,12 @@ public class Data {
 
         //chat colors
         for (ChatColor color : ChatColor.values()) {
-            chatColors.add(color.name());
+            colorNames.add(color.name());
         }
 
         //sounds
         for (Sound sound : Sound.values()) {
-            gameSounds.add(sound.name());
+            soundNames.add(sound.name().toLowerCase());
         }
 
         //enchants
@@ -118,12 +119,17 @@ public class Data {
             enchantNames.add(enchantment.getKey().value());
         }
 
+        //materials
+        for (Material material : Material.values()) {
+            materialNames.add(material.name().toLowerCase());
+        }
+
         //advancements
         Iterator<Advancement> it = plugin.getServer().advancementIterator();
         while (it.hasNext()) {
             String key = it.next().getKey().getKey();
             if (!key.contains("/root")) {
-                if (key.contains("story/") || key.contains("nether/") || key.contains("end/") || key.contains("adventure/") || key.contains("husbandry/")) gameAdvancements.add(key);
+                if (key.contains("story/") || key.contains("nether/") || key.contains("end/") || key.contains("adventure/") || key.contains("husbandry/")) advancementNames.add(key);
             }
         }
     }

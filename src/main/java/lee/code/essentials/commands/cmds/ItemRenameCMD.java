@@ -25,7 +25,7 @@ public class ItemRenameCMD implements CommandExecutor {
 
                 if (item.getType() != Material.AIR) {
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(plugin.getPU().format(name));
+                    itemMeta.displayName(plugin.getPU().formatC(name));
                     item.setItemMeta(itemMeta);
                 }
             }

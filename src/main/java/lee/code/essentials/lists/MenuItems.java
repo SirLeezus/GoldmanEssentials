@@ -3,6 +3,7 @@ package lee.code.essentials.lists;
 import lee.code.essentials.GoldmanEssentials;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -39,12 +40,12 @@ public enum MenuItems {
         ItemStack item = new ItemStack(type);
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta != null) {
-            if (name != null) itemMeta.setDisplayName(plugin.getPU().format(name));
+            if (name != null) itemMeta.displayName(plugin.getPU().formatC(name));
             if (lore != null) {
                 String[] split = StringUtils.split(lore, "\n");
-                List<String> lines = new ArrayList<>();
-                for (String line : split) lines.add(plugin.getPU().format( line));
-                itemMeta.setLore(lines);
+                List<Component> lines = new ArrayList<>();
+                for (String line : split) lines.add(plugin.getPU().formatC(line));
+                itemMeta.lore(lines);
             }
         }
         item.setItemMeta(itemMeta);

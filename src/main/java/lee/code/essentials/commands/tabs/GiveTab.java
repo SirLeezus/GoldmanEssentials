@@ -9,10 +9,9 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class AdvancementTab implements TabCompleter {
+public class GiveTab implements TabCompleter {
 
     private final List<String> blank = new ArrayList<>();
     
@@ -22,12 +21,10 @@ public class AdvancementTab implements TabCompleter {
 
         if (sender instanceof Player) {
             if (args.length == 1) {
-                return StringUtil.copyPartialMatches(args[0], Arrays.asList("grant", "revoke"), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[0], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
             } else if (args.length == 2) {
-                return StringUtil.copyPartialMatches(args[1], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
-            } else if (args.length == 3) {
-                return StringUtil.copyPartialMatches(args[2], plugin.getData().getAdvancementNames(), new ArrayList<>());
-            }  else return blank;
+                return StringUtil.copyPartialMatches(args[1], plugin.getData().getMaterialNames(), new ArrayList<>());
+            } else return blank;
         } else return blank;
     }
 }

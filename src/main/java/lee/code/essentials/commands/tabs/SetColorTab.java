@@ -23,7 +23,7 @@ public class SetColorTab implements TabCompleter {
             if (args.length == 1) {
                 return StringUtil.copyPartialMatches(args[0], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
             } else if (args.length == 2) {
-                return StringUtil.copyPartialMatches(args[1], plugin.getData().getChatColors(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[1], plugin.getData().getColorNames(), new ArrayList<>());
             } else return blank;
         } else return blank;
     }

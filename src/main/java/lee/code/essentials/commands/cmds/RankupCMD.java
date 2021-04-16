@@ -35,7 +35,7 @@ public class RankupCMD implements CommandExecutor {
             String rank = cache.getRank(uuid);
 
             int level = cache.getLevel(uuid);
-            int maxLevel = plugin.getData().getGameAdvancements().size();
+            int maxLevel = plugin.getData().getAdvancementNames().size();
             int rankupLevel = RankList.valueOf(rank).getRankupLevel();
             int rewardAmount = 1;
             String nextRank = RankList.valueOf(rank).getNextRank();
@@ -96,7 +96,7 @@ public class RankupCMD implements CommandExecutor {
                             cache.setPrefix(uuid, RankList.NOMAD.getPrefix());
                         }
 
-                        for (String sKey : plugin.getData().getGameAdvancements()) {
+                        for (String sKey : plugin.getData().getAdvancementNames()) {
                             NamespacedKey key = NamespacedKey.minecraft(sKey);
                             Advancement advancement = Bukkit.getAdvancement(key);
                             if (advancement != null) {
@@ -112,7 +112,7 @@ public class RankupCMD implements CommandExecutor {
 
             } else if (args[0].equalsIgnoreCase("check")) {
                 int levelCheck = 0;
-                for (String sKey : plugin.getData().getGameAdvancements()) {
+                for (String sKey : plugin.getData().getAdvancementNames()) {
                     NamespacedKey key = NamespacedKey.minecraft(sKey);
                     Advancement advancement = Bukkit.getAdvancement(key);
                     if (advancement != null) {

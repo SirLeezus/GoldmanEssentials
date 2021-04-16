@@ -23,7 +23,7 @@ public class SoundTab implements TabCompleter {
             if (args.length == 1) {
                 return StringUtil.copyPartialMatches(args[0], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
             } if (args.length == 2) {
-                return StringUtil.copyPartialMatches(args[1], plugin.getData().getGameSounds(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[1], plugin.getData().getSoundNames(), new ArrayList<>());
             } else return blank;
         } else return blank;
     }

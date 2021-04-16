@@ -25,7 +25,7 @@ public class SetColorCMD implements CommandExecutor {
                 if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
-                        if (plugin.getData().getChatColors().contains(args[1])) {
+                        if (plugin.getData().getColorNames().contains(args[1])) {
                             String color = args[1];
                             cache.setColor(target.getUniqueId(), color);
                             plugin.getPU().updateDisplayName(target);
