@@ -25,7 +25,7 @@ public class StaffChatCMD implements CommandExecutor {
 
                 for (Player oPlayer : Bukkit.getOnlinePlayers()) {
                     if (player.hasPermission("essentials.command.staffchat")) {
-                        oPlayer.sendMessage(plugin.getPU().formatC("#0073A5[#A50000&lSC#0073A5] ").append(player.displayName()).append(plugin.getPU().formatC("#0073A5: ")).append(Component.text(message)).color(NamedTextColor.GOLD));
+                        oPlayer.sendMessage(plugin.getPU().formatC("&#0073A5[&#A50000&lSC&#0073A5] ").append(player.displayName()).append(plugin.getPU().formatC("&#0073A5: ")).append(Component.text(message)).color(NamedTextColor.GOLD));
                     }
                 }
             }
