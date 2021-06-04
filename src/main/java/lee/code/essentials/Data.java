@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class Data {
 
     @Getter private final List<String> worldNames = new ArrayList<>();
     @Getter private final List<String> enchantNames = new ArrayList<>();
+    @Getter private final List<String> entityNames = new ArrayList<>();
     @Getter private final List<String> colorNames = new ArrayList<>();
     @Getter private final List<String> soundNames = new ArrayList<>();
     @Getter private final List<String> advancementNames = new ArrayList<>();
@@ -112,6 +114,11 @@ public class Data {
         //sounds
         for (Sound sound : Sound.values()) {
             soundNames.add(sound.name().toLowerCase());
+        }
+
+        //entity names
+        for (EntityType entity : EntityType.values()) {
+            entityNames.add(entity.name().toLowerCase());
         }
 
         //enchants

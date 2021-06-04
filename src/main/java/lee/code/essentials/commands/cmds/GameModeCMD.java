@@ -26,25 +26,25 @@ public class GameModeCMD implements CommandExecutor {
                     case "survival":
                     case "0":
                         player.setGameMode(GameMode.SURVIVAL);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Survival" }));
+                        player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Survival" }));
                         break;
                     case "creative":
                     case "1":
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Creative" }));
+                        player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Creative" }));
                         player.setGameMode(GameMode.CREATIVE);
                         break;
                     case "adventure":
                     case "2":
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Adventure" }));
+                        player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Adventure" }));
                         player.setGameMode(GameMode.ADVENTURE);
                         break;
                     case "spectator":
                     case "3":
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Spectator" }));
+                        player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Spectator" }));
                         player.setGameMode(GameMode.SPECTATOR);
                         break;
                     default:
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ gamemode }));
+                        player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ gamemode }));
                         break;
                 }
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_GAMEMODE_ARGS.getString(null));

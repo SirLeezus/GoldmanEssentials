@@ -22,58 +22,48 @@ public class MoneyCMD implements CommandExecutor {
             Player player = (Player) sender;
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
             Cache cache = plugin.getCache();
-            UUID uuid = player.getUniqueId();
 
+            //money give {player} {amount}
             if (args.length > 2) {
 
-                int amount = 0;
-                Player target = player;
-
-                //online player check
                 if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
-                    //target player
-                    target = Bukkit.getPlayer(args[1]);
-                } else {
-                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[1]}));
-                    return true;
-                }
+                    Player target = Bukkit.getPlayer(args[1]);
 
-                //value check
-                Scanner buyScanner = new Scanner(args[2]);
-                if (buyScanner.hasNextInt()) {
-                    amount = Integer.parseInt(args[2]);
-                } else {
-                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_MONEY_VALUE.getString(new String[]{ args[2] } ));
-                    return true;
-                }
+                    Scanner buyScanner = new Scanner(args[2]);
+                    if (buyScanner.hasNextInt()) {
+                        int amount = Integer.parseInt(args[2]);
 
-                //switch on sub command
-                String subCommand = args[0];
+                        if (target != null) {
+                            UUID tUUID = target.getUniqueId();
+                            String subCommand = args[0];
 
-                switch (subCommand) {
+                            switch (subCommand) {
 
-                    case "set":
-                        cache.setBalance(target.getUniqueId(), amount);
-                        player.sendMessage("Money sent.");
-                        target.sendMessage("Your balance has been set to " + amount + " by " + player.getName() + ".");
-                        break;
+                                case "set":
+                                    cache.setBalance(tUUID, amount);
+                                    player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_SET.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
+                                    target.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_SET_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
+                                    break;
 
-                    case "remove":
-                        cache.withdraw(target.getUniqueId(), amount);
-                        player.sendMessage("Money taken.");
-                        target.sendMessage("The amount " + amount + " has been taken from your account by " + player.getName() + ".");
-                        break;
+                                case "remove":
+                                    cache.withdraw(tUUID, amount);
+                                    player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_REMOVE.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
+                                    target.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_REMOVE_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
+                                    break;
 
-                    case "add":
-                        cache.deposit(target.getUniqueId(), amount);
-                        player.sendMessage("Money added.");
-                        target.sendMessage("You received " + amount + " from " + player.getName() + ".");
-                        break;
+                                case "give":
+                                    cache.deposit(tUUID, amount);
+                                    player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_GIVE.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
+                                    target.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_GIVE_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
+                                    break;
 
-                    default:
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ args[0] }));
-                        break;
-                }
+                                default:
+                                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ args[0] }));
+                                    break;
+                            }
+                        }
+                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_MONEY_VALUE.getString(new String[]{ args[2] } ));
+                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[1]}));
             }
         }
         return true;
