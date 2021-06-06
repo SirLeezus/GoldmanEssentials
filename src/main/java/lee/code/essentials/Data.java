@@ -86,6 +86,7 @@ public class Data {
         SQLite SQL = plugin.getSqLite();
         SQL.loadPlayerData();
         SQL.loadServerData();
+        SQL.loadBalanceTopPlayers();
     }
 
     public PlayerMU getPlayerMU(UUID uuid) {

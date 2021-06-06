@@ -51,6 +51,7 @@ public class GoldmanEssentials extends JavaPlugin {
         permissionManager.loadPerms();
         pU.registerTamedEntityFix();
         pU.scheduleEntityChunkCleaner();
+        pU.scheduleBalanceTopUpdater();
     }
 
     @Override

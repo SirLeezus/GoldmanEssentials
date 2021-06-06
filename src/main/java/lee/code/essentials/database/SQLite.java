@@ -132,24 +132,6 @@ public class SQLite {
         return null;
     }
 
-    public List<UUID> getBalanceTopPlayers() {
-
-        try {
-            ResultSet rs = getResult("SELECT * FROM player_data ORDER BY balance DESC LIMIT 15;");
-
-            List<UUID> players = new ArrayList<>();
-
-            while (rs.next()) {
-                String player = rs.getString("player");
-                players.add(UUID.fromString(player));
-            }
-            return players;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public int getBalanceTopRank(UUID player) {
         try {
             ResultSet rs = getResult(" WITH player_rank as (SELECT player, balance, RANK() OVER (ORDER BY balance DESC) AS rank FROM player_data) SELECT * FROM player_rank WHERE player = '" + player + "';");
@@ -190,6 +172,25 @@ public class SQLite {
 
     public void setPrestige(String uuid, String prestige) {
         update("UPDATE player_data SET prestige ='" + prestige + "' WHERE player ='" + uuid + "';");
+    }
+
+    public void loadBalanceTopPlayers() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+
+        try {
+            ResultSet rs = getResult("SELECT * FROM player_data ORDER BY balance;");
+            HashMap<String, String> players = new HashMap<>();
+
+            while (rs.next()) {
+                String player = rs.getString("player");
+                String balance = rs.getString("balance");
+                players.put(player, balance);
+            }
+            cache.setTopBalances(players);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadPlayerData() {

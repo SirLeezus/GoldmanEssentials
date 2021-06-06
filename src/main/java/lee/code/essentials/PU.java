@@ -10,6 +10,7 @@ import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -227,6 +228,14 @@ public class PU {
                     }
                 }
             }
+        }), 0L, 20L * 30);
+    }
+
+    public void scheduleBalanceTopUpdater() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            SQLite SQL = plugin.getSqLite();
+            SQL.loadBalanceTopPlayers();
         }), 0L, 20L * 30);
     }
 

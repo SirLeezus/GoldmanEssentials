@@ -10,10 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Cache {
 
@@ -428,6 +425,26 @@ public class Cache {
         try (Jedis jedis = pool.getResource()) {
             String isVanish = jedis.hget("vanish", sUUID);
             return !isVanish.equals("0");
+        }
+    }
+
+    public void setTopBalances(HashMap<String, String> balance) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            for (String uuid : balance.keySet()) {
+                jedis.hset("topBalance", uuid, balance.get(uuid));
+            }
+        }
+    }
+
+    public Map<String, String> getTopBalances() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hgetAll("topBalance");
         }
     }
 
