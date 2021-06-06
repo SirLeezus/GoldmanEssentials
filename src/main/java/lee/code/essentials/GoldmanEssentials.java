@@ -102,6 +102,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("help").setExecutor(new HelpCMD());
         getCommand("sell").setExecutor(new SellCMD());
         getCommand("worth").setExecutor(new WorthCMD());
+        getCommand("sellall").setExecutor(new SellAllCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -142,6 +143,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("help").setTabCompleter(new HelpTab());
         getCommand("sell").setTabCompleter(new HelpTab());
         getCommand("worth").setTabCompleter(new WorthTab());
+        getCommand("sellall").setTabCompleter(new SellAllTab());
     }
 
     private void registerListeners() {

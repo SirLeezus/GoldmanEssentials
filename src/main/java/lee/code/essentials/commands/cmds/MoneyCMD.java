@@ -41,20 +41,20 @@ public class MoneyCMD implements CommandExecutor {
 
                                 case "set":
                                     cache.setBalance(tUUID, amount);
-                                    player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_SET.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
-                                    target.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_SET_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
+                                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_SET.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
+                                    target.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_SET_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
                                     break;
 
                                 case "remove":
                                     cache.withdraw(tUUID, amount);
-                                    player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_REMOVE.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
-                                    target.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_REMOVE_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
+                                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_REMOVE.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
+                                    target.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_REMOVE_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
                                     break;
 
                                 case "give":
                                     cache.deposit(tUUID, amount);
-                                    player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_GIVE.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
-                                    target.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_MONEY_GIVE_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
+                                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_GIVE.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
+                                    target.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_GIVE_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
                                     break;
 
                                 default:

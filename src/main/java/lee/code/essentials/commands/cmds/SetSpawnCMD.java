@@ -20,7 +20,7 @@ public class SetSpawnCMD implements CommandExecutor {
             Player player = (Player) sender;
 
             cache.setSpawn(player.getLocation());
-            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
+            player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
         }
         return true;
     }

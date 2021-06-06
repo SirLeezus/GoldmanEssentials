@@ -167,6 +167,10 @@ commands:
     description: Sell the items you're holding to the server.
     permission: essentials.command.sell
     usage: "/sell"
+  sellall:
+    description: Sell all of the item you're holding to the server.
+    permission: essentials.command.sellall
+    usage: "/sellall"
   worth:
     description: Check the server sell worth of a item you're holding.
     permission: essentials.command.worth

@@ -21,18 +21,18 @@ public class WeatherCMD implements CommandExecutor {
                 switch (weather) {
 
                     case "clear":
-                        player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_WEATHER_CLEAR.getString(null));
                         player.getWorld().setClearWeatherDuration(18000);
+                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_WEATHER_CLEAR.getString(null));
                         break;
 
                     case "rain":
-                        player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_WEATHER_RAIN.getString(null));
                         player.getWorld().setStorm(true);
+                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_WEATHER_RAIN.getString(null));
                         break;
 
                     case "thunder":
-                        player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_WEATHER_THUNDER.getString(null));
                         player.getWorld().setThundering(true);
+                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_WEATHER_THUNDER.getString(null));
                         break;
                 }
             }

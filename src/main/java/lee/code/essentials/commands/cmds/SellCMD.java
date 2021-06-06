@@ -30,17 +30,13 @@ public class SellCMD implements CommandExecutor {
 
             if (plugin.getPU().getSellableItems().contains(itemHand)) {
                 String name = itemHand.getType().name();
-                if (itemHand.hasItemMeta()) {
-                    if (itemHand.getItemMeta().hasDisplayName()) {
-                        name = itemHand.getItemMeta().getDisplayName();
-                    }
-                }
+                if (itemHand.hasItemMeta()) if (itemHand.getItemMeta().hasDisplayName()) name = itemHand.getItemMeta().getDisplayName();
                 if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
                     int amount = player.getInventory().getItemInMainHand().getAmount();
                     int value = ItemSellValues.valueOf(name).getValue() * amount;
                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                     cache.deposit(uuid, value);
-                    player.sendMessage(Lang.NORMAL_WARNING.getString(null) + Lang.COMMAND_SELL_SUCCESSFUL.getString(new String[] { String.valueOf(amount), plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) }));
+                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_SELL_SUCCESSFUL.getString(new String[] { String.valueOf(amount), plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) }));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
         }

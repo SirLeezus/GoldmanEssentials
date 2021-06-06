@@ -31,7 +31,6 @@ public class WorldCMD implements CommandExecutor {
                     player.teleportAsync(loc);
                     player.sendActionBar(Lang.TELEPORT.getComponent(null));
                     player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
-                    return true;
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getString(new String[] { worldString }));
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WORLD_ARGS.getString(null));
         }

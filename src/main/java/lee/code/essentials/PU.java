@@ -103,6 +103,41 @@ public class PU {
         return EnumSet.allOf(ItemSellValues.class).stream().map(ItemSellValues::getItem).collect(Collectors.toList());
     }
 
+    public int getItemAmount(Player player, ItemStack item) {
+        if (item == null) return 0;
+        int amount = 0;
+        for (int i = 0; i < 36; i++) {
+            ItemStack slot = player.getInventory().getItem(i);
+            if (slot == null || !slot.isSimilar(item)) continue;
+            amount += slot.getAmount();
+        }
+        return amount;
+    }
+
+    public void takeItems(Player player, ItemStack item, int count) {
+        Material mat = item.getType();
+        Map<Integer, ? extends ItemStack> ammo = player.getInventory().all(mat);
+
+        int found = 0;
+        for (ItemStack stack : ammo.values()) found += stack.getAmount();
+        if (count > found) return;
+
+        for (Integer index : ammo.keySet()) {
+            ItemStack stack = ammo.get(index);
+
+            if (stack.isSimilar(item)) {
+                int removed = Math.min(count, stack.getAmount());
+                count -= removed;
+
+                if (stack.getAmount() == removed) player.getInventory().setItem(index, null);
+                else stack.setAmount(stack.getAmount() - removed);
+
+                if (count <= 0) break;
+            }
+        }
+        player.updateInventory();
+    }
+
     public String buildStringFromArgs(String[] args, int start) {
         StringBuilder w = new StringBuilder();
         for(int i = start; i < args.length; i++) {
