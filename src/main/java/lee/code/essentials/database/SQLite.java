@@ -116,32 +116,6 @@ public class SQLite {
         update("UPDATE player_data SET god ='" + value + "' WHERE player ='" + uuid + "';");
     }
 
-    public List<Integer> getBalanceTopValues() {
-        try {
-            ResultSet rs = getResult("SELECT * FROM player_data ORDER BY balance DESC LIMIT 15;");
-            List<Integer> balances = new ArrayList<>();
-
-            while (rs.next()) {
-                int balance = rs.getInt("balance");
-                balances.add(balance);
-            }
-            return balances;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public int getBalanceTopRank(UUID player) {
-        try {
-            ResultSet rs = getResult(" WITH player_rank as (SELECT player, balance, RANK() OVER (ORDER BY balance DESC) AS rank FROM player_data) SELECT * FROM player_rank WHERE player = '" + player + "';");
-            return rs.getInt("rank");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public void setPrefix(String uuid, String prefix) {
         update("UPDATE player_data SET prefix ='" + prefix + "' WHERE player ='" + uuid + "';");
     }

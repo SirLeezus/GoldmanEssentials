@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class SleepListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerSleep(PlayerBedEnterEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = e.getPlayer();
@@ -30,48 +31,50 @@ public class SleepListener implements Listener {
         World world = player.getWorld();
         Data data = plugin.getData();
 
-        if (data.getSleepTask() == null && !world.isDayTime() && world.isClearWeather() && world == Bukkit.getServer().getWorlds().get(0)) {
+        if (e.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK)) {
+            if (data.getSleepTask() == null && !world.isDayTime() && world.isClearWeather() && world == Bukkit.getServer().getWorlds().get(0)) {
 
-            data.getSleepingPlayers().clear();
-            data.addSleepingPlayer(uuid);
+                data.getSleepingPlayers().clear();
+                data.addSleepingPlayer(uuid);
 
-            AtomicLong time = new AtomicLong(world.getTime());
-            Title.Times times = Title.Times.of(Duration.ZERO, Ticks.duration(3), Duration.ZERO);
+                AtomicLong time = new AtomicLong(world.getTime());
+                Title.Times times = Title.Times.of(Duration.ZERO, Ticks.duration(3), Duration.ZERO);
 
-            data.setSleepTask(new BukkitRunnable() {
+                data.setSleepTask(new BukkitRunnable() {
 
-                @Override
-                public void run() {
-                    int percent = plugin.getData().getSleepingPlayers().size() * 100 / plugin.getPU().getOnlinePlayers().size();
-                    double base = Math.round(percent * 10.0) / 10.0;
-                    long speed = (long) base;
-                    long worldTime = world.getTime();
+                    @Override
+                    public void run() {
+                        int percent = plugin.getData().getSleepingPlayers().size() * 100 / plugin.getPU().getOnlinePlayers().size();
+                        double base = Math.round(percent * 10.0) / 10.0;
+                        long speed = (long) base;
+                        long worldTime = world.getTime();
 
-                    if (worldTime > 1000 && worldTime < 1150) {
-                        data.setSleepTask(null);
-                        this.cancel();
-                    } else {
-                        world.setTime(time.addAndGet(speed));
+                        if (worldTime > 1000 && worldTime < 1150) {
+                            data.setSleepTask(null);
+                            this.cancel();
+                        } else {
+                            world.setTime(time.addAndGet(speed));
 
-                        for (UUID sUUID : data.getSleepingPlayers()) {
-                            OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(sUUID);
-                            if (oPlayer.isOnline()) {
-                                Player sleepingPlayer = oPlayer.getPlayer();
-                                if (sleepingPlayer != null) {
-                                    sleepingPlayer.showTitle(Title.title(plugin.getPU().formatC("&#FF8300" + plugin.getPU().formatTime(world.getTime())), plugin.getPU().formatC("&#00E0FFPlayers Sleeping&7: &a" + plugin.getData().getSleepingPlayers().size() + "&e/&a" + plugin.getPU().getOnlinePlayers().size()), times));
-                                } else data.removeSleepingPlayer(sUUID);
+                            for (UUID sUUID : data.getSleepingPlayers()) {
+                                OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(sUUID);
+                                if (oPlayer.isOnline()) {
+                                    Player sleepingPlayer = oPlayer.getPlayer();
+                                    if (sleepingPlayer != null) {
+                                        sleepingPlayer.showTitle(Title.title(plugin.getPU().formatC("&#FF8300" + plugin.getPU().formatTime(world.getTime())), plugin.getPU().formatC("&#00E0FFPlayers Sleeping&7: &a" + plugin.getData().getSleepingPlayers().size() + "&e/&a" + plugin.getPU().getOnlinePlayers().size()), times));
+                                    } else data.removeSleepingPlayer(sUUID);
+                                }
                             }
                         }
                     }
+                }.runTaskTimer(plugin, 0, 1));
+            } else {
+                if (!plugin.getData().getSleepingPlayers().contains(uuid)) data.addSleepingPlayer(uuid);
+                if (data.getSleepTask() == null && !world.isClearWeather() && !world.isDayTime()) {
+                    e.setUseBed(Event.Result.ALLOW);
+                    Title.Times weatherTimes = Title.Times.of(Ticks.duration(20), Ticks.duration(100), Ticks.duration(20));
+                    world.setClearWeatherDuration(18000);
+                    player.showTitle(Title.title(plugin.getPU().formatC("&#FF8300" + plugin.getPU().formatTime(world.getTime())), plugin.getPU().formatC("&#00E0FFWeather has been cleared!"), weatherTimes));
                 }
-            }.runTaskTimer(plugin, 0, 1));
-        } else {
-            if (!plugin.getData().getSleepingPlayers().contains(uuid)) data.addSleepingPlayer(uuid);
-            if (data.getSleepTask() == null && !world.isClearWeather() && !world.isDayTime()) {
-                e.setUseBed(Event.Result.ALLOW);
-                Title.Times weatherTimes = Title.Times.of(Ticks.duration(20), Ticks.duration(100), Ticks.duration(20));
-                world.setClearWeatherDuration(18000);
-                player.showTitle(Title.title(plugin.getPU().formatC("&#FF8300" + plugin.getPU().formatTime(world.getTime())), plugin.getPU().formatC("&#00E0FFWeather has been cleared!"), weatherTimes));
             }
         }
     }
