@@ -18,6 +18,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -72,6 +73,11 @@ public class PU {
         return formatter.format(value);
     }
 
+    public String formatMaterial(String type) {
+        String format = type.toLowerCase().replaceAll("_", " ");
+        return WordUtils.capitalize(format);
+    }
+
     public int rng() {
         SecureRandom sr = new SecureRandom();
         return sr.nextInt(1000);
@@ -92,6 +98,9 @@ public class PU {
 
     public List<String> getEntityHeads() {
         return EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).collect(Collectors.toList());
+    }
+    public List<ItemStack> getSellableItems() {
+        return EnumSet.allOf(ItemSellValues.class).stream().map(ItemSellValues::getItem).collect(Collectors.toList());
     }
 
     public String buildStringFromArgs(String[] args, int start) {

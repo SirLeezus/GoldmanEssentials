@@ -163,3 +163,11 @@ commands:
     description: Plugin info for plugins installed.
     permission: essentials.command.help
     usage: "/help"
+  sell:
+    description: Sell the items you're holding to the server.
+    permission: essentials.command.sell
+    usage: "/sell"
+  worth:
+    description: Check the server sell worth of a item you're holding.
+    permission: essentials.command.worth
+    usage: "/worth"

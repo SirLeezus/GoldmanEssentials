@@ -7,7 +7,7 @@ import net.kyori.adventure.text.Component;
 
 @AllArgsConstructor
 public enum Lang {
-    PREFIX("&2&lEssentials &e➔ &r"),
+    PREFIX("&2&lJourney &e➔ &r"),
     ANNOUNCEMENT("&e&lAnnouncement &6➔ &r"),
     WARNING("&4&lWarning &6➔ &r"),
     HOVER_WARNING("&6&l[&e&l!&6&l] &r"),
@@ -37,7 +37,8 @@ public enum Lang {
     COMMAND_TELEPORT_ACCEPT_SUCCESSFUL_TARGET("&aThe player &6{0} &aaccepted your teleport request!"),
     COMMAND_TELEPORT_ADMIN_SUCCESSFUL("&aYou successfully teleported to the player &6{0}&a!"),
     COMMAND_SOUND_SUCCESSFUL("&aYou successfully played the sound &b{0} &afor &6{1}&a!"),
-    ERROR_BALANCETOP_LIST_PAGE("&cThe input &6{0} &cis not a number. &a&lUse&7: &e(1)"),
+    COMMAND_SELL_SUCCESSFUL("&aYou successfully sold &bx{0} {1} &afor &6${2}&a!"),
+    COMMAND_WORTH_SUCCESSFUL("&aThe item &b{0} &acan be sold to the server for &6${1} &aeach!"),
     COMMAND_BALANCETOP_TITLE("&a--------- &e[ &2&lTop Balances &e] &a---------"),
     COMMAND_RANKUP_TITLE("&a-------------- &e[ &2&lRankup &e] &a--------------"),
     COMMAND_RANKUP_SPLITTER("&a---------------------------------------"),
@@ -72,6 +73,8 @@ public enum Lang {
     COMMAND_WEATHER_CLEAR("&aThe weather has been cleared!"),
     COMMAND_WEATHER_RAIN("&aThe weather has been changed to rain."),
     COMMAND_WEATHER_THUNDER("&aThe weather has been changed to thunderstorm."),
+    ERROR_SELL_NOT_SELLABLE("&cThe item you're currently holding can't be sold to the server."),
+    ERROR_BALANCETOP_LIST_PAGE("&cThe input &6{0} &cis not a number. &a&lUse&7: &e(1)"),
     ERROR_ARMOR_STAND_EDIT("&cThat armor stand is currently being edited by another player."),
     ERROR_COMMAND_RANKUP_CONFIRM("&cYou only have &2{0} &cadvancements completed and you need &2{1} &cto rankup."),
     ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED("&cYou already have a pending teleport request sent to &6{0}&c."),
