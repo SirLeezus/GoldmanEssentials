@@ -156,6 +156,20 @@ public class PU {
         return new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), (float) Double.parseDouble(split[4]), (float) Double.parseDouble(split[5]));
     }
 
+    public String formatPlayerHomeLocation(String name, Location location) {
+        return name + "+" + location.getWorld().getName() + "+" + location.getX() + "+" + location.getY() + "+" + location.getZ() + "+" + location.getYaw() + "+" + location.getPitch();
+    }
+
+    public Location unFormatPlayerHomeLocation(String home) {
+        String[] split = home.split("\\+", 7);
+        return new Location(Bukkit.getWorld(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), Double.parseDouble(split[4]), (float) Double.parseDouble(split[5]), (float) Double.parseDouble(split[6]));
+    }
+
+    public String unFormatPlayerHomeName(String home) {
+        String[] split = home.split("\\+", 7);
+        return split[0];
+    }
+
     public List<String> getOnlinePlayers() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         List<String> players = new ArrayList<>();
@@ -197,7 +211,7 @@ public class PU {
                     for (WrappedWatchableObject object : watchableCollection) {
                         if (object.getIndex() == 17) {
                             String value = object.getValue().toString();
-                            if (value.startsWith("Optional")) event.setCancelled(true);
+                            if (value.startsWith("Optional")) object.setValue(Optional.of(UUID.randomUUID()));
                         }
                     }
                 }

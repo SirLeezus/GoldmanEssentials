@@ -175,3 +175,17 @@ commands:
     description: Check the server sell worth of a item you're holding.
     permission: essentials.command.worth
     usage: "/worth"
+  home:
+    description: Teleport to a saved home.
+    permission: essentials.command.home
+    aliases: [homes]
+    usage: "/home &f<name>"
+  sethome:
+    description: Save a location to your home list.
+    permission: essentials.command.sethome
+    usage: "/sethome &f<name>"
+  deletehome:
+    description: Delete a home you have saved.
+    permission: essentials.command.deletehome
+    aliases: [delhome]
+    usage: "/deletehome &f<name>"

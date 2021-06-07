@@ -8,6 +8,7 @@ import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.*;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Data {
     @Getter private final List<UUID> vanishedPlayers = new ArrayList<>();
     @Getter private final List<UUID> sleepingPlayers = new ArrayList<>();
     @Getter private final List<UUID> playerClickDelay = new ArrayList<>();
+    @Getter private final List<NamespacedKey> recipeKeys = new ArrayList<>();
     @Getter @Setter private BukkitTask sleepTask = null;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
@@ -131,6 +133,36 @@ public class Data {
         for (Material material : Material.values()) {
             materialNames.add(material.name().toLowerCase());
         }
+
+        //recipes
+        Iterator<Recipe> ita = Bukkit.getServer().recipeIterator();
+        ita.forEachRemaining(recipe -> {
+            if (recipe instanceof ShapelessRecipe) {
+                ShapelessRecipe shapelessRecipe = (ShapelessRecipe) recipe;
+                recipeKeys.add(shapelessRecipe.getKey());
+            } else if (recipe instanceof ShapedRecipe) {
+                ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
+                recipeKeys.add(shapedRecipe.getKey());
+            } else if (recipe instanceof BlastingRecipe) {
+                BlastingRecipe shapedRecipe = (BlastingRecipe) recipe;
+                recipeKeys.add(shapedRecipe.getKey());
+            } else if (recipe instanceof CampfireRecipe) {
+                CampfireRecipe shapedRecipe = (CampfireRecipe) recipe;
+                recipeKeys.add(shapedRecipe.getKey());
+            } else if (recipe instanceof FurnaceRecipe) {
+                FurnaceRecipe shapedRecipe = (FurnaceRecipe) recipe;
+                recipeKeys.add(shapedRecipe.getKey());
+            } else if (recipe instanceof SmithingRecipe) {
+                SmithingRecipe shapedRecipe = (SmithingRecipe) recipe;
+                recipeKeys.add(shapedRecipe.getKey());
+            } else if (recipe instanceof SmokingRecipe) {
+                SmokingRecipe shapedRecipe = (SmokingRecipe) recipe;
+                recipeKeys.add(shapedRecipe.getKey());
+            } else if (recipe instanceof StonecuttingRecipe) {
+                StonecuttingRecipe shapedRecipe = (StonecuttingRecipe) recipe;
+                recipeKeys.add(shapedRecipe.getKey());
+            }
+        });
 
         //advancements
         Iterator<Advancement> it = plugin.getServer().advancementIterator();

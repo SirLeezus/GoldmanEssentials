@@ -7,8 +7,6 @@ import lee.code.essentials.GoldmanEssentials;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -297,7 +295,7 @@ public class Cache {
                 playerPerms.add(perm);
                 String newPerms = StringUtils.join(playerPerms, ",");
                 jedis.hset(perms, sUUID, newPerms);
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.addPerm(sUUID, newPerms));
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPerm(sUUID, newPerms));
             }
         }
     }
@@ -334,6 +332,114 @@ public class Cache {
 
             String[] split = StringUtils.split(perms, ',');
             return new ArrayList<>(Arrays.asList(split));
+        }
+    }
+
+    public boolean isAlreadyHome(UUID uuid, String name) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String homes = jedis.hget("homes", sUUID);
+            if (homes.equals("0")) return false;
+            String[] split = StringUtils.split(homes, ',');
+
+            for (String home : split) {
+                int index = home.indexOf("+");
+                String homeName = home.substring(0 , index);
+                if (homeName.equals(name)) return true;
+            }
+            return false;
+        }
+    }
+
+    public boolean hasHome(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String homes = jedis.hget("homes", sUUID);
+            return !homes.equals("0");
+        }
+    }
+
+    public List<String> getHomes(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String homes = jedis.hget("homes", sUUID);
+
+            String[] split = StringUtils.split(homes, ',');
+            return new ArrayList<>(Arrays.asList(split));
+        }
+    }
+
+    public List<String> getHomeNames(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String homes = jedis.hget("homes", sUUID);
+
+            String[] split = StringUtils.split(homes, ',');
+
+            List<String> names = new ArrayList<>();
+            for (String home : split) names.add(plugin.getPU().unFormatPlayerHomeName(home));
+            return names;
+        }
+    }
+
+    public void addHome(UUID uuid, String homeLocation) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String homes = jedis.hget("homes", sUUID);
+
+            //MyHomeName+world_name+1.22+-123+1000,
+            String newHomes;
+            if (!homes.equals("0")) newHomes = homes + "," + homeLocation;
+            else newHomes = homeLocation;
+            jedis.hset("homes", sUUID, newHomes);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setHomes(sUUID, newHomes));
+        }
+    }
+
+    public void removeHome(UUID uuid, String name) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String homes = jedis.hget("homes", sUUID);
+
+            List<String> homeList = new ArrayList<>();
+            String[] split = StringUtils.split(homes, ',');
+
+            for (String home : split) {
+                int index = home.indexOf("+");
+                String homeName = home.substring(0 , index);
+                if (!homeName.equals(name)) homeList.add(home);
+            }
+
+            String newHomes = StringUtils.join(homeList, ",");
+            if (newHomes.isEmpty()) jedis.hset("homes", sUUID, "0");
+            else jedis.hset("homes", sUUID, newHomes);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setHomes(sUUID, newHomes));
         }
     }
 
@@ -459,7 +565,7 @@ public class Cache {
         }
     }
 
-    public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, boolean sql) {
+    public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, boolean sql) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -478,8 +584,9 @@ public class Cache {
             pipe.hset("prestige", sUUID, prestige);
             pipe.hset("vanish", sUUID, vanish);
             pipe.hset("god", sUUID, god);
+            pipe.hset("homes", sUUID, homes);
             pipe.sync();
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes));
         }
     }
 
