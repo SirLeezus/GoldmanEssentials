@@ -89,6 +89,7 @@ public class Data {
         SQL.loadPlayerData();
         SQL.loadServerData();
         SQL.loadBalanceTopPlayers();
+        SQL.loadPunishmentData();
     }
 
     public PlayerMU getPlayerMU(UUID uuid) {

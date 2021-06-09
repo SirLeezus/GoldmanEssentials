@@ -492,6 +492,21 @@ public class Cache {
         }
     }
 
+    public void setBannedPlayer(UUID uuid, boolean isBanned) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String result; if (isBanned) result = "1"; else result = "0";
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("banned", sUUID, result);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBanned(sUUID, result));
+        }
+    }
+
     public boolean isGodPlayer(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -565,6 +580,28 @@ public class Cache {
         }
     }
 
+    public boolean isBanned(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return !jedis.hget("banned", sUUID).equals("0");
+        }
+    }
+
+    public boolean hasPunishmentData(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hexists("banned", sUUID);
+        }
+    }
+
     public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, boolean sql) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
@@ -587,6 +624,26 @@ public class Cache {
             pipe.hset("homes", sUUID, homes);
             pipe.sync();
             if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes));
+        }
+    }
+
+    public void setPunishmentData(UUID uuid, String ip, String banned, String tempbanned, String ipbanned, String tempmuted, String muted, boolean sql) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            Pipeline pipe = jedis.pipelined();
+            pipe.hset("ip", sUUID, ip);
+            pipe.hset("banned", sUUID, banned);
+            pipe.hset("tempbanned", sUUID, banned);
+            pipe.hset("ipbanned", sUUID, ipbanned);
+            pipe.hset("tempmuted", sUUID, tempmuted);
+            pipe.hset("muted", sUUID, muted);
+            pipe.sync();
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPunishmentData(sUUID, ip, banned, tempbanned, ipbanned, tempmuted, muted));
         }
     }
 

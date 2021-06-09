@@ -3,14 +3,17 @@ package lee.code.essentials.commands.cmds;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
-import org.bukkit.Sound;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class SpawnCMD implements CommandExecutor {
+import java.util.UUID;
+
+public class UnBanCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -20,9 +23,14 @@ public class SpawnCMD implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            player.teleportAsync(cache.getSpawn());
-            player.sendActionBar(Lang.TELEPORT.getComponent(null));
-            //player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
+            if (args.length > 0) {
+                OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
+                if (targetPlayer != null) {
+                    UUID tUUID = targetPlayer.getUniqueId();
+                    cache.setBannedPlayer(tUUID, false);
+                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { targetPlayer.getName() })));
+                }
+            }
         }
         return true;
     }

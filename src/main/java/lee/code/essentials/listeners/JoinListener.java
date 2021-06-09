@@ -12,6 +12,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
@@ -25,9 +26,21 @@ public class JoinListener implements Listener {
         UUID uuid = player.getUniqueId();
         Cache cache = plugin.getCache();
 
-        //first time joining
+        //player data check
         if (!cache.hasPlayerData(uuid)) {
             cache.setPlayerData(uuid, "0", "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0", "0", "0", "0", true);
+        }
+
+        //punishment data check
+        if (!cache.hasPunishmentData(uuid)) {
+            cache.setPunishmentData(uuid, String.valueOf(player.getAddress()), "0", "0", "0", "0", "0", true);
+        }
+
+        //ban check
+        if (cache.isBanned(uuid)) {
+            e.joinMessage(null);
+            player.kick(Lang.BANNED_FOREVER.getComponent(null));
+            return;
         }
 
         //set custom attack speed

@@ -83,12 +83,41 @@ public class SQLite {
                 "`server` varchar PRIMARY KEY," +
                 "`spawn` varchar NOT NULL" +
                 ");");
+
+        //punishment data table
+        update("CREATE TABLE IF NOT EXISTS punishment (" +
+                "`player` varchar PRIMARY KEY," +
+                "`ip` varchar NOT NULL," +
+                "`banned` varchar NOT NULL," +
+                "`tempbanned` varchar NOT NULL," +
+                "`ipbanned` varchar NOT NULL," +
+                "`tempmuted` varchar NOT NULL," +
+                "`muted` varchar NOT NULL" +
+                ");");
     }
 
     //SERVER TABLE
 
     public void setSpawn(String location) {
         update("INSERT OR REPLACE INTO server (server, spawn) VALUES( 'server','" + location + "');");
+    }
+
+    //PUNISHMENT DATA TABLE
+
+    public void setPunishmentData(String uuid, String ip, String banned, String tempbanned, String ipbanned, String tempmuted, String muted) {
+        update("INSERT OR REPLACE INTO punishment (player, ip, banned, tempbanned, ipbanned, tempmuted, muted) VALUES( '" + uuid + "','" + ip + "','" + banned + "','" + tempbanned + "','" + ipbanned + "','" + tempmuted + "','" + muted + "');");
+    }
+
+    public void setBanned(String uuid, String value) {
+        update("UPDATE punishment SET banned ='" + value + "' WHERE player ='" + uuid + "';");
+    }
+
+    public void setMuted(String uuid, String value) {
+        update("UPDATE punishment SET muted ='" + value + "' WHERE player ='" + uuid + "';");
+    }
+
+    public void setIPBanned(String uuid, String value) {
+        update("UPDATE punishment SET ipbanned ='" + value + "' WHERE player ='" + uuid + "';");
     }
 
     //PLAYER DATA TABLE
@@ -167,6 +196,27 @@ public class SQLite {
                 players.put(player, balance);
             }
             cache.setTopBalances(players);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadPunishmentData() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+        try {
+            ResultSet rs = getResult("SELECT * FROM punishment;");
+
+            while(rs.next()) {
+                UUID uuid = UUID.fromString(rs.getString("player"));
+                String ip = rs.getString("ip");
+                String banned = rs.getString("banned");
+                String tempbanned = rs.getString("tempbanned");
+                String ipbanned = rs.getString("ipbanned");
+                String tempmuted = rs.getString("tempmuted");
+                String muted = rs.getString("muted");
+                cache.setPunishmentData(uuid, ip, banned, tempbanned, ipbanned, tempmuted, muted, false);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -106,6 +106,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("home").setExecutor(new HomeCMD());
         getCommand("sethome").setExecutor(new SetHomeCMD());
         getCommand("deletehome").setExecutor(new DeleteHomeCMD());
+        getCommand("ban").setExecutor(new BanCMD());
+        getCommand("unban").setExecutor(new UnBanCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -150,6 +152,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("home").setTabCompleter(new HomeTab());
         getCommand("sethome").setTabCompleter(new SetHomeTab());
         getCommand("deletehome").setTabCompleter(new DeleteHomeTab());
+        getCommand("ban").setTabCompleter(new BanTab());
+        getCommand("unban").setTabCompleter(new UnBanTab());
     }
 
     private void registerListeners() {

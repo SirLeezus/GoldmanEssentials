@@ -189,3 +189,11 @@ commands:
     permission: essentials.command.deletehome
     aliases: [delhome]
     usage: "/deletehome &f<name>"
+  ban:
+    description: Ban a player from the server.
+    permission: essentials.command.ban
+    usage: "/ban &f<name>"
+  unban:
+    description: Unban a player that has been banned.
+    permission: essentials.command.unban
+    usage: "/unban &f<name>"
