@@ -92,7 +92,9 @@ public class SQLite {
                 "`tempbanned` varchar NOT NULL," +
                 "`ipbanned` varchar NOT NULL," +
                 "`tempmuted` varchar NOT NULL," +
-                "`muted` varchar NOT NULL" +
+                "`muted` varchar NOT NULL," +
+                "`banreason` varchar NOT NULL," +
+                "`mutereason` varchar NOT NULL" +
                 ");");
     }
 
@@ -104,12 +106,13 @@ public class SQLite {
 
     //PUNISHMENT DATA TABLE
 
-    public void setPunishmentData(String uuid, String ip, String banned, String tempbanned, String ipbanned, String tempmuted, String muted) {
-        update("INSERT OR REPLACE INTO punishment (player, ip, banned, tempbanned, ipbanned, tempmuted, muted) VALUES( '" + uuid + "','" + ip + "','" + banned + "','" + tempbanned + "','" + ipbanned + "','" + tempmuted + "','" + muted + "');");
+    public void setPunishmentData(String uuid, String ip, String banned, String tempbanned, String ipbanned, String tempmuted, String muted, String banreason, String mutereason) {
+        update("INSERT OR REPLACE INTO punishment (player, ip, banned, tempbanned, ipbanned, tempmuted, muted, banreason, mutereason) VALUES( '" + uuid + "','" + ip + "','" + banned + "','" + tempbanned + "','" + ipbanned + "','" + tempmuted + "','" + muted + "','" + banreason + "','" + mutereason + "');");
     }
 
-    public void setBanned(String uuid, String value) {
+    public void setBanned(String uuid, String value, String reason) {
         update("UPDATE punishment SET banned ='" + value + "' WHERE player ='" + uuid + "';");
+        update("UPDATE punishment SET banreason ='" + reason + "' WHERE player ='" + uuid + "';");
     }
 
     public void setMuted(String uuid, String value) {
@@ -215,7 +218,9 @@ public class SQLite {
                 String ipbanned = rs.getString("ipbanned");
                 String tempmuted = rs.getString("tempmuted");
                 String muted = rs.getString("muted");
-                cache.setPunishmentData(uuid, ip, banned, tempbanned, ipbanned, tempmuted, muted, false);
+                String banreason = rs.getString("banreason");
+                String mutereason = rs.getString("mutereason");
+                cache.setPunishmentData(uuid, ip, banned, tempbanned, ipbanned, tempmuted, muted, banreason, mutereason, false);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -492,7 +492,18 @@ public class Cache {
         }
     }
 
-    public void setBannedPlayer(UUID uuid, boolean isBanned) {
+    public String getBanReason(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hget("banreason", sUUID);
+        }
+    }
+
+    public void setBannedPlayer(UUID uuid, String reason, boolean isBanned) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
         SQLite SQL = plugin.getSqLite();
@@ -502,8 +513,9 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("banned", sUUID, result);
+            jedis.hset("banreason", sUUID, reason);
 
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBanned(sUUID, result));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBanned(sUUID, result, reason));
         }
     }
 
@@ -627,7 +639,7 @@ public class Cache {
         }
     }
 
-    public void setPunishmentData(UUID uuid, String ip, String banned, String tempbanned, String ipbanned, String tempmuted, String muted, boolean sql) {
+    public void setPunishmentData(UUID uuid, String ip, String banned, String tempbanned, String ipbanned, String tempmuted, String muted, String banreason, String mutereason, boolean sql) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -642,8 +654,10 @@ public class Cache {
             pipe.hset("ipbanned", sUUID, ipbanned);
             pipe.hset("tempmuted", sUUID, tempmuted);
             pipe.hset("muted", sUUID, muted);
+            pipe.hset("banreason", sUUID, banreason);
+            pipe.hset("mutereason", sUUID, mutereason);
             pipe.sync();
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPunishmentData(sUUID, ip, banned, tempbanned, ipbanned, tempmuted, muted));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPunishmentData(sUUID, ip, banned, tempbanned, ipbanned, tempmuted, muted, banreason, mutereason));
         }
     }
 

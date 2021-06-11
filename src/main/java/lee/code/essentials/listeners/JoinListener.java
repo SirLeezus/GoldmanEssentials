@@ -33,13 +33,13 @@ public class JoinListener implements Listener {
 
         //punishment data check
         if (!cache.hasPunishmentData(uuid)) {
-            cache.setPunishmentData(uuid, String.valueOf(player.getAddress()), "0", "0", "0", "0", "0", true);
+            cache.setPunishmentData(uuid, String.valueOf(player.getAddress()), "0", "0", "0", "0", "0", "0", "0", true);
         }
 
         //ban check
         if (cache.isBanned(uuid)) {
             e.joinMessage(null);
-            player.kick(Lang.BANNED_FOREVER.getComponent(null));
+            player.kick(Lang.BANNED_FOREVER.getComponent(new String[] { cache.getBanReason(uuid) }));
             return;
         }
 

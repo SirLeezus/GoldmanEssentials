@@ -27,7 +27,7 @@ public class UnBanCMD implements CommandExecutor {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {
                     UUID tUUID = targetPlayer.getUniqueId();
-                    cache.setBannedPlayer(tUUID, false);
+                    cache.setBannedPlayer(tUUID, "0", false);
                     plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { targetPlayer.getName() })));
                 }
             }
