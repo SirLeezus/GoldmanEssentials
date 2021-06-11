@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class BanCMD implements CommandExecutor {
+public class UnMuteCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -27,16 +27,9 @@ public class BanCMD implements CommandExecutor {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {
                     UUID tUUID = targetPlayer.getUniqueId();
-                    if (args.length > 1) {
-                        String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
-                        if (!reason.isBlank()) {
-                            cache.setBannedPlayer(tUUID, reason, true);
-                            if (targetPlayer.isOnline()) {
-                                Player tPlayer = targetPlayer.getPlayer();
-                                if (tPlayer != null) tPlayer.kick(Lang.BANNED.getComponent(new String[] { reason }));
-                            }
-                            plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BANNED_FOREVER.getComponent(new String[] { targetPlayer.getName(), reason })));
-                        }
+                    if (cache.isMuted(tUUID)) {
+                        cache.setMutedPlayer(tUUID, "0", false);
+                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { targetPlayer.getName() })));
                     }
                 }
             }

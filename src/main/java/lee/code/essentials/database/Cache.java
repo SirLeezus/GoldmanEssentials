@@ -408,7 +408,6 @@ public class Cache {
         try (Jedis jedis = pool.getResource()) {
             String homes = jedis.hget("homes", sUUID);
 
-            //MyHomeName+world_name+1.22+-123+1000,
             String newHomes;
             if (!homes.equals("0")) newHomes = homes + "," + homeLocation;
             else newHomes = homeLocation;
@@ -503,6 +502,55 @@ public class Cache {
         }
     }
 
+    public boolean isBanned(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return !jedis.hget("banned", sUUID).equals("0");
+        }
+    }
+
+    public boolean isMuted(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return !jedis.hget("muted", sUUID).equals("0");
+        }
+    }
+
+    public String getMuteReason(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hget("mutereason", sUUID);
+        }
+    }
+
+    public void setMutedPlayer(UUID uuid, String reason, boolean isMuted) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String result; if (isMuted) result = "1"; else result = "0";
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("muted", sUUID, result);
+            jedis.hset("mutereason", sUUID, reason);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setMuted(sUUID, result, reason));
+        }
+    }
+
     public void setBannedPlayer(UUID uuid, String reason, boolean isBanned) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -589,17 +637,6 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             return jedis.hexists("ranked", sUUID);
-        }
-    }
-
-    public boolean isBanned(UUID uuid) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
-
-        String sUUID = String.valueOf(uuid);
-
-        try (Jedis jedis = pool.getResource()) {
-            return !jedis.hget("banned", sUUID).equals("0");
         }
     }
 

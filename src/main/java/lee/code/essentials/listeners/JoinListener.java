@@ -12,7 +12,6 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
@@ -39,7 +38,7 @@ public class JoinListener implements Listener {
         //ban check
         if (cache.isBanned(uuid)) {
             e.joinMessage(null);
-            player.kick(Lang.BANNED_FOREVER.getComponent(new String[] { cache.getBanReason(uuid) }));
+            player.kick(Lang.BANNED.getComponent(new String[] { cache.getBanReason(uuid) }));
             return;
         }
 

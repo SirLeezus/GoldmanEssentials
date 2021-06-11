@@ -115,8 +115,9 @@ public class SQLite {
         update("UPDATE punishment SET banreason ='" + reason + "' WHERE player ='" + uuid + "';");
     }
 
-    public void setMuted(String uuid, String value) {
+    public void setMuted(String uuid, String value, String reason) {
         update("UPDATE punishment SET muted ='" + value + "' WHERE player ='" + uuid + "';");
+        update("UPDATE punishment SET mutereason ='" + reason + "' WHERE player ='" + uuid + "';");
     }
 
     public void setIPBanned(String uuid, String value) {

@@ -192,8 +192,16 @@ commands:
   ban:
     description: Ban a player from the server.
     permission: essentials.command.ban
-    usage: "/ban &f<name>"
+    usage: "/ban &f<player> <reason>"
   unban:
     description: Unban a player that has been banned.
     permission: essentials.command.unban
-    usage: "/unban &f<name>"
+    usage: "/unban &f<player>"
+  mute:
+    description: Mute a player from server chat.
+    permission: essentials.command.mute
+    usage: "/mute &f<player> <reason>"
+  unmute:
+    description: Unmute a player from server chat.
+    permission: essentials.command.unmute
+    usage: "/unmute &f<player>"
