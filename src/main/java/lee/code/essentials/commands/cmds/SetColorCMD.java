@@ -15,12 +15,10 @@ public class SetColorCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-            Cache cache = plugin.getCache();
-
+        if (sender instanceof Player player) {
             if (args.length > 1) {
                 if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
                     Player target = Bukkit.getPlayer(args[0]);
@@ -29,7 +27,7 @@ public class SetColorCMD implements CommandExecutor {
                             String color = args[1];
                             cache.setColor(target.getUniqueId(), color);
                             plugin.getPU().updateDisplayName(target);
-                            player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_SETCOLOR_SUCCESSFUL.getString(new String[] { target.getName(), ChatColor.valueOf(color) + color }));
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETCOLOR_SUCCESSFUL.getString(new String[] { target.getName(), ChatColor.valueOf(color) + color }));
                         }
                     }
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{ args[0] }));

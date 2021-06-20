@@ -17,8 +17,7 @@ public class SpawnCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
 
             player.teleportAsync(cache.getSpawn());
             player.sendActionBar(Lang.TELEPORT.getComponent(null));

@@ -17,8 +17,6 @@ public class KickCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-
             if (args.length > 0) {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {

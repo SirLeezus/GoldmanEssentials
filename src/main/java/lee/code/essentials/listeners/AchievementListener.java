@@ -22,7 +22,6 @@ public class AchievementListener implements Listener {
             String key = advancement.getKey().getKey();
             if (plugin.getData().getAdvancementNames().contains(key)) {
                 cache.addLevel(e.getPlayer().getUniqueId());
-                System.out.println("Point added! " + key);
             }
         }
     }

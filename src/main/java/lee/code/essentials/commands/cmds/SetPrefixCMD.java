@@ -14,11 +14,10 @@ public class SetPrefixCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-            Cache cache = plugin.getCache();
+        if (sender instanceof Player player) {
 
             if (args.length > 1) {
                 if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
@@ -27,7 +26,7 @@ public class SetPrefixCMD implements CommandExecutor {
                         String prefix = plugin.getPU().buildStringFromArgs(args, 1) + " ";
                         cache.setPrefix(target.getUniqueId(), prefix);
                         plugin.getPU().updateDisplayName(target);
-                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_SETPREFIX_SUCCESSFUL.getString(new String[]{target.getName(), plugin.getPU().format(prefix)}));
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETPREFIX_SUCCESSFUL.getString(new String[]{target.getName(), plugin.getPU().format(prefix)}));
                     }
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[0]}));
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_SETPREFIX_ARG.getString(null));

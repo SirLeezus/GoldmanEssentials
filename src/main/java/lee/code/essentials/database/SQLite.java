@@ -227,6 +227,8 @@ public class SQLite {
                 String banreason = rs.getString("banreason");
                 String mutereason = rs.getString("mutereason");
                 cache.setPunishmentData(uuid, ip, banned, tempbanned, ipbanned, tempmuted, muted, banreason, mutereason, false);
+                if (!banned.equals("0")) cache.addBanList(uuid);
+                else if (!tempbanned.equals("0")) cache.addBanList(uuid);
             }
         } catch (SQLException e) {
             e.printStackTrace();

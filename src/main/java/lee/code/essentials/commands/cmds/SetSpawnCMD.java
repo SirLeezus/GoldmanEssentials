@@ -16,11 +16,9 @@ public class SetSpawnCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-
+        if (sender instanceof Player player) {
             cache.setSpawn(player.getLocation());
-            player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
+            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETSPAWN_SUCCESSFUL.getString(null));
         }
         return true;
     }

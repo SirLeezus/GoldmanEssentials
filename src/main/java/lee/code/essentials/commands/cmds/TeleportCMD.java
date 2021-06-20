@@ -18,10 +18,9 @@ public class TeleportCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-        if (sender instanceof Player) {
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
@@ -31,7 +30,7 @@ public class TeleportCMD implements CommandExecutor {
 
                         if (player.isOp()) {
                             player.teleportAsync(target.getLocation());
-                            player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getString(new String[] { target.getName() }));
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getString(new String[] { target.getName() }));
                         } else if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, target.getUniqueId())) {
 
                             Component targetMessage = plugin.getPU().formatC("&6&l[&e&l!&6&l] &ePlayer &6&l" + player.getName() +  " &eis requesting teleportation: ");
@@ -44,7 +43,7 @@ public class TeleportCMD implements CommandExecutor {
                             target.sendMessage(targetMessage.append(accept).append(deny));
                             target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1,1);
                             plugin.getPU().teleportTimer(player, target);
-                            player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));
 
                         } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED.getString(new String[] { target.getName() }));
                     } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));

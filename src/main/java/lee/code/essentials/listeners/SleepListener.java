@@ -2,6 +2,7 @@ package lee.code.essentials.listeners;
 
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 import org.bukkit.Bukkit;
@@ -31,8 +32,18 @@ public class SleepListener implements Listener {
         World world = player.getWorld();
         Data data = plugin.getData();
 
+        Title.Times weatherTimes = Title.Times.of(Ticks.duration(20), Ticks.duration(100), Ticks.duration(20));
+
         if (e.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK)) {
-            if (data.getSleepTask() == null && !world.isDayTime() && world.isClearWeather() && world == Bukkit.getServer().getWorlds().get(0)) {
+            if (data.getSleepTask() == null && !world.isDayTime() && world == Bukkit.getServer().getWorlds().get(0)) {
+
+                world.setStorm(false);
+                if (world.isThundering()) {
+                    world.setThundering(false);
+                    player.showTitle(Title.title(Lang.SLEEPING_TITLE.getComponent(new String[] { plugin.getPU().formatTime(world.getTime()) }), Lang.SLEEPING_WEATHER_CLEARED_SUBTITLE.getComponent(null), weatherTimes));
+                    e.setUseBed(Event.Result.DENY);
+                    return;
+                }
 
                 data.getSleepingPlayers().clear();
                 data.addSleepingPlayer(uuid);
@@ -60,22 +71,19 @@ public class SleepListener implements Listener {
                                 if (oPlayer.isOnline()) {
                                     Player sleepingPlayer = oPlayer.getPlayer();
                                     if (sleepingPlayer != null) {
-                                        sleepingPlayer.showTitle(Title.title(plugin.getPU().formatC("&#FF8300" + plugin.getPU().formatTime(world.getTime())), plugin.getPU().formatC("&#00E0FFPlayers Sleeping&7: &a" + plugin.getData().getSleepingPlayers().size() + "&e/&a" + plugin.getPU().getOnlinePlayers().size()), times));
+                                        sleepingPlayer.showTitle(Title.title(Lang.SLEEPING_TITLE.getComponent(new String[] { plugin.getPU().formatTime(world.getTime()) }), Lang.SLEEPING_SUBTITLE.getComponent(new String[] { String.valueOf(plugin.getData().getSleepingPlayers().size()), String.valueOf(plugin.getPU().getOnlinePlayers().size()) }), times));
                                     } else data.removeSleepingPlayer(sUUID);
                                 }
                             }
                         }
                     }
                 }.runTaskTimer(plugin, 0, 1));
-            } else {
-                if (!plugin.getData().getSleepingPlayers().contains(uuid)) data.addSleepingPlayer(uuid);
-                if (data.getSleepTask() == null && !world.isClearWeather() && !world.isDayTime()) {
-                    e.setUseBed(Event.Result.ALLOW);
-                    Title.Times weatherTimes = Title.Times.of(Ticks.duration(20), Ticks.duration(100), Ticks.duration(20));
-                    world.setClearWeatherDuration(18000);
-                    player.showTitle(Title.title(plugin.getPU().formatC("&#FF8300" + plugin.getPU().formatTime(world.getTime())), plugin.getPU().formatC("&#00E0FFWeather has been cleared!"), weatherTimes));
-                }
-            }
+            } else if (!plugin.getData().getSleepingPlayers().contains(uuid)) data.addSleepingPlayer(uuid);
+        } else if (data.getSleepTask() == null && !world.isClearWeather() && world.isDayTime()) {
+            e.setUseBed(Event.Result.ALLOW);
+            world.setStorm(false);
+            world.setThundering(false);
+            player.showTitle(Title.title(Lang.SLEEPING_TITLE.getComponent(new String[] { plugin.getPU().formatTime(world.getTime()) }), Lang.SLEEPING_WEATHER_CLEARED_SUBTITLE.getComponent(null), weatherTimes));
         }
     }
     @EventHandler

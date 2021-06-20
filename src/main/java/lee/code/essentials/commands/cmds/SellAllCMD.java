@@ -17,11 +17,10 @@ public class SellAllCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-            Cache cache = plugin.getCache();
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             ItemStack itemHand = new ItemStack(player.getInventory().getItemInMainHand());
@@ -35,7 +34,7 @@ public class SellAllCMD implements CommandExecutor {
                     int value = ItemSellValues.valueOf(name).getValue() * amount;
                     plugin.getPU().takeItems(player, itemHand, amount);
                     cache.deposit(uuid, value);
-                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_SELL_SUCCESSFUL.getString(new String[] { String.valueOf(amount), plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) }));
+                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SELL_SUCCESSFUL.getString(new String[] { String.valueOf(amount), plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) }));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
         }

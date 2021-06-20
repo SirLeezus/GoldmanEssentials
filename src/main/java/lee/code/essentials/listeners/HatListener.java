@@ -15,8 +15,7 @@ public class HatListener implements Listener {
 
     @EventHandler
     public void onHelmetSlotClick(InventoryClickEvent e) {
-        if (e.getWhoClicked() instanceof Player) {
-            Player player = (Player) e.getWhoClicked();
+        if (e.getWhoClicked() instanceof Player player) {
             InventoryType type = e.getInventory().getType();
             if (type == InventoryType.CRAFTING && player.getGameMode() != GameMode.CREATIVE) {
                 if (e.getSlot() == 39) {

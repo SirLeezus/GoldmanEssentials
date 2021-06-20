@@ -12,15 +12,13 @@ public class GlowCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-
+        if (sender instanceof Player player) {
             if (player.isGlowing()) {
                 player.setGlowing(false);
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GLOW_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GLOW_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
             } else if (!player.isGlowing()) {
                 player.setGlowing(true);
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GLOW_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GLOW_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
             }
         }
         return true;

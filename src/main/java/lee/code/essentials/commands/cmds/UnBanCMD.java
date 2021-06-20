@@ -27,6 +27,7 @@ public class UnBanCMD implements CommandExecutor {
                     UUID tUUID = targetPlayer.getUniqueId();
                     cache.setBannedPlayer(tUUID, "0", false);
                     cache.setTempBannedPlayer(tUUID, "0", 0);
+                    cache.removeBanList(tUUID);
                     plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { targetPlayer.getName() })));
                 }
             }

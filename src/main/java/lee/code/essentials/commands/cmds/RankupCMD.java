@@ -28,8 +28,7 @@ public class RankupCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             String rank = cache.getRank(uuid);
@@ -123,7 +122,7 @@ public class RankupCMD implements CommandExecutor {
                     }
                 }
                 cache.setLevel(uuid, String.valueOf(levelCheck));
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_RANKUP_CHECK.getString(new String[] { plugin.getPU().formatAmount(levelCheck), plugin.getPU().formatAmount(maxLevel) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_RANKUP_CHECK.getString(new String[] { plugin.getPU().formatAmount(levelCheck), plugin.getPU().formatAmount(maxLevel) }));
             }
         }
         return true;

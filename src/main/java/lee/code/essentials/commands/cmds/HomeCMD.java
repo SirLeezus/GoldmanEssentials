@@ -6,7 +6,6 @@ import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,8 +23,7 @@ public class HomeCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
@@ -39,7 +37,7 @@ public class HomeCMD implements CommandExecutor {
                             player.teleportAsync(location);
                             player.sendActionBar(Lang.TELEPORT.getComponent(null));
                             //player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
-                            player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getString(new String[] { name }));
+                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getString(new String[] { name }));
                             return true;
                         }
                     }
@@ -50,7 +48,7 @@ public class HomeCMD implements CommandExecutor {
                         player.teleportAsync(bedLocation);
                         player.sendActionBar(Lang.TELEPORT.getComponent(null));
                         //player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
-                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_HOME_TELEPORT_BED_SUCCESSFUL.getString(null));
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_HOME_TELEPORT_BED_SUCCESSFUL.getString(null));
                     } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_HOME_BED_NOT_SAVED.getString(null));
                 }
             } else {

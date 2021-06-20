@@ -17,9 +17,7 @@ public class StaffChatCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-
+        if (sender instanceof Player player) {
             if (args.length > 0) {
                 String message = plugin.getPU().buildStringFromArgs(args, 0);
 

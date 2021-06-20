@@ -26,7 +26,7 @@ public class ChatListener implements Listener {
             e.setCancelled(true);
             if (!cache.isMuted(uuid)) {
                 plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(plugin.getPU().formatC("&8: &f")).append(e.message()));
-            } else player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.MUTED.getString(new String[] { cache.getMuteReason(uuid) }));
+            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.MUTED.getString(new String[] { cache.getMuteReason(uuid) }));
         }
     }
 }

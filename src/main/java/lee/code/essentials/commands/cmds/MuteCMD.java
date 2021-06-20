@@ -21,8 +21,6 @@ public class MuteCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-
             if (args.length > 0) {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {
@@ -34,7 +32,7 @@ public class MuteCMD implements CommandExecutor {
                                 cache.setMutedPlayer(tUUID, reason, true);
                                 if (targetPlayer.isOnline()) {
                                     Player tPlayer = targetPlayer.getPlayer();
-                                    if (tPlayer != null) tPlayer.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.MUTED.getString(new String[] { reason }));
+                                    if (tPlayer != null) tPlayer.sendMessage(Lang.PREFIX.getString(null) + Lang.MUTED.getString(new String[] { reason }));
                                 }
                                 plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_MUTED_FOREVER.getComponent(new String[] { targetPlayer.getName(), reason })));
                             }

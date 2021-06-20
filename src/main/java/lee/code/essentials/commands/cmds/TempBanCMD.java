@@ -28,19 +28,22 @@ public class TempBanCMD implements CommandExecutor {
                 if (targetPlayer != null) {
                     UUID tUUID = targetPlayer.getUniqueId();
                     if (args.length > 1) {
-                        long secondsBanned = plugin.getPU().unFormatSeconds(args[1]);
-                        if (secondsBanned != 0) {
-                            long milliseconds = System.currentTimeMillis();
-                            long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + secondsBanned;
-                            if (args.length > 2) {
-                                String reason = plugin.getPU().buildStringFromArgs(args, 2).replaceAll("[^a-zA-Z0-9 ]", "");
-                                if (!reason.isBlank()) {
-                                    cache.setTempBannedPlayer(tUUID, reason, time);
-                                    if (targetPlayer.isOnline()) {
-                                        Player tPlayer = targetPlayer.getPlayer();
-                                        if (tPlayer != null) tPlayer.kick(Lang.TEMPBANNED.getComponent(new String[] { plugin.getPU().formatSeconds(secondsBanned), reason }));
+                        if (!cache.isTempBanned(tUUID) && !cache.isBanned(tUUID)) {
+                            long secondsBanned = plugin.getPU().unFormatSeconds(args[1]);
+                            if (secondsBanned != 0) {
+                                long milliseconds = System.currentTimeMillis();
+                                long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + secondsBanned;
+                                if (args.length > 2) {
+                                    String reason = plugin.getPU().buildStringFromArgs(args, 2).replaceAll("[^a-zA-Z0-9 ]", "");
+                                    if (!reason.isBlank()) {
+                                        cache.setTempBannedPlayer(tUUID, reason, time);
+                                        cache.addBanList(tUUID);
+                                        if (targetPlayer.isOnline()) {
+                                            Player tPlayer = targetPlayer.getPlayer();
+                                            if (tPlayer != null) tPlayer.kick(Lang.TEMPBANNED.getComponent(new String[] { plugin.getPU().formatSeconds(secondsBanned), reason }));
+                                        }
+                                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_TEMPBANNED_FOREVER.getComponent(new String[] { targetPlayer.getName(), plugin.getPU().formatSeconds(secondsBanned), reason })));
                                     }
-                                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_TEMPBANNED_FOREVER.getComponent(new String[] { targetPlayer.getName(), plugin.getPU().formatSeconds(secondsBanned), reason })));
                                 }
                             }
                         }

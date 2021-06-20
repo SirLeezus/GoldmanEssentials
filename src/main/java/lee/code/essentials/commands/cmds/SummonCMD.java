@@ -14,11 +14,9 @@ public class SummonCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
+        if (sender instanceof Player player) {
             //summon {entity} {amount}
             if (args.length > 0) {
                 String entityName = args[0].toLowerCase();

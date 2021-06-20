@@ -109,6 +109,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("ban").setExecutor(new BanCMD());
         getCommand("tempban").setExecutor(new TempBanCMD());
         getCommand("unban").setExecutor(new UnBanCMD());
+        getCommand("banlist").setExecutor(new BanListCMD());
         getCommand("mute").setExecutor(new MuteCMD());
         getCommand("unmute").setExecutor(new UnMuteCMD());
         getCommand("kick").setExecutor(new KickCMD());
@@ -159,6 +160,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("ban").setTabCompleter(new BanTab());
         getCommand("tempban").setTabCompleter(new TempBanTab());
         getCommand("unban").setTabCompleter(new UnBanTab());
+        getCommand("banlist").setTabCompleter(new BanListTab());
         getCommand("mute").setTabCompleter(new MuteTab());
         getCommand("unmute").setTabCompleter(new UnMuteTab());
         getCommand("kick").setTabCompleter(new KickTab());

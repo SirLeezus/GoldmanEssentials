@@ -18,15 +18,14 @@ public class DeleteHomeCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
                 String name = plugin.getPU().buildStringFromArgs(args, 0);
                 if (cache.isAlreadyHome(uuid, name)) {
                     cache.removeHome(uuid, name);
-                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_DELETEHOME_SUCCESSFUL.getString(new String[] { name }));
+                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_DELETEHOME_SUCCESSFUL.getString(new String[] { name }));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_DELETEHOME_NOT_SAVED.getString(new String[] { name }));
             }
         }

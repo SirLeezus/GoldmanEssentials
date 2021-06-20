@@ -294,7 +294,7 @@ public class Cache {
             if (!playerPerms.contains(perm)) {
                 playerPerms.add(perm);
                 String newPerms = StringUtils.join(playerPerms, ",");
-                jedis.hset(perms, sUUID, newPerms);
+                jedis.hset("perms", sUUID, newPerms);
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPerm(sUUID, newPerms));
             }
         }
@@ -332,6 +332,53 @@ public class Cache {
 
             String[] split = StringUtils.split(perms, ',');
             return new ArrayList<>(Arrays.asList(split));
+        }
+    }
+
+    public List<String> getBanList() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            if (jedis.hexists("banlist", "server")) {
+                String bans = jedis.hget("banlist", "server");
+
+                String[] split = StringUtils.split(bans, ',');
+                return new ArrayList<>(Arrays.asList(split));
+            } else return new ArrayList<>();
+        }
+    }
+
+    public void addBanList(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+
+            if (jedis.hexists("banlist", "server")) {
+                String bans = jedis.hget("banlist", "server");
+                if (bans.isBlank()) {
+                    jedis.hset("banlist", "server", sUUID);
+                } else jedis.hset("banlist", "server", bans + "," + sUUID);
+            } else jedis.hset("banlist", "server", sUUID);
+        }
+    }
+
+    public void removeBanList(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String bans = jedis.hget("banlist", "server");
+            String[] split = StringUtils.split(bans, ',');
+            List<String> bannedPlayers = new ArrayList<>();
+            for (String uuidPlayer : split) if (!uuidPlayer.equals(sUUID)) bannedPlayers.add(uuidPlayer);
+            String newBannedPlayers = StringUtils.join(bannedPlayers, ",");
+            jedis.hset("banlist", "server", newBannedPlayers);
         }
     }
 
@@ -501,6 +548,7 @@ public class Cache {
             return jedis.hget("banreason", sUUID);
         }
     }
+
 
     public long getTempBanTime(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();

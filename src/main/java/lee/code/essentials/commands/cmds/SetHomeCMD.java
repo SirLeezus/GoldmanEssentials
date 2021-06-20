@@ -19,8 +19,7 @@ public class SetHomeCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
@@ -31,7 +30,7 @@ public class SetHomeCMD implements CommandExecutor {
                     if (homesSaved < maxHomes) {
                         String homeLocation = plugin.getPU().formatPlayerHomeLocation(name, player.getLocation());
                         cache.addHome(uuid, homeLocation);
-                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_SETHOME_SUCCESSFUL.getString(new String[] { name }));
+                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETHOME_SUCCESSFUL.getString(new String[] { name }));
                     } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_HOME_MAX_HOMES.getString(new String[] { String.valueOf(maxHomes) }));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_HOME_ALREADY_SAVED.getString(new String[] { name }));
             }

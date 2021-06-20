@@ -17,12 +17,10 @@ public class MoneyCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-            Cache cache = plugin.getCache();
-
+        if (sender instanceof Player player) {
             //money give {player} {amount}
             if (args.length > 2) {
 
@@ -38,28 +36,22 @@ public class MoneyCMD implements CommandExecutor {
                             String subCommand = args[0];
 
                             switch (subCommand) {
-
-                                case "set":
+                                case "set" -> {
                                     cache.setBalance(tUUID, amount);
-                                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_SET.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
-                                    target.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_SET_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
-                                    break;
-
-                                case "remove":
+                                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_SET.getString(new String[]{target.getName(), plugin.getPU().formatAmount(amount)}));
+                                    target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_SET_TARGET.getString(new String[]{plugin.getPU().formatAmount(amount)}));
+                                }
+                                case "remove" -> {
                                     cache.withdraw(tUUID, amount);
-                                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_REMOVE.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
-                                    target.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_REMOVE_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
-                                    break;
-
-                                case "give":
+                                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_REMOVE.getString(new String[]{target.getName(), plugin.getPU().formatAmount(amount)}));
+                                    target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_REMOVE_TARGET.getString(new String[]{plugin.getPU().formatAmount(amount)}));
+                                }
+                                case "give" -> {
                                     cache.deposit(tUUID, amount);
-                                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_GIVE.getString(new String[] { target.getName(), plugin.getPU().formatAmount(amount) }));
-                                    target.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_MONEY_GIVE_TARGET.getString(new String[] { plugin.getPU().formatAmount(amount) }));
-                                    break;
-
-                                default:
-                                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ args[0] }));
-                                    break;
+                                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_GIVE.getString(new String[]{target.getName(), plugin.getPU().formatAmount(amount)}));
+                                    target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_GIVE_TARGET.getString(new String[]{plugin.getPU().formatAmount(amount)}));
+                                }
+                                default -> player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{args[0]}));
                             }
                         }
                     } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_MONEY_VALUE.getString(new String[]{ args[2] } ));

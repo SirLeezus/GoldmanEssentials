@@ -6,9 +6,7 @@ import lee.code.essentials.lists.Settings;
 import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -23,8 +21,7 @@ public class HeadDropListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         if (e.getEntity().getLastDamageCause() != null && e.getEntity().getLastDamageCause().getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
-            if (e.getEntity() instanceof Player) {
-                Player player = (Player) e.getEntity();
+            if (e.getEntity() instanceof Player player) {
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta headMeta = (SkullMeta) head.getItemMeta();
                 headMeta.setOwningPlayer(player);
@@ -41,12 +38,19 @@ public class HeadDropListener implements Listener {
                 }
                 if (plugin.getPU().rng() >= Settings.HEAD_DROP_RNG.getValue() || creative) {
                     String type = e.getEntityType().name();
-                    if (e.getEntity() instanceof Sheep) {
-                        Sheep sheep = (Sheep) e.getEntity();
+
+                    if (e.getEntity() instanceof Sheep sheep) {
                         DyeColor color = sheep.getColor();
-                        if (color != null) type = sheep.getColor().name() + "_" + type;
+                        if (color != null) type = color.name() + "_" + type;
                         else type = "WHITE_" + type;
+                    } else if (e.getEntity() instanceof Axolotl axolotl) {
+                        Axolotl.Variant variant = axolotl.getVariant();
+                        type = variant.name() + "_" + type;
+                    } else if (e.getEntity() instanceof Parrot parrot) {
+                        Parrot.Variant variant = parrot.getVariant();
+                        type = variant.name() + "_" + type;
                     }
+
                     if (plugin.getPU().getEntityHeads().contains(type)) {
                         ItemStack head = EntityHeads.valueOf(type).getHead();
                         e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), head);

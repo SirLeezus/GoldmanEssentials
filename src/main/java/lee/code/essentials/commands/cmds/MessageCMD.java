@@ -22,8 +22,7 @@ public class MessageCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 1) {
@@ -36,7 +35,7 @@ public class MessageCMD implements CommandExecutor {
                             cache.setLastReplied(uuid, target.getUniqueId());
                             player.sendMessage(plugin.getPU().formatC("&9[&eYou &9-> &e" + target.getName() + "&9] ").append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
                             target.sendMessage(plugin.getPU().formatC("&9[&e" + player.getName() + " &9-> &eYou&9] ").clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
-                        } else player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.MUTED.getString(new String[] { cache.getMuteReason(uuid) }));
+                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.MUTED.getString(new String[] { cache.getMuteReason(uuid) }));
                     } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_MESSAGE_TO_SELF.getString(null));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[] { args[0] }));
             }

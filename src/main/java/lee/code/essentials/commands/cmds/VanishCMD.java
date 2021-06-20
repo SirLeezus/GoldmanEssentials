@@ -21,8 +21,7 @@ public class VanishCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (cache.isVanishPlayer(uuid)) {
@@ -38,7 +37,7 @@ public class VanishCMD implements CommandExecutor {
                         if (vPlayer != null) player.hidePlayer(plugin, vPlayer);
                     }
                 }
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_VANISH_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_VANISH_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
             } else {
                 cache.setVanishPlayer(uuid, true);
                 player.setGameMode(GameMode.SPECTATOR);
@@ -50,7 +49,7 @@ public class VanishCMD implements CommandExecutor {
                         if (vPlayer != null) player.showPlayer(plugin, vPlayer);
                     }
                 }
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_VANISH_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_VANISH_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
             }
         }
         return true;

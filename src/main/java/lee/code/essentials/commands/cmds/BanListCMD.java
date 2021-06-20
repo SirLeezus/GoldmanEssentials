@@ -11,17 +11,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
-import static java.util.stream.Collectors.toMap;
-
-public class BalanceTopCMD implements CommandExecutor {
+public class BanListCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -29,11 +27,6 @@ public class BalanceTopCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
-            UUID uuid = player.getUniqueId();
-
-            Map<String, String> cPlayers = cache.getTopBalances();
-            Map<String, Integer> intMap = cPlayers.entrySet().stream().collect(toMap(Map.Entry::getKey, entry -> Integer.parseInt(entry.getValue())));
-            Map<String, Integer> sortedMap = intMap.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
             int index;
             int maxDisplayed = 10;
@@ -52,13 +45,11 @@ public class BalanceTopCMD implements CommandExecutor {
 
             if (page < 0) return true;
 
-            List<String> players = new ArrayList<>(sortedMap.keySet());
+            List<String> players = new ArrayList<>(cache.getBanList());
             List<String> line = new ArrayList<>();
 
-            line.add(Lang.COMMAND_BALANCETOP_TITLE.getString(null));
+            line.add(Lang.COMMAND_BANLIST_TITLE.getString(null));
             line.add("");
-
-            boolean onPage = false;
 
             for (int i = 0; i < maxDisplayed; i++) {
                 index = maxDisplayed * page + i;
@@ -68,28 +59,27 @@ public class BalanceTopCMD implements CommandExecutor {
                     String thePlayer = players.get(index);
                     UUID pUUID = UUID.fromString(thePlayer);
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(pUUID);
-                    String name = "Notch";
-                    String posColor = "&3";
+                    String name = "null";
+                    String time = "&cForever";
                     if (offlinePlayer.getName() != null) name = offlinePlayer.getName();
-                    String balance = plugin.getPU().formatAmount(sortedMap.get(thePlayer));
-                    if (name.equals(player.getName())) {
-                        posColor = "&2";
-                        onPage = true;
-                    }
-                    line.add(plugin.getPU().format(posColor + position + ". &e" + name + " &7| &6$" + balance));
+                    long milliseconds = System.currentTimeMillis();
+                    long timeBanned = cache.getTempBanTime(pUUID) - TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+                    if (timeBanned < 0) timeBanned = 0;
+                    if (cache.isTempBanned(pUUID)) time = plugin.getPU().formatSeconds(timeBanned);
+                    line.add(plugin.getPU().format("&3" + position + ". &6" + name + " &7Time: &e" + time + " &7Reason: &e" + cache.getBanReason(pUUID)));
                 }
             }
 
-            if (line.size() <= 2) return true;
-
-            if (!onPage) {
-                line.add("");
-                line.add(plugin.getPU().format("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| &6$" + plugin.getPU().formatAmount(sortedMap.get(String.valueOf(uuid)))));
+            if (line.size() <= 2) {
+                if (players.isEmpty()) {
+                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_BANLIST_NO_BANS.getString(null));
+                }
+                return true;
             }
 
             line.add("");
-            Component nextPage = plugin.getPU().formatC("&2&lNext &a&l>>--------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page + 1)));
-            Component prevPage = plugin.getPU().formatC("&a&l--------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page - 1)));
+            Component nextPage = plugin.getPU().formatC("&2&lNext &a&l>>---------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page + 1)));
+            Component prevPage = plugin.getPU().formatC("&a&l---------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page - 1)));
             Component spacer = plugin.getPU().formatC(" &e| ");
 
             for (String message : line) player.sendMessage(message);

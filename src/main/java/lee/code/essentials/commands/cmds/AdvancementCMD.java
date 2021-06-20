@@ -18,15 +18,12 @@ public class AdvancementCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-
             if (args.length > 2) {
                 if (plugin.getPU().getOnlinePlayers().contains(args[1])) {
                     Player target = Bukkit.getPlayer(args[1]);
                     if (target != null) {
                         String subCommand = args[0].toLowerCase();
                         switch (subCommand) {
-
                             case "grant":
                                 if (!args[2].equalsIgnoreCase("-all")) {
                                     NamespacedKey key = NamespacedKey.minecraft(args[2]);

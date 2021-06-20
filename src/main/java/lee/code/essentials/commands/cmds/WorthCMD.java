@@ -15,8 +15,7 @@ public class WorthCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
             ItemStack itemHand = new ItemStack(player.getInventory().getItemInMainHand());
@@ -31,7 +30,7 @@ public class WorthCMD implements CommandExecutor {
                 }
                 if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
                     int value = ItemSellValues.valueOf(name).getValue();
-                    player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_WORTH_SUCCESSFUL.getString(new String[] { plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) }));
+                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_WORTH_SUCCESSFUL.getString(new String[] { plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) }));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
 

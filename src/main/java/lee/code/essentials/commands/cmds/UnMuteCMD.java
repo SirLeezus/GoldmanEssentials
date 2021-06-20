@@ -21,8 +21,6 @@ public class UnMuteCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-
             if (args.length > 0) {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {

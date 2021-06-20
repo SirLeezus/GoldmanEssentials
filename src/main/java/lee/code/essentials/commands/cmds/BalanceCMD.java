@@ -15,10 +15,9 @@ public class BalanceCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        if (sender instanceof Player player) {
             Cache cache = plugin.getCache();
             UUID uuid = player.getUniqueId();
 

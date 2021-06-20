@@ -21,21 +21,22 @@ public class BanCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-
             if (args.length > 0) {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {
                     UUID tUUID = targetPlayer.getUniqueId();
                     if (args.length > 1) {
-                        String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
-                        if (!reason.isBlank()) {
-                            cache.setBannedPlayer(tUUID, reason, true);
-                            if (targetPlayer.isOnline()) {
-                                Player tPlayer = targetPlayer.getPlayer();
-                                if (tPlayer != null) tPlayer.kick(Lang.BANNED.getComponent(new String[] { reason }));
+                        if (!cache.isTempBanned(tUUID) && !cache.isBanned(tUUID)) {
+                            String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
+                            if (!reason.isBlank()) {
+                                cache.setBannedPlayer(tUUID, reason, true);
+                                cache.addBanList(tUUID);
+                                if (targetPlayer.isOnline()) {
+                                    Player tPlayer = targetPlayer.getPlayer();
+                                    if (tPlayer != null) tPlayer.kick(Lang.BANNED.getComponent(new String[] { reason }));
+                                }
+                                plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BANNED_FOREVER.getComponent(new String[] { targetPlayer.getName(), reason })));
                             }
-                            plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BANNED_FOREVER.getComponent(new String[] { targetPlayer.getName(), reason })));
                         }
                     }
                 }

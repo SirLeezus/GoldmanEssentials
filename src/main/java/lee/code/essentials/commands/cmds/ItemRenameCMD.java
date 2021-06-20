@@ -14,11 +14,9 @@ public class ItemRenameCMD implements CommandExecutor {
 
     @Override @SuppressWarnings("deprecation")
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
+        if (sender instanceof Player player) {
             if (args.length > 0) {
                 String name = plugin.getPU().buildStringFromArgs(args, 0);
                 ItemStack item = player.getInventory().getItemInMainHand();

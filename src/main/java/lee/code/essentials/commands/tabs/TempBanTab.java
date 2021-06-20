@@ -9,6 +9,7 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TempBanTab implements TabCompleter {
@@ -22,6 +23,8 @@ public class TempBanTab implements TabCompleter {
         if (sender instanceof Player) {
             if (args.length == 1) {
                 return StringUtil.copyPartialMatches(args[0], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
+            } else if (args.length == 2) {
+                return StringUtil.copyPartialMatches(args[1], Arrays.asList("1w", "1d", "1m", "1s"), new ArrayList<>());
             } else return blank;
         } else return blank;
     }

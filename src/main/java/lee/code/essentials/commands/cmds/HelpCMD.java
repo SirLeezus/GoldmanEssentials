@@ -17,14 +17,13 @@ import java.util.List;
 
 public class HelpCMD implements CommandExecutor {
 
-    private final List<String> commands = Arrays.asList("ban", "tempban", "unban", "mute", "unmute", "kick", "zap", "world", "weather", "vanish", "time", "teleportdeny", "teleportaccept", "teleport", "summon", "staffchat", "spawn", "sound", "home", "sethome", "deletehome", "setspawn", "setrank", "setprefix", "setcolor", "setrank", "reply", "rankup", "ranklist", "sell", "sellall", "worth", "money", "message", "itemname", "invsee", "help", "heal", "head", "god", "glow", "give", "gamemode", "flyspeed", "fly", "feed", "enchant", "balancetop", "balance", "advancement");
+    private final List<String> commands = Arrays.asList("ban", "tempban", "unban", "banlist", "mute", "unmute", "kick", "zap", "world", "weather", "vanish", "time", "teleportdeny", "teleportaccept", "teleport", "summon", "staffchat", "spawn", "sound", "home", "sethome", "deletehome", "setspawn", "setrank", "setprefix", "setcolor", "setrank", "reply", "rankup", "ranklist", "sell", "sellall", "worth", "money", "message", "itemname", "invsee", "help", "heal", "head", "god", "glow", "give", "gamemode", "flyspeed", "fly", "feed", "enchant", "balancetop", "balance", "advancement");
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
 
             if (args.length > 0 && args[0].equalsIgnoreCase("essentials")) {
                 int number = 1;

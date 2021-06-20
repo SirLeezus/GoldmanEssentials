@@ -12,17 +12,15 @@ public class FlyCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-
+        if (sender instanceof Player player) {
             if (!player.isFlying()) {
                 player.setAllowFlight(true);
                 player.setFlying(true);
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
             } else {
                 player.setAllowFlight(false);
                 player.setFlying(false);
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
             }
         }
         return true;

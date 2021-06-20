@@ -18,16 +18,15 @@ public class GodCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (cache.isGodPlayer(uuid)) {
                 cache.setGodPlayer(uuid, false);
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
             } else {
                 cache.setGodPlayer(uuid, true);
-                player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
             }
         }
         return true;

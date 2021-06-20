@@ -49,7 +49,10 @@ public class JoinListener implements Listener {
             if (secondsLeft > 0) {
                 player.kick(Lang.TEMPBANNED.getComponent(new String[] { plugin.getPU().formatSeconds(secondsLeft), cache.getBanReason(uuid) }));
                 return;
-            } else cache.setTempBannedPlayer(uuid, "0", 0);
+            } else {
+                cache.setTempBannedPlayer(uuid, "0", 0);
+                cache.removeBanList(uuid);
+            }
         }
 
         //set custom attack speed
