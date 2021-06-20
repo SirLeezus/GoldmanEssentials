@@ -2,14 +2,14 @@ package lee.code.essentials.listeners;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.nms.CustomChair;
-import net.minecraft.server.v1_16_R3.WorldServer;
+import net.minecraft.server.level.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Stairs;
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;

@@ -34,6 +34,7 @@ import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -209,7 +210,7 @@ public class PU {
                     List<WrappedWatchableObject> watchableCollection = packet.getWatchableCollectionModifier().read(0);
 
                     for (WrappedWatchableObject object : watchableCollection) {
-                        if (object.getIndex() == 17) {
+                        if (object.getIndex() == 18) {
                             String value = object.getValue().toString();
                             if (value.startsWith("Optional")) object.setValue(Optional.of(UUID.randomUUID()));
                         }
@@ -313,6 +314,34 @@ public class PU {
         String mm = "0" + minutes;
         mm = mm.substring(mm.length() - 2);
         return hours + ":" + mm + " " + ampm;
+    }
+
+    public String formatSeconds(long time) {
+        long days = TimeUnit.SECONDS.toDays(time);
+        long hours = (TimeUnit.SECONDS.toHours(time) - TimeUnit.DAYS.toHours(days));
+        long minutes = (TimeUnit.SECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(hours) - TimeUnit.DAYS.toMinutes(days));
+        long seconds = (TimeUnit.SECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(minutes) - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.DAYS.toSeconds(days));
+
+        if (days != 0) return days + " day, " + hours + " hours, " + minutes + " min, " + seconds + " sec";
+        else if (hours != 0) return hours + " hour, " + minutes + " min, " + seconds + " sec";
+        else if (minutes != 0) return minutes + " min, " + seconds + " sec";
+        else return seconds + " sec";
+    }
+
+    public long unFormatSeconds(String time) {
+        String numberOnly = time.replaceAll("[^0-9]", "");
+        Scanner numberScanner = new Scanner(numberOnly);
+        if (numberScanner.hasNextInt()) {
+            int value = Integer.parseInt(numberOnly);
+            String letter = time.replaceAll("[^A-Za-z]+", "").toLowerCase();
+            switch (letter) {
+                case "w": return value * 604800L;
+                case "d": return value * 86400L;
+                case "m": return value * 60L;
+                case "s": return value;
+            }
+        }
+        return 0;
     }
 
     public void addPlayerClickDelay(UUID uuid) {

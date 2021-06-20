@@ -1,8 +1,8 @@
 package lee.code.essentials.database;
 
-import lee.code.cache.jedis.Jedis;
-import lee.code.cache.jedis.JedisPool;
-import lee.code.cache.jedis.Pipeline;
+import jedis.Jedis;
+import jedis.JedisPool;
+import jedis.Pipeline;
 import lee.code.essentials.GoldmanEssentials;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -502,6 +502,17 @@ public class Cache {
         }
     }
 
+    public long getTempBanTime(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return Long.parseLong(jedis.hget("tempbanned", sUUID));
+        }
+    }
+
     public boolean isBanned(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -510,6 +521,17 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             return !jedis.hget("banned", sUUID).equals("0");
+        }
+    }
+
+    public boolean isTempBanned(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return !jedis.hget("tempbanned", sUUID).equals("0");
         }
     }
 
@@ -564,6 +586,20 @@ public class Cache {
             jedis.hset("banreason", sUUID, reason);
 
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBanned(sUUID, result, reason));
+        }
+    }
+
+    public void setTempBannedPlayer(UUID uuid, String reason, long time) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("tempbanned", sUUID, String.valueOf(time));
+            jedis.hset("banreason", sUUID, reason);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setTempBanned(sUUID, time, reason));
         }
     }
 
@@ -687,7 +723,7 @@ public class Cache {
             Pipeline pipe = jedis.pipelined();
             pipe.hset("ip", sUUID, ip);
             pipe.hset("banned", sUUID, banned);
-            pipe.hset("tempbanned", sUUID, banned);
+            pipe.hset("tempbanned", sUUID, tempbanned);
             pipe.hset("ipbanned", sUUID, ipbanned);
             pipe.hset("tempmuted", sUUID, tempmuted);
             pipe.hset("muted", sUUID, muted);

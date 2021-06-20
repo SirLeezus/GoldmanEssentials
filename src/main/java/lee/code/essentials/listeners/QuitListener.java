@@ -20,7 +20,7 @@ public class QuitListener implements Listener {
         Cache cache = plugin.getCache();
 
         //ban check
-        if (cache.isBanned(uuid)) {
+        if (cache.isBanned(uuid) || cache.isTempBanned(uuid)) {
             e.quitMessage(null);
             return;
         }

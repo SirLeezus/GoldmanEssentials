@@ -1,7 +1,7 @@
 name: GoldmanEssentials
 main: lee.code.essentials.GoldmanEssentials
 version: ${project.version}
-api-version: 1.16
+api-version: 1.17
 author: Lee
 depend: [ProtocolLib, RedisCache]
 commands:
@@ -193,6 +193,10 @@ commands:
     description: Ban a player from the server.
     permission: essentials.command.ban
     usage: "/ban &f<player> <reason>"
+  tempban:
+    description: Temporarily ban a player from the server.
+    permission: essentials.command.tempban
+    usage: "/tempban &f<player> <time> <reason>"
   unban:
     description: Unban a player that has been banned.
     permission: essentials.command.unban
@@ -205,3 +209,7 @@ commands:
     description: Unmute a player from server chat.
     permission: essentials.command.unmute
     usage: "/unmute &f<player>"
+  kick:
+    description: Kick a player from the server.
+    permission: essentials.command.kick
+    usage: "/kick &f<player> <reason>"

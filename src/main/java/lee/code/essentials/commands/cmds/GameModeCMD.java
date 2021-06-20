@@ -14,38 +14,28 @@ public class GameModeCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-
+        if (sender instanceof Player player) {
             if (args.length > 0) {
-
                 String gamemode = args[0].toLowerCase();
 
                 switch (gamemode) {
-
-                    case "survival":
-                    case "0":
+                    case "survival", "0" -> {
                         player.setGameMode(GameMode.SURVIVAL);
-                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Survival" }));
-                        break;
-                    case "creative":
-                    case "1":
-                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Creative" }));
+                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[]{"Survival"}));
+                    }
+                    case "creative", "1" -> {
+                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[]{"Creative"}));
                         player.setGameMode(GameMode.CREATIVE);
-                        break;
-                    case "adventure":
-                    case "2":
-                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Adventure" }));
+                    }
+                    case "adventure", "2" -> {
+                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[]{"Adventure"}));
                         player.setGameMode(GameMode.ADVENTURE);
-                        break;
-                    case "spectator":
-                    case "3":
-                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[] { "Spectator" }));
+                    }
+                    case "spectator", "3" -> {
+                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.COMMAND_GAMEMODE_SUCCESSFUL.getString(new String[]{"Spectator"}));
                         player.setGameMode(GameMode.SPECTATOR);
-                        break;
-                    default:
-                        player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{ gamemode }));
-                        break;
+                    }
+                    default -> player.sendMessage(Lang.NORMAL_ALERT.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{gamemode}));
                 }
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_GAMEMODE_ARGS.getString(null));
         }
