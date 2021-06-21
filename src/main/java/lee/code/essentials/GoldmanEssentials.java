@@ -113,6 +113,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("mute").setExecutor(new MuteCMD());
         getCommand("unmute").setExecutor(new UnMuteCMD());
         getCommand("kick").setExecutor(new KickCMD());
+        getCommand("colors").setExecutor(new ColorsCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -164,6 +165,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("mute").setTabCompleter(new MuteTab());
         getCommand("unmute").setTabCompleter(new UnMuteTab());
         getCommand("kick").setTabCompleter(new KickTab());
+        getCommand("colors").setTabCompleter(new ColorsTab());
     }
 
     private void registerListeners() {

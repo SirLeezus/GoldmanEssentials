@@ -53,6 +53,8 @@ public enum Lang {
     COMMAND_WORTH_SUCCESSFUL("&aThe item &b{0} &acan be sold to the server for &6${1} &aeach!"),
     COMMAND_BANLIST_NO_BANS("&aThere are currently no players banned."),
     COMMAND_TIME_SUCCESSFUL("&aThe time for world &e{0} &awas changed to &e{1}&a."),
+    COMMAND_COLORS_TITLE("&a------- &e[ &2&lColors &e] &a-------"),
+    COMMAND_COLORS_SPLITTER("&a------------------------"),
     COMMAND_BALANCETOP_TITLE("&a--------- &e[ &2&lTop Balances &e] &a---------"),
     COMMAND_BANLIST_TITLE("&a--------- &e[ &2&lBanned Players &e] &a---------"),
     COMMAND_RANKUP_TITLE("&a-------------- &e[ &2&lRankup &e] &a--------------"),
