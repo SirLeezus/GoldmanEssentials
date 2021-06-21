@@ -35,6 +35,8 @@ public class Data {
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> activeArmorStands = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BukkitTask> playerPvPTask = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Long> playerPvPTimer = new ConcurrentHashMap<>();
 
     public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) {
         return playersRequestingTeleport.get(player) == target;
@@ -55,6 +57,27 @@ public class Data {
     public void removeArmorStandActive(UUID player) {
         activeArmorStands.remove(player);
     }
+
+    public boolean isPvPTaskActive(UUID player) {
+        return playerPvPTask.containsKey(player);
+    }
+    public void addPvPTaskActive(UUID player, BukkitTask task) {
+        playerPvPTask.put(player, task);
+    }
+    public void removePvPTaskActive(UUID player) {
+        playerPvPTask.remove(player);
+    }
+    public BukkitTask getPvPDelayTask(UUID uuid) {
+        return playerPvPTask.get(uuid);
+    }
+
+    public void setPvPTimer(UUID player, long time) {
+        playerPvPTimer.put(player, time);
+    }
+    public void removePvPTimer(UUID player) {
+        playerPvPTimer.remove(player);
+    }
+    public long getPVPTimer(UUID player) { return playerPvPTimer.getOrDefault(player, 0L); }
 
     public void addVanishedPlayer(UUID uuid) {
         vanishedPlayers.add(uuid);
@@ -106,63 +129,34 @@ public class Data {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         //worlds
-        for (World selectedWorld : Bukkit.getWorlds()) {
-            worldNames.add(selectedWorld.getName());
-        }
+        for (World selectedWorld : Bukkit.getWorlds()) worldNames.add(selectedWorld.getName());
 
         //chat colors
-        for (ChatColor color : ChatColor.values()) {
-            colorNames.add(color.name());
-        }
+        for (ChatColor color : ChatColor.values()) colorNames.add(color.name());
 
         //sounds
-        for (Sound sound : Sound.values()) {
-            soundNames.add(sound.name().toLowerCase());
-        }
+        for (Sound sound : Sound.values()) soundNames.add(sound.name().toLowerCase());
 
         //entity names
-        for (EntityType entity : EntityType.values()) {
-            entityNames.add(entity.name().toLowerCase());
-        }
+        for (EntityType entity : EntityType.values()) entityNames.add(entity.name().toLowerCase());
 
         //enchants
-        for (Enchantment enchantment : Enchantment.values()) {
-            enchantNames.add(enchantment.getKey().value());
-        }
+        for (Enchantment enchantment : Enchantment.values()) enchantNames.add(enchantment.getKey().value());
 
         //materials
-        for (Material material : Material.values()) {
-            materialNames.add(material.name().toLowerCase());
-        }
+        for (Material material : Material.values()) materialNames.add(material.name().toLowerCase());
 
         //recipes
         Iterator<Recipe> ita = Bukkit.getServer().recipeIterator();
         ita.forEachRemaining(recipe -> {
-            if (recipe instanceof ShapelessRecipe) {
-                ShapelessRecipe shapelessRecipe = (ShapelessRecipe) recipe;
-                recipeKeys.add(shapelessRecipe.getKey());
-            } else if (recipe instanceof ShapedRecipe) {
-                ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
-                recipeKeys.add(shapedRecipe.getKey());
-            } else if (recipe instanceof BlastingRecipe) {
-                BlastingRecipe shapedRecipe = (BlastingRecipe) recipe;
-                recipeKeys.add(shapedRecipe.getKey());
-            } else if (recipe instanceof CampfireRecipe) {
-                CampfireRecipe shapedRecipe = (CampfireRecipe) recipe;
-                recipeKeys.add(shapedRecipe.getKey());
-            } else if (recipe instanceof FurnaceRecipe) {
-                FurnaceRecipe shapedRecipe = (FurnaceRecipe) recipe;
-                recipeKeys.add(shapedRecipe.getKey());
-            } else if (recipe instanceof SmithingRecipe) {
-                SmithingRecipe shapedRecipe = (SmithingRecipe) recipe;
-                recipeKeys.add(shapedRecipe.getKey());
-            } else if (recipe instanceof SmokingRecipe) {
-                SmokingRecipe shapedRecipe = (SmokingRecipe) recipe;
-                recipeKeys.add(shapedRecipe.getKey());
-            } else if (recipe instanceof StonecuttingRecipe) {
-                StonecuttingRecipe shapedRecipe = (StonecuttingRecipe) recipe;
-                recipeKeys.add(shapedRecipe.getKey());
-            }
+            if (recipe instanceof ShapelessRecipe shapelessRecipe) recipeKeys.add(shapelessRecipe.getKey());
+            else if (recipe instanceof ShapedRecipe shapedRecipe) recipeKeys.add(shapedRecipe.getKey());
+            else if (recipe instanceof BlastingRecipe shapedRecipe) recipeKeys.add(shapedRecipe.getKey());
+            else if (recipe instanceof CampfireRecipe shapedRecipe) recipeKeys.add(shapedRecipe.getKey());
+            else if (recipe instanceof FurnaceRecipe shapedRecipe) recipeKeys.add(shapedRecipe.getKey());
+            else if (recipe instanceof SmithingRecipe shapedRecipe) recipeKeys.add(shapedRecipe.getKey());
+            else if (recipe instanceof SmokingRecipe shapedRecipe) recipeKeys.add(shapedRecipe.getKey());
+            else if (recipe instanceof StonecuttingRecipe shapedRecipe) recipeKeys.add(shapedRecipe.getKey());
         });
 
         //advancements

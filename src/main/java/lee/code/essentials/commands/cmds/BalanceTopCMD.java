@@ -32,8 +32,8 @@ public class BalanceTopCMD implements CommandExecutor {
             UUID uuid = player.getUniqueId();
 
             Map<String, String> cPlayers = cache.getTopBalances();
-            Map<String, Integer> intMap = cPlayers.entrySet().stream().collect(toMap(Map.Entry::getKey, entry -> Integer.parseInt(entry.getValue())));
-            Map<String, Integer> sortedMap = intMap.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+            Map<String, Long> intMap = cPlayers.entrySet().stream().collect(toMap(Map.Entry::getKey, entry -> Long.parseLong(entry.getValue())));
+            Map<String, Long> sortedMap = intMap.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
             int index;
             int maxDisplayed = 10;

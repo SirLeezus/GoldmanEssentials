@@ -31,10 +31,10 @@ public class SellAllCMD implements CommandExecutor {
                 if (itemHand.hasItemMeta()) if (itemHand.getItemMeta().hasDisplayName()) name = itemHand.getItemMeta().getDisplayName();
                 if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
                     int amount = plugin.getPU().getItemAmount(player, itemHand);
-                    int value = ItemSellValues.valueOf(name).getValue() * amount;
+                    long value = ItemSellValues.valueOf(name).getValue() * amount;
                     plugin.getPU().takeItems(player, itemHand, amount);
                     cache.deposit(uuid, value);
-                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SELL_SUCCESSFUL.getString(new String[] { String.valueOf(amount), plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) }));
+                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SELL_SUCCESSFUL.getString(new String[] { plugin.getPU().formatMaterial(name), String.valueOf(amount), plugin.getPU().formatAmount(value) }));
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
             } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
         }

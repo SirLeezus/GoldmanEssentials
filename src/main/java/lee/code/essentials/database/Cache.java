@@ -33,7 +33,7 @@ public class Cache {
         }
     }
 
-    public void deposit(UUID uuid, int amount) {
+    public void deposit(UUID uuid, long amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -49,7 +49,7 @@ public class Cache {
         }
     }
 
-    public void withdraw(UUID uuid, int amount) {
+    public void withdraw(UUID uuid, long amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -57,8 +57,8 @@ public class Cache {
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            int balance = Integer.parseInt(jedis.hget("balance", sUUID));
-            int newBalance = balance - amount;
+            long balance = Long.parseLong(jedis.hget("balance", sUUID));
+            long newBalance = balance - amount;
             if (newBalance < 0) newBalance = 0;
             String sNewBalance = String.valueOf(newBalance);
             jedis.hset("balance", sUUID, sNewBalance);
@@ -67,7 +67,7 @@ public class Cache {
         }
     }
 
-    public void setBalance(UUID uuid, int amount) {
+    public void setBalance(UUID uuid, long amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -82,14 +82,14 @@ public class Cache {
         }
     }
 
-    public int getBalance(UUID uuid) {
+    public long getBalance(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            return Integer.parseInt(jedis.hget("balance", sUUID));
+            return Long.parseLong(jedis.hget("balance", sUUID));
         }
     }
 

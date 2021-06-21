@@ -29,7 +29,7 @@ public class MoneyCMD implements CommandExecutor {
 
                     Scanner buyScanner = new Scanner(args[2]);
                     if (buyScanner.hasNextInt()) {
-                        int amount = Integer.parseInt(args[2]);
+                        long amount = Long.parseLong(args[2]);
 
                         if (target != null) {
                             UUID tUUID = target.getUniqueId();

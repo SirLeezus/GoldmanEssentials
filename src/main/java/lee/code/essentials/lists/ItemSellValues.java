@@ -48,5 +48,5 @@ public enum ItemSellValues {
     ;
 
     @Getter private final ItemStack item;
-    @Getter private final int value;
+    @Getter private final long value;
 }

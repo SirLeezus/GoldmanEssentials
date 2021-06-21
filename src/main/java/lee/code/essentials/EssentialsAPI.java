@@ -6,19 +6,19 @@ import java.util.UUID;
 
 public class EssentialsAPI {
 
-    public void deposit(UUID uuid, int amount) {
+    public void deposit(UUID uuid, long amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
         cache.deposit(uuid, amount);
     }
 
-    public void withdraw(UUID uuid, int amount) {
+    public void withdraw(UUID uuid, long amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
         cache.withdraw(uuid, amount);
     }
 
-    public int getBalance(UUID uuid) {
+    public long getBalance(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
         return cache.getBalance(uuid);

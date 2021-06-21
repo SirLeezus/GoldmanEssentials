@@ -218,6 +218,6 @@ commands:
     permission: essentials.command.kick
     usage: "/kick &f<player> <reason>"
   colors:
-    description: Display all the possible colors in chat.
+    description: Display all the colors that can be used.
     permission: essentials.command.colors
     usage: "/colors"

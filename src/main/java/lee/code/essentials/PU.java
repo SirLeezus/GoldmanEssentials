@@ -14,6 +14,7 @@ import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -25,7 +26,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -349,6 +352,29 @@ public class PU {
         plugin.getData().addPlayerClickDelay(uuid);
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         scheduler.runTaskLater(plugin, () -> plugin.getData().removePlayerClickDelay(uuid), Settings.CLICK_DELAY.getValue());
+    }
+
+    public void addPlayerPvPDelay(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+
+        if (data.isPvPTaskActive(uuid)) {
+            BukkitTask task = data.getPvPDelayTask(uuid);
+            task.cancel();
+        }
+
+        long milliseconds = System.currentTimeMillis();
+        long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + Settings.PVP_DELAY.getValue();
+        data.setPvPTimer(uuid, time);
+
+        data.addPvPTaskActive(uuid, new BukkitRunnable() {
+            @Override
+            public void run() {
+                data.removePvPTimer(uuid);
+                data.removePvPTaskActive(uuid);
+            }
+
+        }.runTaskLater(plugin, Settings.PVP_DELAY.getValue() * 20L));
     }
 
     public void applyHeadSkin(ItemStack head, String base64, UUID uuid) {
