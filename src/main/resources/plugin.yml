@@ -49,6 +49,11 @@ commands:
     description: Opens a players inventory.
     permission: essentials.command.invsee
     usage: "/invsee &f<player>"
+  enderchest:
+    description: Opens a players ender chest.
+    permission: essentials.command.enderchest
+    aliases: [ender]
+    usage: "/enderchest &f<player>"
   rankup:
     description: Rankup player info.
     permission: essentials.command.rankup

@@ -115,6 +115,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("kick").setExecutor(new KickCMD());
         getCommand("colors").setExecutor(new ColorsCMD());
         getCommand("playtime").setExecutor(new PlayTimeCMD());
+        getCommand("enderchest").setExecutor(new EnderChestCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -168,6 +169,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("kick").setTabCompleter(new KickTab());
         getCommand("colors").setTabCompleter(new ColorsTab());
         getCommand("playtime").setTabCompleter(new PlayTimeTab());
+        getCommand("invsee").setTabCompleter(new InvseeTab());
+        getCommand("enderchest").setTabCompleter(new EnderChestTab());
     }
 
     private void registerListeners() {
