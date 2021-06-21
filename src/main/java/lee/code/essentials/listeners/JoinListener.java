@@ -85,5 +85,8 @@ public class JoinListener implements Listener {
         //set join message format
         if (plugin.getData().getVanishedPlayers().contains(uuid)) e.joinMessage(null);
         else e.joinMessage(player.displayName().append(Lang.PLAYER_JOIN.getComponent(null)));
+
+        //motd
+        for (String line : plugin.getData().getServerMOTD()) player.sendMessage(plugin.getPU().formatC(line));
     }
 }

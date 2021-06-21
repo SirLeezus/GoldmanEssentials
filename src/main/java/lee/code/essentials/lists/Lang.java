@@ -35,6 +35,7 @@ public enum Lang {
     BROADCAST_UNMUTED("&aThe player &6{0} &ahas been unmuted!"),
     SERVER_RESTART("&aThe server is restarting! Journey will be back online soon!"),
     COMMAND_SETSPAWN_SUCCESSFUL("&aYou have successfully set the new spawn!"),
+    COMMAND_RELOAD_SUCCESSFUL("&aYou have successfully reloaded essential's text file."),
     COMMAND_PLAYTIME_SUCCESSFUL("&aYou have played: &e{0}"),
     COMMAND_GAMEMODE_SUCCESSFUL("&aYour gamemode was updated to &e{0}&a!"),
     COMMAND_FLY_TOGGLE_SUCCESSFUL("&aYour fly was successfully toggled {0}&a!"),

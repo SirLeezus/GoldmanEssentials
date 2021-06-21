@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.*;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,7 @@ public class Data {
     @Getter private final List<UUID> sleepingPlayers = new ArrayList<>();
     @Getter private final List<UUID> playerClickDelay = new ArrayList<>();
     @Getter private final List<NamespacedKey> recipeKeys = new ArrayList<>();
+    @Getter private final List<String> serverMOTD = new ArrayList<>();
     @Getter @Setter private BukkitTask sleepTask = null;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
@@ -122,6 +124,25 @@ public class Data {
             PlayerMU pmu = new PlayerMU(uuid);
             playerMUList.put(uuid, pmu);
             return pmu;
+        }
+    }
+
+    public void loadMOTDFile() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+
+        String line;
+        serverMOTD.clear();
+        try {
+            File file = new File(plugin.getDataFolder(), "motd.txt");
+            if (!file.exists()) {
+                boolean created = file.createNewFile();
+            }
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            while ((line = br.readLine()) != null) {
+                serverMOTD.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -5,6 +5,10 @@ api-version: 1.17
 author: Lee
 depend: [ProtocolLib, RedisCache]
 commands:
+  essreload:
+    description: Reload plugin text files.
+    permission: essentials.command.reload
+    usage: "/essreload"
   spawn:
     description: Teleport to spawn.
     permission: essentials.command.spawn

@@ -42,6 +42,7 @@ public class GoldmanEssentials extends JavaPlugin {
 
         data.cacheDatabase();
         data.loadListData();
+        data.loadMOTDFile();
 
         tabListManager.scheduleTabListUpdater();
 
@@ -116,6 +117,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("colors").setExecutor(new ColorsCMD());
         getCommand("playtime").setExecutor(new PlayTimeCMD());
         getCommand("enderchest").setExecutor(new EnderChestCMD());
+        getCommand("essreload").setExecutor(new ReloadCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -171,6 +173,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("playtime").setTabCompleter(new PlayTimeTab());
         getCommand("invsee").setTabCompleter(new InvseeTab());
         getCommand("enderchest").setTabCompleter(new EnderChestTab());
+        getCommand("essreload").setTabCompleter(new ReloadTab());
     }
 
     private void registerListeners() {
