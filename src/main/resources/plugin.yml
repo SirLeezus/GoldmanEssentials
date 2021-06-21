@@ -221,3 +221,7 @@ commands:
     description: Display all the colors that can be used.
     permission: essentials.command.colors
     usage: "/colors"
+  playtime:
+    description: Check your playtime on the server.
+    permission: essentials.command.playtime
+    usage: "/playtime"

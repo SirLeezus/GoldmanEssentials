@@ -325,10 +325,10 @@ public class PU {
         long minutes = (TimeUnit.SECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(hours) - TimeUnit.DAYS.toMinutes(days));
         long seconds = (TimeUnit.SECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(minutes) - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.DAYS.toSeconds(days));
 
-        if (days != 0) return days + " day, " + hours + " hours, " + minutes + " min, " + seconds + " sec";
-        else if (hours != 0) return hours + " hour, " + minutes + " min, " + seconds + " sec";
-        else if (minutes != 0) return minutes + " min, " + seconds + " sec";
-        else return seconds + " sec";
+        if (days != 0) return days + "&6d&e, " + hours + "&6h&e, " + minutes + "&6m&e, " + seconds + "&6s";
+        else if (hours != 0) return hours + "&6h&e, " + minutes + "&6m&e, " + seconds + "&6s";
+        else if (minutes != 0) return minutes + "&6m&e, " + seconds + "&6s";
+        else return seconds + "&6s";
     }
 
     public long unFormatSeconds(String time) {
