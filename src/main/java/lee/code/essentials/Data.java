@@ -39,6 +39,7 @@ public class Data {
     private final ConcurrentHashMap<UUID, UUID> activeArmorStands = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerPvPTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Long> playerPvPTimer = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BukkitTask> playerSpamTask = new ConcurrentHashMap<>();
 
     public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) {
         return playersRequestingTeleport.get(player) == target;
@@ -81,6 +82,19 @@ public class Data {
     }
     public long getPVPTimer(UUID player) { return playerPvPTimer.getOrDefault(player, 0L); }
 
+    public boolean isSpamTaskActive(UUID player) {
+        return playerSpamTask.containsKey(player);
+    }
+    public void addSpamTaskActive(UUID player, BukkitTask task) {
+        playerSpamTask.put(player, task);
+    }
+    public void removeSpamTaskActive(UUID player) {
+        playerSpamTask.remove(player);
+    }
+    public BukkitTask getSpamDelayTask(UUID uuid) {
+        return playerSpamTask.get(uuid);
+    }
+
     public void addVanishedPlayer(UUID uuid) {
         vanishedPlayers.add(uuid);
     }
@@ -107,6 +121,8 @@ public class Data {
     public void removePlayerClickDelay(UUID uuid) {
         playerClickDelay.remove(uuid);
     }
+
+
 
     public void cacheDatabase() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();

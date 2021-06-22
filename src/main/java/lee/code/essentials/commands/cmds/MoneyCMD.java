@@ -28,7 +28,7 @@ public class MoneyCMD implements CommandExecutor {
                     Player target = Bukkit.getPlayer(args[1]);
 
                     Scanner buyScanner = new Scanner(args[2]);
-                    if (buyScanner.hasNextInt()) {
+                    if (buyScanner.hasNextLong()) {
                         long amount = Long.parseLong(args[2]);
 
                         if (target != null) {

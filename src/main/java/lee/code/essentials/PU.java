@@ -14,17 +14,19 @@ import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.title.Title;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -45,6 +47,7 @@ import java.util.stream.Collectors;
 public class PU {
 
     private final Pattern HEX_REGEX = Pattern.compile("#[a-fA-F0-9]{6}");
+    private final Pattern ITEM_REGEX = Pattern.compile("(?i).*\\[item\\].*");
 
     public String format(String message) {
         if (message == null) return "";
@@ -80,6 +83,47 @@ public class PU {
     public String formatMaterial(String type) {
         String format = type.toLowerCase().replaceAll("_", " ");
         return WordUtils.capitalize(format);
+    }
+
+    @SuppressWarnings("deprecation")
+    public Component parseChatVariables(Player player, Component message) {
+        String text = PlainTextComponentSerializer.plainText().serialize(message);
+
+        if (ITEM_REGEX.matcher(text).matches()) {
+            ItemStack item = player.getInventory().getItemInMainHand();
+            String materialName = formatMaterial(item.getType().name());
+            String itemName = materialName;
+            StringBuilder lore = new StringBuilder();
+            if (item.hasItemMeta()) {
+                ItemMeta itemMeta = item.getItemMeta();
+                if (itemMeta.hasDisplayName()) itemName = itemMeta.getDisplayName();
+                if (itemMeta.hasEnchants()) {
+                    for (Map.Entry<Enchantment, Integer> enchant : itemMeta.getEnchants().entrySet()) {
+                        String enchantColor = "&7";
+                        if (enchant.getKey().equals(Enchantment.VANISHING_CURSE) || enchant.getKey().equals(Enchantment.BINDING_CURSE)) enchantColor = "&c";
+                        lore.append("\n").append(enchantColor).append(formatMaterial(enchant.getKey().getKey().getKey())).append(" ").append(getRomanNumber(enchant.getValue()));
+                    }
+                }
+                if (itemMeta.hasLore() && itemMeta.getLore() != null) for (String loreLine : itemMeta.getLore()) lore.append("\n&5&o").append(loreLine);
+            }
+            return formatC("&7[&f" + itemName + "&7]").hoverEvent(formatC(itemName + " &7(&f" + materialName + "&7)" + lore));
+        } else return message;
+    }
+
+    public String getRomanNumber(int number) {
+        switch (number) {
+            case 1 -> { return "I"; }
+            case 2 -> { return "II"; }
+            case 3 -> { return "III"; }
+            case 4 -> { return "IV"; }
+            case 5 -> { return "V"; }
+            case 6 -> { return "VI"; }
+            case 7 -> { return "VII"; }
+            case 8 -> { return "VIII"; }
+            case 9 -> { return "IX"; }
+            case 10 -> { return "X"; }
+            default -> { return ""; }
+        }
     }
 
     public int rng() {
@@ -375,6 +419,24 @@ public class PU {
             }
 
         }.runTaskLater(plugin, Settings.PVP_DELAY.getValue() * 20L));
+    }
+
+    public void addSpamDelay(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+
+        if (data.isSpamTaskActive(uuid)) {
+            BukkitTask task = data.getSpamDelayTask(uuid);
+            task.cancel();
+        }
+
+        data.addSpamTaskActive(uuid, new BukkitRunnable() {
+            @Override
+            public void run() {
+                data.removeSpamTaskActive(uuid);
+            }
+
+        }.runTaskLater(plugin, Settings.SPAM_DELAY.getValue() * 20L));
     }
 
     public void applyHeadSkin(ItemStack head, String base64, UUID uuid) {
