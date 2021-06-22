@@ -35,6 +35,8 @@ public enum ItemSellValues {
     COOKED_RABBIT(new ItemStack(Material.COOKED_RABBIT), 10),
     OBSIDIAN(new ItemStack(Material.OBSIDIAN), 15),
     CRYING_OBSIDIAN(new ItemStack(Material.CRYING_OBSIDIAN), 15),
+    COPPER_INGOT(new ItemStack(Material.COPPER_INGOT), 15),
+    COPPER_BLOCK(new ItemStack(Material.COPPER_BLOCK), 135),
     IRON_INGOT(new ItemStack(Material.IRON_INGOT), 20),
     IRON_BLOCK(new ItemStack(Material.IRON_BLOCK), 180),
     GOLD_INGOT(new ItemStack(Material.GOLD_INGOT), 30),
