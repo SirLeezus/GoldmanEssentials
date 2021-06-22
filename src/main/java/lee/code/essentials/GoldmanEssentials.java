@@ -197,6 +197,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HeadDropListener(), this);
         getServer().getPluginManager().registerEvents(new HopperFilterListener(), this);
         getServer().getPluginManager().registerEvents(new PvPListener(), this);
+        getServer().getPluginManager().registerEvents(new DeathListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {
