@@ -46,6 +46,7 @@ public enum ItemSellValues {
     EMERALD(new ItemStack(Material.EMERALD), 60),
     EMERALD_BLOCK(new ItemStack(Material.EMERALD_BLOCK), 540),
     NETHERITE_INGOT(new ItemStack(Material.NETHERITE_INGOT), 70),
+    NETHERITE_BLOCK(new ItemStack(Material.NETHERITE_BLOCK), 630),
     NETHER_STAR(new ItemStack(Material.NETHER_STAR), 80),
     ;
 
