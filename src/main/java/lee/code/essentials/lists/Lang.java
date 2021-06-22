@@ -114,6 +114,7 @@ public enum Lang {
     ERROR_ARMOR_STAND_EDIT("&cThat armor stand is currently being edited by another player."),
     ERROR_COMMAND_TIME("&cThe time &e{0} &cis not an option."),
     ERROR_COMMAND_RANKUP_CONFIRM("&cYou only have &2{0} &cadvancements completed and you need &2{1} &cto rankup."),
+    ERROR_COMMAND_PRESTIGE("&cYou only have &2{0} &cadvancements completed and you need &2{1} &cto prestige."),
     ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED("&cYou already have a pending teleport request sent to &6{0}&c."),
     ERROR_COMMAND_TELEPORT_NOT_REQUESTING("&cThe player &6{0} &cis not currently requesting teleportation."),
     ERROR_COMMAND_MONEY_VALUE("&cThe input &6{0} &cis not a number."),

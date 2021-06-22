@@ -20,7 +20,7 @@ public class RankupTab implements TabCompleter {
 
         if (sender instanceof Player) {
             if (args.length == 1) {
-                return StringUtil.copyPartialMatches(args[0], Arrays.asList("confirm", "check"), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[0], Arrays.asList("confirm", "check", "prestige"), new ArrayList<>());
             } else return blank;
         } else return blank;
     }
