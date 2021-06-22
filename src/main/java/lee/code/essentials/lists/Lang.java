@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 @AllArgsConstructor
 public enum Lang {
     PREFIX("&6[&e!&6] &r"),
+    DEATH_PREFIX("&4[&cDeath&4] &r"),
     ANNOUNCEMENT("&e&lAnnouncement &6➔ &r"),
     WARNING("&4&lWarning &6➔ &r"),
     HOVER_ALERT("&6&l[&e&l!&6&l] &r"),
