@@ -2,6 +2,9 @@ package lee.code.essentials.listeners;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
+import lee.code.essentials.lists.Lang;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +17,9 @@ public class AchievementListener implements Listener {
     public void onPlayerAchievement(PlayerAdvancementDoneEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
+
+        Component am = e.message();
+        if (am != null) plugin.getServer().sendMessage(Lang.ADVANCEMENT_PREFIX.getComponent(null).append(am).append(plugin.getPU().formatC("&b!")).color(NamedTextColor.AQUA));
 
         Advancement advancement = e.getAdvancement();
         Player player = e.getPlayer();
