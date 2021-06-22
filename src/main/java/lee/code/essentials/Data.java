@@ -127,6 +127,7 @@ public class Data {
     public void cacheDatabase() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
+        SQL.createServerDataColumn();
         SQL.loadPlayerData();
         SQL.loadServerData();
         SQL.loadBalanceTopPlayers();

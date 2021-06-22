@@ -704,6 +704,27 @@ public class Cache {
         }
     }
 
+    public int getPlayerCounter() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            return Integer.parseInt(jedis.get("joins"));
+        }
+    }
+
+    public void addPlayerCounter() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        try (Jedis jedis = pool.getResource()) {
+            int joins = Integer.parseInt(jedis.get("joins")) + 1;
+            jedis.set("joins", String.valueOf(joins));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setJoins(joins));
+        }
+    }
+
     public Map<String, String> getTopBalances() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -782,12 +803,13 @@ public class Cache {
         }
     }
 
-    public void setServerData(String spawn) {
+    public void setServerData(String spawn, String joins) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 
         try (Jedis jedis = pool.getResource()) {
             jedis.set("spawn", spawn);
+            jedis.set("joins", joins);
         }
     }
 }

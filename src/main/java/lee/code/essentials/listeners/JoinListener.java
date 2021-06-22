@@ -36,6 +36,12 @@ public class JoinListener implements Listener {
             cache.setPunishmentData(uuid, String.valueOf(player.getAddress()), "0", "0", "0", "0", "0", "0", "0", true);
         }
 
+        //player counter
+        if (!player.hasPlayedBefore()) {
+            cache.addPlayerCounter();
+            plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cache.getPlayerCounter()) })));
+        }
+
         //ban check
         if (cache.isBanned(uuid)) {
             e.joinMessage(null);

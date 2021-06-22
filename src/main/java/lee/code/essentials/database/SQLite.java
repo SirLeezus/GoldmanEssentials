@@ -81,7 +81,8 @@ public class SQLite {
         //server data table
         update("CREATE TABLE IF NOT EXISTS server (" +
                 "`server` varchar PRIMARY KEY," +
-                "`spawn` varchar NOT NULL" +
+                "`spawn` varchar NOT NULL," +
+                "`joins` varchar NOT NULL" +
                 ");");
 
         //punishment data table
@@ -100,8 +101,21 @@ public class SQLite {
 
     //SERVER TABLE
 
+    public void createServerDataColumn() {
+        try {
+            ResultSet rs = getResult("SELECT 1 FROM server;");
+            if (!rs.next()) update("INSERT OR REPLACE INTO server (server, spawn, joins) VALUES( 'server','" + 0 + "','" + 0 + "');");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setSpawn(String location) {
-        update("INSERT OR REPLACE INTO server (server, spawn) VALUES( 'server','" + location + "');");
+        update("UPDATE server SET spawn ='" + location + "' WHERE server ='" + "server" + "';");
+    }
+
+    public void setJoins(int joins) {
+        update("UPDATE server SET joins = '" + joins + "' WHERE server ='" + "server" + "';");
     }
 
     //PUNISHMENT DATA TABLE
@@ -271,8 +285,8 @@ public class SQLite {
             ResultSet rs = getResult("SELECT * FROM server WHERE server = 'server';");
             if (rs.next()) {
                 String spawn = rs.getString("spawn");
-                cache.setServerData(spawn);
-                if (spawn != null) System.out.println(plugin.getPU().format("&bSpawn loaded!"));
+                String joins = rs.getString("joins");
+                cache.setServerData(spawn, joins);
             }
         } catch (SQLException e) {
             e.printStackTrace();
