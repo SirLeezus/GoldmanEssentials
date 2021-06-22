@@ -66,6 +66,10 @@ commands:
     description: Set a player's prefix.
     permission: essentials.command.setprefix
     usage: "/setprefix &f<player> <prefix>"
+  setsuffix:
+    description: Set a player's suffix.
+    permission: essentials.command.suffix
+    usage: "/setsuffix &f<player> <suffix>"
   setcolor:
     description: Set a player's color.
     permission: essentials.command.setcolor

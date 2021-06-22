@@ -119,6 +119,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("enderchest").setExecutor(new EnderChestCMD());
         getCommand("essreload").setExecutor(new ReloadCMD());
         getCommand("itemlore").setExecutor(new ItemLoreCMD());
+        getCommand("setsuffix").setExecutor(new SetSuffixCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -176,6 +177,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("enderchest").setTabCompleter(new EnderChestTab());
         getCommand("essreload").setTabCompleter(new ReloadTab());
         getCommand("itemlore").setTabCompleter(new ItemLoreTab());
+        getCommand("setsuffix").setTabCompleter(new SetSuffixTab());
     }
 
     private void registerListeners() {
