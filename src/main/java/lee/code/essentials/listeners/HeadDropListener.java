@@ -49,6 +49,12 @@ public class HeadDropListener implements Listener {
                     } else if (e.getEntity() instanceof Parrot parrot) {
                         Parrot.Variant variant = parrot.getVariant();
                         type = variant.name() + "_" + type;
+                    } else if (e.getEntity() instanceof  Llama llama) {
+                        Llama.Color color = llama.getColor();
+                        type = color.name() + "_" + type;
+                    } else if (e.getEntity() instanceof  TraderLlama traderLlama) {
+                        Llama.Color color = traderLlama.getColor();
+                        type = color.name() + "_" + type;
                     }
 
                     if (plugin.getPU().getEntityHeads().contains(type)) {
