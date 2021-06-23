@@ -3,7 +3,6 @@ package lee.code.essentials.commands.cmds;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,13 +25,9 @@ public class TeleportAcceptCMD implements CommandExecutor {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null && target != player) {
                         if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
-
-                            target.sendActionBar(Lang.TELEPORT.getComponent(null));
-                            target.playSound(target.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
                             target.teleportAsync(player.getLocation());
-
                             plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
-
+                            target.sendActionBar(Lang.TELEPORT.getComponent(null));
                             player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL.getString(new String[] { target.getName() }));
                             target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL_TARGET.getString(new String[] { player.getName() }));
                         } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getString(new String[] { target.getName() }));

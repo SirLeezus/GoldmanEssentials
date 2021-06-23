@@ -37,6 +37,9 @@ public class GoldmanEssentials extends JavaPlugin {
         this.essentialsAPI = new EssentialsAPI();
         this.protocolManagerAPI = ProtocolLibrary.getProtocolManager();
 
+        registerCommands();
+        registerListeners();
+
         sqLite.connect();
         sqLite.loadTables();
 
@@ -45,9 +48,6 @@ public class GoldmanEssentials extends JavaPlugin {
         data.loadMOTDFile();
 
         tabListManager.scheduleTabListUpdater();
-
-        registerCommands();
-        registerListeners();
 
         permissionManager.loadPerms();
         pU.registerTamedEntityFix();
@@ -120,6 +120,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("essreload").setExecutor(new ReloadCMD());
         getCommand("itemlore").setExecutor(new ItemLoreCMD());
         getCommand("setsuffix").setExecutor(new SetSuffixCMD());
+        getCommand("randomteleport").setExecutor(new RandomTeleportCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -178,6 +179,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("essreload").setTabCompleter(new ReloadTab());
         getCommand("itemlore").setTabCompleter(new ItemLoreTab());
         getCommand("setsuffix").setTabCompleter(new SetSuffixTab());
+        getCommand("randomteleport").setTabCompleter(new RandomTeleportTab());
     }
 
     private void registerListeners() {

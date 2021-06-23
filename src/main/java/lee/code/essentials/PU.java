@@ -35,7 +35,6 @@ import org.bukkit.scoreboard.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
@@ -48,6 +47,7 @@ public class PU {
 
     private final Pattern HEX_REGEX = Pattern.compile("#[a-fA-F0-9]{6}");
     private final Pattern ITEM_REGEX = Pattern.compile("(?i).*\\[item\\].*");
+    private final Random random = new Random();
 
     public String format(String message) {
         if (message == null) return "";
@@ -83,6 +83,31 @@ public class PU {
     public String formatMaterial(String type) {
         String format = type.toLowerCase().replaceAll("_", " ");
         return WordUtils.capitalize(format);
+    }
+
+    public void rtpPlayer(Player player) {
+        int x = -10000 + random.nextInt(20000);
+        int y = 100;
+        int z = -10000 + random.nextInt(20000);
+
+        World world = player.getWorld();
+        Location location = new Location(player.getWorld(), x, y, z);
+
+        if (world.getWorldBorder().isInside(location)) {
+            world.loadChunk(location.getChunk());
+            for (int i = y; i > 0; i--) {
+                Location loc = new Location(player.getWorld(), x, i, z);
+                if (loc.getBlock().getType() == Material.AIR) {
+                    Location ground = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ());
+                    if (ground.getBlock().getType() != Material.AIR && ground.getBlock().getType() != Material.LAVA) {
+                        player.teleportAsync(loc);
+                        player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                        return;
+                    }
+                }
+            }
+        }
+        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND.getComponent(null)));
     }
 
     @SuppressWarnings("deprecation")
@@ -127,8 +152,7 @@ public class PU {
     }
 
     public int rng() {
-        SecureRandom sr = new SecureRandom();
-        return sr.nextInt(1000);
+        return random.nextInt(1000);
     }
 
     public String shortenDouble(double value) {

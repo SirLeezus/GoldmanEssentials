@@ -12,12 +12,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HelpCMD implements CommandExecutor {
-
-    private final List<String> commands = Arrays.asList("essreload", "ban", "tempban", "unban", "banlist", "mute", "unmute", "kick", "itemlore", "zap", "colors", "playtime", "world", "weather", "vanish", "time", "teleportdeny", "teleportaccept", "teleport", "summon", "staffchat", "spawn", "sound", "home", "sethome", "deletehome", "setspawn", "setrank", "setprefix", "setsuffix", "setcolor", "setrank", "reply", "rankup", "ranklist", "sell", "sellall", "worth", "money", "message", "itemname", "invsee", "enderchest", "help", "heal", "head", "god", "glow", "give", "gamemode", "flyspeed", "fly", "feed", "enchant", "balancetop", "balance", "advancement");
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -33,7 +30,7 @@ public class HelpCMD implements CommandExecutor {
                 eLines.add(Lang.COMMAND_HELP_ESSENTIALS_TITLE.getString(null));
                 eLines.add("");
 
-                for (String pCommand : commands) {
+                for (String pCommand : plugin.getData().getPluginCommands()) {
                     Command sCommand = Bukkit.getCommandMap().getCommand(pCommand);
                     if (sCommand != null) {
                         String permission = sCommand.getPermission();

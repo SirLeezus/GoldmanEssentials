@@ -242,3 +242,8 @@ commands:
     description: Change the lore of the item you're holding.
     permission: essentials.command.itemlore
     usage: "/itemlore &f<line> <message>"
+  randomteleport:
+    description: Teleport randomly in the world you're in.
+    permission: essentials.command.randomteleport
+    aliases: [rtp]
+    usage: "/randomteleport &f<player>"

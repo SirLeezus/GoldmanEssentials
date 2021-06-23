@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
+import org.bukkit.command.Command;
+import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.*;
@@ -32,6 +34,7 @@ public class Data {
     @Getter private final List<UUID> playerClickDelay = new ArrayList<>();
     @Getter private final List<NamespacedKey> recipeKeys = new ArrayList<>();
     @Getter private final List<String> serverMOTD = new ArrayList<>();
+    @Getter private final List<String> pluginCommands = new ArrayList<>();
     @Getter @Setter private BukkitTask sleepTask = null;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
@@ -165,6 +168,9 @@ public class Data {
 
     public void loadListData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+
+        //plugin commands
+        for (Command command : PluginCommandYamlParser.parse(plugin)) pluginCommands.add(command.getName());
 
         //worlds
         for (World selectedWorld : Bukkit.getWorlds()) worldNames.add(selectedWorld.getName());

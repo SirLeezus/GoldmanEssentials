@@ -105,6 +105,7 @@ public enum Lang {
     COMMAND_WEATHER_CLEAR("&aThe weather has been &ecleared&a!"),
     COMMAND_WEATHER_RAIN("&aThe weather has been changed to &erain&a."),
     COMMAND_WEATHER_THUNDER("&aThe weather has been changed to &ethunderstorm&a."),
+    ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND("&cPlease try again, no safe location could be found to teleport you."),
     ERROR_SELL_NOT_SELLABLE("&cThe item you're currently holding can't be sold to the server."),
     ERROR_HOME_NOT_SAVED("&cThe name &e{0} &cis not a saved home."),
     ERROR_HOME_BED_NOT_SAVED("&cYou currently don't have a bed."),
