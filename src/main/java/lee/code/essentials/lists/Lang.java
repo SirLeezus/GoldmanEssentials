@@ -80,6 +80,8 @@ public enum Lang {
     COMMAND_HELP_SPLITTER("&a----------------------------"),
     COMMAND_HOME_TITLE("&a-------------- &e[ &2&lHomes &e] &a--------------"),
     COMMAND_HOME_SPLITTER("&a--------------------------------------"),
+    COMMAND_RULES_TITLE("&a----------------- &e[ &2&lRules &e] &a-----------------"),
+    COMMAND_RULES_SPLITTER("&a----------------------------------------------"),
     COMMAND_HOME_TELEPORT_SUCCESSFUL("&aYou have been teleported to your &e{0} &ahome location."),
     COMMAND_HOME_TELEPORT_BED_SUCCESSFUL("&aYou have been teleported to your bed!"),
     COMMAND_SETHOME_SUCCESSFUL("&aYou successfully saved the home location &e{0}&a!"),

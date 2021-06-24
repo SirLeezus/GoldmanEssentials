@@ -251,3 +251,7 @@ commands:
     permission: essentials.command.randomteleport
     aliases: [rtp]
     usage: "/randomteleport &f<player>"
+  rules:
+    description: List of all the server rules.
+    permission: essentials.command.rules
+    usage: "/rules"
