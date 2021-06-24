@@ -3,7 +3,7 @@ package lee.code.essentials.commands.cmds;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
-import org.bukkit.Sound;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,10 +18,11 @@ public class SpawnCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
-
-            player.teleportAsync(cache.getSpawn());
-            player.sendActionBar(Lang.TELEPORT.getComponent(null));
-            //player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
+            Location spawn = cache.getSpawn();
+            if (spawn != null) {
+                player.teleportAsync(spawn);
+                player.sendActionBar(Lang.TELEPORT.getComponent(null));
+            }
         }
         return true;
     }

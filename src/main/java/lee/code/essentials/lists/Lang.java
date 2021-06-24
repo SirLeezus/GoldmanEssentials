@@ -8,8 +8,8 @@ import net.kyori.adventure.text.Component;
 @AllArgsConstructor
 public enum Lang {
     PREFIX("&6[&e!&6] &r"),
-    DEATH_PREFIX("&4[&cDeath&4] &r"),
-    ADVANCEMENT_PREFIX("&2[&aAdvancement&2] &r"),
+    DEATH_PREFIX("&cDeath &6➔ &r"),
+    ADVANCEMENT_PREFIX("&aAdvancement &6➔ &r"),
     ANNOUNCEMENT("&e&lAnnouncement &6➔ &r"),
     WARNING("&4&lWarning &6➔ &r"),
     HOVER_ALERT("&6&l[&e&l!&6&l] &r"),
@@ -87,6 +87,9 @@ public enum Lang {
     COMMAND_HELP_ESSENTIALS("&3{0}&b. &e{1} &c| &7{2}"),
     COMMAND_HELP_ESSENTIALS_TITLE("                   &e-== &2&l&nEssentials Help&r &e==-"),
     COMMAND_HELP_ESSENTIALS_DIVIDER("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
+    COMMAND_HELP_WELCOME_DIVIDER("&2▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
+    COMMAND_HELP_HOPPER_FILTER_DIVIDER("&3▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
+    COMMAND_HELP_ARMOR_STAND_DIVIDER("&5▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
     COMMAND_HELP_PLUGIN_HOVER("&6&l[&e&l!&6&l] &eClick to view a list of {0} plugin commands you have permission to use."),
     COMMAND_RANKSET_SUCCESSFUL("&aThe rank &6{0} &awas successfully set for the player &6{1}&a!"),
     COMMAND_RANKLIST_SERVER_RANKS("&6&lServer Ranks&7:"),

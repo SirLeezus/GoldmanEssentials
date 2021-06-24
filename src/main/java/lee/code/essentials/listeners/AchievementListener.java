@@ -19,7 +19,7 @@ public class AchievementListener implements Listener {
         Cache cache = plugin.getCache();
 
         Component am = e.message();
-        if (am != null) plugin.getServer().sendMessage(Lang.ADVANCEMENT_PREFIX.getComponent(null).append(am).append(plugin.getPU().formatC("&b!")).color(NamedTextColor.AQUA));
+        if (am != null) plugin.getServer().sendMessage(Lang.ADVANCEMENT_PREFIX.getComponent(null).append(am).append(plugin.getPU().formatC("&2!")).color(NamedTextColor.DARK_GREEN));
 
         Advancement advancement = e.getAdvancement();
         Player player = e.getPlayer();

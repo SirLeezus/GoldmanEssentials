@@ -17,7 +17,9 @@ public class Cache {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
         try (Jedis jedis = pool.getResource()) {
-            return plugin.getPU().unFormatPlayerLocation(jedis.get("spawn"));
+            String result = jedis.get("spawn");
+            if (!result.equals("0")) return plugin.getPU().unFormatPlayerLocation(result);
+            else return null;
         }
     }
 
