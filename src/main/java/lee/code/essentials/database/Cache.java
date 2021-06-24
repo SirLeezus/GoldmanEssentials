@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Cache {
 
@@ -349,36 +350,28 @@ public class Cache {
         }
     }
 
-    public void addBanList(UUID uuid) {
+    public void setBanList(UUID uuid, boolean isBanned) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-
-            if (jedis.hexists("banlist", "server")) {
+            if (isBanned) {
+                if (jedis.hexists("banlist", "server")) {
+                    String bans = jedis.hget("banlist", "server");
+                    if (bans.isBlank()) {
+                        jedis.hset("banlist", "server", sUUID);
+                    } else jedis.hset("banlist", "server", bans + "," + sUUID);
+                } else jedis.hset("banlist", "server", sUUID);
+            } else {
                 String bans = jedis.hget("banlist", "server");
-                if (bans.isBlank()) {
-                    jedis.hset("banlist", "server", sUUID);
-                } else jedis.hset("banlist", "server", bans + "," + sUUID);
-            } else jedis.hset("banlist", "server", sUUID);
-        }
-    }
-
-    public void removeBanList(UUID uuid) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
-
-        String sUUID = String.valueOf(uuid);
-
-        try (Jedis jedis = pool.getResource()) {
-            String bans = jedis.hget("banlist", "server");
-            String[] split = StringUtils.split(bans, ',');
-            List<String> bannedPlayers = new ArrayList<>();
-            for (String uuidPlayer : split) if (!uuidPlayer.equals(sUUID)) bannedPlayers.add(uuidPlayer);
-            String newBannedPlayers = StringUtils.join(bannedPlayers, ",");
-            jedis.hset("banlist", "server", newBannedPlayers);
+                String[] split = StringUtils.split(bans, ',');
+                List<String> bannedPlayers = new ArrayList<>();
+                for (String uuidPlayer : split) if (!uuidPlayer.equals(sUUID)) bannedPlayers.add(uuidPlayer);
+                String newBannedPlayers = StringUtils.join(bannedPlayers, ",");
+                jedis.hset("banlist", "server", newBannedPlayers);
+            }
         }
     }
 
@@ -557,7 +550,22 @@ public class Cache {
         String sUUID = String.valueOf(uuid);
 
         try (Jedis jedis = pool.getResource()) {
-            return Long.parseLong(jedis.hget("tempbanned", sUUID));
+            long time = Long.parseLong(jedis.hget("tempbanned", sUUID));
+            long milliseconds = System.currentTimeMillis();
+            return time - TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+        }
+    }
+
+    public long getTempMuteTime(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            long time = Long.parseLong(jedis.hget("tempmuted", sUUID));
+            long milliseconds = System.currentTimeMillis();
+            return time - TimeUnit.MILLISECONDS.toSeconds(milliseconds);
         }
     }
 
@@ -583,6 +591,17 @@ public class Cache {
         }
     }
 
+    public boolean isTempMuted(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return !jedis.hget("tempmuted", sUUID).equals("0");
+        }
+    }
+
     public boolean isMuted(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -605,6 +624,60 @@ public class Cache {
         }
     }
 
+    public String getBanDate(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hget("datebanned", sUUID);
+        }
+    }
+
+    public void setBanDate(UUID uuid, boolean isBanned) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String date = plugin.getPU().getDate();
+        String result; if (isBanned) result = date; else result = "0";
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("datebanned", sUUID, result);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setDateBanned(sUUID, result));
+        }
+    }
+
+    public UUID getStaffWhoPunished(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            return UUID.fromString(jedis.hget("staffpunisher", sUUID));
+        }
+    }
+
+    public void setStaffWhoPunished(UUID uuid, UUID staff, boolean isBanned) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String result; if (isBanned) result = String.valueOf(staff); else result = "0";
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("staffpunisher", sUUID, result);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setStaffWhoPunished(sUUID, result));
+        }
+    }
+
     public void setMutedPlayer(UUID uuid, String reason, boolean isMuted) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -621,7 +694,7 @@ public class Cache {
         }
     }
 
-    public void setBannedPlayer(UUID uuid, String reason, boolean isBanned) {
+    public void setBannedPlayer(UUID uuid, UUID staff, String reason, boolean isBanned) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
         SQLite SQL = plugin.getSqLite();
@@ -633,11 +706,15 @@ public class Cache {
             jedis.hset("banned", sUUID, result);
             jedis.hset("banreason", sUUID, reason);
 
+            setBanList(uuid, isBanned);
+            setBanDate(uuid, isBanned);
+            setStaffWhoPunished(uuid, staff, isBanned);
+
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBanned(sUUID, result, reason));
         }
     }
 
-    public void setTempBannedPlayer(UUID uuid, String reason, long time) {
+    public void setTempBannedPlayer(UUID uuid, UUID staff, String reason, long time, boolean isTempBanned) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
         SQLite SQL = plugin.getSqLite();
@@ -647,7 +724,27 @@ public class Cache {
         try (Jedis jedis = pool.getResource()) {
             jedis.hset("tempbanned", sUUID, String.valueOf(time));
             jedis.hset("banreason", sUUID, reason);
+
+            setBanList(uuid, isTempBanned);
+            setBanDate(uuid, isTempBanned);
+            setStaffWhoPunished(uuid, staff, isTempBanned);
+
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setTempBanned(sUUID, time, reason));
+        }
+    }
+
+    public void setTempMutedPlayer(UUID uuid, String reason, long time, boolean isTempMuted) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("tempmuted", sUUID, String.valueOf(time));
+            jedis.hset("mutereason", sUUID, reason);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setTempMuted(sUUID, time, reason));
         }
     }
 
@@ -781,7 +878,7 @@ public class Cache {
         }
     }
 
-    public void setPunishmentData(UUID uuid, String ip, String banned, String tempbanned, String ipbanned, String tempmuted, String muted, String banreason, String mutereason, boolean sql) {
+    public void setPunishmentData(UUID uuid, String staff, String datebanned, String datemuted, String banned, String tempbanned, String tempmuted, String muted, String banreason, String mutereason, boolean sql) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -790,16 +887,17 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             Pipeline pipe = jedis.pipelined();
-            pipe.hset("ip", sUUID, ip);
+            pipe.hset("staffpunisher", sUUID, staff);
+            pipe.hset("datebanned", sUUID, datebanned);
+            pipe.hset("datemuted", sUUID, datemuted);
             pipe.hset("banned", sUUID, banned);
             pipe.hset("tempbanned", sUUID, tempbanned);
-            pipe.hset("ipbanned", sUUID, ipbanned);
             pipe.hset("tempmuted", sUUID, tempmuted);
             pipe.hset("muted", sUUID, muted);
             pipe.hset("banreason", sUUID, banreason);
             pipe.hset("mutereason", sUUID, mutereason);
             pipe.sync();
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPunishmentData(sUUID, ip, banned, tempbanned, ipbanned, tempmuted, muted, banreason, mutereason));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPunishmentData(sUUID, staff, datebanned, datemuted, banned, tempbanned, tempmuted, muted, banreason, mutereason));
         }
     }
 

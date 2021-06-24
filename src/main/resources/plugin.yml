@@ -222,6 +222,10 @@ commands:
     description: Mute a player from server chat.
     permission: essentials.command.mute
     usage: "/mute &f<player> <reason>"
+  tempmute:
+    description: Temporarily mute a player from the server chat.
+    permission: essentials.command.tempmute
+    usage: "/tempmute &f<player> <time> <reason>"
   unmute:
     description: Unmute a player from server chat.
     permission: essentials.command.unmute

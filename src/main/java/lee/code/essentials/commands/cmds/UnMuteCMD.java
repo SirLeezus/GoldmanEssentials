@@ -28,6 +28,9 @@ public class UnMuteCMD implements CommandExecutor {
                     if (cache.isMuted(tUUID)) {
                         cache.setMutedPlayer(tUUID, "0", false);
                         plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { targetPlayer.getName() })));
+                    } else if (cache.isTempMuted(tUUID)) {
+                        cache.setTempMutedPlayer(tUUID, "0", 0, false);
+                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { targetPlayer.getName() })));
                     }
                 }
             }

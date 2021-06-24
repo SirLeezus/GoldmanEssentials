@@ -46,10 +46,10 @@ public class BanListCMD implements CommandExecutor {
             if (page < 0) return true;
 
             List<String> players = new ArrayList<>(cache.getBanList());
-            List<String> line = new ArrayList<>();
+            List<Component> line = new ArrayList<>();
 
-            line.add(Lang.COMMAND_BANLIST_TITLE.getString(null));
-            line.add("");
+            line.add(Lang.COMMAND_BANLIST_TITLE.getComponent(null));
+            line.add(Component.text(""));
 
             for (int i = 0; i < maxDisplayed; i++) {
                 index = maxDisplayed * page + i;
@@ -60,13 +60,15 @@ public class BanListCMD implements CommandExecutor {
                     UUID pUUID = UUID.fromString(thePlayer);
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(pUUID);
                     String name = "null";
+                    String staff = "null";
                     String time = "&cForever";
                     if (offlinePlayer.getName() != null) name = offlinePlayer.getName();
-                    long milliseconds = System.currentTimeMillis();
-                    long timeBanned = cache.getTempBanTime(pUUID) - TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+                    long timeBanned = cache.getTempBanTime(pUUID);
                     if (timeBanned < 0) timeBanned = 0;
                     if (cache.isTempBanned(pUUID)) time = plugin.getPU().formatSeconds(timeBanned);
-                    line.add(plugin.getPU().format("&3" + position + ". &6" + name + " &7Time: &e" + time + " &7Reason: &e" + cache.getBanReason(pUUID)));
+                    OfflinePlayer offlineStaff = Bukkit.getOfflinePlayer(cache.getStaffWhoPunished(pUUID));
+                    if (offlineStaff.getName() != null) staff = offlineStaff.getName();
+                    line.add(plugin.getPU().formatC("&3" + position + ". &6" + name + " &3Time: &7" + time + " &3Reason: &7" + cache.getBanReason(pUUID)).hoverEvent(plugin.getPU().formatC("&3Date: &7" + cache.getBanDate(pUUID) + "\n&3Staff Member: &7" + staff )));
                 }
             }
 
@@ -77,12 +79,12 @@ public class BanListCMD implements CommandExecutor {
                 return true;
             }
 
-            line.add("");
+            line.add(Component.text(""));
             Component nextPage = plugin.getPU().formatC("&2&lNext &a&l>>---------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page + 1)));
             Component prevPage = plugin.getPU().formatC("&a&l---------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page - 1)));
             Component spacer = plugin.getPU().formatC(" &e| ");
 
-            for (String message : line) player.sendMessage(message);
+            for (Component message : line) player.sendMessage(message);
             player.sendMessage(prevPage.append(spacer).append(nextPage));
         }
         return true;

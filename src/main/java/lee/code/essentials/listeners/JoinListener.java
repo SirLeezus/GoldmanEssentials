@@ -15,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class JoinListener implements Listener {
 
@@ -33,7 +32,7 @@ public class JoinListener implements Listener {
 
         //punishment data check
         if (!cache.hasPunishmentData(uuid)) {
-            cache.setPunishmentData(uuid, String.valueOf(player.getAddress()), "0", "0", "0", "0", "0", "0", "0", true);
+            cache.setPunishmentData(uuid, "0", "0", "0", "0", "0", "0", "0", "0", "0", true);
         }
 
         //player counter
@@ -49,16 +48,12 @@ public class JoinListener implements Listener {
             return;
         } else if (cache.isTempBanned(uuid)) {
             e.joinMessage(null);
-            long time = cache.getTempBanTime(uuid);
-            long milliseconds = System.currentTimeMillis();
-            long secondsLeft = time - TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+            long secondsLeft = cache.getTempBanTime(uuid);
             if (secondsLeft > 0) {
                 player.kick(Lang.TEMPBANNED.getComponent(new String[] { plugin.getPU().formatSeconds(secondsLeft), cache.getBanReason(uuid) }));
                 return;
-            } else {
-                cache.setTempBannedPlayer(uuid, "0", 0);
-                cache.removeBanList(uuid);
-            }
+            } else cache.setTempBannedPlayer(uuid, null, "0", 0, false);
+
         }
 
         //set custom attack speed

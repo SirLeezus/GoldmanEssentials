@@ -20,7 +20,7 @@ public class BanCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
+        if (sender instanceof Player player) {
             if (args.length > 0) {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {
@@ -29,8 +29,7 @@ public class BanCMD implements CommandExecutor {
                         if (!cache.isTempBanned(tUUID) && !cache.isBanned(tUUID)) {
                             String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
                             if (!reason.isBlank()) {
-                                cache.setBannedPlayer(tUUID, reason, true);
-                                cache.addBanList(tUUID);
+                                cache.setBannedPlayer(tUUID, player.getUniqueId(), reason, true);
                                 if (targetPlayer.isOnline()) {
                                     Player tPlayer = targetPlayer.getPlayer();
                                     if (tPlayer != null) tPlayer.kick(Lang.BANNED.getComponent(new String[] { reason }));

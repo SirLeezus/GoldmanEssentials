@@ -36,6 +36,7 @@ import org.bukkit.scoreboard.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -64,10 +65,6 @@ public class PU {
     public Component formatC(String message) {
         LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
         return Component.empty().decoration(TextDecoration.ITALIC, false).append(serializer.deserialize(message));
-    }
-
-    public String legacyToJson(String legacyString) {
-        return ComponentSerializer.toString(TextComponent.fromLegacyText(legacyString));
     }
 
     public String formatAmount(int value) {
@@ -108,6 +105,14 @@ public class PU {
             }
         }
         player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND.getComponent(null)));
+    }
+
+    public String getDate() {
+        long milliseconds = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm aa");
+        sdf.setTimeZone(TimeZone.getTimeZone("PST"));
+        Date resultDate = new Date(milliseconds);
+        return sdf.format(resultDate);
     }
 
     @SuppressWarnings("deprecation")
@@ -393,10 +398,10 @@ public class PU {
         long minutes = (TimeUnit.SECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(hours) - TimeUnit.DAYS.toMinutes(days));
         long seconds = (TimeUnit.SECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(minutes) - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.DAYS.toSeconds(days));
 
-        if (days != 0) return days + "&6d&e, " + hours + "&6h&e, " + minutes + "&6m&e, " + seconds + "&6s";
-        else if (hours != 0) return hours + "&6h&e, " + minutes + "&6m&e, " + seconds + "&6s";
-        else if (minutes != 0) return minutes + "&6m&e, " + seconds + "&6s";
-        else return seconds + "&6s";
+        if (days != 0) return "&e" + days + "&6d&e, " + hours + "&6h&e, " + minutes + "&6m&e, " + seconds + "&6s";
+        else if (hours != 0) return "&e" + hours + "&6h&e, " + minutes + "&6m&e, " + seconds + "&6s";
+        else if (minutes != 0) return "&e" + minutes + "&6m&e, " + seconds + "&6s";
+        else return "&e" + seconds + "&6s";
     }
 
     public long unFormatSeconds(String time) {

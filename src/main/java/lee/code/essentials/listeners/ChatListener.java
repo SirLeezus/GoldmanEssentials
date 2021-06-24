@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class ChatListener implements Listener {
 
-    @EventHandler (priority= EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerChat(AsyncChatEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
@@ -25,16 +25,25 @@ public class ChatListener implements Listener {
 
         if (!e.isCancelled()) {
             e.setCancelled(true);
-            if (!cache.isMuted(uuid)) {
-                if (!plugin.getData().isSpamTaskActive(uuid)) {
-                    plugin.getPU().addSpamDelay(uuid);
-                    Component message = plugin.getPU().parseChatVariables(player, e.message());
-                    plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(plugin.getPU().formatC("&8: &f")).append(message));
-                } else {
-                    plugin.getPU().addSpamDelay(uuid);
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.SPAM.getComponent(null)));
-                }
-            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[] { cache.getMuteReason(uuid) })));
+            if (!plugin.getData().isSpamTaskActive(uuid)) {
+                plugin.getPU().addSpamDelay(uuid);
+                if (!cache.isMuted(uuid)) {
+                    if (!cache.isTempMuted(uuid)) {
+                        Component message = plugin.getPU().parseChatVariables(player, e.message());
+                        plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(plugin.getPU().formatC("&8: &f")).append(message));
+                    } else {
+                        long time = cache.getTempMuteTime(uuid);
+                        if (time > 0) player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.TEMPMUTED.getComponent(new String[]{ plugin.getPU().formatSeconds(time), cache.getMuteReason(uuid)})));
+                        else {
+                            cache.setTempMutedPlayer(uuid, "", 0, false);
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.TEMPUNMUTED.getComponent(null)));
+                        }
+                    }
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[]{cache.getMuteReason(uuid)})));
+            } else {
+                plugin.getPU().addSpamDelay(uuid);
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.SPAM.getComponent(null)));
+            }
         }
     }
 }

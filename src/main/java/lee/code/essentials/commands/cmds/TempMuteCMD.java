@@ -14,20 +14,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class TempBanCMD implements CommandExecutor {
+public class TempMuteCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player player) {
+        if (sender instanceof Player) {
             if (args.length > 0) {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {
                     UUID tUUID = targetPlayer.getUniqueId();
                     if (args.length > 1) {
-                        if (!cache.isTempBanned(tUUID) && !cache.isBanned(tUUID)) {
+                        if (!cache.isTempMuted(tUUID) && !cache.isMuted(tUUID)) {
                             long secondsBanned = plugin.getPU().unFormatSeconds(args[1]);
                             if (secondsBanned != 0) {
                                 long milliseconds = System.currentTimeMillis();
@@ -35,12 +35,12 @@ public class TempBanCMD implements CommandExecutor {
                                 if (args.length > 2) {
                                     String reason = plugin.getPU().buildStringFromArgs(args, 2).replaceAll("[^a-zA-Z0-9 ]", "");
                                     if (!reason.isBlank()) {
-                                        cache.setTempBannedPlayer(tUUID, player.getUniqueId(), reason, time, true);
+                                        cache.setTempMutedPlayer(tUUID, reason, time, true);
                                         if (targetPlayer.isOnline()) {
                                             Player tPlayer = targetPlayer.getPlayer();
-                                            if (tPlayer != null) tPlayer.kick(Lang.TEMPBANNED.getComponent(new String[] { plugin.getPU().formatSeconds(secondsBanned), reason }));
+                                            if (tPlayer != null) tPlayer.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.TEMPMUTED.getComponent(new String[] { plugin.getPU().formatSeconds(secondsBanned), reason })));
                                         }
-                                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_TEMPBANNED.getComponent(new String[] { targetPlayer.getName(), plugin.getPU().formatSeconds(secondsBanned), reason })));
+                                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_TEMPMUTED.getComponent(new String[] { targetPlayer.getName(), plugin.getPU().formatSeconds(secondsBanned), reason })));
                                     }
                                 }
                             }

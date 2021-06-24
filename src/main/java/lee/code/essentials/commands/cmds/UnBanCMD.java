@@ -20,15 +20,18 @@ public class UnBanCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
+        if (sender instanceof Player player) {
             if (args.length > 0) {
                 OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (targetPlayer != null) {
                     UUID tUUID = targetPlayer.getUniqueId();
-                    cache.setBannedPlayer(tUUID, "0", false);
-                    cache.setTempBannedPlayer(tUUID, "0", 0);
-                    cache.removeBanList(tUUID);
-                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { targetPlayer.getName() })));
+                    if (cache.isBanned(tUUID)) {
+                        cache.setBannedPlayer(tUUID, null, "0", false);
+                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { targetPlayer.getName() })));
+                    } else if (cache.isTempBanned(tUUID)) {
+                        cache.setTempBannedPlayer(tUUID, null, "0", 0, false);
+                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { targetPlayer.getName() })));
+                    }
                 }
             }
         }
