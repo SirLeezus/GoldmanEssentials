@@ -17,7 +17,6 @@ public class SummonCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         if (sender instanceof Player player) {
-            //summon {entity} {amount}
             if (args.length > 0) {
                 String entityName = args[0].toLowerCase();
                 if (plugin.getData().getEntityNames().contains(entityName)) {

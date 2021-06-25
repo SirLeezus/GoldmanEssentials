@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemRenameCMD implements CommandExecutor {
 
-    @Override @SuppressWarnings("deprecation")
+    @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 

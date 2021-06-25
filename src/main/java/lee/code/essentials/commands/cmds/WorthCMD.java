@@ -25,14 +25,14 @@ public class WorthCMD implements CommandExecutor {
                 String name = itemHand.getType().name();
                 if (itemHand.hasItemMeta()) {
                     if (itemHand.getItemMeta().hasDisplayName()) {
-                        name = itemHand.getItemMeta().getDisplayName();
+                        name = plugin.getPU().unFormatC(itemHand.getItemMeta().displayName());
                     }
                 }
                 if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
                     long value = ItemSellValues.valueOf(name).getValue();
-                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_WORTH_SUCCESSFUL.getString(new String[] { plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) }));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
-            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_SELL_NOT_SELLABLE.getString(null));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) })));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
+            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
 
         }
         return true;

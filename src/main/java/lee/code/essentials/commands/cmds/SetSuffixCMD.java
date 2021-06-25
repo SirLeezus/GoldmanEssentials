@@ -26,10 +26,10 @@ public class SetSuffixCMD implements CommandExecutor {
                         String suffix = " " + plugin.getPU().buildStringFromArgs(args, 1);
                         cache.setSuffix(target.getUniqueId(), suffix);
                         plugin.getPU().updateDisplayName(target);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETSUFFIX_SUCCESSFUL.getString(new String[]{target.getName(), plugin.getPU().format(suffix)}));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSUFFIX_SUCCESSFUL.getComponent(new String[]{target.getName(), plugin.getPU().format(suffix)})));
                     }
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[0]}));
-            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_SETSUFFIX_ARG.getString(null));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[]{args[0]})));
+            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_SETSUFFIX_ARG.getComponent(null)));
 
         }
         return true;

@@ -33,11 +33,11 @@ public class MessageCMD implements CommandExecutor {
                             String message = plugin.getPU().buildStringFromArgs(args, 1);
                             cache.setLastReplied(target.getUniqueId(), uuid);
                             cache.setLastReplied(uuid, target.getUniqueId());
-                            player.sendMessage(plugin.getPU().formatC("&9[&eYou &9-> &e" + target.getName() + "&9] ").append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
-                            target.sendMessage(plugin.getPU().formatC("&9[&e" + player.getName() + " &9-> &eYou&9] ").clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
-                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.MUTED.getString(new String[] { cache.getMuteReason(uuid) }));
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_MESSAGE_TO_SELF.getString(null));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[] { args[0] }));
+                            player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
+                            target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
+                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[] { cache.getMuteReason(uuid) })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_MESSAGE_TO_SELF.getComponent(null)));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
             }
         }
         return true;

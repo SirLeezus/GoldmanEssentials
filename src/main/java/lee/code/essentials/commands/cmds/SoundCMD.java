@@ -24,7 +24,7 @@ public class SoundCMD implements CommandExecutor {
                         String sound = args[1].toLowerCase();
                         if (plugin.getData().getSoundNames().contains(sound)) {
                             target.playSound(target.getLocation(), Sound.valueOf(sound.toUpperCase()), 1, 1);
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SOUND_SUCCESSFUL.getString(new String[] { sound, target.getName() }));
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SOUND_SUCCESSFUL.getComponent(new String[] { sound, target.getName() })));
                         }
                     }
                 }

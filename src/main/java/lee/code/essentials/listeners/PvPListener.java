@@ -40,7 +40,7 @@ public class PvPListener implements Listener {
             if (time < delay) {
                 e.setCancelled(true);
                 long timeLeft = delay - time;
-                player.sendMessage(Lang.PREFIX.getString(null) + Lang.PVP_DELAY.getString(new String[] { plugin.getPU().formatSeconds(timeLeft) }));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.PVP_DELAY.getComponent(new String[] { plugin.getPU().formatSeconds(timeLeft) })));
             }
         }
     }

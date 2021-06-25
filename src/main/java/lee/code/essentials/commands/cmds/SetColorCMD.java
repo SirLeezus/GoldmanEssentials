@@ -27,11 +27,11 @@ public class SetColorCMD implements CommandExecutor {
                             String color = args[1];
                             cache.setColor(target.getUniqueId(), color);
                             plugin.getPU().updateDisplayName(target);
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETCOLOR_SUCCESSFUL.getString(new String[] { target.getName(), ChatColor.valueOf(color) + color }));
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETCOLOR_SUCCESSFUL.getComponent(new String[] { target.getName(), ChatColor.valueOf(color) + color })));
                         }
                     }
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{ args[0] }));
-            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_SETCOLOR_ARG.getString(null));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[]{ args[0] })));
+            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_SETCOLOR_ARG.getComponent(null)));
         }
         return true;
     }

@@ -3,7 +3,6 @@ package lee.code.essentials.listeners;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.RankList;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -13,10 +12,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.UUID;
 
 public class JoinListener implements Listener {
+
+    @EventHandler
+    public void onPlayerPreLogin(PlayerLoginEvent e) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
+        Cache cache = plugin.getCache();
+
+        //player data check
+        if (!cache.hasPlayerData(uuid)) cache.createDefaultColumns(uuid);
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
@@ -24,16 +35,6 @@ public class JoinListener implements Listener {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
         Cache cache = plugin.getCache();
-
-        //player data check
-        if (!cache.hasPlayerData(uuid)) {
-            cache.setPlayerData(uuid, "0", "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0", "0", "0", "0", true);
-        }
-
-        //punishment data check
-        if (!cache.hasPunishmentData(uuid)) {
-            cache.setPunishmentData(uuid, "0", "0", "0", "0", "0", "0", "0", "0", "0", true);
-        }
 
         //player counter
         if (!player.hasPlayedBefore()) {
@@ -63,9 +64,6 @@ public class JoinListener implements Listener {
         //register perms
         if (!player.isOp()) plugin.getPermissionManager().register(player);
 
-        //update player display name
-        plugin.getPU().updateDisplayName(player);
-
         //vanish check
         if (cache.isVanishPlayer(uuid)) {
             if (!plugin.getData().getVanishedPlayers().contains(uuid)) plugin.getData().addVanishedPlayer(uuid);
@@ -82,6 +80,9 @@ public class JoinListener implements Listener {
 
         //give all recipes
         for (NamespacedKey key : plugin.getData().getRecipeKeys()) e.getPlayer().discoverRecipe(key);
+
+        //update player display name
+        plugin.getPU().updateDisplayName(player);
 
         //set join message format
         if (plugin.getData().getVanishedPlayers().contains(uuid)) e.joinMessage(null);

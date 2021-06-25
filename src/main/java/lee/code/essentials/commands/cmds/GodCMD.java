@@ -23,10 +23,10 @@ public class GodCMD implements CommandExecutor {
 
             if (cache.isGodPlayer(uuid)) {
                 cache.setGodPlayer(uuid, false);
-                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.OFF.getString(null) })));
             } else {
                 cache.setGodPlayer(uuid, true);
-                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.ON.getString(null) })));
             }
         }
         return true;

@@ -25,21 +25,21 @@ public class TimeCMD implements CommandExecutor {
                 switch (time) {
                     case "day" -> {
                         world.setTime(1000);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TIME_SUCCESSFUL.getString( new String[] { worldName, plugin.getPU().formatTime(world.getTime()) }));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TIME_SUCCESSFUL.getComponent( new String[] { worldName, plugin.getPU().formatTime(world.getTime()) })));
                     }
                     case "noon" -> {
                         world.setTime(6000);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TIME_SUCCESSFUL.getString( new String[] { worldName, plugin.getPU().formatTime(world.getTime()) }));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TIME_SUCCESSFUL.getComponent( new String[] { worldName, plugin.getPU().formatTime(world.getTime()) })));
                     }
                     case "midnight" -> {
                         world.setTime(18000);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TIME_SUCCESSFUL.getString( new String[] { worldName, plugin.getPU().formatTime(world.getTime()) }));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TIME_SUCCESSFUL.getComponent( new String[] { worldName, plugin.getPU().formatTime(world.getTime()) })));
                     }
                     case "night" -> {
                         player.getWorld().setTime(13000);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TIME_SUCCESSFUL.getString( new String[] { worldName, plugin.getPU().formatTime(world.getTime()) }));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TIME_SUCCESSFUL.getComponent( new String[] { worldName, plugin.getPU().formatTime(world.getTime()) })));
                     }
-                    default -> player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TIME.getString(new String[] { time }));
+                    default -> player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TIME.getComponent(new String[] { time })));
                 }
             }
         }

@@ -5,6 +5,7 @@ import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.PremiumRankList;
 import lee.code.essentials.lists.RankList;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,56 +25,47 @@ public class RankListCMD implements CommandExecutor {
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
-
-            List<String> serverRanks = new ArrayList<>();
-            List<String> staffRanks = new ArrayList<>();
-            List<String> premiumRanks = new ArrayList<>();
+            List<Component> lines = new ArrayList<>();
 
             int number = 1;
             String playerRank = cache.getRank(uuid);
 
-            serverRanks.add("");
-            serverRanks.add(Lang.COMMAND_RANKLIST_SERVER_RANKS.getString(null));
+            lines.add(Lang.COMMAND_RANKLIST_TITLE.getComponent(null));
+            lines.add(Component.text(""));
+            lines.add(Lang.COMMAND_RANKLIST_SERVER_RANKS.getComponent(null));
             for (String rank : plugin.getPU().getRanks()) {
                 if (!RankList.valueOf(rank).getNextRank().equals("STAFF")) {
                     String line = "&3" + number + "&b. " + RankList.valueOf(rank).getPrefix();
-                    if (playerRank.equals(rank)) line = "&a> " + line + " &a<";
-                    serverRanks.add(plugin.getPU().format(line));
+                    if (playerRank.equals(rank)) line = "&3" + number + "&b. &2> " + RankList.valueOf(rank).getPrefix() + " &2<";
+                    lines.add(plugin.getPU().formatC(line));
                     number++;
                 }
             }
-
-            serverRanks.add("");
+            lines.add(Component.text(""));
 
             number = 1;
-
-            serverRanks.add(Lang.COMMAND_RANKLIST_STAFF_RANKS.getString(null));
+            lines.add(Lang.COMMAND_RANKLIST_STAFF_RANKS.getComponent(null));
             for (String rank : plugin.getPU().getRanks()) {
                 if (RankList.valueOf(rank).getNextRank().equals("STAFF")) {
                     String line = "&3" + number + "&b. " + RankList.valueOf(rank).getPrefix();
-                    if (playerRank.equals(rank)) line = "&a> " + line + " &a<";
-                    staffRanks.add(plugin.getPU().format(line));
+                    if (playerRank.equals(rank)) line = "&3" + number + "&b. &2> " + RankList.valueOf(rank).getPrefix() + " &2<";
+                    lines.add(plugin.getPU().formatC(line));
                     number++;
                 }
             }
-
-            staffRanks.add("");
+            lines.add(Component.text(""));
 
             number = 1;
 
-            premiumRanks.add(Lang.COMMAND_RANKLIST_PREMIUM_RANKS.getString(null));
+            lines.add(Lang.COMMAND_RANKLIST_PREMIUM_RANKS.getComponent(null));
             for (String rank : plugin.getPU().getPremiumRanks()) {
-                premiumRanks.add(plugin.getPU().format("&3" + number + "&b. " + PremiumRankList.valueOf(rank).getDisplayName() + PremiumRankList.valueOf(rank).getSuffix()));
+                lines.add(plugin.getPU().formatC("&3" + number + "&b. " + PremiumRankList.valueOf(rank).getDisplayName() + PremiumRankList.valueOf(rank).getSuffix()));
                 number++;
             }
+            lines.add(Component.text(""));
+            lines.add(Lang.COMMAND_RANKLIST_SPLITTER.getComponent(null));
 
-            premiumRanks.add("");
-
-            player.sendMessage(Lang.COMMAND_RANKLIST_TITLE.getString(null));
-            for (String line : serverRanks) player.sendMessage(line);
-            for (String line : staffRanks) player.sendMessage(line);
-            for (String line : premiumRanks) player.sendMessage(line);
-            player.sendMessage(Lang.COMMAND_RANKLIST_SPLITTER.getString(null));
+            for (Component line : lines) player.sendMessage(line);
         }
         return true;
     }

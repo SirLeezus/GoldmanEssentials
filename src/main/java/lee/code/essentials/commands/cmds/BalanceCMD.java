@@ -20,7 +20,7 @@ public class BalanceCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             Cache cache = plugin.getCache();
             UUID uuid = player.getUniqueId();
-            player.sendMessage(Lang.COMMAND_BALANCE_SUCCESSFUL.getString(new String[] { plugin.getPU().formatAmount(cache.getBalance(uuid)) }));
+            player.sendMessage(Lang.COMMAND_BALANCE_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatAmount(cache.getBalance(uuid)) }));
         }
         return true;
     }

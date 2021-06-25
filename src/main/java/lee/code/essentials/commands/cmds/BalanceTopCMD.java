@@ -11,13 +11,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -45,7 +41,7 @@ public class BalanceTopCMD implements CommandExecutor {
                 if (sellScanner.hasNextInt()) {
                     page = Integer.parseInt(args[0]);
                 } else {
-                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_BALANCETOP_LIST_PAGE.getString(new String[]{ args[2]} ));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_BALANCETOP_LIST_PAGE.getComponent(new String[]{ args[2]} )));
                     return true;
                 }
             }
@@ -53,10 +49,10 @@ public class BalanceTopCMD implements CommandExecutor {
             if (page < 0) return true;
 
             List<String> players = new ArrayList<>(sortedMap.keySet());
-            List<String> line = new ArrayList<>();
+            List<Component> lines = new ArrayList<>();
 
-            line.add(Lang.COMMAND_BALANCETOP_TITLE.getString(null));
-            line.add("");
+            lines.add(Lang.COMMAND_BALANCETOP_TITLE.getComponent(null));
+            lines.add(Component.text(""));
 
             boolean onPage = false;
 
@@ -76,24 +72,23 @@ public class BalanceTopCMD implements CommandExecutor {
                         posColor = "&2";
                         onPage = true;
                     }
-                    line.add(plugin.getPU().format(posColor + position + ". &e" + name + " &7| &6$" + balance));
+                    lines.add(plugin.getPU().formatC(posColor + position + ". &e" + name + " &7| &6$" + balance));
                 }
             }
 
-            if (line.size() <= 2) return true;
+            if (lines.size() <= 2) return true;
 
             if (!onPage) {
-                line.add("");
-                line.add(plugin.getPU().format("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| &6$" + plugin.getPU().formatAmount(sortedMap.get(String.valueOf(uuid)))));
+                lines.add(Component.text(""));
+                lines.add(plugin.getPU().formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| &6$" + plugin.getPU().formatAmount(sortedMap.get(String.valueOf(uuid)))));
             }
 
-            line.add("");
-            Component nextPage = plugin.getPU().formatC("&2&lNext &a&l>>--------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page + 1)));
-            Component prevPage = plugin.getPU().formatC("&a&l--------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page - 1)));
-            Component spacer = plugin.getPU().formatC(" &e| ");
-
-            for (String message : line) player.sendMessage(message);
-            player.sendMessage(prevPage.append(spacer).append(nextPage));
+            lines.add(Component.text(""));
+            Component next = plugin.getPU().formatC("&2&lNext &a&l>>--------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page + 1)));
+            Component split = plugin.getPU().formatC(" &e| ");
+            Component prev = plugin.getPU().formatC("&a&l--------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page - 1)));
+            lines.add(prev.append(split).append(next));
+            for (Component message : lines) player.sendMessage(message);
         }
         return true;
     }

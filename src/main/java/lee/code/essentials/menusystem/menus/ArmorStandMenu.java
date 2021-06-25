@@ -388,78 +388,80 @@ public class ArmorStandMenu extends Menu {
 
         //allow
         if (item.getType().equals(asSettingFalse.getType())) {
+            
             switch (slot) {
-                case 45:
+                case 45 -> {
                     armorStand.setInvulnerable(true);
-                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_INVULNERABLE.getComponent(new String[] { resultTrue }));
-                    break;
-                case 46:
+                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_INVULNERABLE.getComponent(new String[]{resultTrue}));
+                }
+                case 46 -> {
                     armorStand.setArms(true);
-                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_ARMS.getComponent(new String[] { resultTrue }));
-                    break;
-                case 47:
+                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_ARMS.getComponent(new String[]{resultTrue}));
+                }
+                case 47 -> {
                     armorStand.setBasePlate(true);
-                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_PLATE.getComponent(new String[] { resultTrue }));
-                    break;
-                case 48:
+                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_PLATE.getComponent(new String[]{resultTrue}));
+                }
+                case 48 -> {
                     armorStand.setSmall(true);
-                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_SMALL.getComponent(new String[] { resultTrue }));
-                    break;
-                case 50:
+                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_SMALL.getComponent(new String[]{resultTrue}));
+                }
+                case 50 -> {
                     armorStand.setVisible(true);
-                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_VISIBLE.getComponent(new String[] { resultTrue }));
-                    break;
-                case 51:
+                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_VISIBLE.getComponent(new String[]{resultTrue}));
+                }
+                case 51 -> {
                     armorStand.setCustomNameVisible(true);
-                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_NAME_VISIBLE.getComponent(new String[] { resultTrue }));
-                    break;
-                case 52:
+                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_NAME_VISIBLE.getComponent(new String[]{resultTrue}));
+                }
+                case 52 -> {
                     armorStand.setGlowing(true);
-                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GLOWING.getComponent(new String[] { resultTrue }));
-                    break;
-                case 53:
+                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GLOWING.getComponent(new String[]{resultTrue}));
+                }
+                case 53 -> {
                     armorStand.setGravity(true);
-                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GRAVITY.getComponent(new String[] { resultTrue }));
-                    break;
+                    allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GRAVITY.getComponent(new String[]{resultTrue}));
+                }
             }
             allow.setItemMeta(allowMeta);
             inventory.setItem(slot, allow);
             player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 1, 1);
             //deny
         } else if (item.getType().equals(asSettingTrue.getType())) {
+
             switch (slot) {
-                case 45:
+                case 45 -> {
                     armorStand.setInvulnerable(false);
-                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_INVULNERABLE.getComponent(new String[] { resultFalse }));
-                    break;
-                case 46:
+                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_INVULNERABLE.getComponent(new String[]{resultFalse}));
+                }
+                case 46 -> {
                     armorStand.setArms(false);
-                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_ARMS.getComponent(new String[] { resultFalse }));
-                    break;
-                case 47:
+                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_ARMS.getComponent(new String[]{resultFalse}));
+                }
+                case 47 -> {
                     armorStand.setBasePlate(false);
-                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_PLATE.getComponent(new String[] { resultFalse }));
-                    break;
-                case 48:
+                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_PLATE.getComponent(new String[]{resultFalse}));
+                }
+                case 48 -> {
                     armorStand.setSmall(false);
-                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_SMALL.getComponent(new String[] { resultFalse }));
-                    break;
-                case 50:
+                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_SMALL.getComponent(new String[]{resultFalse}));
+                }
+                case 50 -> {
                     armorStand.setVisible(false);
-                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_VISIBLE.getComponent(new String[] { resultFalse }));
-                    break;
-                case 51:
+                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_VISIBLE.getComponent(new String[]{resultFalse}));
+                }
+                case 51 -> {
                     armorStand.setCustomNameVisible(false);
-                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_NAME_VISIBLE.getComponent(new String[] { resultFalse }));
-                    break;
-                case 52:
+                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_NAME_VISIBLE.getComponent(new String[]{resultFalse}));
+                }
+                case 52 -> {
                     armorStand.setGlowing(false);
-                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GLOWING.getComponent(new String[] { resultFalse }));
-                    break;
-                case 53:
+                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GLOWING.getComponent(new String[]{resultFalse}));
+                }
+                case 53 -> {
                     armorStand.setGravity(false);
-                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GRAVITY.getComponent(new String[] { resultFalse }));
-                    break;
+                    denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GRAVITY.getComponent(new String[]{resultFalse}));
+                }
             }
             deny.setItemMeta(denyMeta);
             inventory.setItem(slot, deny);

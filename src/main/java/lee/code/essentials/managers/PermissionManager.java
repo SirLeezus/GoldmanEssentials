@@ -103,6 +103,7 @@ public class PermissionManager {
 
         // chunks
         defaultPerms.add("chunk.command.chunk");
+        defaultPerms.add("chunk.command.teleport");
         defaultPerms.add("chunk.command.abandonallclaims");
         defaultPerms.add("chunk.command.autoclaim");
         defaultPerms.add("chunk.command.buy");
@@ -149,6 +150,7 @@ public class PermissionManager {
         staffPerms.add("essentials.command.staffchat");
         staffPerms.add("essentials.command.invsee");
         staffPerms.add("essentials.command.enderchest");
+        staffPerms.add("lock.command.admin");
 
         perms.addAll(defaultPerms);
         perms.addAll(staffPerms);

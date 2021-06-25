@@ -25,8 +25,8 @@ public class DeleteHomeCMD implements CommandExecutor {
                 String name = plugin.getPU().buildStringFromArgs(args, 0);
                 if (cache.isAlreadyHome(uuid, name)) {
                     cache.removeHome(uuid, name);
-                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_DELETEHOME_SUCCESSFUL.getString(new String[] { name }));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_DELETEHOME_NOT_SAVED.getString(new String[] { name }));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DELETEHOME_SUCCESSFUL.getComponent(new String[] { name })));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_DELETEHOME_NOT_SAVED.getComponent(new String[] { name })));
             }
         }
         return true;

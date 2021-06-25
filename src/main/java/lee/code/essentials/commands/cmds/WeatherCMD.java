@@ -23,16 +23,16 @@ public class WeatherCMD implements CommandExecutor {
                     case "clear" -> {
                         world.setStorm(false);
                         world.setThundering(false);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_WEATHER_CLEAR.getString(null));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WEATHER_CLEAR.getComponent(null)));
                     }
                     case "rain" -> {
                         world.setStorm(true);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_WEATHER_RAIN.getString(null));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WEATHER_RAIN.getComponent(null)));
                     }
                     case "thunder" -> {
                         world.setStorm(true);
                         world.setThundering(true);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_WEATHER_THUNDER.getString(null));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WEATHER_THUNDER.getComponent(null)));
                     }
                 }
             }

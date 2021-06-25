@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 
 public class PU {
 
-    private final Pattern HEX_REGEX = Pattern.compile("#[a-fA-F0-9]{6}");
+    private final Pattern HEX_REGEX = Pattern.compile("\\&#[a-fA-F0-9]{6}");
     private final Pattern ITEM_REGEX = Pattern.compile("(?i).*\\[item\\].*");
     private final Random random = new Random();
 
@@ -53,11 +53,11 @@ public class PU {
         Matcher matcher = HEX_REGEX.matcher(message);
 
         while (matcher.find()) {
-            String color = message.substring(matcher.start(), matcher.end());
-            message = message.replace(color, ChatColor.of(color) + "");
+            String color = message.substring(matcher.start(), matcher.end()).replaceAll("&", "");
+            message = message.replace("&" + color, ChatColor.of(color) + "");
             matcher = HEX_REGEX.matcher(message);
         }
-        return ChatColor.translateAlternateColorCodes('&', message).replaceAll("&", "");
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public Component formatC(String message) {
@@ -265,7 +265,7 @@ public class PU {
 
             if (Bukkit.getOnlinePlayers().contains(player) && plugin.getData().isPlayerRequestingTeleportForTarget(player.getUniqueId(), target.getUniqueId())) {
                 plugin.getData().removePlayerRequestingTeleport(player.getUniqueId());
-                player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_REQUEST_EXPIRED.getString(new String[] { target.getName() }));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_REQUEST_EXPIRED.getComponent(new String[] { target.getName() })));
             }
 
         },1200L);

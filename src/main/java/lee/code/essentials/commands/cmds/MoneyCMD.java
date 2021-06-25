@@ -21,7 +21,7 @@ public class MoneyCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
-            //money give {player} {amount}
+
             if (args.length > 2) {
 
                 if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
@@ -38,24 +38,24 @@ public class MoneyCMD implements CommandExecutor {
                             switch (subCommand) {
                                 case "set" -> {
                                     cache.setBalance(tUUID, amount);
-                                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_SET.getString(new String[]{target.getName(), plugin.getPU().formatAmount(amount)}));
-                                    target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_SET_TARGET.getString(new String[]{plugin.getPU().formatAmount(amount)}));
+                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
+                                    target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
                                 }
                                 case "remove" -> {
                                     cache.withdraw(tUUID, amount);
-                                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_REMOVE.getString(new String[]{target.getName(), plugin.getPU().formatAmount(amount)}));
-                                    target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_REMOVE_TARGET.getString(new String[]{plugin.getPU().formatAmount(amount)}));
+                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
+                                    target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
                                 }
                                 case "give" -> {
                                     cache.deposit(tUUID, amount);
-                                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_GIVE.getString(new String[]{target.getName(), plugin.getPU().formatAmount(amount)}));
-                                    target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_MONEY_GIVE_TARGET.getString(new String[]{plugin.getPU().formatAmount(amount)}));
+                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
+                                    target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
                                 }
-                                default -> player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getString(new String[]{args[0]}));
+                                default -> player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getComponent(new String[]{ args[0] })));
                             }
                         }
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_MONEY_VALUE.getString(new String[]{ args[2] } ));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[]{args[1]}));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_MONEY_VALUE.getComponent(new String[]{ args[2] } )));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[]{ args[1] })));
             }
         }
         return true;

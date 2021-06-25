@@ -32,7 +32,7 @@ public class MuteCMD implements CommandExecutor {
                                 cache.setMutedPlayer(tUUID, reason, true);
                                 if (targetPlayer.isOnline()) {
                                     Player tPlayer = targetPlayer.getPlayer();
-                                    if (tPlayer != null) tPlayer.sendMessage(Lang.PREFIX.getString(null) + Lang.MUTED.getString(new String[] { reason }));
+                                    if (tPlayer != null) tPlayer.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[] { reason })));
                                 }
                                 plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_MUTED_FOREVER.getComponent(new String[] { targetPlayer.getName(), reason })));
                             }

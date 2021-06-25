@@ -28,12 +28,12 @@ public class TeleportAcceptCMD implements CommandExecutor {
                             target.teleportAsync(player.getLocation());
                             plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
                             target.sendActionBar(Lang.TELEPORT.getComponent(null));
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL.getString(new String[] { target.getName() }));
-                            target.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL_TARGET.getString(new String[] { player.getName() }));
-                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getString(new String[] { target.getName() }));
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[] { args[0] }));
-            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTACCEPT_ARG.getString(null));
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL.getComponent(new String[] { target.getName() })));
+                            target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL_TARGET.getComponent(new String[] { player.getName() })));
+                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getComponent(new String[] { target.getName() })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getComponent(null)));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
+            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORTACCEPT_ARG.getComponent(null)));
         }
         return true;
     }

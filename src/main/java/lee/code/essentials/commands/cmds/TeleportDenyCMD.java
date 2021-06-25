@@ -27,13 +27,13 @@ public class TeleportDenyCMD implements CommandExecutor {
                         if (plugin.getData().isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
 
                             plugin.getData().removePlayerRequestingTeleport(target.getUniqueId());
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_DENY_SUCCESSFUL.getString(new String[] { target.getName() }));
-                            target.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTDENY_DENIED.getString(new String[] { player.getName() }));
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_DENY_SUCCESSFUL.getComponent(new String[] { target.getName() })));
+                            target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORTDENY_DENIED.getComponent(new String[] { player.getName() })));
 
-                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getString(new String[] { target.getName() }));
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PLAYER_NOT_ONLINE.getString(new String[] { args[0] }));
-            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORTDENY_ARG.getString(null));
+                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getComponent(new String[] { target.getName() })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getComponent(null)));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
+            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORTDENY_ARG.getComponent(null)));
         }
         return true;
     }

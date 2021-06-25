@@ -30,23 +30,23 @@ public class TeleportCMD implements CommandExecutor {
 
                         if (player.isOp()) {
                             player.teleportAsync(target.getLocation());
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getString(new String[] { target.getName() }));
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getComponent(new String[] { target.getName() })));
                         } else if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, target.getUniqueId())) {
 
-                            Component targetMessage = plugin.getPU().formatC("&6&l[&e&l!&6&l] &ePlayer &6&l" + player.getName() +  " &eis requesting teleportation: ");
+                            Component targetMessage = Lang.REQUEST_TELEPORT_TARGET.getComponent(new String[] { player.getName() });
 
-                            Component accept = plugin.getPU().formatC("                          &a&l[&2&lACCEPT&a&l]          ").hoverEvent(plugin.getPU().formatC("&6&l[&e&l!&6&l] &2Click to accept &6&l" + player.getName() + "'s &2teleport request.")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + player.getName()));
-                            Component deny = plugin.getPU().formatC("&4&l[&c&lDENY&4&l]").hoverEvent(plugin.getPU().formatC("&6&l[&e&l!&6&l] &cClick to deny &6&l" + player.getName() + "'s &cteleport request.")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny " + player.getName()));
+                            Component accept = Lang.REQUEST_TELEPORT_ACCEPT.getComponent(null).hoverEvent(Lang.REQUEST_TELEPORT_ACCEPT_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + player.getName()));
+                            Component deny = Lang.REQUEST_TELEPORT_DENY.getComponent(null).hoverEvent(Lang.REQUEST_TELEPORT_DENY_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny " + player.getName()));
 
                             plugin.getData().setPlayerRequestingTeleport(uuid, target.getUniqueId());
 
                             target.sendMessage(targetMessage.append(accept).append(deny));
                             target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1,1);
                             plugin.getPU().teleportTimer(player, target);
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getString(new String[] { target.getName() }));
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getComponent(new String[] { target.getName() })));
 
-                        } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED.getString(new String[] { target.getName() }));
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getString(null));
+                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED.getComponent(new String[] { target.getName() })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getComponent(null)));
                 }
             }
         }

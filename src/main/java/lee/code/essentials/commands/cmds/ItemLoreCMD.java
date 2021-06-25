@@ -2,6 +2,7 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,10 +13,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.List;
 
 public class ItemLoreCMD implements CommandExecutor {
 
-    @Override @SuppressWarnings("deprecation")
+    @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
@@ -28,23 +30,23 @@ public class ItemLoreCMD implements CommandExecutor {
                         ItemStack item = player.getInventory().getItemInMainHand();
                         String itemName = plugin.getPU().formatMaterial(item.getType().name());
                         if (item.getType() != Material.AIR) {
-                            String message = plugin.getPU().buildStringFromArgs(args, 1);
+                            String message = "&5&o" + plugin.getPU().buildStringFromArgs(args, 1);
                             ItemMeta itemMeta = item.getItemMeta();
                             if (itemMeta != null) {
-                                List<String> lore = new ArrayList<>();
-                                if (itemMeta.hasLore() && itemMeta.getLore() != null) {
-                                    lore = new ArrayList<>(itemMeta.getLore());
+                                List<Component> lore = new ArrayList<>();
+                                if (itemMeta.hasLore() && itemMeta.lore() != null) {
+                                    lore = new ArrayList<>(Objects.requireNonNull(itemMeta.lore()));
                                     if (lore.size() > number) {
-                                        lore.set(number, plugin.getPU().format(message));
+                                        lore.set(number, plugin.getPU().formatC(message));
                                     } else {
-                                        for (int i = lore.size(); i < number; i++) lore.add("\n");
-                                        lore.add(plugin.getPU().format(message));
+                                        for (int i = lore.size(); i < number; i++) lore.add(Component.text(""));
+                                        lore.add(plugin.getPU().formatC(message));
                                     }
                                 } else {
-                                    for (int i = 0; i < number; i++) lore.add("\n");
-                                    lore.add(plugin.getPU().format(message));
+                                    for (int i = 0; i < number; i++) lore.add(Component.text(""));
+                                    lore.add(plugin.getPU().formatC(message));
                                 }
-                                itemMeta.setLore(lore);
+                                itemMeta.lore(lore);
                                 item.setItemMeta(itemMeta);
                                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_ITEMLORE_SUCCESSFUL.getComponent(new String[] { String.valueOf(number), message, itemName })));
                             }

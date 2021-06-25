@@ -36,20 +36,18 @@ public class HomeCMD implements CommandExecutor {
                             Location location = plugin.getPU().unFormatPlayerHomeLocation(home);
                             player.teleportAsync(location);
                             player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                            //player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
-                            player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getString(new String[] { name }));
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getComponent(new String[] { name })));
                             return true;
                         }
                     }
-                    player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_HOME_NOT_SAVED.getString(new String[] { name }));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_NOT_SAVED.getComponent(new String[] { name })));
                 } else {
                     Location bedLocation = player.getBedSpawnLocation();
                     if (bedLocation != null) {
                         player.teleportAsync(bedLocation);
                         player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                        //player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_HOME_TELEPORT_BED_SUCCESSFUL.getString(null));
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_HOME_BED_NOT_SAVED.getString(null));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_BED_SUCCESSFUL.getComponent(null)));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_BED_NOT_SAVED.getComponent(null)));
                 }
             } else {
                 if (cache.hasHome(uuid)) {

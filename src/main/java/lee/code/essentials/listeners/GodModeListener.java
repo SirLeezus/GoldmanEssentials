@@ -18,8 +18,7 @@ public class GodModeListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (e.getEntity() instanceof Player) {
-            Player player = (Player) e.getEntity();
+        if (e.getEntity() instanceof Player player) {
             UUID uuid = player.getUniqueId();
             if (cache.isGodPlayer(uuid)) e.setCancelled(true);
         }
@@ -30,8 +29,7 @@ public class GodModeListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (e.getEntity() instanceof Player) {
-            Player player = (Player) e.getEntity();
+        if (e.getEntity() instanceof Player player) {
             UUID uuid = player.getUniqueId();
             if (cache.isGodPlayer(uuid)) e.setCancelled(true);
         }
@@ -42,8 +40,7 @@ public class GodModeListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (e.getEntity() instanceof Player) {
-            Player player = (Player) e.getEntity();
+        if (e.getEntity() instanceof Player player) {
             UUID uuid = player.getUniqueId();
             if (cache.isGodPlayer(uuid)) e.setCancelled(true);
         }

@@ -30,9 +30,9 @@ public class SetHomeCMD implements CommandExecutor {
                     if (homesSaved < maxHomes) {
                         String homeLocation = plugin.getPU().formatPlayerHomeLocation(name, player.getLocation());
                         cache.addHome(uuid, homeLocation);
-                        player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_SETHOME_SUCCESSFUL.getString(new String[] { name }));
-                    } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_HOME_MAX_HOMES.getString(new String[] { String.valueOf(maxHomes) }));
-                } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_HOME_ALREADY_SAVED.getString(new String[] { name }));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETHOME_SUCCESSFUL.getComponent(new String[] { name })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_MAX_HOMES.getComponent(new String[] { String.valueOf(maxHomes) })));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_ALREADY_SAVED.getComponent(new String[] { name })));
             }
         }
         return true;

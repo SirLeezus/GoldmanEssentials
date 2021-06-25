@@ -15,7 +15,6 @@ public class InvseeCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         if (sender instanceof Player player) {
-
             if (args.length > 0) {
                 OfflinePlayer oTarget = Bukkit.getOfflinePlayerIfCached(args[0]);
                 if (oTarget != null) {

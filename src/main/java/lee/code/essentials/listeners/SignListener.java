@@ -1,19 +1,22 @@
 package lee.code.essentials.listeners;
 
 import lee.code.essentials.GoldmanEssentials;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
+import java.util.List;
+
 public class SignListener implements Listener {
 
-    @EventHandler @SuppressWarnings("deprecation")
+    @EventHandler
     public void onSignChange(SignChangeEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        String[] lines = e.getLines();
+        List<Component> lines = e.lines();
         int number = 0;
-        for (String line : lines) {
-            e.setLine(number, plugin.getPU().format(line));
+        for (Component line : lines) {
+            e.line(number, plugin.getPU().formatC(plugin.getPU().unFormatC(line)));
             number++;
         }
     }

@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class BanListCMD implements CommandExecutor {
 
@@ -46,10 +45,10 @@ public class BanListCMD implements CommandExecutor {
             if (page < 0) return true;
 
             List<String> players = new ArrayList<>(cache.getBanList());
-            List<Component> line = new ArrayList<>();
+            List<Component> lines = new ArrayList<>();
 
-            line.add(Lang.COMMAND_BANLIST_TITLE.getComponent(null));
-            line.add(Component.text(""));
+            lines.add(Lang.COMMAND_BANLIST_TITLE.getComponent(null));
+            lines.add(Component.text(""));
 
             for (int i = 0; i < maxDisplayed; i++) {
                 index = maxDisplayed * page + i;
@@ -68,24 +67,24 @@ public class BanListCMD implements CommandExecutor {
                     if (cache.isTempBanned(pUUID)) time = plugin.getPU().formatSeconds(timeBanned);
                     OfflinePlayer offlineStaff = Bukkit.getOfflinePlayer(cache.getStaffWhoPunished(pUUID));
                     if (offlineStaff.getName() != null) staff = offlineStaff.getName();
-                    line.add(plugin.getPU().formatC("&3" + position + ". &6" + name + " &3Time: &7" + time + " &3Reason: &7" + cache.getBanReason(pUUID)).hoverEvent(plugin.getPU().formatC("&3Date: &7" + cache.getBanDate(pUUID) + "\n&3Staff Member: &7" + staff )));
+                    lines.add(plugin.getPU().formatC("&3" + position + ". &6" + name + " &3Time: &7" + time + " &3Reason: &7" + cache.getBanReason(pUUID)).hoverEvent(plugin.getPU().formatC("&3Date: &7" + cache.getBanDate(pUUID) + "\n&3Staff Member: &7" + staff )));
                 }
             }
 
-            if (line.size() <= 2) {
+            if (lines.size() <= 2) {
                 if (players.isEmpty()) {
                     player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_BANLIST_NO_BANS.getString(null));
+                    return true;
                 }
-                return true;
             }
 
-            line.add(Component.text(""));
-            Component nextPage = plugin.getPU().formatC("&2&lNext &a&l>>---------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page + 1)));
-            Component prevPage = plugin.getPU().formatC("&a&l---------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page - 1)));
+            lines.add(Component.text(""));
+            Component next = plugin.getPU().formatC("&2&lNext &a&l>>---------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page + 1)));
             Component spacer = plugin.getPU().formatC(" &e| ");
+            Component prev = plugin.getPU().formatC("&a&l---------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page - 1)));
+            lines.add(prev.append(spacer).append(next));
 
-            for (Component message : line) player.sendMessage(message);
-            player.sendMessage(prevPage.append(spacer).append(nextPage));
+            for (Component message : lines) player.sendMessage(message);
         }
         return true;
     }

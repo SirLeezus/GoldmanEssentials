@@ -15,10 +15,10 @@ public class GlowCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             if (player.isGlowing()) {
                 player.setGlowing(false);
-                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GLOW_SUCCESSFUL.getString(new String[] { Lang.OFF.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_GLOW_SUCCESSFUL.getComponent(new String[] { Lang.OFF.getString(null) })));
             } else if (!player.isGlowing()) {
                 player.setGlowing(true);
-                player.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_GLOW_SUCCESSFUL.getString(new String[] { Lang.ON.getString(null) }));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_GLOW_SUCCESSFUL.getComponent(new String[] { Lang.ON.getString(null) })));
             }
         }
         return true;

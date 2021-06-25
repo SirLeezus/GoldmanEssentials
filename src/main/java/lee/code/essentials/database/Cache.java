@@ -4,6 +4,7 @@ import jedis.Jedis;
 import jedis.JedisPool;
 import jedis.Pipeline;
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.lists.RankList;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -853,6 +854,11 @@ public class Cache {
         try (Jedis jedis = pool.getResource()) {
             return jedis.hexists("banned", sUUID);
         }
+    }
+
+    public void createDefaultColumns(UUID uuid) {
+        setPlayerData(uuid, "0", "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0", "0", "0", "0", true);
+        setPunishmentData(uuid, "0", "0", "0", "0", "0", "0", "0", "0", "0", true);
     }
 
     public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, boolean sql) {

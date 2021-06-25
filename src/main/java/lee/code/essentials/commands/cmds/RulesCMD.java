@@ -31,6 +31,8 @@ public class RulesCMD implements CommandExecutor {
             lines.add(plugin.getPU().formatC("&34. &ePlacing a massive amount of block entities (Chests, Signs, Campfires) in the same area is not allowed."));
             lines.add(plugin.getPU().formatC("&35. &eDo not lie or cheat players, keep your word."));
             lines.add(plugin.getPU().formatC("&36. &eDon't be a bully."));
+            lines.add(plugin.getPU().formatC("&37. &eNo claiming around other player's bases if they don't want you near them."));
+            lines.add(plugin.getPU().formatC("&38. &eNo griefing, but if you do end up getting griefed items will not be refunded. Claim your land."));
             lines.add(Component.text(""));
             lines.add(plugin.getPU().formatC("&6&lChat Rules:"));
             lines.add(plugin.getPU().formatC("&31. &ePlease keep cursing and profanity to a minimum."));

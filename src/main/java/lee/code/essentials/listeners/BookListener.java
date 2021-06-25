@@ -14,6 +14,7 @@ public class BookListener implements Listener {
     public void onBookSign(PlayerEditBookEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
+        // Adventure API does not work correctly with books
         if (e.isSigning()) {
             BookMeta meta = e.getNewBookMeta();
             List<String> pages = meta.getPages();
