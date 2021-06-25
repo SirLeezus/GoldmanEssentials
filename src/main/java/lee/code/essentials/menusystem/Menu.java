@@ -1,6 +1,7 @@
 package lee.code.essentials.menusystem;
 
 import lee.code.essentials.lists.MenuItems;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -30,7 +31,7 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack asRightLegPosition = MenuItems.ARMOR_STAND_RIGHT_LEG_POSITION.getItem();
     protected ItemStack asDirectionPosition = MenuItems.ARMOR_STAND_DIRECTION_POSITION.getItem();
 
-    public abstract String getMenuName();
+    public abstract Component getMenuName();
     public abstract int getSlots();
     public abstract void handleMenu(InventoryClickEvent e);
     public abstract void setMenuItems();

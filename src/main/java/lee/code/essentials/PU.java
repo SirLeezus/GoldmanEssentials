@@ -17,8 +17,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -65,6 +63,11 @@ public class PU {
     public Component formatC(String message) {
         LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
         return Component.empty().decoration(TextDecoration.ITALIC, false).append(serializer.deserialize(message));
+    }
+
+    public String unFormatC(Component message) {
+        LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
+        return serializer.serialize(message);
     }
 
     public String formatAmount(int value) {

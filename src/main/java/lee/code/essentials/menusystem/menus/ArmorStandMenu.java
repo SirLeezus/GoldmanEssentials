@@ -4,6 +4,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.PlayerMU;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -26,8 +27,8 @@ public class ArmorStandMenu extends Menu {
     }
 
     @Override
-    public String getMenuName() {
-        return Lang.MENU_ARMOR_STAND_TITLE.getString(null);
+    public Component getMenuName() {
+        return Lang.MENU_ARMOR_STAND_TITLE.getComponent(null);
     }
 
     @Override

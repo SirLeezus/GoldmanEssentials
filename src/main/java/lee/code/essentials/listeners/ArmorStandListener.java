@@ -7,6 +7,7 @@ import lee.code.essentials.menusystem.menus.ArmorStandMenu;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -16,24 +17,26 @@ import java.util.UUID;
 
 public class ArmorStandListener implements Listener {
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onArmorStandInteract(PlayerInteractAtEntityEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
         UUID targetUUID = e.getRightClicked().getUniqueId();
 
-        if (e.getRightClicked() instanceof ArmorStand && e.getPlayer().isSneaking()) {
-            e.setCancelled(true);
-            if (plugin.getData().isArmorStandActive(targetUUID)) {
+        if (!e.isCancelled()) {
+            if (e.getRightClicked() instanceof ArmorStand && e.getPlayer().isSneaking()) {
+                e.setCancelled(true);
+                if (plugin.getData().isArmorStandActive(targetUUID)) {
+                    player.sendActionBar(Lang.ERROR_ARMOR_STAND_EDIT.getComponent(null));
+                } else {
+                    plugin.getData().setArmorStandActive(uuid, targetUUID);
+                    new ArmorStandMenu(plugin.getData().getPlayerMU(e.getPlayer().getUniqueId()), (ArmorStand) e.getRightClicked()).open();
+                }
+            } else if (plugin.getData().isArmorStandActive(targetUUID)) {
                 player.sendActionBar(Lang.ERROR_ARMOR_STAND_EDIT.getComponent(null));
-            } else {
-                plugin.getData().setArmorStandActive(uuid, targetUUID);
-                new ArmorStandMenu(plugin.getData().getPlayerMU(e.getPlayer().getUniqueId()), (ArmorStand) e.getRightClicked()).open();
+                e.setCancelled(true);
             }
-        } else if (plugin.getData().isArmorStandActive(targetUUID)) {
-            player.sendActionBar(Lang.ERROR_ARMOR_STAND_EDIT.getComponent(null));
-            e.setCancelled(true);
         }
     }
 
