@@ -255,3 +255,15 @@ commands:
     description: List of all the server rules.
     permission: essentials.command.rules
     usage: "/rules"
+  addperm:
+    description: Add a permission to a player.
+    permission: essentials.command.addperm
+    usage: "/addperm &f<player> <perm>"
+  removeperm:
+    description: Remove a permission from a player.
+    permission: essentials.command.removeperm
+    usage: "/removeperm &f<player> <perm>"
+  serversendmessage:
+    description: Send a message to any online player from the server.
+    permission: essentials.command.serversendmessage
+    usage: "/serversendmessage &f<player> <message>"

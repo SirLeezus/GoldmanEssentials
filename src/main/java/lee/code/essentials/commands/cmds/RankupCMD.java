@@ -51,7 +51,7 @@ public class RankupCMD implements CommandExecutor {
                         List<Component> lines = new ArrayList<>();
                         Component title = Lang.COMMAND_RANKUP_TITLE.getComponent(null).hoverEvent(Lang.COMMAND_RANKUP_HOVER.getComponent(new String[]{plugin.getPU().formatAmount(level), plugin.getPU().formatAmount(maxLevel)}));
                         lines.add(Component.text(""));
-                        lines.add(plugin.getPU().formatC("&a&lAdvancements&7: &8[" + plugin.getPU().getProgressBar(level, rankupLevel, 50, "|", "#00E835", "&7") + "&8] &2" + plugin.getPU().formatAmount(level) + "&7/&2" + plugin.getPU().formatAmount(rankupLevel)));
+                        lines.add(plugin.getPU().formatC("&a&lAdvancements&7: &8[" + plugin.getPU().getProgressBar(level, rankupLevel, 50, "|", "&#00E835", "&7") + "&8] &2" + plugin.getPU().formatAmount(level) + "&7/&2" + plugin.getPU().formatAmount(rankupLevel)));
                         if (!nextRank.equals(staff)) {
                             lines.add(Component.text(""));
                             lines.add(plugin.getPU().formatC("&9&lNext Rank&7: " + nextRankPrefix));

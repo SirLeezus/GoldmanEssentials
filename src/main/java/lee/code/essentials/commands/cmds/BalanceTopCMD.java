@@ -55,24 +55,26 @@ public class BalanceTopCMD implements CommandExecutor {
             lines.add(Component.text(""));
 
             boolean onPage = false;
+            int position = 1;
 
             for (int i = 0; i < maxDisplayed; i++) {
                 index = maxDisplayed * page + i;
                 if (index >= players.size()) break;
                 if (players.get(index) != null) {
-                    int position = index + 1;
                     String thePlayer = players.get(index);
                     UUID pUUID = UUID.fromString(thePlayer);
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(pUUID);
-                    String name = "Notch";
                     String posColor = "&3";
-                    if (offlinePlayer.getName() != null) name = offlinePlayer.getName();
-                    String balance = plugin.getPU().formatAmount(sortedMap.get(thePlayer));
-                    if (name.equals(player.getName())) {
-                        posColor = "&2";
-                        onPage = true;
+                    if (offlinePlayer.getName() != null) {
+                        String name = offlinePlayer.getName();
+                        String balance = plugin.getPU().formatAmount(sortedMap.get(thePlayer));
+                        if (name.equals(player.getName())) {
+                            posColor = "&2";
+                            onPage = true;
+                        }
+                        lines.add(plugin.getPU().formatC(posColor + position + ". &e" + name + " &7| &6$" + balance));
+                        position++;
                     }
-                    lines.add(plugin.getPU().formatC(posColor + position + ". &e" + name + " &7| &6$" + balance));
                 }
             }
 

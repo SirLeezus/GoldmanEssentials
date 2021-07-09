@@ -292,7 +292,6 @@ public class Cache {
 
         try (Jedis jedis = pool.getResource()) {
             String perms = jedis.hget("perms", sUUID);
-
             String[] split = StringUtils.split(perms, ',');
             List<String> playerPerms = new ArrayList<>(Arrays.asList(split));
             if (!playerPerms.contains(perm)) {
@@ -336,6 +335,20 @@ public class Cache {
 
             String[] split = StringUtils.split(perms, ',');
             return new ArrayList<>(Arrays.asList(split));
+        }
+    }
+
+    public boolean hasPerms(UUID uuid, String perm) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String perms = jedis.hget("perms", sUUID);
+
+            String[] split = StringUtils.split(perms, ',');
+            return new ArrayList<>(Arrays.asList(split)).contains(perm);
         }
     }
 

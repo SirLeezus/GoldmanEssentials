@@ -1,9 +1,12 @@
 package lee.code.essentials;
 
 import lee.code.essentials.database.SQLite;
+import lee.code.essentials.lists.CustomCraftingRecipes;
 import lee.code.essentials.menusystem.PlayerMU;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.command.Command;
@@ -19,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
 
 public class Data {
 
@@ -33,7 +37,7 @@ public class Data {
     @Getter private final List<UUID> sleepingPlayers = new ArrayList<>();
     @Getter private final List<UUID> playerClickDelay = new ArrayList<>();
     @Getter private final List<NamespacedKey> recipeKeys = new ArrayList<>();
-    @Getter private final List<String> serverMOTD = new ArrayList<>();
+    @Getter private final List<Component> serverMOTD = new ArrayList<>();
     @Getter private final List<String> pluginCommands = new ArrayList<>();
     @Getter @Setter private BukkitTask sleepTask = null;
 
@@ -159,7 +163,11 @@ public class Data {
             }
             BufferedReader br = new BufferedReader(new FileReader(file));
             while ((line = br.readLine()) != null) {
-                serverMOTD.add(line);
+                if (line.contains("{store}")) {
+                    serverMOTD.add(plugin.getPU().formatC(line.replace("{store}", "https://journey.buycraft.net")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://journey.buycraft.net")));
+                } else if (line.contains("{discord}")) {
+                    serverMOTD.add(plugin.getPU().formatC(line.replace("{discord}", "https://discord.com")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://journey.buycraft.net")));
+                } else serverMOTD.add(plugin.getPU().formatC(line));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,6 +197,11 @@ public class Data {
 
         //materials
         for (Material material : Material.values()) materialNames.add(material.name().toLowerCase());
+
+        //custom recipes
+        for (String recipe : plugin.getPU().getCustomCraftingRecipes()) {
+            CustomCraftingRecipes.valueOf(recipe).registerRecipe();
+        }
 
         //recipes
         Iterator<Recipe> ita = Bukkit.getServer().recipeIterator();

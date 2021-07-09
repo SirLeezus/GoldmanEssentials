@@ -123,6 +123,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("setsuffix").setExecutor(new SetSuffixCMD());
         getCommand("randomteleport").setExecutor(new RandomTeleportCMD());
         getCommand("rules").setExecutor(new RulesCMD());
+        getCommand("addperm").setExecutor(new AddPermCMD());
+        getCommand("removeperm").setExecutor(new RemovePermCMD());
+        getCommand("serversendmessage").setExecutor(new ServerSendMessageCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -184,6 +187,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("setsuffix").setTabCompleter(new SetSuffixTab());
         getCommand("randomteleport").setTabCompleter(new RandomTeleportTab());
         getCommand("rules").setTabCompleter(new RulesTab());
+        getCommand("addperm").setTabCompleter(new AddPermTab());
+        getCommand("removeperm").setTabCompleter(new RemovePermTab());
+        getCommand("serversendmessage").setTabCompleter(new ServerSendMessageTab());
     }
 
     private void registerListeners() {

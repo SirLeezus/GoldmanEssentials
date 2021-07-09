@@ -3,6 +3,7 @@ package lee.code.essentials.listeners;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -89,6 +90,6 @@ public class JoinListener implements Listener {
         else e.joinMessage(player.displayName().append(Lang.PLAYER_JOIN.getComponent(null)));
 
         //motd
-        for (String line : plugin.getData().getServerMOTD()) player.sendMessage(plugin.getPU().formatC(line));
+        for (Component line : plugin.getData().getServerMOTD()) player.sendMessage(line);
     }
 }

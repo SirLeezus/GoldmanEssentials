@@ -12,6 +12,7 @@ import com.mojang.authlib.properties.Property;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -44,18 +45,18 @@ import java.util.stream.Collectors;
 
 public class PU {
 
-    private final Pattern HEX_REGEX = Pattern.compile("\\&#[a-fA-F0-9]{6}");
-    private final Pattern ITEM_REGEX = Pattern.compile("(?i).*\\[item\\].*");
+    private final Pattern hexRegex = Pattern.compile("\\&#[a-fA-F0-9]{6}");
+    private final Pattern itemRegex = Pattern.compile("(?i).*\\[item\\].*");
     private final Random random = new Random();
 
     public String format(String message) {
         if (message == null) return "";
-        Matcher matcher = HEX_REGEX.matcher(message);
+        Matcher matcher = hexRegex.matcher(message);
 
         while (matcher.find()) {
             String color = message.substring(matcher.start(), matcher.end()).replaceAll("&", "");
             message = message.replace("&" + color, ChatColor.of(color) + "");
-            matcher = HEX_REGEX.matcher(message);
+            matcher = hexRegex.matcher(message);
         }
         return ChatColor.translateAlternateColorCodes('&', message);
     }
@@ -66,7 +67,7 @@ public class PU {
     }
 
     public String unFormatC(Component message) {
-        LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
+        PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
         return serializer.serialize(message);
     }
 
@@ -122,7 +123,7 @@ public class PU {
     public Component parseChatVariables(Player player, Component message) {
         String text = PlainTextComponentSerializer.plainText().serialize(message);
 
-        if (ITEM_REGEX.matcher(text).matches()) {
+        if (itemRegex.matcher(text).matches()) {
             ItemStack item = player.getInventory().getItemInMainHand();
             String materialName = formatMaterial(item.getType().name());
             String itemName = materialName;
@@ -170,6 +171,10 @@ public class PU {
 
     public List<String> getRanks() {
         return EnumSet.allOf(RankList.class).stream().map(RankList::name).collect(Collectors.toList());
+    }
+
+    public List<String> getCustomCraftingRecipes() {
+        return EnumSet.allOf(CustomCraftingRecipes.class).stream().map(CustomCraftingRecipes::name).collect(Collectors.toList());
     }
 
     public List<String> getPremiumRanks() {

@@ -136,7 +136,11 @@ public class PermissionManager {
         defaultPerms.add("lock.command.add");
 
         // pets
-        defaultPerms.add("pets.command.test");
+        defaultPerms.add("pets.command.pets");
+
+        // trails
+        defaultPerms.add("trails.command.trails");
+        defaultPerms.add("trails.use.normal");
 
         // staff
         staffPerms.add("essentials.command.ban");

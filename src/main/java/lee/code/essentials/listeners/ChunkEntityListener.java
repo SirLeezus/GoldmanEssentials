@@ -22,14 +22,18 @@ public class ChunkEntityListener implements Listener {
     public void onEntityPreSpawn(PreCreatureSpawnEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Chunk chunk = e.getSpawnLocation().getChunk();
-        if (plugin.getPU().countEntitiesInChunk(chunk, e.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) e.setCancelled(true);
+        if (!e.getReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM)) {
+            if (plugin.getPU().countEntitiesInChunk(chunk, e.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) e.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onEntitySpawn(CreatureSpawnEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Chunk chunk = e.getLocation().getChunk();
-        if (plugin.getPU().countEntitiesInChunk(chunk, e.getEntity().getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) e.setCancelled(true);
+        if (!e.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM)) {
+            if (plugin.getPU().countEntitiesInChunk(chunk, e.getEntity().getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) e.setCancelled(true);
+        }
     }
 
     @EventHandler
