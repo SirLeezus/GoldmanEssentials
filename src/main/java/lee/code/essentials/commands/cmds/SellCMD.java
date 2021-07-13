@@ -35,7 +35,7 @@ public class SellCMD implements CommandExecutor {
                     long value = ItemSellValues.valueOf(name).getValue() * amount;
                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                     cache.deposit(uuid, value);
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SELL_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatMaterial(name), String.valueOf(amount), plugin.getPU().formatAmount(value) })));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SELL_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatCapitalization(name), String.valueOf(amount), plugin.getPU().formatAmount(value) })));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
         }

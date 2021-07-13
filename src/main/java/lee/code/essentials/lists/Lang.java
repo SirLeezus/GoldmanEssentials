@@ -35,6 +35,7 @@ public enum Lang {
     TEMPMUTED("&cYou have been temporarily muted from chat for &e{0} &cfor: &7{1}"),
     TEMPUNMUTED("&aYour temporary mute is now over. Please follow our rules."),
     SPAM("&cPlease slow down the speed you're sending messages."),
+    COLOR_MENU_SELECT("&aYour name color was successfully updated to &f{0}&a!"),
     TABLIST_HEADER("&#228B22▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n&#4dc462&lJourney Survival\n&#228B22▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
     TABLIST_FOOTER("\n&#228B22&lOnline&7: &#4dc462{0}"),
     FIRST_JOIN_MESSAGE("&aThe player &6{0} &ajoined for the first time! Welcome to &2&lJourney Survival&a! &d#{1}"),
@@ -179,6 +180,7 @@ public enum Lang {
     MENU_ARMOR_STAND_DIRECTION_POSITION("&#0D7E00&lDirection&7 &cYaw&7: &6{0}"),
     MENU_ARMOR_STAND_RIGHT_ARM_POSITION("&#FF00EC&lRight Arm Position {0}"),
     MENU_ARMOR_STAND_TITLE("&#0D7E00&lArmor Stand Editor"),
+    MENU_COLOR_TITLE("&9&lName Color"),
     ;
 
     @Getter private final String string;

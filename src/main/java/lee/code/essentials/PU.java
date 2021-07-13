@@ -12,7 +12,6 @@ import com.mojang.authlib.properties.Property;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -81,7 +80,7 @@ public class PU {
         return formatter.format(value);
     }
 
-    public String formatMaterial(String type) {
+    public String formatCapitalization(String type) {
         String format = type.toLowerCase().replaceAll("_", " ");
         return WordUtils.capitalize(format);
     }
@@ -125,7 +124,7 @@ public class PU {
 
         if (itemRegex.matcher(text).matches()) {
             ItemStack item = player.getInventory().getItemInMainHand();
-            String materialName = formatMaterial(item.getType().name());
+            String materialName = formatCapitalization(item.getType().name());
             String itemName = materialName;
             StringBuilder lore = new StringBuilder();
             if (item.hasItemMeta()) {
@@ -135,7 +134,7 @@ public class PU {
                     for (Map.Entry<Enchantment, Integer> enchant : itemMeta.getEnchants().entrySet()) {
                         String enchantColor = "&7";
                         if (enchant.getKey().equals(Enchantment.VANISHING_CURSE) || enchant.getKey().equals(Enchantment.BINDING_CURSE)) enchantColor = "&c";
-                        lore.append("\n").append(enchantColor).append(formatMaterial(enchant.getKey().getKey().getKey())).append(" ").append(getRomanNumber(enchant.getValue()));
+                        lore.append("\n").append(enchantColor).append(formatCapitalization(enchant.getKey().getKey().getKey())).append(" ").append(getRomanNumber(enchant.getValue()));
                     }
                 }
                 if (itemMeta.hasLore() && itemMeta.getLore() != null) for (String loreLine : itemMeta.getLore()) lore.append("\n&5&o").append(loreLine);

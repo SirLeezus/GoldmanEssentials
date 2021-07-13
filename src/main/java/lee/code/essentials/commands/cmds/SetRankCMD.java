@@ -28,6 +28,7 @@ public class SetRankCMD implements CommandExecutor {
                     UUID tUUID = target.getUniqueId();
                     String rank = args[1].toUpperCase();
                     if (plugin.getPU().getRanks().contains(rank)) {
+                        cache.setColor(tUUID, RankList.valueOf(rank).getColor());
                         cache.setRank(tUUID, rank);
                         cache.setPrefix(tUUID, RankList.valueOf(rank).getPrefix());
                     } else if (plugin.getPU().getPremiumRanks().contains(rank)) cache.setSuffix(tUUID, " " + PremiumRankList.valueOf(rank).getSuffix());

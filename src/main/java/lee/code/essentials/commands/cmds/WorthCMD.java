@@ -30,7 +30,7 @@ public class WorthCMD implements CommandExecutor {
                 }
                 if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
                     long value = ItemSellValues.valueOf(name).getValue();
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatMaterial(name), plugin.getPU().formatAmount(value) })));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatCapitalization(name), plugin.getPU().formatAmount(value) })));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
 

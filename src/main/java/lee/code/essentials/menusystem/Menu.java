@@ -9,6 +9,11 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public abstract class Menu implements InventoryHolder {
 
     public Menu(PlayerMU pmu) {
@@ -21,6 +26,7 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack close = MenuItems.CLOSE_MENU.getItem();
     protected ItemStack nextPage = MenuItems.NEXT_PAGE.getItem();
     protected ItemStack previousPage = MenuItems.PREVIOUS_PAGE.getItem();
+
     protected ItemStack asSettingTrue = MenuItems.ARMOR_STAND_SETTING_TRUE.getItem();
     protected ItemStack asSettingFalse = MenuItems.ARMOR_STAND_SETTING_FALSE.getItem();
     protected ItemStack asPosition = MenuItems.ARMOR_STAND_POSITION.getItem();
@@ -31,6 +37,8 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack asLeftLegPosition = MenuItems.ARMOR_STAND_LEFT_LEG_POSITION.getItem();
     protected ItemStack asRightLegPosition = MenuItems.ARMOR_STAND_RIGHT_LEG_POSITION.getItem();
     protected ItemStack asDirectionPosition = MenuItems.ARMOR_STAND_DIRECTION_POSITION.getItem();
+
+    protected List<ItemStack> colorItems = getColorItems();
 
     public abstract Component getMenuName();
     public abstract int getSlots();
@@ -54,5 +62,13 @@ public abstract class Menu implements InventoryHolder {
                 inventory.setItem(i, fillerGlass);
             }
         }
+    }
+
+    private List<ItemStack> getColorItems() {
+        List<ItemStack> items = new ArrayList<>();
+        for (String color : EnumSet.allOf(MenuItems.class).stream().map(MenuItems::name).collect(Collectors.toList())) {
+            if (color.contains("COLOR_")) items.add(MenuItems.valueOf(color).getItem());
+        }
+        return items;
     }
 }

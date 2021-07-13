@@ -28,7 +28,7 @@ public class ItemLoreCMD implements CommandExecutor {
                     int number = Integer.parseInt(args[0]);
                     if (args.length > 1) {
                         ItemStack item = player.getInventory().getItemInMainHand();
-                        String itemName = plugin.getPU().formatMaterial(item.getType().name());
+                        String itemName = plugin.getPU().formatCapitalization(item.getType().name());
                         if (item.getType() != Material.AIR) {
                             String message = "&5&o" + plugin.getPU().buildStringFromArgs(args, 1);
                             ItemMeta itemMeta = item.getItemMeta();

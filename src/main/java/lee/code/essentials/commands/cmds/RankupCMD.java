@@ -36,6 +36,7 @@ public class RankupCMD implements CommandExecutor {
             String rank = cache.getRank(uuid);
             String nextRank = RankList.valueOf(rank).getNextRank();
             List<String> ranks = plugin.getPU().getRanks();
+            String nextColor = ranks.contains(nextRank) ? RankList.valueOf(nextRank).getColor() : "YELLOW";
             String nextRankPrefix = ranks.contains(nextRank) ? RankList.valueOf(nextRank).getPrefix() : "";
 
             int level = cache.getLevel(uuid);
@@ -81,6 +82,7 @@ public class RankupCMD implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("confirm")) {
                 if (level >= rankupLevel) {
                     if (!nextRank.equals(last) && !nextRank.equals(staff)) {
+                        if (!player.hasPermission("essentials.command.namecolor")) cache.setColor(uuid, nextColor);
                         cache.setRank(uuid, nextRank);
                         cache.setPrefix(uuid, nextRankPrefix);
                         plugin.getPU().updateDisplayName(player);
@@ -99,6 +101,7 @@ public class RankupCMD implements CommandExecutor {
                         cache.setLevel(uuid, "0");
 
                         if (!nextRank.equals(staff)) {
+                            if (!player.hasPermission("essentials.command.namecolor")) cache.setColor(uuid, nextColor);
                             cache.setRank(uuid, "NOMAD");
                             cache.setPrefix(uuid, RankList.NOMAD.getPrefix());
                         }

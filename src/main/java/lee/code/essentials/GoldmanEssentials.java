@@ -126,6 +126,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("addperm").setExecutor(new AddPermCMD());
         getCommand("removeperm").setExecutor(new RemovePermCMD());
         getCommand("serversendmessage").setExecutor(new ServerSendMessageCMD());
+        getCommand("namecolor").setExecutor(new NameColorCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -190,6 +191,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("addperm").setTabCompleter(new AddPermTab());
         getCommand("removeperm").setTabCompleter(new RemovePermTab());
         getCommand("serversendmessage").setTabCompleter(new ServerSendMessageTab());
+        getCommand("namecolor").setTabCompleter(new NameColorTab());
     }
 
     private void registerListeners() {
