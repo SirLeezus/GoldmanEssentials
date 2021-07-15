@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemRenameTab implements TabCompleter {
+public class ItemNameTab implements TabCompleter {
 
     private final List<String> blank = new ArrayList<>();
 

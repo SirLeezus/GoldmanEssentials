@@ -37,8 +37,9 @@ public class GameModeCMD implements CommandExecutor {
                     }
                     default -> player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getComponent(new String[]{gamemode})));
                 }
-            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_GAMEMODE_ARGS.getComponent(null)));
-        }
+                
+            } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

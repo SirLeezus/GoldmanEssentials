@@ -20,27 +20,24 @@ public class BanCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player player) {
-            if (args.length > 0) {
-                OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
-                if (targetPlayer != null) {
-                    UUID tUUID = targetPlayer.getUniqueId();
-                    if (args.length > 1) {
-                        if (!cache.isTempBanned(tUUID) && !cache.isBanned(tUUID)) {
-                            String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
-                            if (!reason.isBlank()) {
-                                cache.setBannedPlayer(tUUID, player.getUniqueId(), reason, true);
-                                if (targetPlayer.isOnline()) {
-                                    Player tPlayer = targetPlayer.getPlayer();
-                                    if (tPlayer != null) tPlayer.kick(Lang.BANNED.getComponent(new String[] { reason }));
-                                }
-                                plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BANNED_FOREVER.getComponent(new String[] { targetPlayer.getName(), reason })));
-                            }
+        if (args.length > 1) {
+            OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
+            UUID senderUUID = sender instanceof Player player ? player.getUniqueId() : UUID.fromString(Lang.SERVER_UUID.getString());
+            if (target != null) {
+                UUID tUUID = target.getUniqueId();
+                if (!cache.isTempBanned(tUUID) && !cache.isBanned(tUUID)) {
+                    String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
+                    if (!reason.isBlank()) {
+                        cache.setBannedPlayer(tUUID, senderUUID, reason, true);
+                        if (target.isOnline()) {
+                            Player tPlayer = target.getPlayer();
+                            if (tPlayer != null) tPlayer.kick(Lang.BANNED.getComponent(new String[] { reason }));
                         }
+                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BANNED_FOREVER.getComponent(new String[] { target.getName(), reason })));
                     }
                 }
-            }
-        }
+            } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
+        } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
         return true;
     }
 }

@@ -23,7 +23,7 @@ public class SpawnCMD implements CommandExecutor {
                 player.teleportAsync(spawn);
                 player.sendActionBar(Lang.TELEPORT.getComponent(null));
             }
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

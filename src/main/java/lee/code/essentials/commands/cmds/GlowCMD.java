@@ -13,6 +13,7 @@ public class GlowCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         if (sender instanceof Player player) {
+
             if (player.isGlowing()) {
                 player.setGlowing(false);
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_GLOW_SUCCESSFUL.getComponent(new String[] { Lang.OFF.getString(null) })));
@@ -20,7 +21,8 @@ public class GlowCMD implements CommandExecutor {
                 player.setGlowing(true);
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_GLOW_SUCCESSFUL.getComponent(new String[] { Lang.ON.getString(null) })));
             }
-        }
+
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

@@ -51,7 +51,7 @@ public class RulesCMD implements CommandExecutor {
             lines.add(Lang.COMMAND_RULES_SPLITTER.getComponent(null));
 
             for (Component line : lines) player.sendMessage(line);
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

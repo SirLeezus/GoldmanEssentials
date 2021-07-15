@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -17,7 +18,7 @@ public class AdvancementCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-        if (sender instanceof Player) {
+        if (sender instanceof Player player) {
             if (args.length > 2) {
                 if (plugin.getPU().getOnlinePlayers().contains(args[1])) {
                     Player target = Bukkit.getPlayer(args[1]);
@@ -68,10 +69,10 @@ public class AdvancementCMD implements CommandExecutor {
                                 //TODO send message not subcommand
                                 break;
                         }
-                    }
-                }
-            }
-        }
+                    } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
+            } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

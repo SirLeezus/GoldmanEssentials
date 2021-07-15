@@ -22,8 +22,7 @@ public class HomeTab implements TabCompleter {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             if (args.length == 1) {
                 return StringUtil.copyPartialMatches(args[0], cache.getHomeNames(player.getUniqueId()), new ArrayList<>());
             } else return blank;

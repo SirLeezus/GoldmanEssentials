@@ -16,14 +16,11 @@ public class WorldCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         if (sender instanceof Player player) {
-            GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
             if (args.length > 0) {
-
                 String worldString = args[0].toLowerCase();
-
                 if (plugin.getData().getWorldNames().contains(worldString)) {
                     World world = Bukkit.getWorld(worldString);
                     Location loc = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
@@ -31,8 +28,8 @@ public class WorldCMD implements CommandExecutor {
                     player.sendActionBar(Lang.TELEPORT.getComponent(null));
                     player.playSound(player.getLocation(), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1,1);
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_WORLD_NOT_FOUND.getComponent(new String[] { worldString })));
-            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_WORLD_ARGS.getComponent(null)));
-        }
+            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

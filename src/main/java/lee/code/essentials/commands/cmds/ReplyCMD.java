@@ -24,24 +24,25 @@ public class ReplyCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
-            UUID uuid = player.getUniqueId();
-
-            if (cache.hasLastReplied(uuid)) {
-                UUID uuidTarget = cache.getLastReplied(uuid);
-                OfflinePlayer oTarget = Bukkit.getPlayer(uuidTarget);
-                if (oTarget != null) {
-                    if (oTarget.isOnline()) {
-                        Player target = oTarget.getPlayer();
-                        if (target != null) {
-                            String message = plugin.getPU().buildStringFromArgs(args, 0);
-                            cache.setLastReplied(uuid, target.getUniqueId());
-                            player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
-                            target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
-                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_REPLY_NO_PLAYER.getComponent(null)));
-                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { oTarget.getName() })));
+            if (args.length > 0) {
+                UUID uuid = player.getUniqueId();
+                if (cache.hasLastReplied(uuid)) {
+                    UUID uuidTarget = cache.getLastReplied(uuid);
+                    OfflinePlayer oTarget = Bukkit.getPlayer(uuidTarget);
+                    if (oTarget != null) {
+                        if (oTarget.isOnline()) {
+                            Player target = oTarget.getPlayer();
+                            if (target != null) {
+                                String message = plugin.getPU().buildStringFromArgs(args, 0);
+                                cache.setLastReplied(uuid, target.getUniqueId());
+                                player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
+                                target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
+                            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_REPLY_NO_PLAYER.getComponent(null)));
+                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { oTarget.getName() })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_REPLY_NO_PLAYER.getComponent(null)));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_REPLY_NO_PLAYER.getComponent(null)));
-            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_REPLY_NO_PLAYER.getComponent(null)));
-        }
+            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

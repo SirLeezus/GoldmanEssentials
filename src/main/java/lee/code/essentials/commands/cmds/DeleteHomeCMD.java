@@ -27,8 +27,8 @@ public class DeleteHomeCMD implements CommandExecutor {
                     cache.removeHome(uuid, name);
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DELETEHOME_SUCCESSFUL.getComponent(new String[] { name })));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_DELETEHOME_NOT_SAVED.getComponent(new String[] { name })));
-            }
-        }
+            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

@@ -38,8 +38,8 @@ public class MessageCMD implements CommandExecutor {
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[] { cache.getMuteReason(uuid) })));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_MESSAGE_TO_SELF.getComponent(null)));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
-            }
-        }
+            } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

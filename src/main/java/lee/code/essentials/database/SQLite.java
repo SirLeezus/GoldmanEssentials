@@ -115,7 +115,7 @@ public class SQLite {
         update("UPDATE server SET spawn ='" + location + "' WHERE server ='" + "server" + "';");
     }
 
-    public void setJoins(int joins) {
+    public void setJoins(String joins) {
         update("UPDATE server SET joins = '" + joins + "' WHERE server ='" + "server" + "';");
     }
 

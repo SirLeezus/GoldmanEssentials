@@ -28,7 +28,8 @@ public class GodCMD implements CommandExecutor {
                 cache.setGodPlayer(uuid, true);
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_GOD_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.ON.getString(null) })));
             }
-        }
+            
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

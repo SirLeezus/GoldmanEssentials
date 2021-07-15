@@ -18,7 +18,7 @@ public class PlayTimeCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             long time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20;
             player.sendMessage(Lang.COMMAND_PLAYTIME_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatSeconds(time) }));
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

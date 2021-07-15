@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,8 +29,8 @@ public class SummonCMD implements CommandExecutor {
                     }
                     for (int a = 0; a < amount; a++) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(entityName.toUpperCase()));
                 }
-            }
-        }
+            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

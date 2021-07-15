@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.lists.Lang;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -40,8 +41,8 @@ public class EnchantCMD implements CommandExecutor {
                         }
                     }
                 }
-            }
-        }
+            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+    } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

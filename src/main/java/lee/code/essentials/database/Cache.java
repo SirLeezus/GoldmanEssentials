@@ -832,8 +832,8 @@ public class Cache {
         SQLite SQL = plugin.getSqLite();
 
         try (Jedis jedis = pool.getResource()) {
-            int joins = Integer.parseInt(jedis.get("joins")) + 1;
-            jedis.set("joins", String.valueOf(joins));
+            String joins = String.valueOf(Integer.parseInt(jedis.get("joins")) + 1);
+            jedis.set("joins", joins);
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setJoins(joins));
         }
     }

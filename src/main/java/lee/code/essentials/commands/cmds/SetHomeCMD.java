@@ -33,8 +33,8 @@ public class SetHomeCMD implements CommandExecutor {
                         player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETHOME_SUCCESSFUL.getComponent(new String[] { name })));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_MAX_HOMES.getComponent(new String[] { String.valueOf(maxHomes) })));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_ALREADY_SAVED.getComponent(new String[] { name })));
-            }
-        }
+            } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

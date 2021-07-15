@@ -118,7 +118,7 @@ public enum EntityHeads {
     public ItemStack getHead() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        plugin.getPU().applyHeadSkin(head, skin, UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffffff"));
+        plugin.getPU().applyHeadSkin(head, skin, UUID.fromString(Lang.SERVER_UUID.getString()));
         ItemMeta headMeta = head.getItemMeta();
         headMeta.displayName(plugin.getPU().formatC(name));
         head.setItemMeta(headMeta);

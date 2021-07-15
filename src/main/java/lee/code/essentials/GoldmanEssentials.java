@@ -82,7 +82,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("teleportdeny").setExecutor(new TeleportDenyCMD());
         getCommand("sound").setExecutor(new SoundCMD());
         getCommand("glow").setExecutor(new GlowCMD());
-        getCommand("itemrename").setExecutor(new ItemRenameCMD());
+        getCommand("itemname").setExecutor(new ItemNameCMD());
         getCommand("zap").setExecutor(new ZapCMD());
         getCommand("advancement").setExecutor(new AdvancementCMD());
         getCommand("ranklist").setExecutor(new RankListCMD());
@@ -146,7 +146,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("sound").setTabCompleter(new SoundTab());
         getCommand("glow").setTabCompleter(new GlowTab());
         getCommand("teleportdeny").setTabCompleter(new TeleportDenyTab());
-        getCommand("itemrename").setTabCompleter(new ItemRenameTab());
+        getCommand("itemname").setTabCompleter(new ItemNameTab());
         getCommand("zap").setTabCompleter(new ZapTab());
         getCommand("advancement").setTabCompleter(new AdvancementTab());
         getCommand("ranklist").setTabCompleter(new RankListTab());

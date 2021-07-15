@@ -21,7 +21,6 @@ public class GiveCMD implements CommandExecutor {
 
         if (sender instanceof Player player) {
             int amount = 1;
-
             if (args.length > 1) {
                 if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
                     Player target = Bukkit.getPlayer(args[0]);
@@ -36,10 +35,10 @@ public class GiveCMD implements CommandExecutor {
                             ItemStack item = new ItemStack(material, amount);
                             target.getInventory().addItem(item);
                         }
-                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
-            }
-        }
+            } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

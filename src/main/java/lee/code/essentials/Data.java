@@ -2,6 +2,7 @@ package lee.code.essentials;
 
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.CustomCraftingRecipes;
+import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.PlayerMU;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
 
 public class Data {
 
@@ -164,9 +164,9 @@ public class Data {
             BufferedReader br = new BufferedReader(new FileReader(file));
             while ((line = br.readLine()) != null) {
                 if (line.contains("{store}")) {
-                    serverMOTD.add(plugin.getPU().formatC(line.replace("{store}", "https://journey.buycraft.net")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://journey.buycraft.net")));
+                    serverMOTD.add(plugin.getPU().formatC(line.replace("{store}", Lang.STORE.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.STORE.getString())));
                 } else if (line.contains("{discord}")) {
-                    serverMOTD.add(plugin.getPU().formatC(line.replace("{discord}", "https://discord.com")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://journey.buycraft.net")));
+                    serverMOTD.add(plugin.getPU().formatC(line.replace("{discord}", Lang.DISCORD.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.DISCORD.getString())));
                 } else serverMOTD.add(plugin.getPU().formatC(line));
             }
         } catch (IOException e) {

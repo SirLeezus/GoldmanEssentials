@@ -53,7 +53,7 @@ public class VanishCMD implements CommandExecutor {
                 }
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_VANISH_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.ON.getString(null) })));
             }
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

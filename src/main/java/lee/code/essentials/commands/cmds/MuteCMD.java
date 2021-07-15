@@ -20,27 +20,23 @@ public class MuteCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player) {
-            if (args.length > 0) {
-                OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
-                if (targetPlayer != null) {
-                    UUID tUUID = targetPlayer.getUniqueId();
-                    if (args.length > 1) {
-                        String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
-                        if (!reason.isBlank()) {
-                            if (!cache.isMuted(tUUID)) {
-                                cache.setMutedPlayer(tUUID, reason, true);
-                                if (targetPlayer.isOnline()) {
-                                    Player tPlayer = targetPlayer.getPlayer();
-                                    if (tPlayer != null) tPlayer.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[] { reason })));
-                                }
-                                plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_MUTED_FOREVER.getComponent(new String[] { targetPlayer.getName(), reason })));
-                            }
+        if (args.length > 1) {
+            OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
+            if (targetPlayer != null) {
+                UUID tUUID = targetPlayer.getUniqueId();
+                String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
+                if (!reason.isBlank()) {
+                    if (!cache.isMuted(tUUID)) {
+                        cache.setMutedPlayer(tUUID, reason, true);
+                        if (targetPlayer.isOnline()) {
+                            Player tPlayer = targetPlayer.getPlayer();
+                            if (tPlayer != null) tPlayer.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[] { reason })));
                         }
+                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_MUTED_FOREVER.getComponent(new String[] { targetPlayer.getName(), reason })));
                     }
                 }
-            }
-        }
+            } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
+        } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
         return true;
     }
 }

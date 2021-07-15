@@ -14,7 +14,6 @@ public class WeatherCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         if (sender instanceof Player player) {
-
             if (args.length > 0) {
                 String weather = args[0].toLowerCase();
                 World world = player.getWorld();
@@ -35,8 +34,9 @@ public class WeatherCMD implements CommandExecutor {
                         player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WEATHER_THUNDER.getComponent(null)));
                     }
                 }
-            }
-        }
+
+            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

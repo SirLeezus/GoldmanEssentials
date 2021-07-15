@@ -51,10 +51,10 @@ public class ItemLoreCMD implements CommandExecutor {
                                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_ITEMLORE_SUCCESSFUL.getComponent(new String[] { String.valueOf(number), message, itemName })));
                             }
                         }
-                    }
-                }
-            }
-        }
+                    } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+                } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+            } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

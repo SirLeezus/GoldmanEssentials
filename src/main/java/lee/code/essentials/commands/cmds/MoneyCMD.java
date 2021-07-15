@@ -4,6 +4,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,44 +21,37 @@ public class MoneyCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        if (sender instanceof Player player) {
+        if (args.length > 2) {
+            OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[1]);
+            if (target != null) {
+                Scanner buyScanner = new Scanner(args[2]);
+                if (buyScanner.hasNextLong()) {
+                    long amount = Long.parseLong(args[2]);
+                    UUID tUUID = target.getUniqueId();
+                    String subCommand = args[0];
+                    Player oTarget = target.getPlayer();
 
-            if (args.length > 2) {
-
-                if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
-                    Player target = Bukkit.getPlayer(args[1]);
-
-                    Scanner buyScanner = new Scanner(args[2]);
-                    if (buyScanner.hasNextLong()) {
-                        long amount = Long.parseLong(args[2]);
-
-                        if (target != null) {
-                            UUID tUUID = target.getUniqueId();
-                            String subCommand = args[0];
-
-                            switch (subCommand) {
-                                case "set" -> {
-                                    cache.setBalance(tUUID, amount);
-                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
-                                    target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
-                                }
-                                case "remove" -> {
-                                    cache.withdraw(tUUID, amount);
-                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
-                                    target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
-                                }
-                                case "give" -> {
-                                    cache.deposit(tUUID, amount);
-                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
-                                    target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
-                                }
-                                default -> player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getComponent(new String[]{ args[0] })));
-                            }
+                    switch (subCommand) {
+                        case "set" -> {
+                            cache.setBalance(tUUID, amount);
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
                         }
-                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_MONEY_VALUE.getComponent(new String[]{ args[2] } )));
-                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[]{ args[1] })));
-            }
-        }
+                        case "remove" -> {
+                            cache.withdraw(tUUID, amount);
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
+                        }
+                        case "give" -> {
+                            cache.deposit(tUUID, amount);
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
+                        }
+                        default -> sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getComponent(new String[]{ args[0] })));
+                    }
+                } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_MONEY_VALUE.getComponent(new String[]{ args[2] } )));
+            } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[1] })));
+        } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
         return true;
     }
 }

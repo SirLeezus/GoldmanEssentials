@@ -1,12 +1,12 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
 public class InvseeCMD implements CommandExecutor {
@@ -25,8 +25,8 @@ public class InvseeCMD implements CommandExecutor {
                         }
                     }
                 }
-            }
-        }
+            } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

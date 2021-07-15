@@ -136,7 +136,7 @@ public class RankupCMD implements CommandExecutor {
                 cache.setLevel(uuid, String.valueOf(levelCheck));
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_CHECK.getComponent(new String[] { plugin.getPU().formatAmount(levelCheck), plugin.getPU().formatAmount(maxLevel) })));
             }
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

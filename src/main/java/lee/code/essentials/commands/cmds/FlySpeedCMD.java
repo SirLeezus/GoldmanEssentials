@@ -17,10 +17,9 @@ public class FlySpeedCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             if (args.length > 0) {
                 Scanner numberScanner = new Scanner(args[0]);
-                if (numberScanner.hasNextInt() || numberScanner.hasNextDouble()) {
+                if (numberScanner.hasNextInt()) {
                     int number = Integer.parseInt(args[0]);
                     float speed = (float) 0;
-
                     if (number <= 10) {
                         switch (number) {
                             case 1 -> speed = (float) 0.1;
@@ -38,8 +37,8 @@ public class FlySpeedCMD implements CommandExecutor {
                         player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_FLYSPEED_SUCCESSFUL.getComponent(new String[]{String.valueOf(number)})));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_FLYSPEED_LIMIT.getComponent(null)));
                 }
-            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_FLYSPEED_ARGS.getComponent(null)));
-        }
+            } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

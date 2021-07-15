@@ -91,7 +91,7 @@ public class BalanceTopCMD implements CommandExecutor {
             Component prev = plugin.getPU().formatC("&a&l--------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page - 1)));
             lines.add(prev.append(split).append(next));
             for (Component message : lines) player.sendMessage(message);
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

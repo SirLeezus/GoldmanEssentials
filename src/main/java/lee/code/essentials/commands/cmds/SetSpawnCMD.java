@@ -19,7 +19,7 @@ public class SetSpawnCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             cache.setSpawn(player.getLocation());
             player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_SUCCESSFUL.getComponent(null)));
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

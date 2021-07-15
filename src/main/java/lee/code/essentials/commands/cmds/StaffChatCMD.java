@@ -2,6 +2,7 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
 
+import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -23,11 +24,11 @@ public class StaffChatCMD implements CommandExecutor {
 
                 for (Player oPlayer : Bukkit.getOnlinePlayers()) {
                     if (player.hasPermission("essentials.command.staffchat")) {
-                        oPlayer.sendMessage(plugin.getPU().formatC("&#0073A5[&#A50000&lSC&#0073A5] ").append(player.displayName()).append(plugin.getPU().formatC("&#0073A5: ")).append(Component.text(message)).color(NamedTextColor.GOLD));
+                        oPlayer.sendMessage(Lang.STAFF_CHAT_PREFIX.getComponent(null).append(player.displayName()).append(plugin.getPU().formatC("&#0073A5: ")).append(Component.text(message)).color(NamedTextColor.GOLD));
                     }
                 }
-            }
-        }
+            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

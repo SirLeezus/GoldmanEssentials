@@ -8,7 +8,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,43 +20,22 @@ public class AddPermCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
 
-        //addperm {player} {perm}
-        if (args.length > 0) {
+        if (args.length > 1) {
             OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
-            if (sender instanceof Player player) {
-                if (targetPlayer != null) {
-                    UUID tUUID = targetPlayer.getUniqueId();
-                    String name = targetPlayer.getName();
-                    if (args.length > 1) {
-                        String perm = args[1];
-                        if (!cache.hasPerms(tUUID, perm)) {
-                            cache.addPerm(tUUID, perm);
-                            if (targetPlayer.isOnline()) {
-                                Player tPlayer = targetPlayer.getPlayer();
-                                if (tPlayer != null && !tPlayer.isOp()) plugin.getPermissionManager().register(tPlayer);
-                            }
-                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_ADDPERM_SUCCESSFUL.getComponent(new String[] { perm, name })));
-                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_ADDPERM_HAS_PERM.getComponent(new String[] { name, perm })));
+            if (targetPlayer != null) {
+                UUID tUUID = targetPlayer.getUniqueId();
+                String name = targetPlayer.getName();
+                String perm = args[1];
+                if (!cache.hasPerms(tUUID, perm)) {
+                    cache.addPerm(tUUID, perm);
+                    if (targetPlayer.isOnline()) {
+                        Player tPlayer = targetPlayer.getPlayer();
+                        if (tPlayer != null && !tPlayer.isOp()) plugin.getPermissionManager().register(tPlayer);
                     }
-                }
-            } else if (sender instanceof ConsoleCommandSender console) {
-                if (targetPlayer != null) {
-                    UUID tUUID = targetPlayer.getUniqueId();
-                    String name = targetPlayer.getName();
-                    if (args.length > 1) {
-                        String perm = args[1];
-                        if (!cache.hasPerms(tUUID, perm)) {
-                            cache.addPerm(tUUID, perm);
-                            if (targetPlayer.isOnline()) {
-                                Player tPlayer = targetPlayer.getPlayer();
-                                if (tPlayer != null && !tPlayer.isOp()) plugin.getPermissionManager().register(tPlayer);
-                            }
-                            console.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_ADDPERM_SUCCESSFUL.getComponent(new String[] { perm, name })));
-                        } else console.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_ADDPERM_HAS_PERM.getComponent(new String[] { name, perm })));
-                    }
-                }
-            }
-        }
+                    sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_ADDPERM_SUCCESSFUL.getComponent(new String[] { perm, name })));
+                } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_ADDPERM_HAS_PERM.getComponent(new String[] { name, perm })));
+            } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
+        } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
         return true;
     }
 }

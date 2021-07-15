@@ -8,7 +8,6 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -20,24 +19,22 @@ public class ColorsCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
-        if (sender instanceof Player player) {
-            List<Component> lines = new ArrayList<>();
+        List<Component> lines = new ArrayList<>();
 
-            lines.add(Lang.COMMAND_COLORS_TITLE.getComponent(null));
-            lines.add(Component.text(""));
-            lines.add(Component.text("  §0&0  §1&1  §2&2  §3&3  §4&4"));
-            lines.add(Component.text("  §5&5  §6&6  §7&7  §8&8  §9&9"));
-            lines.add(Component.text("  §a&a  §b&b  §c&c  §d&d  §e&e"));
-            lines.add(Component.text("  §f&f  §k&k§r  §l&l§r  §m&m§r  §n&n§r"));
-            lines.add(Component.text("  §o&o§r  §r&r"));
+        lines.add(Lang.COMMAND_COLORS_TITLE.getComponent(null));
+        lines.add(Component.text(""));
+        lines.add(Component.text("  §0&0  §1&1  §2&2  §3&3  §4&4"));
+        lines.add(Component.text("  §5&5  §6&6  §7&7  §8&8  §9&9"));
+        lines.add(Component.text("  §a&a  §b&b  §c&c  §d&d  §e&e"));
+        lines.add(Component.text("  §f&f  §k&k§r  §l&l§r  §m&m§r  §n&n§r"));
+        lines.add(Component.text("  §o&o§r  §r&r"));
 
-            lines.add(Component.text(""));
-            lines.add(plugin.getPU().formatC("&#059CF8Hex Colors: ").append(Component.text("&#F500AE").color(TextColor.color(245, 0, 174))).hoverEvent(plugin.getPU().formatC("&#FFF667Click to open website!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://htmlcolorcodes.com")));
-            lines.add(Component.text(""));
-            lines.add(Lang.COMMAND_COLORS_SPLITTER.getComponent(null));
+        lines.add(Component.text(""));
+        lines.add(plugin.getPU().formatC("&#059CF8Hex Colors: ").append(Component.text("&#F500AE").color(TextColor.color(245, 0, 174))).hoverEvent(plugin.getPU().formatC("&#FFF667Click to open website!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://htmlcolorcodes.com")));
+        lines.add(Component.text(""));
+        lines.add(Lang.COMMAND_COLORS_SPLITTER.getComponent(null));
 
-            for (Component line : lines) player.sendMessage(line);
-        }
+        for (Component line : lines) sender.sendMessage(line);
         return true;
     }
 }

@@ -41,8 +41,9 @@ public class TimeCMD implements CommandExecutor {
                     }
                     default -> player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TIME.getComponent(new String[] { time })));
                 }
-            }
-        }
+
+            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

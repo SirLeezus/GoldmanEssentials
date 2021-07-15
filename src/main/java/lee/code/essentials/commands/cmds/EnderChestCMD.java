@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -19,13 +20,11 @@ public class EnderChestCMD implements CommandExecutor {
                 if (oTarget != null) {
                     if (oTarget.isOnline()) {
                         Player target = oTarget.getPlayer();
-                        if (target != null) {
-                            player.openInventory(target.getEnderChest());
-                        }
-                    }
-                }
+                        if (target != null) player.openInventory(target.getEnderChest());
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
             } else player.openInventory(player.getEnderChest());
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

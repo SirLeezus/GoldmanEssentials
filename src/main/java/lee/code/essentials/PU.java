@@ -139,7 +139,7 @@ public class PU {
                 }
                 if (itemMeta.hasLore() && itemMeta.getLore() != null) for (String loreLine : itemMeta.getLore()) lore.append("\n&5&o").append(loreLine);
             }
-            return formatC("&7[&f" + itemName + "&7]").hoverEvent(formatC(itemName + " &7(&f" + materialName + "&7)" + lore));
+            return formatC("&b[&f" + itemName + "&b]").hoverEvent(formatC(itemName + " &7(&f" + materialName + "&7)" + lore));
         } else return message;
     }
 

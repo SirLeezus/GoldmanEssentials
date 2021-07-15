@@ -74,7 +74,7 @@ public class HomeCMD implements CommandExecutor {
                     for (Component line : lines) player.sendMessage(line);
                 } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_HOME_NO_SAVED_HOMES.getString(null));
             }
-        }
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
 }

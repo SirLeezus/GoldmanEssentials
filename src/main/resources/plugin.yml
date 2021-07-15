@@ -48,7 +48,7 @@ commands:
     description: Change a players balance.
     permission: essentials.command.money
     aliases: [eco]
-    usage: "/money"
+    usage: "/money &f<set/remove/give> &f<player> <amount>"
   invsee:
     description: Opens a players inventory.
     permission: essentials.command.invsee
@@ -92,14 +92,14 @@ commands:
   sound:
     description: Play a sound for a player.
     permission: essentials.command.sound
-    usage: "/sound"
+    usage: "/sound &f<sound> <player>"
   glow:
     description: Toggle if you're glowing.
     permission: essentials.command.glow
     usage: "/glow"
-  itemrename:
+  itemname:
     description: Rename the item you're holding.
-    permission: essentials.command.itemrename
+    permission: essentials.command.itemname
     usage: "/itemname &f<name>"
   zap:
     description: Strike a location or player with lightning.
@@ -125,7 +125,7 @@ commands:
     description: Message a online player.
     permission: essentials.command.message
     aliases: [msg, tell]
-    usage: "/message &f<message>"
+    usage: "/message &f<player> <message>"
   reply:
     description: Reply to a online player.
     permission: essentials.command.reply
@@ -138,7 +138,7 @@ commands:
   heal:
     description: Give yourself full health.
     permission: essentials.command.heal
-    usage: "/heal"
+    usage: "/heal &f<player>"
   god:
     description: Toggle being in god mode.
     permission: essentials.command.god
@@ -154,7 +154,7 @@ commands:
   feed:
     description: Feed yourself.
     permission: essentials.command.feed
-    usage: "/feed"
+    usage: "/feed &f<player>"
   time:
     description: Set the time of the current world you're in.
     permission: essentials.command.time
