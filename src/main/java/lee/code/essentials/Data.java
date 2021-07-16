@@ -190,7 +190,7 @@ public class Data {
         for (Sound sound : Sound.values()) soundNames.add(sound.name().toLowerCase());
 
         //entity names
-        for (EntityType entity : EntityType.values()) entityNames.add(entity.name().toLowerCase());
+        for (EntityType entity : EntityType.values()) if (entity != EntityType.UNKNOWN && entity != EntityType.PLAYER) entityNames.add(entity.name().toLowerCase());
 
         //enchants
         for (Enchantment enchantment : Enchantment.values()) enchantNames.add(enchantment.getKey().value());

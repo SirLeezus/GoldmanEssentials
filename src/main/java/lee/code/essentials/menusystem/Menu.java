@@ -1,5 +1,6 @@
 package lee.code.essentials.menusystem;
 
+import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.MenuItems;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -9,10 +10,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Menu implements InventoryHolder {
 
@@ -65,10 +63,7 @@ public abstract class Menu implements InventoryHolder {
     }
 
     private List<ItemStack> getColorItems() {
-        List<ItemStack> items = new ArrayList<>();
-        for (String color : EnumSet.allOf(MenuItems.class).stream().map(MenuItems::name).collect(Collectors.toList())) {
-            if (color.contains("COLOR_")) items.add(MenuItems.valueOf(color).getItem());
-        }
-        return items;
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        return plugin.getPU().getNameColorItems();
     }
 }

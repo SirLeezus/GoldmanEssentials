@@ -271,3 +271,11 @@ commands:
     description: Set your player name color.
     permission: essentials.command.namecolor
     usage: "/namecolor"
+  clear:
+    description: Clear a player's inventory.
+    permission: essentials.command.clear
+    usage: "/clear &f<player>"
+  spawner:
+    description: Give a player a spawner.
+    permission: essentials.command.spawner
+    usage: "/spawner &f<type> <player>"

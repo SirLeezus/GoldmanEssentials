@@ -17,13 +17,16 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -183,8 +186,13 @@ public class PU {
     public List<String> getEntityHeads() {
         return EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).collect(Collectors.toList());
     }
+
     public List<ItemStack> getSellableItems() {
         return EnumSet.allOf(ItemSellValues.class).stream().map(ItemSellValues::getItem).collect(Collectors.toList());
+    }
+
+    public List<ItemStack> getNameColorItems() {
+        return EnumSet.allOf(NameColorList.class).stream().map(NameColorList::getItem).collect(Collectors.toList());
     }
 
     public int getItemAmount(Player player, ItemStack item) {
@@ -489,5 +497,35 @@ public class PU {
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public ItemStack createSpawner(EntityType type) {
+        ItemStack spawner = new ItemStack(Material.SPAWNER);
+        BlockStateMeta spawnerMeta = (BlockStateMeta) spawner.getItemMeta();
+        if (spawnerMeta != null) {
+            CreatureSpawner spawnerCS = (CreatureSpawner) spawnerMeta.getBlockState();
+            spawnerCS.setSpawnedType(type);
+            spawnerMeta.setBlockState(spawnerCS);
+            spawnerMeta.displayName(Lang.SPAWNER_NAME.getComponent(new String[] { formatCapitalization(type.name()) }));
+            spawner.setItemMeta(spawnerMeta);
+        }
+        return spawner;
+    }
+
+    public ItemStack getItem(Material type, String name, String lore, String skin) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+
+        ItemStack item = new ItemStack(type);
+        if (skin != null) plugin.getPU().applyHeadSkin(item, skin, UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffffff"));
+        ItemMeta itemMeta = item.getItemMeta();
+        if (name != null) itemMeta.displayName(plugin.getPU().formatC(name));
+        if (lore != null) {
+            String[] split = StringUtils.split(lore, "\n");
+            List<Component> lines = new ArrayList<>();
+            for (String line : split) lines.add(plugin.getPU().formatC(line));
+            itemMeta.lore(lines);
+        }
+        item.setItemMeta(itemMeta);
+        return item;
     }
 }

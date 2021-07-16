@@ -26,6 +26,7 @@ public enum Lang {
     DISCORD("https://discord.gg/UP65uzBP7m"),
     SERVER_UUID("ffffffff-ffff-ffff-ffff-ffffffffffff"),
     STAFF_CHAT_PREFIX("&#0073A5[&#A50000&lSC&#0073A5] "),
+    SPAWNER_NAME("&e{0} Spawner"),
     REQUEST_TELEPORT_TARGET("&6&l[&e&l!&6&l] &ePlayer &6{0} &eis requesting teleportation: "),
     REQUEST_TELEPORT_ACCEPT("                          &a&l[&2&lACCEPT&a&l]          "),
     REQUEST_TELEPORT_ACCEPT_HOVER("&6&l[&e&l!&6&l] &2Click to accept &6&l{0}'s &2teleport request."),
@@ -135,6 +136,7 @@ public enum Lang {
     COMMAND_WEATHER_CLEAR("&aThe weather has been &ecleared&a!"),
     COMMAND_WEATHER_RAIN("&aThe weather has been changed to &erain&a."),
     COMMAND_WEATHER_THUNDER("&aThe weather has been changed to &ethunderstorm&a."),
+    COMMAND_CLEAR("&aThe player &6{0} &ainventory was successfully cleared."),
     ERROR_NOT_CONSOLE_COMMAND("&cThis command does not work in console."),
     ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND("&cPlease try again, no safe location could be found to teleport you."),
     ERROR_SELL_NOT_SELLABLE("&cThe item you're currently holding can't be sold to the server."),
@@ -185,6 +187,7 @@ public enum Lang {
     MENU_ARMOR_STAND_RIGHT_ARM_POSITION("&#FF00EC&lRight Arm Position {0}"),
     MENU_ARMOR_STAND_TITLE("&#0D7E00&lArmor Stand Editor"),
     MENU_COLOR_TITLE("&9&lName Color"),
+    MENU_SPAWNER_TITLE("&e&lSpawner Shop"),
     ;
 
     @Getter private final String string;

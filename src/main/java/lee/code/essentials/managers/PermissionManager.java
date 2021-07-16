@@ -82,6 +82,9 @@ public class PermissionManager {
 
     public void loadPerms() {
 
+        //bukkit
+        defaultPerms.add("bukkit.command.tps");
+
         // essentials
         defaultPerms.add("essentials.command.spawn");
         defaultPerms.add("essentials.command.balance");

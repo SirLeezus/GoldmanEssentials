@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
 import java.util.UUID;
 
 public class NameColorMenu extends Menu {
@@ -46,7 +47,7 @@ public class NameColorMenu extends Menu {
             ItemStack clickedItem = e.getCurrentItem();
 
             if (clickedItem != null) {
-                if (colorItems.contains(clickedItem)) {
+                if (plugin.getPU().getNameColorItems().contains(clickedItem)) {
                     String id = getColorID(clickedItem);
                     cache.setColor(uuid, id);
                     plugin.getPU().updateDisplayName(player);

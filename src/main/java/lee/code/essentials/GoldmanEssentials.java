@@ -127,6 +127,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("removeperm").setExecutor(new RemovePermCMD());
         getCommand("serversendmessage").setExecutor(new ServerSendMessageCMD());
         getCommand("namecolor").setExecutor(new NameColorCMD());
+        getCommand("clear").setExecutor(new ClearCMD());
+        getCommand("spawner").setExecutor(new SpawnerCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -192,6 +194,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("removeperm").setTabCompleter(new RemovePermTab());
         getCommand("serversendmessage").setTabCompleter(new ServerSendMessageTab());
         getCommand("namecolor").setTabCompleter(new NameColorTab());
+        getCommand("clear").setTabCompleter(new ClearTab());
+        getCommand("spawner").setTabCompleter(new SpawnerTab());
     }
 
     private void registerListeners() {
@@ -214,6 +218,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HopperFilterListener(), this);
         getServer().getPluginManager().registerEvents(new PvPListener(), this);
         getServer().getPluginManager().registerEvents(new DeathListener(), this);
+        getServer().getPluginManager().registerEvents(new SpawnerListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {
