@@ -140,7 +140,6 @@ public class Data {
         SQL.createServerDataColumn();
         SQL.loadPlayerData();
         SQL.loadServerData();
-        SQL.loadBalanceTopPlayers();
         SQL.loadPunishmentData();
     }
 

@@ -229,25 +229,6 @@ public class SQLite {
         update("UPDATE player_data SET flying ='" + flying + "' WHERE player ='" + uuid + "';");
     }
 
-    public void loadBalanceTopPlayers() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-
-        try {
-            ResultSet rs = getResult("SELECT * FROM player_data ORDER BY balance;");
-            HashMap<String, String> players = new HashMap<>();
-
-            while (rs.next()) {
-                String player = rs.getString("player");
-                String balance = rs.getString("balance");
-                players.put(player, balance);
-            }
-            cache.setTopBalances(players);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void loadPunishmentData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();

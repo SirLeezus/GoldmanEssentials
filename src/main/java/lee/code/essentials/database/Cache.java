@@ -806,17 +806,6 @@ public class Cache {
         }
     }
 
-    public void setTopBalances(HashMap<String, String> balance) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
-
-        try (Jedis jedis = pool.getResource()) {
-            for (String uuid : balance.keySet()) {
-                jedis.hset("topBalance", uuid, balance.get(uuid));
-            }
-        }
-    }
-
     public int getPlayerCounter() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -843,7 +832,7 @@ public class Cache {
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 
         try (Jedis jedis = pool.getResource()) {
-            return jedis.hgetAll("topBalance");
+            return jedis.hgetAll("balance");
         }
     }
 

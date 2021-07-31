@@ -391,14 +391,6 @@ public class PU {
         }), 0L, 20L * 30);
     }
 
-    public void scheduleBalanceTopUpdater() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            SQLite SQL = plugin.getSqLite();
-            SQL.loadBalanceTopPlayers();
-        }), 0L, 20L * 30);
-    }
-
     public String formatTime(long time) {
         long hours = time / 1000 + 6;
         long minutes = (time % 1000) * 60 / 1000;
