@@ -44,6 +44,7 @@ public class JoinListener implements Listener {
         //player counter
         if (!player.hasPlayedBefore()) {
             cache.addPlayerCounter();
+            player.teleportAsync(cache.getSpawn());
             plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cache.getPlayerCounter()) })));
         }
 
