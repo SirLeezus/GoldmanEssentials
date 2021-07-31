@@ -29,8 +29,10 @@ public class ChatListener implements Listener {
                 plugin.getPU().addSpamDelay(uuid);
                 if (!cache.isMuted(uuid)) {
                     if (!cache.isTempMuted(uuid)) {
-                        Component message = plugin.getPU().parseChatVariables(player, e.message());
-                        plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(plugin.getPU().formatC("&8: &f")).append(message));
+                        if (cache.hasBeenBotChecked(uuid)) {
+                            Component message = plugin.getPU().parseChatVariables(player, e.message());
+                            plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(plugin.getPU().formatC("&8: &f")).append(message));
+                        }
                     } else {
                         long time = cache.getTempMuteTime(uuid);
                         if (time > 0) player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.TEMPMUTED.getComponent(new String[]{ plugin.getPU().formatSeconds(time), cache.getMuteReason(uuid)})));

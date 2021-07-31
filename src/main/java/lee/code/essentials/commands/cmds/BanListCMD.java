@@ -34,7 +34,7 @@ public class BanListCMD implements CommandExecutor {
             if (sellScanner.hasNextInt()) {
                 page = Integer.parseInt(args[0]);
             } else {
-                sender.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_BALANCETOP_LIST_PAGE.getString(new String[]{ args[2]} ));
+                sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_LIST_PAGE_NOT_NUMBER.getComponent(new String[]{ args[2]} )));
                 return true;
             }
         }
@@ -70,15 +70,15 @@ public class BanListCMD implements CommandExecutor {
 
         if (lines.size() <= 2) {
             if (players.isEmpty()) {
-                sender.sendMessage(Lang.PREFIX.getString(null) + Lang.COMMAND_BANLIST_NO_BANS.getString(null));
+                sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_BANLIST_NO_BANS.getComponent(null)));
                 return true;
             }
         }
 
         lines.add(Component.text(""));
-        Component next = plugin.getPU().formatC("&2&lNext &a&l>>---------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page + 1)));
-        Component spacer = plugin.getPU().formatC(" &e| ");
-        Component prev = plugin.getPU().formatC("&a&l---------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page - 1)));
+        Component next = Lang.NEXT_PAGE_TEXT.getComponent(null).hoverEvent(Lang.NEXT_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page + 1)));
+        Component spacer = Lang.PAGE_SPACER.getComponent(null);
+        Component prev = Lang.PREVIOUS_PAGE_TEXT.getComponent(null).hoverEvent(Lang.PREVIOUS_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page - 1)));
         lines.add(prev.append(spacer).append(next));
 
         for (Component message : lines) sender.sendMessage(message);

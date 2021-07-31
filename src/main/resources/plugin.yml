@@ -79,6 +79,10 @@ commands:
     permission: essentials.command.teleport
     aliases: [tp]
     usage: "/teleport &f<player>"
+  back:
+    description: Teleport back to your most recent saved locaiton.
+    permission: essentials.command.back
+    usage: "/back"
   teleportaccept:
     description: Accept a teleport request.
     permission: essentials.command.teleportaccept

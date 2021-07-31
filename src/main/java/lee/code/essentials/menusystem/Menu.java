@@ -36,6 +36,8 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack asRightLegPosition = MenuItems.ARMOR_STAND_RIGHT_LEG_POSITION.getItem();
     protected ItemStack asDirectionPosition = MenuItems.ARMOR_STAND_DIRECTION_POSITION.getItem();
 
+    protected ItemStack botChecker = MenuItems.BOT_CHECKER.getItem();
+
     protected List<ItemStack> colorItems = getColorItems();
 
     public abstract Component getMenuName();
@@ -46,7 +48,7 @@ public abstract class Menu implements InventoryHolder {
     public void open() {
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
         this.setMenuItems();
-        pmu.getOwner().openInventory(inventory);
+        if (pmu.getOwner() != null) pmu.getOwner().openInventory(inventory);
     }
 
     @Override

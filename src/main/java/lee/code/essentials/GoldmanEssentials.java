@@ -78,6 +78,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("setprefix").setExecutor(new SetPrefixCMD());
         getCommand("setcolor").setExecutor(new SetColorCMD());
         getCommand("teleport").setExecutor(new TeleportCMD());
+        getCommand("back").setExecutor(new BackCMD());
         getCommand("teleportaccept").setExecutor(new TeleportAcceptCMD());
         getCommand("teleportdeny").setExecutor(new TeleportDenyCMD());
         getCommand("sound").setExecutor(new SoundCMD());
@@ -144,6 +145,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("setprefix").setTabCompleter(new SetPrefixTab());
         getCommand("setcolor").setTabCompleter(new SetColorTab());
         getCommand("teleport").setTabCompleter(new TeleportTab());
+        getCommand("back").setTabCompleter(new BackTab());
         getCommand("teleportaccept").setTabCompleter(new TeleportAcceptTab());
         getCommand("sound").setTabCompleter(new SoundTab());
         getCommand("glow").setTabCompleter(new GlowTab());
@@ -219,6 +221,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PvPListener(), this);
         getServer().getPluginManager().registerEvents(new DeathListener(), this);
         getServer().getPluginManager().registerEvents(new SpawnerListener(), this);
+        getServer().getPluginManager().registerEvents(new BackListener(), this);
+        getServer().getPluginManager().registerEvents(new MoveListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

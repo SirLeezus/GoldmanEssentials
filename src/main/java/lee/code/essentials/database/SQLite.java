@@ -96,7 +96,8 @@ public class SQLite {
                 "`tempmuted` varchar NOT NULL," +
                 "`muted` varchar NOT NULL," +
                 "`banreason` varchar NOT NULL," +
-                "`mutereason` varchar NOT NULL" +
+                "`mutereason` varchar NOT NULL," +
+                "`bot` varchar NOT NULL" +
                 ");");
     }
 
@@ -121,8 +122,8 @@ public class SQLite {
 
     //PUNISHMENT DATA TABLE
 
-    public void setPunishmentData(String uuid, String staff, String datebanned, String datemuted, String banned, String tempbanned, String tempmuted, String muted, String banreason, String mutereason) {
-        update("INSERT OR REPLACE INTO punishment (player, staff, datebanned, datemuted, banned, tempbanned, tempmuted, muted, banreason, mutereason) VALUES( '" + uuid + "','" + staff + "','" + datebanned + "','" + datemuted + "','" + banned + "','" + tempbanned + "','" + tempmuted + "','" + muted + "','" + banreason + "','" + mutereason + "');");
+    public void setPunishmentData(String uuid, String staff, String datebanned, String datemuted, String banned, String tempbanned, String tempmuted, String muted, String banreason, String mutereason, String bot) {
+        update("INSERT OR REPLACE INTO punishment (player, staff, datebanned, datemuted, banned, tempbanned, tempmuted, muted, banreason, mutereason, bot) VALUES( '" + uuid + "','" + staff + "','" + datebanned + "','" + datemuted + "','" + banned + "','" + tempbanned + "','" + tempmuted + "','" + muted + "','" + banreason + "','" + mutereason + "','" + bot + "');");
     }
 
     public void setBanned(String uuid, String value, String reason) {
@@ -155,6 +156,10 @@ public class SQLite {
 
     public void setDateMuted(String uuid, String date) {
         update("UPDATE punishment SET datemuted = '" + date + "' WHERE player ='" + uuid + "';");
+    }
+
+    public void setBotChecked(String uuid, String bot) {
+        update("UPDATE punishment SET bot = '" + bot + "' WHERE player ='" + uuid + "';");
     }
 
     //PLAYER DATA TABLE
@@ -244,7 +249,7 @@ public class SQLite {
         try {
             ResultSet rs = getResult("SELECT * FROM punishment;");
 
-            while(rs.next()) {
+            while (rs.next()) {
                 UUID uuid = UUID.fromString(rs.getString("player"));
                 String staff = rs.getString("staff");
                 String datebanned = rs.getString("datebanned");
@@ -255,7 +260,8 @@ public class SQLite {
                 String muted = rs.getString("muted");
                 String banreason = rs.getString("banreason");
                 String mutereason = rs.getString("mutereason");
-                cache.setPunishmentData(uuid, staff, datebanned, datemuted, banned, tempbanned, tempmuted, muted, banreason, mutereason, false);
+                String bot = rs.getString("bot");
+                cache.setPunishmentData(uuid, staff, datebanned, datemuted, banned, tempbanned, tempmuted, muted, banreason, mutereason, bot, false);
                 if (!banned.equals("0")) cache.setBanList(uuid, true);
                 else if (!tempbanned.equals("0")) cache.setBanList(uuid, true);
             }

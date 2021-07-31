@@ -30,6 +30,7 @@ public class TeleportCMD implements CommandExecutor {
                         if (target != player) {
                             if (player.isOp()) {
                                 player.teleportAsync(target.getLocation());
+                                target.sendActionBar(Lang.TELEPORT.getComponent(null));
                                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getComponent(new String[] { target.getName() })));
 
                             } else if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, target.getUniqueId())) {
@@ -41,7 +42,6 @@ public class TeleportCMD implements CommandExecutor {
                                 plugin.getData().setPlayerRequestingTeleport(uuid, target.getUniqueId());
 
                                 target.sendMessage(targetMessage.append(accept).append(deny));
-                                target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1,1);
                                 plugin.getPU().teleportTimer(player, target);
                                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getComponent(new String[] { target.getName() })));
                             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED.getComponent(new String[] { target.getName() })));

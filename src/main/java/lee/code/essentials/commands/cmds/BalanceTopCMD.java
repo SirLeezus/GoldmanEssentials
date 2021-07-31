@@ -41,7 +41,7 @@ public class BalanceTopCMD implements CommandExecutor {
                 if (sellScanner.hasNextInt()) {
                     page = Integer.parseInt(args[0]);
                 } else {
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_BALANCETOP_LIST_PAGE.getComponent(new String[]{ args[2]} )));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_LIST_PAGE_NOT_NUMBER.getComponent(new String[]{ args[2]} )));
                     return true;
                 }
             }
@@ -86,9 +86,9 @@ public class BalanceTopCMD implements CommandExecutor {
             }
 
             lines.add(Component.text(""));
-            Component next = plugin.getPU().formatC("&2&lNext &a&l>>--------").hoverEvent(plugin.getPU().formatC("&6&lNext Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page + 1)));
-            Component split = plugin.getPU().formatC(" &e| ");
-            Component prev = plugin.getPU().formatC("&a&l--------<< &2&lPrev").hoverEvent(plugin.getPU().formatC("&6&lPrevious Page")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page - 1)));
+            Component next = Lang.NEXT_PAGE_TEXT.getComponent(null).hoverEvent(Lang.NEXT_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page + 1)));
+            Component split = Lang.PAGE_SPACER.getComponent(null);
+            Component prev = Lang.PREVIOUS_PAGE_TEXT.getComponent(null).hoverEvent(Lang.PREVIOUS_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page - 1)));
             lines.add(prev.append(split).append(next));
             for (Component message : lines) player.sendMessage(message);
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));

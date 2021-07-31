@@ -13,6 +13,7 @@ import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -49,7 +50,7 @@ public class PU {
 
     private final Pattern hexRegex = Pattern.compile("\\&#[a-fA-F0-9]{6}");
     private final Pattern itemRegex = Pattern.compile("(?i).*\\[item\\].*");
-    private final Random random = new Random();
+    public final Random random = new Random();
 
     public String format(String message) {
         if (message == null) return "";
@@ -243,9 +244,18 @@ public class PU {
         return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
     }
 
+    public String formatBlockLocation(Location location) {
+        return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ();
+    }
+
     public Location unFormatPlayerLocation(String location) {
         String[] split = location.split(",", 6);
         return new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), (float) Double.parseDouble(split[4]), (float) Double.parseDouble(split[5]));
+    }
+
+    public Location unFormatBlockLocation(String location) {
+        String[] split = location.split(",", 4);
+        return new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]));
     }
 
     public String formatPlayerHomeLocation(String name, Location location) {

@@ -3,6 +3,8 @@ package lee.code.essentials.listeners;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
+import lee.code.essentials.lists.Settings;
+import lee.code.essentials.menusystem.menus.BotCheckerMenu;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -14,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.UUID;
 
@@ -41,6 +44,16 @@ public class JoinListener implements Listener {
         if (!player.hasPlayedBefore()) {
             cache.addPlayerCounter();
             plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cache.getPlayerCounter()) })));
+        }
+
+        //bot checker
+        if (!cache.hasBeenBotChecked(uuid)) {
+            new BotCheckerMenu(plugin.getData().getPlayerMU(uuid)).open();
+            BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+
+            scheduler.runTaskLater(plugin, () -> {
+                if (!cache.hasBeenBotChecked(uuid)) player.kick(Lang.BOT_CHECKER_KICK.getComponent(null));
+            }, Settings.BOT_KICK_DELAY.getValue() * 20L);
         }
 
         //ban check
