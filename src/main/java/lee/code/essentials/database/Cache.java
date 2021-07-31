@@ -859,6 +859,33 @@ public class Cache {
         }
     }
 
+    public boolean isFlying(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String isFlying = jedis.hget("flying", sUUID);
+            return !isFlying.equals("0");
+        }
+    }
+
+    public void setFlying(UUID uuid, boolean isFlying) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String result; if (isFlying) result = "1"; else result = "0";
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.hset("flying", sUUID, result);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setFlying(sUUID, result));
+        }
+    }
+
+
     public void setBotChecked(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -896,11 +923,11 @@ public class Cache {
     }
 
     public void createDefaultColumns(UUID uuid) {
-        setPlayerData(uuid, "0", "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0", "0", "0", "0", true);
+        setPlayerData(uuid, "0", "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0", "0", "0", "0", "0", true);
         setPunishmentData(uuid, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", true);
     }
 
-    public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, boolean sql) {
+    public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, String flying, boolean sql) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -920,8 +947,9 @@ public class Cache {
             pipe.hset("vanish", sUUID, vanish);
             pipe.hset("god", sUUID, god);
             pipe.hset("homes", sUUID, homes);
+            pipe.hset("flying", sUUID, flying);
             pipe.sync();
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying));
         }
     }
 

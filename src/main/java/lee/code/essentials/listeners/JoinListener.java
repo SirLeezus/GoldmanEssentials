@@ -7,6 +7,7 @@ import lee.code.essentials.lists.Settings;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
@@ -54,6 +55,13 @@ public class JoinListener implements Listener {
             scheduler.runTaskLater(plugin, () -> {
                 if (!cache.hasBeenBotChecked(uuid)) player.kick(Lang.BOT_CHECKER_KICK.getComponent(null));
             }, Settings.BOT_KICK_DELAY.getValue() * 20L);
+        }
+
+        //flying check
+        if (cache.isFlying(uuid) && player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+            player.setAllowFlight(true);
+            player.setFlying(true);
+            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_FLY_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.ON.getString(null) })));
         }
 
         //ban check

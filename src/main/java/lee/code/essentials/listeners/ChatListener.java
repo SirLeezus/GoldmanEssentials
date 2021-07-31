@@ -44,7 +44,7 @@ public class ChatListener implements Listener {
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[]{cache.getMuteReason(uuid)})));
             } else {
                 plugin.getPU().addSpamDelay(uuid);
-                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.SPAM.getComponent(null)));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.SPAM_CHAT.getComponent(null)));
             }
         }
     }

@@ -223,6 +223,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SpawnerListener(), this);
         getServer().getPluginManager().registerEvents(new BackListener(), this);
         getServer().getPluginManager().registerEvents(new MoveListener(), this);
+        getServer().getPluginManager().registerEvents(new CommandListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

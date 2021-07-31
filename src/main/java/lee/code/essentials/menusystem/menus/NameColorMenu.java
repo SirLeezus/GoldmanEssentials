@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
 import java.util.UUID;
 
 public class NameColorMenu extends Menu {
@@ -54,6 +53,7 @@ public class NameColorMenu extends Menu {
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COLOR_MENU_SELECT.getComponent(new String[] { ChatColor.valueOf(id) + plugin.getPU().formatCapitalization(id) })));
                     player.getInventory().close();
                 } else if (clickedItem.equals(close)) player.getInventory().close();
+                playClickSound(player);
             }
         }
     }

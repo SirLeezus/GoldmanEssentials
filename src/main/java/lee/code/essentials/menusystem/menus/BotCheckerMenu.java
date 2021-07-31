@@ -41,6 +41,7 @@ public class BotCheckerMenu extends Menu {
                 if (clickedItem.equals(botChecker)) {
                     cache.setBotChecked(uuid);
                     player.closeInventory();
+                    playClickSound(player);
                 }
             }
         }

@@ -1,5 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;

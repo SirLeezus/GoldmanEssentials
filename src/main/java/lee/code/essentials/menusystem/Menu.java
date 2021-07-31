@@ -4,6 +4,8 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.MenuItems;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -62,6 +64,10 @@ public abstract class Menu implements InventoryHolder {
                 inventory.setItem(i, fillerGlass);
             }
         }
+    }
+
+    public void playClickSound(Player player) {
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, (float) 0.5, (float) 1);
     }
 
     private List<ItemStack> getColorItems() {
