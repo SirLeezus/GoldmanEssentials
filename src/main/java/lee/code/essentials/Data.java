@@ -139,6 +139,7 @@ public class Data {
         SQLite SQL = plugin.getSqLite();
         SQL.createServerDataColumn();
         SQL.loadPlayerData();
+        SQL.loadBoosterData();
         SQL.loadServerData();
         SQL.loadPunishmentData();
     }

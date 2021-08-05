@@ -8,9 +8,13 @@ import lee.code.essentials.lists.RankList;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toMap;
 
 public class Cache {
 
@@ -889,6 +893,164 @@ public class Cache {
         }
     }
 
+    public void queueBooster(UUID uuid, String multiplier, long duration) {
+        setBoosterData(getNextBoosterID(), uuid, multiplier, "0", "0", String.valueOf(duration), true);
+    }
+
+    public boolean areBoosters() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.exists("boosterActive");
+        }
+    }
+
+    public boolean isBoosterActive() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            List<String> activeList = jedis.hgetAll("boosterActive").values().stream().map(String::valueOf).collect(Collectors.toList());
+            return activeList.contains("1");
+        }
+    }
+
+    public String getNextBoosterQueueID() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            if (jedis.exists("boosterPlayer")) {
+                List<Integer> intList = jedis.hgetAll("boosterPlayer").keySet().stream().map(Integer::valueOf).collect(Collectors.toList());
+                return String.valueOf(Collections.min(intList));
+            } else return null;
+        }
+    }
+
+    public List<Integer> getBoosterIDIntegerList() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            if (jedis.exists("boosterPlayer")) {
+                return jedis.hgetAll("boosterPlayer").keySet().stream().map(Integer::valueOf).sorted().collect(Collectors.toList());
+            } else return null;
+        }
+    }
+
+    public List<String> getBoosterIDStringList() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            if (jedis.exists("boosterPlayer")) {
+                return jedis.hgetAll("boosterPlayer").keySet().stream().map(String::valueOf).sorted().collect(Collectors.toList());
+            } else return null;
+        }
+    }
+
+    public long getBoosterTime(String id) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            long time = Long.parseLong(jedis.hget("boosterTime", id));
+            long milliseconds = System.currentTimeMillis();
+            return time - TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+        }
+    }
+
+    public String getBoosterMultiplier(String id) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hget("boosterMultiplier", id);
+        }
+    }
+
+    public long getBoosterDuration(String id) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            return Long.parseLong(jedis.hget("boosterDuration", id));
+        }
+    }
+
+    public String getBoosterPlayerName(String id) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            UUID uuid = UUID.fromString(jedis.hget("boosterPlayer", id));
+            OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(uuid);
+            return oPlayer.getName();
+        }
+    }
+
+    public void setBoosterActive(String id, boolean isActive) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        String result; if (isActive) result = "1"; else result = "0";
+
+        try (Jedis jedis = pool.getResource()) {
+            String time = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + Long.parseLong(jedis.hget("boosterDuration", id)));
+            jedis.hset("boosterActive", id, result);
+            jedis.hset("boosterTime", id, time);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBoosterActive(id, result));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBoosterTime(id, time));
+        }
+    }
+
+    public void removeBooster(String id) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        try (Jedis jedis = pool.getResource()) {
+            Pipeline pipe = jedis.pipelined();
+            pipe.hdel("boosterPlayer", id);
+            pipe.hdel("boosterMultiplier", id);
+            pipe.hdel("boosterTime", id);
+            pipe.hdel("boosterActive", id);
+            pipe.hdel("boosterDuration", id);
+            pipe.sync();
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.removeBooster(id));
+        }
+    }
+
+    public String getActiveBoosterID() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            for (String id : jedis.hgetAll("boosterActive").keySet()) {
+                if (jedis.hget("boosterActive", id).equals("1")) {
+                    return id;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getNextBoosterID() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            if (jedis.exists("boosterPlayer")) {
+                List<Integer> intList = jedis.hgetAll("boosterPlayer").keySet().stream().map(Integer::valueOf).collect(Collectors.toList());
+                int newID = Collections.max(intList) + 1;
+                return String.valueOf(newID);
+            } else return "1";
+        }
+    }
+
     public boolean hasPlayerData(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -939,6 +1101,25 @@ public class Cache {
             pipe.hset("flying", sUUID, flying);
             pipe.sync();
             if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying));
+        }
+    }
+
+    public void setBoosterData(String id, UUID uuid, String multiplier, String time, String active, String duration, boolean sql) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            Pipeline pipe = jedis.pipelined();
+            pipe.hset("boosterPlayer", id, sUUID);
+            pipe.hset("boosterMultiplier", id, multiplier);
+            pipe.hset("boosterTime", id, time);
+            pipe.hset("boosterActive", id, active);
+            pipe.hset("boosterDuration", id, duration);
+            pipe.sync();
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setBoosterData(id, sUUID, multiplier, time, active, duration));
         }
     }
 

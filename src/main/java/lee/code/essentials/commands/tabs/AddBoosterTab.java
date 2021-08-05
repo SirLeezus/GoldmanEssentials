@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TempBanTab implements TabCompleter {
+public class AddBoosterTab implements TabCompleter {
 
     private final List<String> blank = new ArrayList<>();
     
@@ -24,8 +24,10 @@ public class TempBanTab implements TabCompleter {
             if (args.length == 1) {
                 return StringUtil.copyPartialMatches(args[0], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
             } else if (args.length == 2) {
-                return StringUtil.copyPartialMatches(args[1], Arrays.asList("1w", "1d", "1h", "1m", "1s"), new ArrayList<>());
-            } else return blank;
+                return StringUtil.copyPartialMatches(args[1], Arrays.asList("1h", "1m", "1s"), new ArrayList<>());
+            } else if (args.length == 3) {
+                return StringUtil.copyPartialMatches(args[2], Arrays.asList("2", "3", "4", "5"), new ArrayList<>());
+            }else return blank;
         } else return blank;
     }
 }

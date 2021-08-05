@@ -10,10 +10,10 @@ import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import lee.code.essentials.database.Cache;
-import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
+import lombok.Getter;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -51,6 +51,7 @@ public class PU {
     private final Pattern hexRegex = Pattern.compile("\\&#[a-fA-F0-9]{6}");
     private final Pattern itemRegex = Pattern.compile("(?i).*\\[item\\].*");
     public final Random random = new Random();
+    @Getter private BossBar boosterBar;
 
     public String format(String message) {
         if (message == null) return "";
@@ -194,6 +195,10 @@ public class PU {
 
     public List<ItemStack> getNameColorItems() {
         return EnumSet.allOf(NameColorList.class).stream().map(NameColorList::getItem).collect(Collectors.toList());
+    }
+
+    public List<Material> getBoosterDropBlocks() {
+        return EnumSet.allOf(BoosterDropBlocks.class).stream().map(BoosterDropBlocks::getBlock).collect(Collectors.toList());
     }
 
     public int getItemAmount(Player player, ItemStack item) {
@@ -391,6 +396,43 @@ public class PU {
         }), 0L, 20L * 30);
     }
 
+    public void scheduleBoosterChecker() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+
+            if (cache.areBoosters()) {
+                String id = cache.getActiveBoosterID() != null ? cache.getActiveBoosterID() : cache.getNextBoosterQueueID();
+                String name = cache.getBoosterPlayerName(id);
+                String multiplier = cache.getBoosterMultiplier(id);
+                long time = cache.getBoosterTime(id);
+                long duration = cache.getBoosterDuration(id);
+                float barProgress = (float) time / duration * 1 < 0 ? 0 : (float) time / duration * 1;
+
+                if (boosterBar == null) boosterBar = BossBar.bossBar(Lang.BOOSTER_TITLE.getComponent(new String[] { multiplier, formatSeconds(time) }), barProgress, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_20);
+
+                if (cache.isBoosterActive()) {
+                    if (time > 0) {
+                        boosterBar.name(Lang.BOOSTER_TITLE.getComponent(new String[] { multiplier, formatSeconds(time) }));
+                        boosterBar.progress(barProgress);
+                    } else {
+                        cache.removeBooster(id);
+                        Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BOOSTER_ENDED.getComponent(new String[] { multiplier, name })));
+                        Bukkit.getServer().hideBossBar(boosterBar);
+                    }
+                } else if (id != null) {
+                    cache.setBoosterActive(id, true);
+                    time = cache.getBoosterTime(id);
+                    boosterBar.name(Lang.BOOSTER_TITLE.getComponent(new String[] { multiplier, formatSeconds(time) }));
+                    boosterBar.progress(1);
+                    Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BOOSTER_STARTED.getComponent(new String[] { multiplier, name })));
+                    Bukkit.getServer().showBossBar(boosterBar);
+                }
+            }
+        }), 0L, 20L);
+    }
+
     public String formatTime(long time) {
         long hours = time / 1000 + 6;
         long minutes = (time % 1000) * 60 / 1000;
@@ -430,6 +472,7 @@ public class PU {
             switch (letter) {
                 case "w": return value * 604800L;
                 case "d": return value * 86400L;
+                case "h": return value * 3600L;
                 case "m": return value * 60L;
                 case "s": return value;
             }

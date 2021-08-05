@@ -103,6 +103,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.home");
         defaultPerms.add("essentials.command.deletehome");
         defaultPerms.add("essentials.command.sethome");
+        defaultPerms.add("essentials.command.booster");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");

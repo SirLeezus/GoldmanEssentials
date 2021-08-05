@@ -58,6 +58,11 @@ public class JoinListener implements Listener {
             }, Settings.BOT_KICK_DELAY.getValue() * 20L);
         }
 
+        //booster bar check
+        if (cache.isBoosterActive()) {
+            player.showBossBar(plugin.getPU().getBoosterBar());
+        }
+
         //flying check
         if (cache.isFlying(uuid) && player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
             player.setAllowFlight(true);

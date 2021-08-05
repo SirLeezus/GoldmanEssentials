@@ -283,3 +283,15 @@ commands:
     description: Give a player a spawner.
     permission: essentials.command.spawner
     usage: "/spawner &f<type> <player>"
+  addbooster:
+    description: Add a booster to the queue.
+    permission: essentials.command.addbooster
+    usage: "/addbooster &f<player> <time> <multiplier>"
+  removebooster:
+    description: Remove a booster from queue.
+    permission: essentials.command.removebooster
+    usage: "/addbooster &f<id>"
+  booster:
+    description: Check booster status.
+    permission: essentials.command.booster
+    usage: "/booster"

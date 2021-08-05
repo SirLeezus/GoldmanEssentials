@@ -100,6 +100,34 @@ public class SQLite {
                 "`mutereason` varchar NOT NULL," +
                 "`bot` varchar NOT NULL" +
                 ");");
+
+        //server data table
+        update("CREATE TABLE IF NOT EXISTS boosters (" +
+                "`id` varchar PRIMARY KEY," +
+                "`player` varchar NOT NULL," +
+                "`multiplier` varchar NOT NULL," +
+                "`time` varchar NOT NULL," +
+                "`active` varchar NOT NULL," +
+                "`duration` varchar NOT NULL" +
+                ");");
+    }
+
+    //BOOSTER DATA TABLE
+
+    public void setBoosterData(String id, String uuid, String multiplier, String time, String active, String duration) {
+        update("INSERT OR REPLACE INTO boosters (id, player, multiplier, time, active, duration) VALUES( '" + id + "','" + uuid + "','" + multiplier + "','" + time + "','" + active + "','" + duration + "');");
+    }
+
+    public void setBoosterTime(String id, String time) {
+        update("UPDATE boosters SET time = '" + time + "' WHERE id ='" + id + "';");
+    }
+
+    public void setBoosterActive(String id, String active) {
+        update("UPDATE boosters SET active = '" + active + "' WHERE id ='" + id + "';");
+    }
+
+    public void removeBooster(String id) {
+        update("DELETE FROM boosters WHERE id = '" + id + "';");
     }
 
     //SERVER TABLE
@@ -281,6 +309,31 @@ public class SQLite {
                 count++;
             }
             System.out.println(plugin.getPU().format("&bPlayers Loaded: &3" + count));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadBoosterData() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+        try {
+            ResultSet rs = getResult("SELECT * FROM boosters;");
+
+            int count = 0;
+            while (rs.next()) {
+
+                String id = rs.getString("id");
+                UUID uuid = UUID.fromString(rs.getString("player"));
+                String multiplier = rs.getString("multiplier");
+                String time = rs.getString("time");
+                String active = rs.getString("active");
+                String duration = rs.getString("duration");
+
+                cache.setBoosterData(id, uuid, multiplier, time, active, duration, false);
+                count++;
+            }
+            System.out.println(plugin.getPU().format("&bBoosters Loaded: &3" + count));
         } catch (SQLException e) {
             e.printStackTrace();
         }
