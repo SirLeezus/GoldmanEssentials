@@ -1,11 +1,13 @@
 package lee.code.essentials.database;
 
 import lee.code.essentials.GoldmanEssentials;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Level;
 
 public class SQLite {
 
@@ -263,6 +265,7 @@ public class SQLite {
         try {
             ResultSet rs = getResult("SELECT * FROM punishment;");
 
+            int count = 0;
             while (rs.next()) {
                 UUID uuid = UUID.fromString(rs.getString("player"));
                 String staff = rs.getString("staff");
@@ -278,7 +281,9 @@ public class SQLite {
                 cache.setPunishmentData(uuid, staff, datebanned, datemuted, banned, tempbanned, tempmuted, muted, banreason, mutereason, bot, false);
                 if (!banned.equals("0")) cache.setBanList(uuid, true);
                 else if (!tempbanned.equals("0")) cache.setBanList(uuid, true);
+                count++;
             }
+            Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bPlayer Punishment Data Loaded: &3" + count));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -308,7 +313,7 @@ public class SQLite {
                 cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, false);
                 count++;
             }
-            System.out.println(plugin.getPU().format("&bPlayers Loaded: &3" + count));
+            Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bPlayer Account Data Loaded: &3" + count));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -333,7 +338,7 @@ public class SQLite {
                 cache.setBoosterData(id, uuid, multiplier, time, active, duration, false);
                 count++;
             }
-            System.out.println(plugin.getPU().format("&bBoosters Loaded: &3" + count));
+            Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bBoosters Loaded: &3" + count));
         } catch (SQLException e) {
             e.printStackTrace();
         }

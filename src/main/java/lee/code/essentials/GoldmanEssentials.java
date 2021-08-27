@@ -53,6 +53,7 @@ public class GoldmanEssentials extends JavaPlugin {
         pU.registerTamedEntityFix();
         pU.scheduleEntityChunkCleaner();
         pU.scheduleBoosterChecker();
+        pU.scheduleAutoRestart();
     }
 
     @Override
@@ -133,6 +134,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("addbooster").setExecutor(new AddBoosterCMD());
         getCommand("removebooster").setExecutor(new RemoveBoosterCMD());
         getCommand("booster").setExecutor(new BoosterCMD());
+        getCommand("restartwarning").setExecutor(new RestartWarningCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -204,6 +206,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("addbooster").setTabCompleter(new AddBoosterTab());
         getCommand("removebooster").setTabCompleter(new RemoveBoosterTab());
         getCommand("booster").setTabCompleter(new BoosterTab());
+        getCommand("restartwarning").setTabCompleter(new RestartWarningTab());
     }
 
     private void registerListeners() {

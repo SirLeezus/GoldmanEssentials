@@ -13,6 +13,7 @@ public enum Settings {
     MAX_PLAYER_HOMES(10),
     MAX_ENTITY_PER_CHUNK(25),
     HEAD_DROP_RNG(960),
+    AUTO_RESTART(86400 * 20),
     ;
 
     @Getter private final int value;

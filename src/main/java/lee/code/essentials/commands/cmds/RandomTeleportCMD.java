@@ -24,6 +24,7 @@ public class RandomTeleportCMD implements CommandExecutor {
                 } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[] { args[0] })));
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
         } else if (sender instanceof Player player) plugin.getPU().rtpPlayer(player);
+
         return true;
     }
 }

@@ -11,6 +11,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.*;
+import lee.code.essentials.managers.CountdownTimer;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -91,28 +92,32 @@ public class PU {
     }
 
     public void rtpPlayer(Player player) {
-        int x = -10000 + random.nextInt(20000);
-        int y = 100;
-        int z = -10000 + random.nextInt(20000);
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            int x = -10000 + random.nextInt(20000);
+            int y = 200;
+            int z = -10000 + random.nextInt(20000);
 
-        World world = player.getWorld();
-        Location location = new Location(player.getWorld(), x, y, z);
+            World world = player.getWorld();
+            Location location = new Location(player.getWorld(), x, y, z);
 
-        if (world.getWorldBorder().isInside(location)) {
-            world.loadChunk(location.getChunk());
-            for (int i = y; i > 0; i--) {
-                Location loc = new Location(player.getWorld(), x, i, z);
-                if (loc.getBlock().getType() == Material.AIR) {
-                    Location ground = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ());
-                    if (ground.getBlock().getType() != Material.AIR && ground.getBlock().getType() != Material.LAVA) {
-                        player.teleportAsync(loc);
-                        player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                        return;
+            if (world.getWorldBorder().isInside(location)) {
+                world.loadChunk(location.getChunk());
+                for (int i = y; i > 0; i--) {
+                    Location loc = new Location(player.getWorld(), x, i, z);
+                    if (loc.getBlock().getType() == Material.AIR) {
+                        Location ground = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ());
+                        Material groundType = ground.getBlock().getType();
+                        if (groundType != Material.AIR && groundType != Material.LAVA && groundType != Material.WATER) {
+                            player.teleportAsync(loc);
+                            player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                            return;
+                        }
                     }
                 }
             }
-        }
-        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND.getComponent(null)));
+            rtpPlayer(player);
+        });
     }
 
     public String getDate() {
@@ -431,6 +436,21 @@ public class PU {
                 }
             }
         }), 0L, 20L);
+    }
+
+    public void scheduleAutoRestart() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            CountdownTimer timer = new CountdownTimer(plugin,
+                    30,
+                    () -> Bukkit.getServer().sendMessage(Lang.WARNING.getComponent(null).append(Lang.AUTO_RESTART_WARNING_START.getComponent(null))),
+                    () -> {
+                        Bukkit.getServer().sendMessage(Lang.WARNING.getComponent(null).append(Lang.AUTO_RESTART_WARNING_END.getComponent(null)));
+                        Bukkit.getServer().shutdown();
+                    },
+                    (t) -> Bukkit.getServer().sendActionBar(Lang.AUTO_RESTART_TIME.getComponent(new String[] { String.valueOf(t.getSecondsLeft()) })));
+            timer.scheduleTimer();
+        }, Settings.AUTO_RESTART.getValue());
     }
 
     public String formatTime(long time) {
