@@ -115,6 +115,7 @@ public class ArmorStandMenu extends Menu {
                         if (e.getClick().isLeftClick()) amount = amount - amount - amount;
                         if (slot == 49) amount = amount * 50;
                         updatePosition(armorStand, slot, amount);
+                        playClickSound(player);
                         break;
                 }
             }
@@ -425,7 +426,7 @@ public class ArmorStandMenu extends Menu {
             }
             allow.setItemMeta(allowMeta);
             inventory.setItem(slot, allow);
-            player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 1, 1);
+            playClickOnSound(player);
             //deny
         } else if (item.getType().equals(asSettingTrue.getType())) {
 
@@ -465,7 +466,7 @@ public class ArmorStandMenu extends Menu {
             }
             deny.setItemMeta(denyMeta);
             inventory.setItem(slot, deny);
-            player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_OFF, 1, 1);
+            playClickOffSound(player);
         }
     }
 

@@ -6,10 +6,7 @@ import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.Settings;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -51,8 +48,8 @@ public class JoinListener implements Listener {
         //bot checker
         if (!cache.hasBeenBotChecked(uuid)) {
             new BotCheckerMenu(plugin.getData().getPlayerMU(uuid)).open();
+            player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
             BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-
             scheduler.runTaskLater(plugin, () -> {
                 if (!cache.hasBeenBotChecked(uuid)) player.kick(Lang.BOT_CHECKER_KICK.getComponent(null));
             }, Settings.BOT_KICK_DELAY.getValue() * 20L);

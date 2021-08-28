@@ -170,6 +170,8 @@ public class Data {
                     serverMOTD.add(plugin.getPU().formatC(line.replace("{store}", Lang.STORE.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.STORE.getString())));
                 } else if (line.contains("{discord}")) {
                     serverMOTD.add(plugin.getPU().formatC(line.replace("{discord}", Lang.DISCORD.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.DISCORD.getString())));
+                } else if (line.contains("{map}")) {
+                    serverMOTD.add(plugin.getPU().formatC(line.replace("{map}", Lang.MAP.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.MAP.getString())));
                 } else serverMOTD.add(plugin.getPU().formatC(line));
             }
         } catch (IOException e) {

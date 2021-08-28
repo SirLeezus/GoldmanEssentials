@@ -4,6 +4,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.menus.ArmorStandMenu;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,6 +33,7 @@ public class ArmorStandListener implements Listener {
                 } else {
                     plugin.getData().setArmorStandActive(uuid, targetUUID);
                     new ArmorStandMenu(plugin.getData().getPlayerMU(e.getPlayer().getUniqueId()), (ArmorStand) e.getRightClicked()).open();
+                    player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
                 }
             } else if (plugin.getData().isArmorStandActive(targetUUID)) {
                 player.sendActionBar(Lang.ERROR_ARMOR_STAND_EDIT.getComponent(null));

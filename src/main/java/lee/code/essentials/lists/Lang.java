@@ -33,6 +33,7 @@ public enum Lang {
     AUTO_RESTART_TIME("&2&lRestarting in &e&l{0}&6&ls"),
     STORE("https://journey.buycraft.net"),
     DISCORD("https://discord.gg/UP65uzBP7m"),
+    MAP("https://map.journey-mc.net"),
     SERVER_UUID("ffffffff-ffff-ffff-ffff-ffffffffffff"),
     STAFF_CHAT_PREFIX("&#0073A5[&#A50000&lSC&#0073A5] "),
     SPAWNER_NAME("&e{0} Spawner"),

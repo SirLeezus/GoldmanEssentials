@@ -35,8 +35,12 @@ public class EnchantCMD implements CommandExecutor {
                             if (args.length > 1) {
                                 Scanner valueScanner = new Scanner(args[1]);
                                 if (valueScanner.hasNextInt()) amount = Integer.parseInt(args[1]);
+                                itemMeta.addEnchant(enchantment, amount, true);
+                            } else if (itemMeta.hasEnchant(enchantment)) {
+                                itemMeta.removeEnchant(enchantment);
+                            } else {
+                                itemMeta.addEnchant(enchantment, amount, true);
                             }
-                            itemMeta.addEnchant(enchantment, amount, true);
                             item.setItemMeta(itemMeta);
                         }
                     }

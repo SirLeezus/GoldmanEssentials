@@ -70,6 +70,14 @@ public abstract class Menu implements InventoryHolder {
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, (float) 0.5, (float) 1);
     }
 
+    public void playClickOnSound(Player player) {
+        player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, (float) 0.5, (float) 1);
+    }
+
+    public void playClickOffSound(Player player) {
+        player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_OFF, (float) 0.5, (float) 1);
+    }
+
     private List<ItemStack> getColorItems() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         return plugin.getPU().getNameColorItems();
