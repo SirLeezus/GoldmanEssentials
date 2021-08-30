@@ -37,11 +37,11 @@ public class BalanceTopCMD implements CommandExecutor {
 
             //page check
             if (args.length > 0) {
-                Scanner sellScanner = new Scanner(args[0]);
-                if (sellScanner.hasNextInt()) {
+                Scanner numberScanner = new Scanner(args[0]);
+                if (numberScanner.hasNextInt()) {
                     page = Integer.parseInt(args[0]);
                 } else {
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_LIST_PAGE_NOT_NUMBER.getComponent(new String[]{ args[2]} )));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_LIST_PAGE_NOT_NUMBER.getComponent(new String[]{ args[0] } )));
                     return true;
                 }
             }

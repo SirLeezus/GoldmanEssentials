@@ -43,8 +43,9 @@ public class RankupCMD implements CommandExecutor {
             int maxLevel = plugin.getData().getAdvancementNames().size();
             int rankupLevel = RankList.valueOf(rank).getRankupLevel();
             int prestigeLevel = plugin.getData().getAdvancementNames().size();
-            int expAmount = ranks.contains(nextRank) ? RankList.valueOf(nextRank).getExp() : RankList.valueOf(rank).getExp();
-            long cashAmount =  ranks.contains(nextRank) ? RankList.valueOf(nextRank).getCash() : RankList.valueOf(rank).getCash();
+
+            int expAmount = ranks.contains(rank) ? RankList.valueOf(rank).getExp() : 0;
+            long cashAmount =  ranks.contains(rank) ? RankList.valueOf(rank).getCash() : 0;
 
             if (args.length < 1) {
                 if (!nextRank.equals(last)) {

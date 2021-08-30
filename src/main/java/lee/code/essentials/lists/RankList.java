@@ -8,8 +8,8 @@ public enum RankList {
 
     //NORMAL
     NOMAD("&7[&#00C1FENomad&7]", "YELLOW", 5, "ADVENTURER", 1000, 1000),
-    ADVENTURER("&e[&#2DE364Adventurer&e]", "GREEN", 10, "CONQUER", 2000, 2000),
-    CONQUER("&e[&#FFC300Conquer&e]", "BLUE", 20, "HERO", 3000, 3000),
+    ADVENTURER("&e[&#2DE364Adventurer&e]", "GREEN", 10, "CONQUEROR", 2000, 2000),
+    CONQUEROR("&e[&#FFC300Conqueror&e]", "BLUE", 20, "HERO", 3000, 3000),
     HERO("&e[&#00A2FFHero&e]", "AQUA", 30, "LEGEND", 4000, 4000),
     LEGEND("&e[&#FF7800Legend&e]", "LIGHT_PURPLE", 40, "MYTH", 5000, 5000),
     MYTH("&e[&#FF3909Myth&e]", "DARK_AQUA", 50, "IMMORTAL", 6000, 6000),

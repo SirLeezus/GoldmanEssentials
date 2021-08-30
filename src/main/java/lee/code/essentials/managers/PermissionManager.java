@@ -104,6 +104,8 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.deletehome");
         defaultPerms.add("essentials.command.sethome");
         defaultPerms.add("essentials.command.booster");
+        defaultPerms.add("essentials.command.teleportaccept");
+        defaultPerms.add("essentials.command.teleportdeny");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");
@@ -132,6 +134,7 @@ public class PermissionManager {
         defaultPerms.add("shop.command.removespawn");
         defaultPerms.add("shop.command.signhelp");
         defaultPerms.add("shop.command.spawn");
+        defaultPerms.add("shop.command.spawner");
 
         // locks
         defaultPerms.add("lock.command.lock");
