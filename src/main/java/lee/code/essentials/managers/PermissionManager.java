@@ -28,23 +28,12 @@ public class PermissionManager {
         String rank = cache.getRank(uuid);
 
         switch (rank) {
-
-            case "NOMAD":
-            case "ADVENTURER":
-            case "CONQUER":
-            case "HERO":
-            case "LEGEND":
-            case "MYTH":
-            case "IMMORTAL":
-            case "GOD":
-                for (String perm : defaultPerms) attachment.setPermission(perm, true);
-                break;
-
             case "MOD":
             case "ADMIN":
                 for (String perm : defaultPerms) attachment.setPermission(perm, true);
                 for (String perm : staffPerms) attachment.setPermission(perm, true);
                 break;
+            default: for (String perm : defaultPerms) attachment.setPermission(perm, true);
         }
 
         for (String perm : cache.getPerms(uuid)) attachment.setPermission(perm, true);
@@ -106,6 +95,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.booster");
         defaultPerms.add("essentials.command.teleportaccept");
         defaultPerms.add("essentials.command.teleportdeny");
+        defaultPerms.add("essentials.command.colors");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");

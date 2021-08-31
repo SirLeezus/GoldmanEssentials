@@ -8,6 +8,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,8 +32,10 @@ public class ChunkEntityListener implements Listener {
     public void onEntitySpawn(CreatureSpawnEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Chunk chunk = e.getLocation().getChunk();
+        Entity entity = e.getEntity();
+
         if (!e.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM)) {
-            if (plugin.getPU().countEntitiesInChunk(chunk, e.getEntity().getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) e.setCancelled(true);
+            if (plugin.getPU().countEntitiesInChunk(chunk, entity.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) e.setCancelled(true);
         }
     }
 
@@ -42,7 +45,7 @@ public class ChunkEntityListener implements Listener {
         Chunk chunk = e.getChunk();
 
         for (Entity entity : chunk.getEntities()) {
-            if (plugin.getPU().countEntitiesInChunk(chunk, entity.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+            if (!(entity instanceof Item)) if (plugin.getPU().countEntitiesInChunk(chunk, entity.getType()) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
         }
     }
 

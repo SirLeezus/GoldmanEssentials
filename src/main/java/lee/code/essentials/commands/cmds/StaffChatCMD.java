@@ -23,7 +23,7 @@ public class StaffChatCMD implements CommandExecutor {
                 String message = plugin.getPU().buildStringFromArgs(args, 0);
 
                 for (Player oPlayer : Bukkit.getOnlinePlayers()) {
-                    if (player.hasPermission("essentials.command.staffchat")) {
+                    if (oPlayer.hasPermission("essentials.command.staffchat")) {
                         oPlayer.sendMessage(Lang.STAFF_CHAT_PREFIX.getComponent(null).append(player.displayName()).append(plugin.getPU().formatC("&#0073A5: ")).append(Component.text(message)).color(NamedTextColor.GOLD));
                     }
                 }
