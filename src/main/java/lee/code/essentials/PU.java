@@ -22,6 +22,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -96,7 +97,7 @@ public class PU {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Bukkit.getScheduler().runTask(plugin, () -> {
             int x = -10000 + random.nextInt(20000);
-            int y = 200;
+            int y = 100;
             int z = -10000 + random.nextInt(20000);
 
             World world = player.getWorld();
@@ -104,13 +105,18 @@ public class PU {
 
             if (world.getWorldBorder().isInside(location)) {
                 world.loadChunk(location.getChunk());
-                for (int i = y; i > 0; i--) {
+                for (int i = y; i > 50; i--) {
                     Location loc = new Location(player.getWorld(), x, i, z);
                     if (loc.getBlock().getType() == Material.AIR) {
                         Location ground = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ());
+                        Block block = ground.getBlock();
                         Material groundType = ground.getBlock().getType();
                         if (groundType != Material.AIR && groundType != Material.LAVA && groundType != Material.WATER) {
-                            player.teleportAsync(loc);
+                            double bX = block.getBoundingBox().getCenter().getX();
+                            double bY = block.getBoundingBox().getCenter().getY() + 0.5;
+                            double bZ = block.getBoundingBox().getCenter().getZ();
+                            Location teleportLocation = new Location(block.getWorld(), bX, bY, bZ);
+                            player.teleportAsync(teleportLocation);
                             player.sendActionBar(Lang.TELEPORT.getComponent(null));
                             return;
                         }
