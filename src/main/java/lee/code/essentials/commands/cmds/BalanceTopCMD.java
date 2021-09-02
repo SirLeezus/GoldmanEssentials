@@ -55,7 +55,7 @@ public class BalanceTopCMD implements CommandExecutor {
             lines.add(Component.text(""));
 
             boolean onPage = false;
-            int position = 1;
+            int position = page * maxDisplayed + 1;
 
             for (int i = 0; i < maxDisplayed; i++) {
                 index = maxDisplayed * page + i;

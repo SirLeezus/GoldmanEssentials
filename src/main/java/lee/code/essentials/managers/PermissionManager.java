@@ -73,6 +73,7 @@ public class PermissionManager {
 
         //bukkit
         defaultPerms.add("bukkit.command.tps");
+        defaultPerms.add("bukkit.command.ping");
 
         // essentials
         defaultPerms.add("essentials.command.spawn");
@@ -96,6 +97,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.teleportaccept");
         defaultPerms.add("essentials.command.teleportdeny");
         defaultPerms.add("essentials.command.colors");
+        defaultPerms.add("essentials.command.back");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");
