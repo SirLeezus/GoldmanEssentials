@@ -6,6 +6,7 @@ import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,8 +35,8 @@ public class MessageCMD implements CommandExecutor {
                                 String message = plugin.getPU().buildStringFromArgs(args, 1);
                                 cache.setLastReplied(target.getUniqueId(), uuid);
                                 cache.setLastReplied(uuid, target.getUniqueId());
-                                player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
-                                target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(message).color(NamedTextColor.DARK_GREEN)));
+                                player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(Component.text(message).color(TextColor.color(0, 220, 234))));
+                                target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(message).color(TextColor.color(0, 220, 234))));
                             }
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[] { cache.getMuteReason(uuid) })));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_MESSAGE_TO_SELF.getComponent(null)));

@@ -1,11 +1,14 @@
 package lee.code.essentials.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,19 +22,28 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncChatEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
+        Data data = plugin.getData();
 
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
 
         if (!e.isCancelled()) {
             e.setCancelled(true);
-            if (!plugin.getData().isSpamTaskActive(uuid)) {
+            if (!data.isSpamTaskActive(uuid)) {
                 plugin.getPU().addSpamDelay(uuid);
                 if (!cache.isMuted(uuid)) {
                     if (!cache.isTempMuted(uuid)) {
                         if (cache.hasBeenBotChecked(uuid)) {
                             Component message = plugin.getPU().parseChatVariables(player, e.message());
-                            plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(plugin.getPU().formatC("&8: &f")).append(message));
+                            if (!data.isStaffChatting(uuid)) {
+                                plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(plugin.getPU().formatC("&8: &f")).append(message));
+                            } else {
+                                for (Player oPlayer : Bukkit.getOnlinePlayers()) {
+                                    if (oPlayer.hasPermission("essentials.command.staffchat")) {
+                                        oPlayer.sendMessage(Lang.STAFF_CHAT_PREFIX.getComponent(null).append(player.displayName()).append(plugin.getPU().formatC("&3: ")).append(message).color(TextColor.color(86, 40, 255)));
+                                    }
+                                }
+                            }
                         }
                     } else {
                         long time = cache.getTempMuteTime(uuid);

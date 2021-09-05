@@ -107,8 +107,9 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("No swing delay with tools or weapons.");
                     changes.add("Item frames can be used to filter hoppers.");
                     changes.add("Armor stands can be edited by sneak-clicking them.");
+                    changes.add("You can store exp by sneak-clicking glass bottles.");
                     changes.add("Trampling is disabled.");
-                    changes.add("Llama can be controlled when riding.");
+                    changes.add("Llamas can be controlled when they have carpet on them.");
                     changes.add("Ender crystals will shoot phantoms.");
                     changes.add("Villagers will follow you if you're holding a emerald block.");
                     changes.add("Villagers can be leashed.");
@@ -117,7 +118,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("Chests can be opened with any block above it.");
                     changes.add("The more people sleeping the faster the night will be.");
                     changes.add("Anvils, signs and books support hex and normal color codes.");
-                    changes.add("Infinity on bows and crossbows works with all arrows.");
+                    changes.add("Infinity can be put on crossbows.");
                     changes.add("Phantoms do not target you if you're holding a torch.");
                     changes.add("You can feed a cow mushrooms to turn it into a mooshroom cow.");
                     changes.add("A creeper's health impacts the explosion power.");
@@ -125,12 +126,10 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("Enderman ignore players who are wearing a dragon head.");
                     changes.add("Feeding a white/orange tulip to a fox changes the type to snow/regular.");
                     changes.add("You can breed parrots by feeding them any type of seeds.");
-                    changes.add("The killer rabbit has a chance of spawning.");
                     changes.add("Shulkers have a chance to spawn random colored shulkers with their bullets on impact.");
                     changes.add("Milk cures rabid wolves.");
                     changes.add("Mending always repairs the most damaged equipment first.");
                     changes.add("You only need a totem in your inventory for it to work.");
-                    changes.add("Entities cannot use portals.");
                     changes.add("Milk cures bad omen.");
                     changes.add("Ender pearls don't damage players when used.");
                     changes.add("Minecarts can be placed on anything and controlled.");

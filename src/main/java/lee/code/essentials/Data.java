@@ -39,6 +39,7 @@ public class Data {
     @Getter private final List<NamespacedKey> recipeKeys = new ArrayList<>();
     @Getter private final List<Component> serverMOTD = new ArrayList<>();
     @Getter private final List<String> pluginCommands = new ArrayList<>();
+    @Getter private final List<UUID> staffChat = new ArrayList<>();
     @Getter @Setter private BukkitTask sleepTask = null;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
@@ -49,9 +50,11 @@ public class Data {
     private final ConcurrentHashMap<UUID, Long> playerPvPTimer = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerSpamTask = new ConcurrentHashMap<>();
 
-    public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) {
-        return playersRequestingTeleport.get(player) == target;
-    }
+    public void addStaffChat(UUID uuid) { staffChat.add(uuid); }
+    public void removeStaffChat(UUID uuid) { staffChat.remove(uuid); }
+    public boolean isStaffChatting(UUID uuid) {return staffChat.contains(uuid); }
+
+    public boolean isPlayerRequestingTeleportForTarget(UUID player, UUID target) { return playersRequestingTeleport.get(player) == target; }
     public void setPlayerRequestingTeleport(UUID player, UUID target) {
         playersRequestingTeleport.put(player, target);
     }

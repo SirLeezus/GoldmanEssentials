@@ -1,16 +1,19 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public class StaffChatCMD implements CommandExecutor {
 
@@ -24,10 +27,20 @@ public class StaffChatCMD implements CommandExecutor {
 
                 for (Player oPlayer : Bukkit.getOnlinePlayers()) {
                     if (oPlayer.hasPermission("essentials.command.staffchat")) {
-                        oPlayer.sendMessage(Lang.STAFF_CHAT_PREFIX.getComponent(null).append(player.displayName()).append(plugin.getPU().formatC("&#0073A5: ")).append(Component.text(message)).color(NamedTextColor.GOLD));
+                        oPlayer.sendMessage(Lang.STAFF_CHAT_PREFIX.getComponent(null).append(player.displayName()).append(plugin.getPU().formatC("&3: ")).append(Component.text(message)).color(TextColor.color(86, 40, 255)));
                     }
                 }
-            } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
+            } else {
+                UUID uuid = player.getUniqueId();
+                Data data = plugin.getData();
+                if (!data.isStaffChatting(uuid)) {
+                    data.addStaffChat(uuid);
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_STAFFCHAT_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.ON.getString() })));
+                } else {
+                    data.removeStaffChat(uuid);
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_STAFFCHAT_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.OFF.getString() })));
+                }
+            }
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }
