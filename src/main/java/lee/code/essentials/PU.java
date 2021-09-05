@@ -360,11 +360,13 @@ public class PU {
             o.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
 
-        if (board.getTeam(player.getName()) == null) {
-            board.registerNewTeam(player.getName());
+        String rank = cache.getRank(uuid);
+        String priority = RankList.valueOf(rank).getPriority();
+        if (board.getTeam(priority + player.getName()) == null) {
+            board.registerNewTeam(priority + player.getName());
         }
 
-        Team team = board.getTeam(player.getName());
+        Team team = board.getTeam(priority + player.getName());
 
         if (team != null) {
             team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
@@ -373,9 +375,9 @@ public class PU {
             String prefix = cache.getPrefix(uuid) + " ";
             String suffix = cache.getSuffix(uuid);
             org.bukkit.ChatColor color = org.bukkit.ChatColor.valueOf(cache.getColor(uuid));
-            String prestige = "";
             int prestigeLevel = cache.getPrestige(uuid);
-            if (prestigeLevel != 0) prestige = " &7[&a&l" + prestigeLevel + "&7]";
+            String prestige = prestigeLevel != 0 ? " &7[&a&l" + prestigeLevel + "&7]" : "";
+
             team.setColor(color);
             team.setSuffix(format(prestige + suffix));
             team.setPrefix(format(prefix));
@@ -599,5 +601,37 @@ public class PU {
         }
         item.setItemMeta(itemMeta);
         return item;
+    }
+
+    public int getExpToLevelUp(int level) {
+        if (level <= 15) return 2 * level + 7;
+        else if (level <= 30) return 5 * level - 38;
+        else return 9 * level - 158;
+    }
+
+    public int getExpAtLevel(int level) {
+        if (level <= 16) return (int) (Math.pow(level, 2) + 6 * level);
+        else if(level <= 31) return (int) (2.5 * Math.pow(level, 2) - 40.5 * level + 360.0);
+        else return (int) (4.5 * Math.pow(level, 2) - 162.5 * level + 2220.0);
+    }
+
+    public int getPlayerExp(Player player) {
+        int exp = 0;
+        int level = player.getLevel();
+        exp += getExpAtLevel(level);
+        exp += Math.round(getExpToLevelUp(level) * player.getExp());
+        return exp;
+    }
+
+    public int getFreeSpace(Player player, ItemStack item) {
+        item.setAmount(1);
+        int freeSpaceCount = 0;
+        for (int slot = 0; slot <= 35; slot++) {
+            ItemStack slotItem = player.getInventory().getItem(slot);
+            if (slotItem == null || slotItem.getType() == Material.AIR) {
+                freeSpaceCount += item.getMaxStackSize();
+            } else if (slotItem.isSimilar(item)) freeSpaceCount += Math.max(0, slotItem.getMaxStackSize() - slotItem.getAmount());
+        }
+        return freeSpaceCount;
     }
 }

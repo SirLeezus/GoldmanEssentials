@@ -299,3 +299,7 @@ commands:
     description: Restart the server.
     permission: essentials.command.restartwarning
     usage: "/restartwarning"
+  motd:
+    description: The server's message of the day.
+    permission: essentials.command.motd
+    usage: "/motd"

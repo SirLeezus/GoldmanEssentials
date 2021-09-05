@@ -101,7 +101,7 @@ public class HelpCMD implements CommandExecutor {
 
                     lines.add(Lang.COMMAND_HELP_VANILLA_CHANGES_TITLE.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&a&lWorld Difficulty: &cHard"));
+                    lines.add(plugin.getPU().formatC("&a&lWorld Difficulty: &eNormal"));
                     lines.add(Component.text(""));
 
                     changes.add("No swing delay with tools or weapons.");

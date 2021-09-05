@@ -98,6 +98,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.teleportdeny");
         defaultPerms.add("essentials.command.colors");
         defaultPerms.add("essentials.command.back");
+        defaultPerms.add("essentials.command.motd");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");

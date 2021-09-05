@@ -135,6 +135,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("removebooster").setExecutor(new RemoveBoosterCMD());
         getCommand("booster").setExecutor(new BoosterCMD());
         getCommand("restartwarning").setExecutor(new RestartWarningCMD());
+        getCommand("motd").setExecutor(new MessageOfTheDayCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -207,6 +208,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("removebooster").setTabCompleter(new RemoveBoosterTab());
         getCommand("booster").setTabCompleter(new BoosterTab());
         getCommand("restartwarning").setTabCompleter(new RestartWarningTab());
+        getCommand("motd").setTabCompleter(new MessageOfTheDayTab());
     }
 
     private void registerListeners() {
@@ -233,6 +235,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BackListener(), this);
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         getServer().getPluginManager().registerEvents(new BoosterListener(), this);
+        getServer().getPluginManager().registerEvents(new BottleEXPListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

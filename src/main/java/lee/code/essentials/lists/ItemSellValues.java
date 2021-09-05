@@ -22,7 +22,7 @@ public enum ItemSellValues {
     PUMPKIN(new ItemStack(Material.PUMPKIN), 5),
     HONEYCOMB(new ItemStack(Material.HONEYCOMB), 5),
     HONEYCOMB_BLOCK(new ItemStack(Material.HONEYCOMB_BLOCK), 20),
-    NETHER_WART(new ItemStack(Material.HONEYCOMB), 6),
+    NETHER_WART(new ItemStack(Material.NETHER_WART), 6),
     COAL(new ItemStack(Material.COAL), 5),
     CHARCOAL(new ItemStack(Material.CHARCOAL), 5),
     COAL_BLOCK(new ItemStack(Material.COAL_BLOCK), 45),

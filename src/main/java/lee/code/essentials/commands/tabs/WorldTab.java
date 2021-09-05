@@ -17,7 +17,6 @@ public class WorldTab implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         if (sender instanceof Player) {
