@@ -450,10 +450,13 @@ public class Cache {
         try (Jedis jedis = pool.getResource()) {
             String homes = jedis.hget("homes", sUUID);
 
+            if (homes.equals("0")) return Collections.singletonList("bed");
+
             String[] split = StringUtils.split(homes, ',');
 
             List<String> names = new ArrayList<>();
             for (String home : split) names.add(plugin.getPU().unFormatPlayerHomeName(home));
+            names.add("bed");
             return names;
         }
     }

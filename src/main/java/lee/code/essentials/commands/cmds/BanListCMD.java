@@ -44,6 +44,11 @@ public class BanListCMD implements CommandExecutor {
         List<String> players = new ArrayList<>(cache.getBanList());
         List<Component> lines = new ArrayList<>();
 
+        if (players.isEmpty()) {
+            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_BANLIST_NO_BANS.getComponent(null)));
+            return true;
+        }
+
         lines.add(Lang.COMMAND_BANLIST_TITLE.getComponent(null));
         lines.add(Component.text(""));
 
@@ -68,12 +73,7 @@ public class BanListCMD implements CommandExecutor {
             }
         }
 
-        if (lines.size() <= 2) {
-            if (players.isEmpty()) {
-                sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_BANLIST_NO_BANS.getComponent(null)));
-                return true;
-            }
-        }
+        if (lines.size() <= 2) return true;
 
         lines.add(Component.text(""));
         Component next = Lang.NEXT_PAGE_TEXT.getComponent(null).hoverEvent(Lang.NEXT_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + (page + 1)));

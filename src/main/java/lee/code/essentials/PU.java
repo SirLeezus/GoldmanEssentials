@@ -37,6 +37,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -108,13 +111,14 @@ public class PU {
                 for (int i = y; i > 50; i--) {
                     Location loc = new Location(player.getWorld(), x, i, z);
                     if (loc.getBlock().getType() == Material.AIR) {
-                        Location ground = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ());
+                        Location ground = loc.subtract(0, 1, 0);
                         Block block = ground.getBlock();
-                        Material groundType = ground.getBlock().getType();
+                        Material groundType = block.getType();
+                        Vector box = block.getBoundingBox().getCenter();
                         if (groundType != Material.AIR && groundType != Material.LAVA && groundType != Material.WATER) {
-                            double bX = block.getBoundingBox().getCenter().getX();
-                            double bY = block.getBoundingBox().getCenter().getY() + 0.5;
-                            double bZ = block.getBoundingBox().getCenter().getZ();
+                            double bX = box.getX();
+                            double bY = box.getY() + 0.5;
+                            double bZ = box.getZ();
                             Location teleportLocation = new Location(block.getWorld(), bX, bY, bZ);
                             player.teleportAsync(teleportLocation);
                             player.sendActionBar(Lang.TELEPORT.getComponent(null));

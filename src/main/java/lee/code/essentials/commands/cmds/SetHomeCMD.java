@@ -23,16 +23,18 @@ public class SetHomeCMD implements CommandExecutor {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
-                String name = plugin.getPU().buildStringFromArgs(args, 0).replaceAll("[^a-zA-Z0-9 ]", "").replaceAll("bed", "");
+                String name = plugin.getPU().buildStringFromArgs(args, 0).replaceAll("[^a-zA-Z0-9 ]", "");
                 int maxHomes = Settings.MAX_PLAYER_HOMES.getValue();
                 int homesSaved = cache.getHomes(uuid).size();
-                if (!name.isEmpty() && !cache.isAlreadyHome(uuid, name)) {
-                    if (homesSaved < maxHomes) {
-                        String homeLocation = plugin.getPU().formatPlayerHomeLocation(name, player.getLocation());
-                        cache.addHome(uuid, homeLocation);
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETHOME_SUCCESSFUL.getComponent(new String[] { name })));
-                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_MAX_HOMES.getComponent(new String[] { String.valueOf(maxHomes) })));
-                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_ALREADY_SAVED.getComponent(new String[] { name })));
+                if (!name.equalsIgnoreCase("bed")) {
+                    if (!name.isEmpty() && !cache.isAlreadyHome(uuid, name)) {
+                        if (homesSaved < maxHomes) {
+                            String homeLocation = plugin.getPU().formatPlayerHomeLocation(name, player.getLocation());
+                            cache.addHome(uuid, homeLocation);
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETHOME_SUCCESSFUL.getComponent(new String[] { name })));
+                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_MAX_HOMES.getComponent(new String[] { String.valueOf(maxHomes) })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_ALREADY_SAVED.getComponent(new String[] { name })));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SETHOME_BED.getComponent(null)));
             } else player.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;

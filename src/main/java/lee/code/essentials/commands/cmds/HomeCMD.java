@@ -27,20 +27,22 @@ public class HomeCMD implements CommandExecutor {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
-                if (!args[0].equals("bed")) {
+                if (!args[0].equalsIgnoreCase("bed")) {
                     String name = plugin.getPU().buildStringFromArgs(args, 0);
-                    List<String> homes = cache.getHomes(uuid);
-                    for (String home : homes) {
-                        String homeName = plugin.getPU().unFormatPlayerHomeName(home);
-                        if (homeName.equals(name)) {
-                            Location location = plugin.getPU().unFormatPlayerHomeLocation(home);
-                            player.teleportAsync(location);
-                            player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getComponent(new String[] { name })));
-                            return true;
+                    if (cache.hasHome(uuid)) {
+                        List<String> homes = cache.getHomes(uuid);
+                        for (String home : homes) {
+                            String homeName = plugin.getPU().unFormatPlayerHomeName(home);
+                            if (homeName.equals(name)) {
+                                Location location = plugin.getPU().unFormatPlayerHomeLocation(home);
+                                player.teleportAsync(location);
+                                player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getComponent(new String[] { name })));
+                                return true;
+                            }
                         }
-                    }
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_NOT_SAVED.getComponent(new String[] { name })));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_NOT_SAVED.getComponent(new String[] { name })));
+                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_NO_SAVED_HOMES.getComponent(null)));
                 } else {
                     Location bedLocation = player.getBedSpawnLocation();
                     if (bedLocation != null) {
@@ -65,8 +67,10 @@ public class HomeCMD implements CommandExecutor {
                     }
 
                     for (String name : names) {
-                        lines.add(plugin.getPU().formatC("&3" + count + ". &e" + name).hoverEvent(plugin.getPU().formatC("&6&l" + name)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/home " + name)));
-                        count++;
+                        if (!name.equalsIgnoreCase("bed")) {
+                            lines.add(plugin.getPU().formatC("&3" + count + ". &e" + name).hoverEvent(plugin.getPU().formatC("&6&l" + name)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/home " + name)));
+                            count++;
+                        }
                     }
                     lines.add(plugin.getPU().formatC(""));
                     lines.add(Lang.COMMAND_HOME_SPLITTER.getComponent(null));

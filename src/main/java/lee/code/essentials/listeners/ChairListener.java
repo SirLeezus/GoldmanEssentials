@@ -1,6 +1,7 @@
 package lee.code.essentials.listeners;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.lists.Lang;
 import lee.code.essentials.nms.CustomChair;
 import net.minecraft.server.level.WorldServer;
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 public class ChairListener implements Listener {
@@ -33,9 +35,18 @@ public class ChairListener implements Listener {
                 if (block != null) {
                     if (block.getBlockData() instanceof Stairs || block.getType().name().contains("CARPET")) {
                         if (player.getVehicle() == null) {
-                            Location location;
-                            if (block.getBlockData() instanceof Stairs) location = block.getLocation().add(0.5, 0.3, 0.5);
-                            else location = block.getLocation().add(0.5, -0.2, 0.5);
+                            for (Entity entity : block.getWorld().getNearbyEntities(block.getBoundingBox())) {
+                                if (entity instanceof Player sPlayer) {
+                                    if (sPlayer.isInsideVehicle()) {
+                                        Entity vehicle = sPlayer.getVehicle();
+                                        if (vehicle != null && vehicle.getType().equals(EntityType.ARMOR_STAND)) {
+                                            player.sendActionBar(Lang.ERROR_CHAIR_OCCUPIED.getComponent(new String[] { sPlayer.getName() }));
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+                            Location location = block.getBlockData() instanceof Stairs ? block.getLocation().add(0.5, 0.3, 0.5) : block.getLocation().add(0.5, -0.2, 0.5);
                             CustomChair chair = new CustomChair(location);
                             WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
                             world.addEntity(chair);
@@ -58,7 +69,7 @@ public class ChairListener implements Listener {
 
             if (e.getEntity() instanceof Player) {
                 Player player = ((Player) e.getEntity()).getPlayer();
-                if (player != null) Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(player.getLocation().add(0, 1, 0)), 1);
+                if (player != null) Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(player.getLocation().add(0, 1, 0), PlayerTeleportEvent.TeleportCause.UNKNOWN), 1);
             }
         }
     }
@@ -66,10 +77,16 @@ public class ChairListener implements Listener {
     @EventHandler
     public void onChairBreak(BlockBreakEvent e) {
         Block block = e.getBlock();
-        for (Entity entity : e.getBlock().getWorld().getNearbyEntities(block.getBoundingBox())) {
-            if (entity instanceof ArmorStand) {
-                if (entity.getCustomName() != null && entity.getCustomName().equals("chair"))
-                entity.remove();
+        Block topBlock = block.getLocation().add(0, 1, 0).getBlock();
+        if (block.getBlockData() instanceof Stairs || topBlock.getType().name().contains("CARPET") || block.getType().name().contains("CARPET")) {
+            for (Entity entity : e.getBlock().getWorld().getNearbyEntities(block.getBoundingBox())) {
+
+                if (entity instanceof Player player) {
+                    if (player.isInsideVehicle()) {
+                        Entity vehicle = player.getVehicle();
+                        if (vehicle != null && vehicle.getType().equals(EntityType.ARMOR_STAND)) vehicle.remove();
+                    }
+                }
             }
         }
     }
