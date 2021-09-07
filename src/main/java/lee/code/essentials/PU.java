@@ -91,6 +91,11 @@ public class PU {
         return formatter.format(value);
     }
 
+    public String formatAmount(long value) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(value);
+    }
+
     public String formatCapitalization(String type) {
         String format = type.toLowerCase().replaceAll("_", " ");
         return WordUtils.capitalize(format);

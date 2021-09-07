@@ -99,6 +99,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.colors");
         defaultPerms.add("essentials.command.back");
         defaultPerms.add("essentials.command.motd");
+        defaultPerms.add("essentials.command.pay");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");

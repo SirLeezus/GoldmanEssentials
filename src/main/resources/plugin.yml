@@ -44,6 +44,10 @@ commands:
     permission: essentials.command.balancetop
     aliases: [baltop]
     usage: "/balancetop"
+  pay:
+    description: Pay another player.
+    permission: essentials.command.pay
+    usage: "/pay &f<player> <amount>"
   money:
     description: Change a players balance.
     permission: essentials.command.money

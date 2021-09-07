@@ -16,6 +16,7 @@ public enum ItemSellValues {
     GOLDEN_CARROT(new ItemStack(Material.GOLDEN_CARROT), 32),
     BEETROOT(new ItemStack(Material.BEETROOT), 3),
     SWEET_BERRIES(new ItemStack(Material.SWEET_BERRIES), 3),
+    GLOW_BERRIES(new ItemStack(Material.GLOW_BERRIES), 3),
     APPLE(new ItemStack(Material.APPLE), 5),
     GOLDEN_APPLE(new ItemStack(Material.GOLDEN_APPLE), 250),
     MELON(new ItemStack(Material.MELON), 5),

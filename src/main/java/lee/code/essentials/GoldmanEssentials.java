@@ -136,6 +136,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("booster").setExecutor(new BoosterCMD());
         getCommand("restartwarning").setExecutor(new RestartWarningCMD());
         getCommand("motd").setExecutor(new MessageOfTheDayCMD());
+        getCommand("pay").setExecutor(new PayCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -209,6 +210,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("booster").setTabCompleter(new BoosterTab());
         getCommand("restartwarning").setTabCompleter(new RestartWarningTab());
         getCommand("motd").setTabCompleter(new MessageOfTheDayTab());
+        getCommand("pay").setTabCompleter(new PayTab());
     }
 
     private void registerListeners() {
