@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PvPListener implements Listener {
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerDamagePlayer(EntityDamageByEntityEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 

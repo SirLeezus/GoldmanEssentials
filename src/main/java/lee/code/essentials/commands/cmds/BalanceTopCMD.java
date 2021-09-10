@@ -47,15 +47,14 @@ public class BalanceTopCMD implements CommandExecutor {
             }
 
             if (page < 0) return true;
+            boolean onPage = false;
+            int position = page * maxDisplayed + 1;
 
             List<String> players = new ArrayList<>(sortedMap.keySet());
             List<Component> lines = new ArrayList<>();
 
             lines.add(Lang.COMMAND_BALANCETOP_TITLE.getComponent(null));
             lines.add(Component.text(""));
-
-            boolean onPage = false;
-            int position = page * maxDisplayed + 1;
 
             for (int i = 0; i < maxDisplayed; i++) {
                 index = maxDisplayed * page + i;

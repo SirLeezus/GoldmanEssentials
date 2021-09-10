@@ -11,15 +11,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
+import java.util.UUID;
+
 public class AchievementListener implements Listener {
 
     @EventHandler
     public void onPlayerAchievement(PlayerAdvancementDoneEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
+        UUID uuid = e.getPlayer().getUniqueId();
 
         Component am = e.message();
-        if (am != null) plugin.getServer().sendMessage(Lang.ADVANCEMENT_PREFIX.getComponent(null).append(am).append(plugin.getPU().formatC("&2!")).color(NamedTextColor.DARK_GREEN));
+        if (am != null && !cache.isVanishPlayer(uuid)) plugin.getServer().sendMessage(Lang.ADVANCEMENT_PREFIX.getComponent(null).append(am).append(plugin.getPU().formatC("&2!")).color(NamedTextColor.DARK_GREEN));
 
         Advancement advancement = e.getAdvancement();
         Player player = e.getPlayer();

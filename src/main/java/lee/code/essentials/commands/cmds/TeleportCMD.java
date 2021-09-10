@@ -5,7 +5,6 @@ import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +29,7 @@ public class TeleportCMD implements CommandExecutor {
                         if (target != player) {
                             if (player.isOp()) {
                                 player.teleportAsync(target.getLocation());
-                                target.sendActionBar(Lang.TELEPORT.getComponent(null));
+                                player.sendActionBar(Lang.TELEPORT.getComponent(null));
                                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getComponent(new String[] { target.getName() })));
 
                             } else if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, target.getUniqueId())) {

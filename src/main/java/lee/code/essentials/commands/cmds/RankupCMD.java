@@ -37,18 +37,17 @@ public class RankupCMD implements CommandExecutor {
             String nextRank = RankList.valueOf(rank).getNextRank();
             List<String> ranks = plugin.getPU().getRanks();
             String nextColor = ranks.contains(nextRank) ? RankList.valueOf(nextRank).getColor() : "YELLOW";
-            String nextRankPrefix = ranks.contains(nextRank) ? RankList.valueOf(nextRank).getPrefix() : "";
+            String nextRankPrefix = ranks.contains(nextRank) ? RankList.valueOf(nextRank).getPrefix() : "&6&lPrestige";
 
             int level = cache.getLevel(uuid);
             int maxLevel = plugin.getData().getAdvancementNames().size();
             int rankupLevel = RankList.valueOf(rank).getRankupLevel();
-            int prestigeLevel = plugin.getData().getAdvancementNames().size();
 
             int expAmount = ranks.contains(rank) ? RankList.valueOf(rank).getExp() : 0;
             long cashAmount =  ranks.contains(rank) ? RankList.valueOf(rank).getCash() : 0;
 
             if (args.length < 1) {
-                if (!nextRank.equals(last)) {
+                if (level < maxLevel) {
                     if (level < rankupLevel) {
                         List<Component> lines = new ArrayList<>();
                         Component title = Lang.COMMAND_RANKUP_TITLE.getComponent(null).hoverEvent(Lang.COMMAND_RANKUP_HOVER.getComponent(new String[]{plugin.getPU().formatAmount(level), plugin.getPU().formatAmount(maxLevel)}));
@@ -95,7 +94,7 @@ public class RankupCMD implements CommandExecutor {
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_RANKUP_CONFIRM.getComponent(new String[] { plugin.getPU().formatAmount(level), plugin.getPU().formatAmount(rankupLevel) })));
 
             } else if (args[0].equalsIgnoreCase("prestige")) {
-                if (level >= prestigeLevel) {
+                if (level >= maxLevel) {
                     if (nextRank.equals(last) || nextRank.equals(staff)) {
                         String playerNextPrestige = String.valueOf(cache.getPrestige(uuid) + 1);
                         cache.addPrestige(uuid);
@@ -121,7 +120,7 @@ public class RankupCMD implements CommandExecutor {
                         plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_PRESTIGE_BROADCAST.getComponent(new String[]{player.getName(), playerNextPrestige})));
                         for (Player oPlayer : Bukkit.getOnlinePlayers()) oPlayer.playSound(oPlayer.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, 1);
                     }
-                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PRESTIGE.getComponent(new String[] { plugin.getPU().formatAmount(level), plugin.getPU().formatAmount(prestigeLevel) })));
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PRESTIGE.getComponent(new String[] { plugin.getPU().formatAmount(level), plugin.getPU().formatAmount(maxLevel) })));
 
             } else if (args[0].equalsIgnoreCase("check")) {
                 int levelCheck = 0;

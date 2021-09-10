@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -20,6 +21,7 @@ public class HelpCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
 
         if (sender instanceof Player player) {
 
@@ -52,47 +54,47 @@ public class HelpCMD implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("welcome")) {
                     lines.add(Lang.COMMAND_HELP_WELCOME_DIVIDER.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC(" &eWelcome to &2&lJourney Survival&e! To give you some insight on what type of server this is I'll quickly go through some helpful info! This is a survival server which focuses on vanilla gameplay mostly. The goal of the server is to build a place you enjoy and hopefully make some friends along the way. There is a economy and it's almost entirely player ran through player shops. \n\n You can also earn money and exp by ranking up. All ranks are designed around Minecraft's advancements and you have the option to prestige a unlimited amount of times. The PvP was reverted back to a 1.7 state, so swing delays don't exist. To get started use the wild warp villager at the spawn entrance and find a place you would like to start your journey. To claim your land simply run /chunk claim!"));
+                    lines.add(pu.formatC(" &eWelcome to &2&lJourney Survival&e! To give you some insight on what type of server this is I'll quickly go through some helpful info! This is a survival server which focuses on vanilla gameplay mostly. The goal of the server is to build a place you enjoy and hopefully make some friends along the way. There is a economy and it's almost entirely player ran through player shops. \n\n You can also earn money and exp by ranking up. All ranks are designed around Minecraft's advancements and you have the option to prestige a unlimited amount of times. The PvP was reverted back to a 1.7 state, so swing delays don't exist. To get started use the wild warp villager at the spawn entrance and find a place you would like to start your journey. To claim your land simply run /chunk claim!"));
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_WELCOME_DIVIDER.getComponent(null));
 
                 } else if (args[0].equalsIgnoreCase("hopperfilter")) {
                     lines.add(Lang.COMMAND_HELP_HOPPER_FILTER_DIVIDER.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("     &2&l&nHow To Filter Hoppers Using Item Frames"));
+                    lines.add(pu.formatC("     &2&l&nHow To Filter Hoppers Using Item Frames"));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&6Step 1&7: &ePlace a item frame on a hopper, any side works."));
+                    lines.add(pu.formatC("&6Step 1&7: &ePlace a item frame on a hopper, any side works."));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&6Step 2&7: &ePlace the item you want to filter in the item frame."));
+                    lines.add(pu.formatC("&6Step 2&7: &ePlace the item you want to filter in the item frame."));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&eCongratulations! If you followed this guide your hopper should now only accept the items inside each item frame attached to the hopper."));
+                    lines.add(pu.formatC("&eCongratulations! If you followed this guide your hopper should now only accept the items inside each item frame attached to the hopper."));
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_HOPPER_FILTER_DIVIDER.getComponent(null));
 
                 } else if (args[0].equalsIgnoreCase("armorstand")) {
                     lines.add(Lang.COMMAND_HELP_ARMOR_STAND_DIVIDER.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("              &2&l&nHow To Adjust Armor Stands"));
+                    lines.add(pu.formatC("              &2&l&nHow To Adjust Armor Stands"));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&6Step 1&7: &ePlace a armor stand on the ground."));
+                    lines.add(pu.formatC("&6Step 1&7: &ePlace a armor stand on the ground."));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&6Step 2&7: &eSneak right-click the armor stand, that should bring up the menu."));
+                    lines.add(pu.formatC("&6Step 2&7: &eSneak right-click the armor stand, that should bring up the menu."));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&eCongratulations! If you followed this guide you should now be able to edit the armor stand using the menu options."));
+                    lines.add(pu.formatC("&eCongratulations! If you followed this guide you should now be able to edit the armor stand using the menu options."));
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_ARMOR_STAND_DIVIDER.getComponent(null));
 
                 } else if (args[0].equalsIgnoreCase("store")) {
                     lines.add(Lang.COMMAND_HELP_STORE_DIVIDER.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&d&lStore: ").append(Lang.STORE.getComponent(null).color(NamedTextColor.YELLOW).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.STORE.getString()))));
+                    lines.add(pu.formatC("&d&lStore: ").append(Lang.STORE.getComponent(null).color(NamedTextColor.YELLOW).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.STORE.getString()))));
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_STORE_DIVIDER.getComponent(null));
 
                 } else if (args[0].equalsIgnoreCase("discord")) {
                     lines.add(Lang.COMMAND_HELP_DISCORD_DIVIDER.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&9&lDiscord: ").append(Lang.DISCORD.getComponent(null).color(NamedTextColor.YELLOW).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.DISCORD.getString()))));
+                    lines.add(pu.formatC("&9&lDiscord: ").append(Lang.DISCORD.getComponent(null).color(NamedTextColor.YELLOW).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.DISCORD.getString()))));
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_DISCORD_DIVIDER.getComponent(null));
 
@@ -101,7 +103,7 @@ public class HelpCMD implements CommandExecutor {
 
                     lines.add(Lang.COMMAND_HELP_VANILLA_CHANGES_TITLE.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(plugin.getPU().formatC("&a&lWorld Difficulty: &eNormal"));
+                    lines.add(pu.formatC("&a&lWorld Difficulty: &eNormal"));
                     lines.add(Component.text(""));
 
                     changes.add("No swing delay with tools or weapons.");
@@ -143,21 +145,40 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("All entities have a chance of dropping a head.");
 
                     for (String change : changes) {
-                        lines.add(plugin.getPU().formatC("&3" + number + "&b. &6" + change));
+                        lines.add(pu.formatC("&3" + number + "&b. &6" + change));
                         number++;
                     }
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_VANILLA_CHANGES_DIVIDER.getComponent(null));
+                } else if (args[0].equalsIgnoreCase("enchants")) {
+                    lines.add(Lang.COMMAND_HELP_ENCHANTS_TITLE.getComponent(null));
+                    lines.add(Component.text(""));
+                    lines.add(pu.formatC(" &dCustom enchants can be obtained from normal enchanting tables when you enchant a item at level 30. Keep in mind you only have a small chance of receiving one. Each enchantment does have restrictions in regards to what item it can be applied on. Hover over the enchantments down below for more details."));
+                    lines.add(Component.text(""));
+
+                    lines.add(pu.formatC("&31&b. &#964B00Logger").hoverEvent(pu.formatC("&5&lEnchantment:\n&#964B00Logger\n\n&e&lHow does it work:\n&7Breaking a log will break connected logs.\n\n&e&lSupported Items:\n&7Diamond Axe, Netherite Axe")));
+                    lines.add(pu.formatC("&32&b. &#FCFF35Lightning Strike").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FCFF35Lightning Strike\n\n&e&lHow does it work:\n&7Sneak-Left-Clicking will summon lightning.\n\n&e&lSupported Items:\n&7Diamond Sword, Netherite Sword")));
+                    lines.add(pu.formatC("&33&b. &#DE0000Destroyer").hoverEvent(pu.formatC("&5&lEnchantment:\n&#DE0000Destroyer\n\n&e&lHow does it work:\n&7Breaking a block will break a 3x3 area of blocks.\n\n&e&lSupported Items:\n&7Diamond Pickaxe, Diamond Shovel, Netherite Pickaxe, Netherite Shovel")));
+                    lines.add(pu.formatC("&34&b. &#6A00E1Soul Bound").hoverEvent(pu.formatC("&5&lEnchantment:\n&#6A00E1Soul Bound\n\n&e&lHow does it work:\n&7Keep item on death.\n\n&e&lSupported Items:\n&7Trident, All Diamond Armor, All Diamond Tools, All Diamond Weapons, All Netherite Armor, All Netherite Tools, All Netherite Weapons")));
+                    lines.add(pu.formatC("&35&b. &#FF9709Auto Sell").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FF9709Auto Sell\n\n&e&lHow does it work:\n&7Sneak-Right-Clicking a chest, barrel or shulker box will sell the items inside.\n\n&e&lSupported Items:\n&7Diamond Hoe, Netherite Hoe")));
+
+                    lines.add(Component.text(""));
+                    lines.add(Lang.COMMAND_HELP_ENCHANTS_DIVIDER.getComponent(null));
                 }
                 for (Component message : lines) player.sendMessage(message);
             } else {
-
                 lines.add(Lang.COMMAND_HELP_TITLE.getComponent(null));
                 lines.add(Component.text(""));
-                lines.add(plugin.getPU().formatC("&e1&7. &2&lEssentials").hoverEvent(plugin.getPU().formatC(Lang.COMMAND_HELP_PLUGIN_HOVER.getString(new String[] { "essential" }))).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help essentials")).append(Component.text("      ")).append(plugin.getPU().formatC("&e2&7. &6&lShops").hoverEvent(plugin.getPU().formatC(Lang.COMMAND_HELP_PLUGIN_HOVER.getString(new String[] { "shop" }))).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/shop help"))));
-                lines.add(plugin.getPU().formatC("&e3&7. &c&lLocker    ").hoverEvent(plugin.getPU().formatC(Lang.COMMAND_HELP_PLUGIN_HOVER.getString(new String[] { "locker" }))).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/lock help")).append(Component.text("      ")).append(plugin.getPU().formatC("&e4&7. &e&lChunks").hoverEvent(plugin.getPU().formatC(Lang.COMMAND_HELP_PLUGIN_HOVER.getString(new String[] { "chunk" }))).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/chunk help"))));
-                lines.add(plugin.getPU().formatC("&e5&7. &b&lPets    ").hoverEvent(plugin.getPU().formatC(Lang.COMMAND_HELP_PLUGIN_HOVER.getString(new String[] { "pets" }))).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/pet help")).append(Component.text("          ")).append(plugin.getPU().formatC("&e6&7. &d&lTrails").hoverEvent(plugin.getPU().formatC(Lang.COMMAND_HELP_PLUGIN_HOVER.getString(new String[] { "trails" }))).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/trail help"))));
-                lines.add(plugin.getPU().formatC("&e7&7. &#ff843d&lVanilla").hoverEvent(plugin.getPU().formatC(Lang.COMMAND_HELP_PLUGIN_VANILLA_CHANGES_HOVER.getString(null))).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help vanilla")));
+
+                lines.add(pu.formatC("&e1&7. &2&lEssentials").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "essential" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help essentials")));
+                lines.add(pu.formatC("&e2&7. &6&lShops").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "shop" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/shop help")));
+                lines.add(pu.formatC("&e3&7. &c&lLocker").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "locker" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/lock help")));
+                lines.add(pu.formatC("&e4&7. &e&lChunks").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "chunk" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/chunk help")));
+                lines.add(pu.formatC("&e5&7. &b&lPets").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "pets" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/pet help")));
+                lines.add(pu.formatC("&e6&7. &d&lTrails").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "trails" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/trail help")));
+                lines.add(pu.formatC("&e7&8. &#8D27FF&lEnchants").hoverEvent(Lang.COMMAND_HELP_ENCHANT_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help enchants")));
+                lines.add(pu.formatC("&e8&7. &#ff843d&lVanilla").hoverEvent(Lang.COMMAND_HELP_PLUGIN_VANILLA_CHANGES_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help vanilla")));
+
                 lines.add(Component.text(""));
                 lines.add(Lang.COMMAND_HELP_SPLITTER.getComponent(null));
                 for (Component line : lines) player.sendMessage(line);

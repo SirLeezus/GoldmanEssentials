@@ -56,7 +56,7 @@ public class PU {
 
     private final Pattern hexRegex = Pattern.compile("\\&#[a-fA-F0-9]{6}");
     private final Pattern itemRegex = Pattern.compile("(?i).*\\[item\\].*");
-    public final Random random = new Random();
+    private final Random random = new Random();
     @Getter private BossBar boosterBar;
 
     public String format(String message) {
@@ -96,8 +96,8 @@ public class PU {
         return formatter.format(value);
     }
 
-    public String formatCapitalization(String type) {
-        String format = type.toLowerCase().replaceAll("_", " ");
+    public String formatCapitalization(String message) {
+        String format = message.toLowerCase().replaceAll("_", " ");
         return WordUtils.capitalize(format);
     }
 
@@ -357,8 +357,9 @@ public class PU {
     public void updateDisplayName(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
-        UUID uuid = player.getUniqueId();
+        Data data = plugin.getData();
 
+        UUID uuid = player.getUniqueId();
         ScoreboardManager boardManager = Bukkit.getScoreboardManager();
         Scoreboard board = boardManager.getMainScoreboard();
 
@@ -371,11 +372,16 @@ public class PU {
 
         String rank = cache.getRank(uuid);
         String priority = RankList.valueOf(rank).getPriority();
-        if (board.getTeam(priority + player.getName()) == null) {
-            board.registerNewTeam(priority + player.getName());
+
+        //make new way of sorting teams
+        String name = priority + data.getTeamNumber();
+        data.setTeamNumber(data.getTeamNumber() + 1);
+
+        if (board.getTeam(name) == null) {
+            board.registerNewTeam(name);
         }
 
-        Team team = board.getTeam(priority + player.getName());
+        Team team = board.getTeam(name);
 
         if (team != null) {
             team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);

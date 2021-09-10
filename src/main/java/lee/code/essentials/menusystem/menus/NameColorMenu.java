@@ -35,13 +35,13 @@ public class NameColorMenu extends Menu {
     @Override
     public void handleMenu(InventoryClickEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Player player = pmu.getOwner();
-        UUID uuid = player.getUniqueId();
         Cache cache = plugin.getCache();
 
+        Player player = pmu.getOwner();
+        UUID uuid = player.getUniqueId();
         if (!(e.getClickedInventory() == player.getInventory())) {
-            if (plugin.getData().hasPlayerClickDelay(player.getUniqueId())) return;
-            else plugin.getPU().addPlayerClickDelay(player.getUniqueId());
+            if (plugin.getData().hasPlayerClickDelay(uuid)) return;
+            else plugin.getPU().addPlayerClickDelay(uuid);
 
             ItemStack clickedItem = e.getCurrentItem();
 
@@ -61,9 +61,10 @@ public class NameColorMenu extends Menu {
     @Override
     public void setMenuItems() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+
         Player player = pmu.getOwner();
         UUID uuid = player.getUniqueId();
-        Cache cache = plugin.getCache();
 
         for (int i = 0; i < 9; i++) {
             inventory.setItem(i, fillerGlass);

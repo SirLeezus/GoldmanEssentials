@@ -41,6 +41,7 @@ public class Data {
     @Getter private final List<String> pluginCommands = new ArrayList<>();
     @Getter private final List<UUID> staffChat = new ArrayList<>();
     @Getter @Setter private BukkitTask sleepTask = null;
+    @Getter @Setter private int teamNumber = 0;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
