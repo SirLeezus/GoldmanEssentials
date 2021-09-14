@@ -124,7 +124,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("Phantoms do not target you if you're holding a torch.");
                     changes.add("You can feed a cow mushrooms to turn it into a mooshroom cow.");
                     changes.add("A creeper's health impacts the explosion power.");
-                    changes.add("Ender dragon always drops full exp and a skull when killed.");
+                    changes.add("Ender dragon always drops full exp, a head and a dragon egg when killed.");
                     changes.add("Enderman ignore players who are wearing a dragon head.");
                     changes.add("Feeding a white/orange tulip to a fox changes the type to snow/regular.");
                     changes.add("You can breed parrots by feeding them any type of seeds.");
@@ -143,6 +143,8 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("The stonecutter block will damage you if you walk on it.");
                     changes.add("You start with all recipes unlocked.");
                     changes.add("All entities have a chance of dropping a head.");
+                    changes.add("You can toggle item frame invisibility by sneak-right-clicking them with shears.");
+                    changes.add("Enchantments can be taken off items in anvils and put on enchanted books.");
 
                     for (String change : changes) {
                         lines.add(pu.formatC("&3" + number + "&b. &6" + change));
@@ -159,7 +161,7 @@ public class HelpCMD implements CommandExecutor {
                     lines.add(pu.formatC("&31&b. &#964B00Logger").hoverEvent(pu.formatC("&5&lEnchantment:\n&#964B00Logger\n\n&e&lHow does it work:\n&7Breaking a log will break connected logs.\n\n&e&lSupported Items:\n&7Diamond Axe, Netherite Axe")));
                     lines.add(pu.formatC("&32&b. &#FCFF35Lightning Strike").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FCFF35Lightning Strike\n\n&e&lHow does it work:\n&7Sneak-Left-Clicking will summon lightning.\n\n&e&lSupported Items:\n&7Diamond Sword, Netherite Sword")));
                     lines.add(pu.formatC("&33&b. &#DE0000Destroyer").hoverEvent(pu.formatC("&5&lEnchantment:\n&#DE0000Destroyer\n\n&e&lHow does it work:\n&7Breaking a block will break a 3x3 area of blocks.\n\n&e&lSupported Items:\n&7Diamond Pickaxe, Diamond Shovel, Netherite Pickaxe, Netherite Shovel")));
-                    lines.add(pu.formatC("&34&b. &#6A00E1Soul Bound").hoverEvent(pu.formatC("&5&lEnchantment:\n&#6A00E1Soul Bound\n\n&e&lHow does it work:\n&7Keep item on death.\n\n&e&lSupported Items:\n&7Trident, All Diamond Armor, All Diamond Tools, All Diamond Weapons, All Netherite Armor, All Netherite Tools, All Netherite Weapons")));
+                    lines.add(pu.formatC("&34&b. &#6A00E1Soul Bound").hoverEvent(pu.formatC("&5&lEnchantment:\n&#6A00E1Soul Bound\n\n&e&lHow does it work:\n&7Keep item on death.\n\n&e&lSupported Items:\n&7Elytra, Fishing Rod, Bow, Crossbow, Trident, All Diamond Armor, All Diamond Tools, All Diamond Weapons, All Netherite Armor, All Netherite Tools, All Netherite Weapons")));
                     lines.add(pu.formatC("&35&b. &#FF9709Auto Sell").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FF9709Auto Sell\n\n&e&lHow does it work:\n&7Sneak-Right-Clicking a chest, barrel or shulker box will sell the items inside.\n\n&e&lSupported Items:\n&7Diamond Hoe, Netherite Hoe")));
 
                     lines.add(Component.text(""));
