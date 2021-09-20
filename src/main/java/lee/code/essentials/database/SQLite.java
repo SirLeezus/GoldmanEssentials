@@ -85,7 +85,11 @@ public class SQLite {
         update("CREATE TABLE IF NOT EXISTS server (" +
                 "`server` varchar PRIMARY KEY," +
                 "`spawn` varchar NOT NULL," +
-                "`joins` varchar NOT NULL" +
+                "`joins` varchar NOT NULL," +
+                "`world_resource_time` varchar NOT NULL," +
+                "`world_resource_spawn` varchar NOT NULL," +
+                "`nether_resource_spawn` varchar NOT NULL," +
+                "`end_resource_spawn` varchar NOT NULL" +
                 ");");
 
         //punishment data table
@@ -112,6 +116,36 @@ public class SQLite {
                 "`active` varchar NOT NULL," +
                 "`duration` varchar NOT NULL" +
                 ");");
+
+    }
+
+    //UPDATER STUFF
+
+    public void updateTable(String table) {
+
+        //temp table
+        update("CREATE TABLE IF NOT EXISTS temp (" +
+                "`server` varchar PRIMARY KEY," +
+                "`spawn` varchar NOT NULL," +
+                "`joins` varchar NOT NULL," +
+                "`world_resource_time` varchar NOT NULL," +
+                "`world_resource_spawn` varchar NOT NULL," +
+                "`nether_resource_spawn` varchar NOT NULL," +
+                "`end_resource_spawn` varchar NOT NULL" +
+                ");");
+        try {
+            ResultSet rsTable = getResult("SELECT * FROM " + table + ";");
+            while (rsTable.next()) {
+                String server = rsTable.getString("server");
+                String spawn = rsTable.getString("spawn");
+                String joins = rsTable.getString("joins");
+                update("INSERT OR REPLACE INTO temp(server, spawn, joins, world_resource_time, world_resource_spawn, nether_resource_spawn, end_resource_spawn) VALUES('" + server + "','" + spawn + "','" + joins + "','" + 0 + "','" + 0 + "','" + 0 + "','" + 0 + "');");
+            }
+            update("DROP TABLE " + table + ";");
+            update("ALTER TABLE temp RENAME TO " + table + ";");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     //BOOSTER DATA TABLE
@@ -137,7 +171,7 @@ public class SQLite {
     public void createServerDataColumn() {
         try {
             ResultSet rs = getResult("SELECT 1 FROM server;");
-            if (!rs.next()) update("INSERT OR REPLACE INTO server (server, spawn, joins) VALUES( 'server','" + 0 + "','" + 0 + "');");
+            if (!rs.next()) update("INSERT OR REPLACE INTO server (server, spawn, joins, world_resource_time, world_resource_spawn, nether_resource_spawn, end_resource_spawn) VALUES( 'server','" + 0 + "','" + 0 + "','" + 0 + "','" + 0 + "','" + 0 + "','" + 0 + "');");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -147,8 +181,24 @@ public class SQLite {
         update("UPDATE server SET spawn ='" + location + "' WHERE server ='" + "server" + "';");
     }
 
+    public void setWorldResourceSpawn(String location) {
+        update("UPDATE server SET world_resource_spawn ='" + location + "' WHERE server ='" + "server" + "';");
+    }
+
+    public void setNetherResourceSpawn(String location) {
+        update("UPDATE server SET nether_resource_spawn ='" + location + "' WHERE server ='" + "server" + "';");
+    }
+
+    public void setEndResourceSpawn(String location) {
+        update("UPDATE server SET end_resource_spawn ='" + location + "' WHERE server ='" + "server" + "';");
+    }
+
     public void setJoins(String joins) {
         update("UPDATE server SET joins = '" + joins + "' WHERE server ='" + "server" + "';");
+    }
+
+    public void setResourceWorldsTime(String time) {
+        update("UPDATE server SET world_resource_time = '" + time + "' WHERE server ='" + "server" + "';");
     }
 
     //PUNISHMENT DATA TABLE
@@ -352,7 +402,12 @@ public class SQLite {
             if (rs.next()) {
                 String spawn = rs.getString("spawn");
                 String joins = rs.getString("joins");
-                cache.setServerData(spawn, joins);
+                String worldResourceTime = rs.getString("world_resource_time");
+                String worldResourceSpawn = rs.getString("world_resource_spawn");
+                String netherResourceSpawn = rs.getString("nether_resource_spawn");
+                String endResourceSpawn = rs.getString("end_resource_spawn");
+
+                cache.setServerData(spawn, joins, worldResourceTime, worldResourceSpawn, netherResourceSpawn, endResourceSpawn);
             }
         } catch (SQLException e) {
             e.printStackTrace();

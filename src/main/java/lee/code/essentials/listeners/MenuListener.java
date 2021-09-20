@@ -1,9 +1,11 @@
 package lee.code.essentials.listeners;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
+import lee.code.essentials.menusystem.menus.ResourceWorldMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,11 +38,13 @@ public class MenuListener implements Listener {
     }
 
     @EventHandler
-    public void onBotMenuClose(InventoryCloseEvent e) {
+    public void onMenuClose(InventoryCloseEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
+        Data data = plugin.getData();
 
         InventoryHolder holder = e.getInventory().getHolder();
+
         if (holder instanceof BotCheckerMenu) {
             Player player = (Player) e.getPlayer();
             UUID uuid = player.getUniqueId();
@@ -48,6 +52,11 @@ public class MenuListener implements Listener {
                 BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
                 scheduler.runTaskLater(plugin, () -> new BotCheckerMenu(plugin.getData().getPlayerMU(uuid)).open(), 10);
             }
+        } else if (holder instanceof ResourceWorldMenu) {
+            Player player = (Player) e.getPlayer();
+            UUID uuid = player.getUniqueId();
+            data.getResourceWorldTask(uuid).cancel();
+            data.removeResourceWorldTaskActive(uuid);
         }
     }
 }

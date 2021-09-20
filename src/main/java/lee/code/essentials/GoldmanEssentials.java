@@ -10,6 +10,7 @@ import lee.code.essentials.database.SQLite;
 import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.TabListManager;
+import lee.code.essentials.managers.WorldManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +21,7 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private Data data;
     @Getter private SQLite sqLite;
     @Getter private TabListManager tabListManager;
+    @Getter private WorldManager worldManager;
     @Getter private Cache cache;
     @Getter private CacheAPI cacheAPI;
     @Getter private EssentialsAPI essentialsAPI;
@@ -35,15 +37,18 @@ public class GoldmanEssentials extends JavaPlugin {
         this.cache = new Cache();
         this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
+        this.worldManager = new WorldManager();
         this.protocolManagerAPI = ProtocolLibrary.getProtocolManager();
 
         registerCommands();
         registerListeners();
 
         sqLite.connect();
+        //sqLite.updateTable("server");
         sqLite.loadTables();
-
         data.cacheDatabase();
+
+        worldManager.resourceWorldResets();
         data.loadListData();
         data.loadMOTDFile();
 
@@ -137,6 +142,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("restartwarning").setExecutor(new RestartWarningCMD());
         getCommand("motd").setExecutor(new MessageOfTheDayCMD());
         getCommand("pay").setExecutor(new PayCMD());
+        getCommand("resourceworlds").setExecutor(new ResourceWorldsCMD());
+        getCommand("resetresourceworlds").setExecutor(new ResetResourceWorldsCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -211,6 +218,8 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("restartwarning").setTabCompleter(new RestartWarningTab());
         getCommand("motd").setTabCompleter(new MessageOfTheDayTab());
         getCommand("pay").setTabCompleter(new PayTab());
+        getCommand("resourceworlds").setTabCompleter(new ResourceWorldsTab());
+        getCommand("resetresourceworlds").setTabCompleter(new ResetResourceWorldsTab());
     }
 
     private void registerListeners() {
@@ -240,6 +249,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BottleEXPListener(), this);
         getServer().getPluginManager().registerEvents(new ItemFrameListener(), this);
         getServer().getPluginManager().registerEvents(new DragonEggListener(), this);
+        getServer().getPluginManager().registerEvents(new PortalListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

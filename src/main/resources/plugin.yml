@@ -307,3 +307,11 @@ commands:
     description: The server's message of the day.
     permission: essentials.command.motd
     usage: "/motd"
+  resourceworlds:
+    description: Opens resource world menu.
+    permission: essentials.command.resourceworlds
+    usage: "/resourceworlds"
+  resetresourceworlds:
+    description: Sets resource worlds to reset on restart.
+    permission: essentials.command.resetresourceworlds
+    usage: "/resetresourceworlds"

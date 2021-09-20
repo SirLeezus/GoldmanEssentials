@@ -22,6 +22,9 @@ public abstract class Menu implements InventoryHolder {
 
     protected PlayerMU pmu;
     protected Inventory inventory;
+
+    protected ItemStack botChecker = MenuItems.BOT_CHECKER.getItem();
+
     protected ItemStack fillerGlass = MenuItems.FILLER_GLASS.getItem();
     protected ItemStack close = MenuItems.CLOSE_MENU.getItem();
     protected ItemStack nextPage = MenuItems.NEXT_PAGE.getItem();
@@ -38,7 +41,9 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack asRightLegPosition = MenuItems.ARMOR_STAND_RIGHT_LEG_POSITION.getItem();
     protected ItemStack asDirectionPosition = MenuItems.ARMOR_STAND_DIRECTION_POSITION.getItem();
 
-    protected ItemStack botChecker = MenuItems.BOT_CHECKER.getItem();
+    protected ItemStack resourceWorld = MenuItems.RESOURCE_WORLD.getItem();
+    protected ItemStack resourceEnd = MenuItems.RESOURCE_END.getItem();
+    protected ItemStack resourceNether = MenuItems.RESOURCE_NETHER.getItem();
 
     protected List<ItemStack> colorItems = getColorItems();
 

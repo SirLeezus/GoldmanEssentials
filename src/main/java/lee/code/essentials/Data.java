@@ -18,10 +18,7 @@ import org.bukkit.inventory.*;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Data {
@@ -34,13 +31,12 @@ public class Data {
     @Getter private final List<String> advancementNames = new ArrayList<>();
     @Getter private final List<String> materialNames = new ArrayList<>();
     @Getter private final List<UUID> vanishedPlayers = new ArrayList<>();
-    @Getter private final List<UUID> sleepingPlayers = new ArrayList<>();
     @Getter private final List<UUID> playerClickDelay = new ArrayList<>();
     @Getter private final List<NamespacedKey> recipeKeys = new ArrayList<>();
     @Getter private final List<Component> serverMOTD = new ArrayList<>();
     @Getter private final List<String> pluginCommands = new ArrayList<>();
     @Getter private final List<UUID> staffChat = new ArrayList<>();
-    @Getter @Setter private BukkitTask sleepTask = null;
+    @Getter private final List<String> whitelistedWorlds = new ArrayList<>();
     @Getter @Setter private int teamNumber = 0;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
@@ -50,6 +46,9 @@ public class Data {
     private final ConcurrentHashMap<UUID, BukkitTask> playerPvPTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Long> playerPvPTimer = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerSpamTask = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BukkitTask> resourceWorldMenuTask = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, List<UUID>> sleepingPlayers = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, BukkitTask> sleepTasks = new ConcurrentHashMap<>();
 
     public void addStaffChat(UUID uuid) { staffChat.add(uuid); }
     public void removeStaffChat(UUID uuid) { staffChat.remove(uuid); }
@@ -98,6 +97,19 @@ public class Data {
     }
     public long getPVPTimer(UUID player) { return playerPvPTimer.getOrDefault(player, 0L); }
 
+    public boolean isResourceWorldTaskActive(UUID player) {
+        return resourceWorldMenuTask.containsKey(player);
+    }
+    public void addResourceWorldTaskActive(UUID player, BukkitTask task) {
+        resourceWorldMenuTask.put(player, task);
+    }
+    public void removeResourceWorldTaskActive(UUID player) {
+        resourceWorldMenuTask.remove(player);
+    }
+    public BukkitTask getResourceWorldTask(UUID uuid) {
+        return resourceWorldMenuTask.get(uuid);
+    }
+
     public boolean isSpamTaskActive(UUID player) {
         return playerSpamTask.containsKey(player);
     }
@@ -121,13 +133,6 @@ public class Data {
         return !vanishedPlayers.isEmpty();
     }
 
-    public void addSleepingPlayer(UUID uuid) {
-        sleepingPlayers.add(uuid);
-    }
-    public void removeSleepingPlayer(UUID uuid) {
-        sleepingPlayers.remove(uuid);
-    }
-
     public boolean hasPlayerClickDelay(UUID uuid) {
         return playerClickDelay.contains(uuid);
     }
@@ -137,6 +142,27 @@ public class Data {
     public void removePlayerClickDelay(UUID uuid) {
         playerClickDelay.remove(uuid);
     }
+
+    public void addSleepingPlayer(String world, UUID uuid) {
+        List<UUID> newList = new ArrayList<>(sleepingPlayers.getOrDefault(world, new ArrayList<>()));
+        newList.add(uuid);
+        sleepingPlayers.put(world, newList);
+    }
+
+    public void removeSleepingPlayer(String world, UUID uuid) {
+        List<UUID> newList = new ArrayList<>(sleepingPlayers.get(world));
+        newList.remove(uuid);
+        sleepingPlayers.put(world, newList);
+    }
+
+    public BukkitTask getSleepTask(String world) { return sleepTasks.getOrDefault(world, null); }
+    public void addSleepTask(String world, BukkitTask task) { sleepTasks.put(world, task); }
+    public void removeSleepTask(String world) { sleepTasks.remove(world); }
+
+    public void clearSleepingPlayers(String world) { sleepingPlayers.put(world, new ArrayList<>()); }
+    public boolean isSleepingPlayer(String world, UUID uuid) { return sleepingPlayers.getOrDefault(world, new ArrayList<>()).contains(uuid); }
+    public int getSleepingPlayersSize(String world) { return sleepingPlayers.get(world).size(); }
+    public List<UUID> getSleepingPlayers(String world) { return sleepingPlayers.get(world); }
 
     public void cacheDatabase() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
@@ -206,6 +232,11 @@ public class Data {
 
         //materials
         for (Material material : Material.values()) materialNames.add(material.name().toLowerCase());
+
+        //whitelisted worlds
+        whitelistedWorlds.add("world");
+        whitelistedWorlds.add("world_nether");
+        whitelistedWorlds.add("world_the_end");
 
         //custom recipes
         for (String recipe : plugin.getPU().getCustomCraftingRecipes()) {

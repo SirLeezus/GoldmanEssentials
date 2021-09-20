@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 @AllArgsConstructor
 public enum MenuItems {
 
+    BOT_CHECKER(Material.LIME_STAINED_GLASS_PANE, Lang.MENU_BOT_CHECKER_ITEM_NAME.getString(), Lang.MENU_BOT_CHECKER_ITEM_LORE.getString()),
+
     FILLER_GLASS(Material.GRAY_STAINED_GLASS_PANE, "&r", null),
     CLOSE_MENU(Material.BARRIER, "&c&lClose", null),
     NEXT_PAGE(Material.PAPER, "&eNext Page >", null),
@@ -25,8 +27,10 @@ public enum MenuItems {
     ARMOR_STAND_RIGHT_LEG_POSITION(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", Lang.MENU_ARMOR_STAND_POSITION_LORE.getString(null)),
     ARMOR_STAND_DIRECTION_POSITION(Material.COMPASS, "", Lang.MENU_ARMOR_STAND_DIRECTION_POSITION_LORE.getString(null)),
 
+    RESOURCE_WORLD(Material.GRASS_BLOCK, "&a&lResource World", Lang.MENU_RESOURCE_WORLD_LORE.getString(null)),
+    RESOURCE_END(Material.END_STONE, "&5&lResource End", Lang.MENU_RESOURCE_WORLD_LORE.getString(null)),
+    RESOURCE_NETHER(Material.NETHERRACK, "&c&lResource Nether", Lang.MENU_RESOURCE_WORLD_LORE.getString(null)),
 
-    BOT_CHECKER(Material.LIME_STAINED_GLASS_PANE, Lang.MENU_BOT_CHECKER_ITEM_NAME.getString(), Lang.MENU_BOT_CHECKER_ITEM_LORE.getString()),
     ;
 
     @Getter private final Material type;

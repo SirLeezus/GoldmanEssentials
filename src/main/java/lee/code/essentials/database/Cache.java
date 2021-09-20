@@ -1054,6 +1054,111 @@ public class Cache {
         }
     }
 
+    public Location getWorldResourceSpawn() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        try (Jedis jedis = pool.getResource()) {
+            String result = jedis.get("world_resource_spawn");
+            if (!result.equals("0")) return plugin.getPU().unFormatPlayerLocation(result);
+            else return null;
+        }
+    }
+
+    public Location getNetherResourceSpawn() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        try (Jedis jedis = pool.getResource()) {
+            String result = jedis.get("nether_resource_spawn");
+            if (!result.equals("0")) return plugin.getPU().unFormatPlayerLocation(result);
+            else return null;
+        }
+    }
+
+    public Location getEndResourceSpawn() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        try (Jedis jedis = pool.getResource()) {
+            String result = jedis.get("end_resource_spawn");
+            if (!result.equals("0")) return plugin.getPU().unFormatPlayerLocation(result);
+            else return null;
+        }
+    }
+
+    public void setWorldResourceSpawn(Location location) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sLocation = plugin.getPU().formatPlayerLocation(location);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.set("world_resource_spawn", sLocation);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setWorldResourceSpawn(sLocation));
+        }
+    }
+
+    public void setNetherResourceSpawn(Location location) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sLocation = plugin.getPU().formatPlayerLocation(location);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.set("nether_resource_spawn", sLocation);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setNetherResourceSpawn(sLocation));
+        }
+    }
+
+    public void setEndResourceSpawn(Location location) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sLocation = plugin.getPU().formatPlayerLocation(location);
+
+        try (Jedis jedis = pool.getResource()) {
+            jedis.set("end_resource_spawn", sLocation);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setEndResourceSpawn(sLocation));
+        }
+    }
+
+    public void setResourceWorldsTime(int duration) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
+        try (Jedis jedis = pool.getResource()) {
+            long time = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + duration;
+            String newTime = String.valueOf(time);
+            jedis.set("world_resource_time", newTime);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setResourceWorldsTime(newTime));
+        }
+    }
+
+    public long getResourceWorldsTime() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            long time = Long.parseLong(jedis.get("world_resource_time"));
+            long milliseconds = System.currentTimeMillis();
+            return time - TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+        }
+    }
+
+    public boolean isResourceWorldsResetReady() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            long time = Long.parseLong(jedis.get("world_resource_time"));
+            long milliseconds = System.currentTimeMillis();
+            return time <= TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+        }
+    }
+
     public boolean hasPlayerData(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -1150,13 +1255,17 @@ public class Cache {
         }
     }
 
-    public void setServerData(String spawn, String joins) {
+    public void setServerData(String spawn, String joins, String worldResourceTime, String worldResourceSpawn, String netherResourceSpawn, String endResourceSpawn) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 
         try (Jedis jedis = pool.getResource()) {
             jedis.set("spawn", spawn);
             jedis.set("joins", joins);
+            jedis.set("world_resource_time", worldResourceTime);
+            jedis.set("world_resource_spawn", worldResourceSpawn);
+            jedis.set("nether_resource_spawn", netherResourceSpawn);
+            jedis.set("end_resource_spawn", endResourceSpawn);
         }
     }
 }

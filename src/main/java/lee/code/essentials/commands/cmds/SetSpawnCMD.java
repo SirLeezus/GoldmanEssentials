@@ -1,8 +1,10 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,11 +16,27 @@ public class SetSpawnCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
-            cache.setSpawn(player.getLocation());
-            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_SUCCESSFUL.getComponent(null)));
+
+            String worldName = player.getWorld().getName();
+            Location location = player.getLocation();
+
+            if (args.length < 1) {
+                cache.setSpawn(location);
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_MAIN_SUCCESSFUL.getComponent(new String[] { worldName })));
+            } else if (args[0].equalsIgnoreCase("resource_world")) {
+                cache.setWorldResourceSpawn(location);
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(args[0]), worldName })));
+            } else if (args[0].equalsIgnoreCase("resource_nether")) {
+                cache.setNetherResourceSpawn(location);
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(args[0]), worldName })));
+            } else if (args[0].equalsIgnoreCase("resource_end")) {
+                cache.setEndResourceSpawn(location);
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(args[0]), worldName })));
+            }
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }

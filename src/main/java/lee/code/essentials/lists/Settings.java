@@ -14,6 +14,7 @@ public enum Settings {
     MAX_ENTITY_PER_CHUNK(25),
     HEAD_DROP_RNG(960),
     AUTO_RESTART(43200 * 20),
+    RESOURCE_WORLD_RESET(86400),
     ;
 
     @Getter private final int value;
