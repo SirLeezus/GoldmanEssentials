@@ -20,11 +20,13 @@ public class CommandListener implements Listener {
         UUID uuid = player.getUniqueId();
 
         if (!data.isSpamTaskActive(uuid)) {
-            plugin.getPU().addSpamDelay(uuid);
+            String help = e.getMessage().substring(0, 5);
+            if (!help.equalsIgnoreCase("/help")) plugin.getPU().addSpamDelay(uuid);
         } else {
             e.setCancelled(true);
             plugin.getPU().addSpamDelay(uuid);
             player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.SPAM_COMMAND.getComponent(null)));
         }
+        System.out.println(e.getMessage());
     }
 }

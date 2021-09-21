@@ -152,6 +152,7 @@ public class HelpCMD implements CommandExecutor {
                     }
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_VANILLA_CHANGES_DIVIDER.getComponent(null));
+
                 } else if (args[0].equalsIgnoreCase("enchants")) {
                     lines.add(Lang.COMMAND_HELP_ENCHANTS_TITLE.getComponent(null));
                     lines.add(Component.text(""));
@@ -166,8 +167,20 @@ public class HelpCMD implements CommandExecutor {
 
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_ENCHANTS_DIVIDER.getComponent(null));
+
+                } else if (args[0].equalsIgnoreCase("shops")) {
+                    player.chat("/shops help");
+                } else if (args[0].equalsIgnoreCase("locker")) {
+                    player.chat("/lock help");
+                } else if (args[0].equalsIgnoreCase("chunks")) {
+                    player.chat("/chunk help");
+                } else if (args[0].equalsIgnoreCase("pets")) {
+                    player.chat("/pets");
+                } else if (args[0].equalsIgnoreCase("trails")) {
+                    player.chat("/trails");
                 }
                 for (Component message : lines) player.sendMessage(message);
+
             } else {
                 lines.add(Lang.COMMAND_HELP_TITLE.getComponent(null));
                 lines.add(Component.text(""));

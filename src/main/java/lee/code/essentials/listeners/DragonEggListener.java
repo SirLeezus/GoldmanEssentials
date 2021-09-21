@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.boss.DragonBattle;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -19,9 +20,12 @@ public class DragonEggListener implements Listener {
         if (entity instanceof EnderDragon) {
             World world = entity.getWorld();
             if (world.getEnvironment().equals(World.Environment.THE_END)) {
-                Location eggLoc = new Location(world, 0, 67, 0);
-                Block eggBlock = eggLoc.getBlock();
-                eggBlock.setType(Material.DRAGON_EGG);
+                DragonBattle battle = world.getEnderDragonBattle();
+                if (battle != null && battle.hasBeenPreviouslyKilled()) {
+                    Location eggLoc = new Location(world, 0, 67, 0);
+                    Block eggBlock = eggLoc.getBlock();
+                    eggBlock.setType(Material.DRAGON_EGG);
+                }
             }
         }
     }
