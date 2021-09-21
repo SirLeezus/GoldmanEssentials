@@ -156,12 +156,12 @@ public class HelpCMD implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("enchants")) {
                     lines.add(Lang.COMMAND_HELP_ENCHANTS_TITLE.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(pu.formatC(" &dCustom enchants can be obtained from normal enchanting tables when you enchant a item at level 30. Keep in mind you only have a small chance of receiving one. Each enchantment does have restrictions in regards to what item it can be applied on. Hover over the enchantments down below for more details."));
+                    lines.add(pu.formatC(" &dCustom enchants can be obtained from normal enchanting tables when you enchant a item at level 30. Keep in mind you only have a small chance of receiving one. Hover over the enchantments down below for more details."));
                     lines.add(Component.text(""));
 
                     lines.add(pu.formatC("&31&b. &#964B00Logger").hoverEvent(pu.formatC("&5&lEnchantment:\n&#964B00Logger\n\n&e&lHow does it work:\n&7Breaking a log will break connected logs.\n\n&e&lSupported Items:\n&7Diamond Axe, Netherite Axe")));
                     lines.add(pu.formatC("&32&b. &#FCFF35Lightning Strike").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FCFF35Lightning Strike\n\n&e&lHow does it work:\n&7Sneak-Left-Clicking will summon lightning.\n\n&e&lSupported Items:\n&7Diamond Sword, Netherite Sword")));
-                    lines.add(pu.formatC("&33&b. &#DE0000Destroyer").hoverEvent(pu.formatC("&5&lEnchantment:\n&#DE0000Destroyer\n\n&e&lHow does it work:\n&7Breaking a block will break a 3x3 area of blocks.\n\n&e&lSupported Items:\n&7Diamond Pickaxe, Diamond Shovel, Netherite Pickaxe, Netherite Shovel")));
+                    lines.add(pu.formatC("&33&b. &#DE0000Destroyer").hoverEvent(pu.formatC("&5&lEnchantment:\n&#DE0000Destroyer\n\n&e&lHow does it work:\n&7Breaking a block will break a 3x3 area of blocks.\n\n&e&lSupported Items:\n&7Diamond Pickaxe, Diamond Shovel, Netherite Pickaxe, Netherite Shovel\n\n&e&lSide Effects:\n&7Does not drop exp when a ore is broken.")));
                     lines.add(pu.formatC("&34&b. &#6A00E1Soul Bound").hoverEvent(pu.formatC("&5&lEnchantment:\n&#6A00E1Soul Bound\n\n&e&lHow does it work:\n&7Keep item on death.\n\n&e&lSupported Items:\n&7Elytra, Fishing Rod, Bow, Crossbow, Trident, All Diamond Armor, All Diamond Tools, All Diamond Weapons, All Netherite Armor, All Netherite Tools, All Netherite Weapons")));
                     lines.add(pu.formatC("&35&b. &#FF9709Auto Sell").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FF9709Auto Sell\n\n&e&lHow does it work:\n&7Sneak-Right-Clicking a chest, barrel or shulker box will sell the items inside.\n\n&e&lSupported Items:\n&7Diamond Hoe, Netherite Hoe")));
 
