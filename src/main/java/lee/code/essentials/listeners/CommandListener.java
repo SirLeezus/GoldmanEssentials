@@ -27,6 +27,5 @@ public class CommandListener implements Listener {
             plugin.getPU().addSpamDelay(uuid);
             player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.SPAM_COMMAND.getComponent(null)));
         }
-        System.out.println(e.getMessage());
     }
 }
