@@ -316,3 +316,7 @@ commands:
     description: Sets resource worlds to reset on restart.
     permission: essentials.command.resetresourceworlds
     usage: "/resetresourceworlds"
+  seen:
+    description: Check the last time a player joined.
+    permission: essentials.command.seen
+    usage: "/seen &f<player>"

@@ -19,14 +19,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
-import org.apache.logging.log4j.core.util.Patterns;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -44,9 +42,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
-import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -152,6 +148,13 @@ public class PU {
         sdf.setTimeZone(TimeZone.getTimeZone("PST"));
         Date resultDate = new Date(milliseconds);
         return sdf.format(resultDate);
+    }
+
+    public String getDate(long date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm aa");
+        sdf.setTimeZone(TimeZone.getTimeZone("PST"));
+        Date resultDate = new Date(date);
+        return sdf.format(resultDate) + " PST";
     }
 
     public Component parseChatVariables(Player player, Component message) {

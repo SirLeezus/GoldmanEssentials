@@ -103,6 +103,7 @@ public enum Lang {
     COMMAND_WORTH_LIST_LINE("&3{0}. &e{1} &7- &6${2}"),
     COMMAND_BANLIST_NO_BANS("&aThere are currently no players banned."),
     COMMAND_TIME_SUCCESSFUL("&aThe time for world &e{0} &awas changed to &e{1}&a."),
+    COMMAND_SEEN_SUCCESSFUL("&aThe last time the player &6{0} &ajoined was &b{1}&a."),
     COMMAND_BOOSTER_ID_HOVER("&9&lID&7: &e{0}"),
     COMMAND_BOOSTER_TITLE("&a------------------ &e[ &2&lBoosters &e] &a------------------"),
     COMMAND_BOOSTER_ACTIVE("&6&lActive Booster: &bDrops x{0} Booster &e| &6{1}"),
