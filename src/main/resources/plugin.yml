@@ -320,3 +320,7 @@ commands:
     description: Check the last time a player joined.
     permission: essentials.command.seen
     usage: "/seen &f<player>"
+  iteminfo:
+    description: Check the data of the item you're holding.
+    permission: essentials.command.iteminfo
+    usage: "/iteminfo"

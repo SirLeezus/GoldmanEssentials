@@ -196,9 +196,8 @@ public class PU {
                     }
                 }
                 //lore
-                if (itemMeta.hasLore()) {
-                    for (Component loreLine : Objects.requireNonNull(itemMeta.lore())) lore = lore.append(formatC("\n&5&o")).append(loreLine);
-                }
+                if (itemMeta.hasLore()) for (Component loreLine : Objects.requireNonNull(itemMeta.lore())) lore = lore.append(formatC("\n&5&o")).append(loreLine);
+
             }
 
             if (itemName != null) {
