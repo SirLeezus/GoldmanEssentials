@@ -67,6 +67,14 @@
             <scope>system</scope>
             <systemPath>C:\Users\Lee\Documents\APIs\RedisCache.jar</systemPath>
         </dependency>
+        <!-- GoldmanEnchants API -->
+        <dependency>
+            <groupId>lee.code.enchants</groupId>
+            <artifactId>enchants-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Lee\Documents\APIs\EnchantsAPI.jar</systemPath>
+        </dependency>
         <!-- Lombok API -->
         <dependency>
             <groupId>org.projectlombok</groupId>

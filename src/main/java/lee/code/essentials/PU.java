@@ -9,18 +9,24 @@ import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.*;
 import lee.code.essentials.managers.CountdownTimer;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.apache.logging.log4j.core.util.Patterns;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -31,6 +37,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -54,8 +61,11 @@ import java.util.stream.Collectors;
 
 public class PU {
 
+    private final String lRegex = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)";
+    private final String iRegex = "(?i)\\[item]";
     private final Pattern hexRegex = Pattern.compile("\\&#[a-fA-F0-9]{6}");
-    private final Pattern itemRegex = Pattern.compile("(?i).*\\[item\\].*");
+    private final Pattern itemRegex = Pattern.compile(iRegex, Pattern.DOTALL);
+    private final Pattern linkRegex = Pattern.compile(lRegex, Pattern.DOTALL);
     private final Random random = new Random();
     @Getter private BossBar boosterBar;
 
@@ -144,29 +154,66 @@ public class PU {
         return sdf.format(resultDate);
     }
 
-    @SuppressWarnings("deprecation")
     public Component parseChatVariables(Player player, Component message) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        EnchantsAPI enchantsAPI = plugin.getEnchantsAPI();
         String text = PlainTextComponentSerializer.plainText().serialize(message);
 
-        if (itemRegex.matcher(text).matches()) {
-            ItemStack item = player.getInventory().getItemInMainHand();
-            String materialName = formatCapitalization(item.getType().name());
-            String itemName = materialName;
-            StringBuilder lore = new StringBuilder();
+        Matcher itemMatcher = itemRegex.matcher(text);
+        Component newMessage = message;
+
+        ItemStack item = player.getInventory().getItemInMainHand();
+        String materialName = formatCapitalization(item.getType().name());
+        Component itemName = Component.text(materialName).color(NamedTextColor.WHITE);
+        Component lore = Component.empty();
+
+        if (itemMatcher.find()) {
             if (item.hasItemMeta()) {
                 ItemMeta itemMeta = item.getItemMeta();
-                if (itemMeta.hasDisplayName()) itemName = itemMeta.getDisplayName();
-                if (itemMeta.hasEnchants()) {
-                    for (Map.Entry<Enchantment, Integer> enchant : itemMeta.getEnchants().entrySet()) {
-                        String enchantColor = "&7";
-                        if (enchant.getKey().equals(Enchantment.VANISHING_CURSE) || enchant.getKey().equals(Enchantment.BINDING_CURSE)) enchantColor = "&c";
-                        lore.append("\n").append(enchantColor).append(formatCapitalization(enchant.getKey().getKey().getKey())).append(" ").append(getRomanNumber(enchant.getValue()));
+
+                //display name
+                if (itemMeta.hasDisplayName()) itemName = itemMeta.displayName();
+                else if (itemMeta.hasEnchants()) itemName = itemName.color(NamedTextColor.AQUA);
+                else if (itemMeta instanceof EnchantmentStorageMeta) itemName = itemName.color(NamedTextColor.YELLOW);
+
+                //enchants
+                if (itemMeta.hasEnchants() || itemMeta instanceof EnchantmentStorageMeta) {
+                    Map<Enchantment, Integer> enchants = itemMeta instanceof EnchantmentStorageMeta book ? book.getStoredEnchants() : itemMeta.getEnchants();
+                    Component downSpacer = formatC("\n");
+                    Component spacer = Component.text(" ");
+
+                    for (Map.Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
+                        String key = enchant.getKey().getKey().getKey().toUpperCase();
+                        if (!enchantsAPI.isCustomEnchant(key)) {
+                            Component enchantment = formatC(formatCapitalization(key));
+                            Component enchantmentLevel = enchant.getKey().getMaxLevel() > 1 ? formatC(getRomanNumber(enchant.getValue())) : Component.empty();
+                            Component newLoreLine = downSpacer.append(enchantment.append(spacer).append(enchantmentLevel)).color(enchant.getKey().isCursed() ? NamedTextColor.RED : NamedTextColor.GRAY);
+                            lore = lore.append(newLoreLine);
+                        }
                     }
                 }
-                if (itemMeta.hasLore() && itemMeta.getLore() != null) for (String loreLine : itemMeta.getLore()) lore.append("\n&5&o").append(loreLine);
+                //lore
+                if (itemMeta.hasLore()) {
+                    for (Component loreLine : Objects.requireNonNull(itemMeta.lore())) lore = lore.append(formatC("\n&5&o")).append(loreLine);
+                }
             }
-            return formatC("&b[&f" + itemName + "&b]").hoverEvent(formatC(itemName + " &7(&f" + materialName + "&7)" + lore));
-        } else return message;
+
+            if (itemName != null) {
+                String match = itemMatcher.group();
+                Component newInfo = formatC("&6[&f").append(itemName).append(formatC("&6]")).hoverEvent(itemName.append(formatC(" &7(&f" + materialName + "&7)")).append(lore));
+                TextReplacementConfig replace = TextReplacementConfig.builder().matchLiteral(match).replacement(newInfo).build();
+                newMessage = newMessage.replaceText(replace);
+            }
+        }
+
+        Matcher linkMatcher = linkRegex.matcher(text);
+        while (linkMatcher.find()) {
+            String match = linkMatcher.group();
+            Component newInfo = formatC("&6[&cLINK&6]").hoverEvent(formatC("&6Click to preview link!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, match));
+            TextReplacementConfig replace = TextReplacementConfig.builder().matchLiteral(match).replacement(newInfo).build();
+            newMessage = newMessage.replaceText(replace);
+        }
+        return newMessage;
     }
 
     public String getRomanNumber(int number) {
@@ -337,7 +384,7 @@ public class PU {
                     List<WrappedWatchableObject> watchableCollection = packet.getWatchableCollectionModifier().read(0);
 
                     for (WrappedWatchableObject object : watchableCollection) {
-                        if (object.getIndex() == 18) {
+                        if (object != null && object.getIndex() == 18) {
                             String value = object.getValue().toString();
                             if (value.startsWith("Optional")) object.setValue(Optional.of(UUID.randomUUID()));
                         }

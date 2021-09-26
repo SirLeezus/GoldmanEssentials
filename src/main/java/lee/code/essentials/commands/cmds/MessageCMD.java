@@ -1,11 +1,11 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -21,22 +21,23 @@ public class MessageCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 1) {
-                if (plugin.getPU().getOnlinePlayers().contains(args[0])) {
+                if (pu.getOnlinePlayers().contains(args[0])) {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null && target != player) {
                         if (!cache.isMuted(uuid)) {
                             if (cache.hasBeenBotChecked(uuid)) {
-                                String message = plugin.getPU().buildStringFromArgs(args, 1);
+                                Component message = Component.text(pu.buildStringFromArgs(args, 1));
                                 cache.setLastReplied(target.getUniqueId(), uuid);
                                 cache.setLastReplied(uuid, target.getUniqueId());
-                                player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(Component.text(message).color(TextColor.color(0, 220, 234))));
-                                target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(Component.text(message).color(TextColor.color(0, 220, 234))));
+                                player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(pu.parseChatVariables(player, message.color(TextColor.color(0, 220, 234)))));
+                                target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(pu.parseChatVariables(player, message.color(TextColor.color(0, 220, 234)))));
                             }
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[] { cache.getMuteReason(uuid) })));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_MESSAGE_TO_SELF.getComponent(null)));

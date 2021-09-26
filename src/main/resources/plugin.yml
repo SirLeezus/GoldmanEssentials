@@ -4,6 +4,7 @@ version: ${project.version}
 api-version: 1.17
 author: Lee
 depend: [ProtocolLib, RedisCache]
+softdepend: [GoldmanEnchants]
 commands:
   essreload:
     description: Reload plugin text files.
@@ -132,7 +133,7 @@ commands:
   message:
     description: Message a online player.
     permission: essentials.command.message
-    aliases: [msg, tell]
+    aliases: [msg, tell, whisper]
     usage: "/message &f<player> <message>"
   reply:
     description: Reply to a online player.

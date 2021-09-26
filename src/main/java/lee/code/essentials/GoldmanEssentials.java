@@ -3,6 +3,7 @@ package lee.code.essentials;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import lee.code.cache.CacheAPI;
+import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.Cache;
@@ -25,6 +26,7 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private Cache cache;
     @Getter private CacheAPI cacheAPI;
     @Getter private EssentialsAPI essentialsAPI;
+    @Getter private EnchantsAPI enchantsAPI;
     @Getter private ProtocolManager protocolManagerAPI;
 
     @Override
@@ -37,6 +39,7 @@ public class GoldmanEssentials extends JavaPlugin {
         this.cache = new Cache();
         this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
+        this.enchantsAPI = new EnchantsAPI();
         this.worldManager = new WorldManager();
         this.protocolManagerAPI = ProtocolLibrary.getProtocolManager();
 

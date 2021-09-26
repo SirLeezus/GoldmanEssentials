@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.UUID;
@@ -42,6 +43,7 @@ public class JoinListener implements Listener {
         if (!player.hasPlayedBefore()) {
             cache.addPlayerCounter();
             player.teleportAsync(cache.getSpawn());
+            player.getInventory().addItem(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 5));
             plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cache.getPlayerCounter()) })));
         }
 
