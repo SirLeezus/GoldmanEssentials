@@ -1,6 +1,7 @@
 package lee.code.essentials.listeners;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.lists.EntityHeads;
 import lee.code.essentials.lists.Settings;
 import org.bukkit.DyeColor;
@@ -19,6 +20,7 @@ public class HeadDropListener implements Listener {
     @EventHandler
     public void onHeadDrop(EntityDeathEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
 
         if (e.getEntity().getLastDamageCause() != null && e.getEntity().getLastDamageCause().getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
             if (e.getEntity() instanceof Player player) {
@@ -36,7 +38,7 @@ public class HeadDropListener implements Listener {
                     Player killer = e.getEntity().getKiller();
                     if (killer.getGameMode().equals(GameMode.CREATIVE)) creative = true;
                 }
-                if (plugin.getPU().rng() >= Settings.HEAD_DROP_RNG.getValue() || creative) {
+                if (pu.rng() >= Settings.HEAD_DROP_RNG.getValue() || creative) {
                     String type = e.getEntityType().name();
 
                     if (e.getEntity() instanceof Sheep sheep) {
@@ -49,15 +51,21 @@ public class HeadDropListener implements Listener {
                     } else if (e.getEntity() instanceof Parrot parrot) {
                         Parrot.Variant variant = parrot.getVariant();
                         type = variant.name() + "_" + type;
-                    } else if (e.getEntity() instanceof  Llama llama) {
+                    } else if (e.getEntity() instanceof Llama llama) {
                         Llama.Color color = llama.getColor();
                         type = color.name() + "_" + type;
-                    } else if (e.getEntity() instanceof  TraderLlama traderLlama) {
+                    } else if (e.getEntity() instanceof TraderLlama traderLlama) {
                         Llama.Color color = traderLlama.getColor();
                         type = color.name() + "_" + type;
+                    } else if (e.getEntity() instanceof Villager villager) {
+                        Villager.Profession villagerProfession = villager.getProfession();
+                        Villager.Type villagerType = villager.getVillagerType();
+                        if (villagerProfession != Villager.Profession.NONE) {
+                            type = villagerType.name() + "_" + villagerProfession.name() + "_" + type;
+                        } else type = villagerType.name() + "_" + type;
                     }
 
-                    if (plugin.getPU().getEntityHeads().contains(type)) {
+                    if (pu.getEntityHeads().contains(type)) {
                         ItemStack head = EntityHeads.valueOf(type).getHead();
                         e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), head);
                     }

@@ -230,7 +230,7 @@ public class PU {
             case 8 -> { return "VIII"; }
             case 9 -> { return "IX"; }
             case 10 -> { return "X"; }
-            default -> { return ""; }
+            default -> { return String.valueOf(number); }
         }
     }
 
