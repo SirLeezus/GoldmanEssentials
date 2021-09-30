@@ -102,6 +102,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.pay");
         defaultPerms.add("essentials.command.resourceworlds");
         defaultPerms.add("essentials.command.seen");
+        defaultPerms.add("essentials.command.afk");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");

@@ -27,6 +27,7 @@ public enum Lang {
     PLAYER_JOIN(" &ajoined the server!"),
     PLAYER_QUIT(" &7left the server."),
     MESSAGE_SENT("&9[&eYou &9-> &e{0}&9] "),
+    AFK("&7The player &6{0} &7is currently AFK."),
     BOT_CHECKER_KICK("&cYou failed to verify you're not a bot so you've been kicked."),
     AUTO_RESTART_WARNING_START("&eThe server is about to restart!"),
     AUTO_RESTART_WARNING_END("&eThe server is restarting!"),

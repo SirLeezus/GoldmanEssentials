@@ -324,3 +324,7 @@ commands:
     description: Check the data of the item you're holding.
     permission: essentials.command.iteminfo
     usage: "/iteminfo"
+  afk:
+    description: Set yourself to away from keyboard.
+    permission: essentials.command.afk
+    usage: "/afk"

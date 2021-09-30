@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
@@ -21,6 +22,7 @@ public class MessageCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
         PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
@@ -33,9 +35,11 @@ public class MessageCMD implements CommandExecutor {
                     if (target != null && target != player) {
                         if (!cache.isMuted(uuid)) {
                             if (cache.hasBeenBotChecked(uuid)) {
+                                UUID targetUUID = target.getUniqueId();
+                                if (data.isAFK(targetUUID)) player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK.getComponent(new String[] { target.getName() })));
                                 Component message = Component.text(pu.buildStringFromArgs(args, 1));
-                                cache.setLastReplied(target.getUniqueId(), uuid);
-                                cache.setLastReplied(uuid, target.getUniqueId());
+                                cache.setLastReplied(targetUUID, uuid);
+                                cache.setLastReplied(uuid, targetUUID);
                                 player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(pu.parseChatVariables(player, message.color(TextColor.color(0, 220, 234)))));
                                 target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(pu.parseChatVariables(player, message.color(TextColor.color(0, 220, 234)))));
                             }

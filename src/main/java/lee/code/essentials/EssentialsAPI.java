@@ -33,4 +33,16 @@ public class EssentialsAPI {
         if (pu.getSellableItems().contains(checkItem)) return ItemSellValues.valueOf(checkItem.getType().name()).getValue();
         else return 0;
     }
+
+    public boolean isBoosterActive() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+        return cache.isBoosterActive();
+    }
+
+    public int getBoosterMultiplier() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+        return Integer.parseInt(cache.getBoosterMultiplier(cache.getActiveBoosterID()));
+    }
 }

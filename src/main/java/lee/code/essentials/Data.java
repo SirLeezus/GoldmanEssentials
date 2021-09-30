@@ -36,6 +36,7 @@ public class Data {
     @Getter private final List<Component> serverMOTD = new ArrayList<>();
     @Getter private final List<String> pluginCommands = new ArrayList<>();
     @Getter private final List<UUID> staffChat = new ArrayList<>();
+    @Getter private final List<UUID> afkPlayers = new ArrayList<>();
     @Getter private final List<String> whitelistedWorlds = new ArrayList<>();
     @Getter @Setter private int teamNumber = 0;
 
@@ -49,6 +50,10 @@ public class Data {
     private final ConcurrentHashMap<UUID, BukkitTask> resourceWorldMenuTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, List<UUID>> sleepingPlayers = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, BukkitTask> sleepTasks = new ConcurrentHashMap<>();
+
+    public boolean isAFK(UUID uuid) { return afkPlayers.contains(uuid); }
+    public void addAFK(UUID uuid) { afkPlayers.add(uuid); }
+    public void removeAFK(UUID uuid) { afkPlayers.remove(uuid); }
 
     public void addStaffChat(UUID uuid) { staffChat.add(uuid); }
     public void removeStaffChat(UUID uuid) { staffChat.remove(uuid); }

@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
@@ -18,6 +19,7 @@ public class TeleportCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
@@ -27,18 +29,20 @@ public class TeleportCMD implements CommandExecutor {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         if (target != player) {
+                            UUID targetUUID = target.getUniqueId();
                             if (player.isOp()) {
                                 player.teleportAsync(target.getLocation());
                                 player.sendActionBar(Lang.TELEPORT.getComponent(null));
                                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getComponent(new String[] { target.getName() })));
 
-                            } else if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, target.getUniqueId())) {
+                            } else if (!plugin.getData().isPlayerRequestingTeleportForTarget(uuid, targetUUID)) {
+                                if (data.isAFK(targetUUID)) player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK.getComponent(new String[] { target.getName() })));
                                 Component targetMessage = Lang.REQUEST_TELEPORT_TARGET.getComponent(new String[] { player.getName() });
 
                                 Component accept = Lang.REQUEST_TELEPORT_ACCEPT.getComponent(null).hoverEvent(Lang.REQUEST_TELEPORT_ACCEPT_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + player.getName()));
                                 Component deny = Lang.REQUEST_TELEPORT_DENY.getComponent(null).hoverEvent(Lang.REQUEST_TELEPORT_DENY_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny " + player.getName()));
 
-                                plugin.getData().setPlayerRequestingTeleport(uuid, target.getUniqueId());
+                                plugin.getData().setPlayerRequestingTeleport(uuid, targetUUID);
 
                                 target.sendMessage(targetMessage.append(accept).append(deny));
                                 plugin.getPU().teleportTimer(player, target);

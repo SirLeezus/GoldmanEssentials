@@ -149,6 +149,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("resetresourceworlds").setExecutor(new ResetResourceWorldsCMD());
         getCommand("seen").setExecutor(new SeenCMD());
         getCommand("iteminfo").setExecutor(new ItemInfoCMD());
+        getCommand("afk").setExecutor(new AfkCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -227,6 +228,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("resetresourceworlds").setTabCompleter(new ResetResourceWorldsTab());
         getCommand("seen").setTabCompleter(new SeenTab());
         getCommand("iteminfo").setTabCompleter(new ItemInfoTab());
+        getCommand("afk").setTabCompleter(new AfkTab());
     }
 
     private void registerListeners() {
@@ -257,6 +259,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ItemFrameListener(), this);
         getServer().getPluginManager().registerEvents(new DragonEggListener(), this);
         getServer().getPluginManager().registerEvents(new PortalListener(), this);
+        getServer().getPluginManager().registerEvents(new AFKListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {
