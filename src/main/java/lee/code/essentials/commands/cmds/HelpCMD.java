@@ -107,6 +107,7 @@ public class HelpCMD implements CommandExecutor {
                     lines.add(Component.text(""));
 
                     changes.add("No swing delay with tools or weapons.");
+                    changes.add("You can put any item on your head.");
                     changes.add("Item frames can be used to filter hoppers.");
                     changes.add("Armor stands can be edited by sneak-clicking them.");
                     changes.add("You can store exp by sneak-clicking glass bottles.");
