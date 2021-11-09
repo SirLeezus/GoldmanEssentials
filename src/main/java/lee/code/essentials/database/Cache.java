@@ -1181,12 +1181,31 @@ public class Cache {
         }
     }
 
+    public int getTotalVotes(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        String sUUID = String.valueOf(uuid);
+        try (Jedis jedis = pool.getResource()) {
+            return Integer.parseInt(jedis.hget("votes", sUUID));
+        }
+    }
+
+    public void addVote(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        String sUUID = String.valueOf(uuid);
+        try (Jedis jedis = pool.getResource()) {
+            int votes = Integer.parseInt(jedis.hget("votes", sUUID)) + 1;
+            jedis.hset("votes", sUUID, String.valueOf(votes));
+        }
+    }
+
     public void createDefaultColumns(UUID uuid) {
-        setPlayerData(uuid, "0", "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0", "0", "0", "0", "0", true);
+        setPlayerData(uuid, "0", "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0", "0", "0", "0", "0", "0", true);
         setPunishmentData(uuid, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", true);
     }
 
-    public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, String flying, boolean sql) {
+    public void setPlayerData(UUID uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, String flying, String votes, boolean sql) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
@@ -1207,8 +1226,9 @@ public class Cache {
             pipe.hset("god", sUUID, god);
             pipe.hset("homes", sUUID, homes);
             pipe.hset("flying", sUUID, flying);
+            pipe.hset("votes", sUUID, votes);
             pipe.sync();
-            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying));
+            if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes));
         }
     }
 

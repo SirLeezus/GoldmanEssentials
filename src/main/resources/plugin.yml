@@ -4,7 +4,7 @@ version: ${project.version}
 api-version: 1.17
 author: Lee
 depend: [ProtocolLib, RedisCache]
-softdepend: [GoldmanEnchants]
+softdepend: [GoldmanEnchants, Votifier]
 commands:
   essreload:
     description: Reload plugin text files.
@@ -328,3 +328,7 @@ commands:
     description: Set yourself to away from keyboard.
     permission: essentials.command.afk
     usage: "/afk"
+  vote:
+    description: Server voting info.
+    permission: essentials.command.vote
+    usage: "/vote"

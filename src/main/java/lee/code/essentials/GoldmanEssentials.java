@@ -2,6 +2,7 @@ package lee.code.essentials;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.vexsoftware.votifier.model.Vote;
 import lee.code.cache.CacheAPI;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
@@ -47,7 +48,7 @@ public class GoldmanEssentials extends JavaPlugin {
         registerListeners();
 
         sqLite.connect();
-        //sqLite.updateTable("server");
+        //sqLite.updateTable("player_data");
         sqLite.loadTables();
         data.cacheDatabase();
 
@@ -150,6 +151,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("seen").setExecutor(new SeenCMD());
         getCommand("iteminfo").setExecutor(new ItemInfoCMD());
         getCommand("afk").setExecutor(new AfkCMD());
+        getCommand("vote").setExecutor(new VoteCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -229,6 +231,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("seen").setTabCompleter(new SeenTab());
         getCommand("iteminfo").setTabCompleter(new ItemInfoTab());
         getCommand("afk").setTabCompleter(new AfkTab());
+        getCommand("vote").setTabCompleter(new VoteTab());
     }
 
     private void registerListeners() {
@@ -260,6 +263,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DragonEggListener(), this);
         getServer().getPluginManager().registerEvents(new PortalListener(), this);
         getServer().getPluginManager().registerEvents(new AFKListener(), this);
+        getServer().getPluginManager().registerEvents(new VoteListener(), this);
     }
 
     public static GoldmanEssentials getPlugin() {

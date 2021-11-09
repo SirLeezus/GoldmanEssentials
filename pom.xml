@@ -87,5 +87,13 @@
             <artifactId>ProtocolLib</artifactId>
             <version>4.6.0</version>
         </dependency>
+        <!-- NuVotifier API -->
+        <dependency>
+            <groupId>com.vexsoftware</groupId>
+            <artifactId>nuvotifier-universal</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Lee\Documents\APIs\nuvotifier.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

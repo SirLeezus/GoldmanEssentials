@@ -1,6 +1,7 @@
 package lee.code.essentials.database;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -78,7 +79,8 @@ public class SQLite {
                 "`vanish` varchar NOT NULL," +
                 "`god` varchar NOT NULL," +
                 "`homes` varchar NOT NULL," +
-                "`flying` varchar NOT NULL" +
+                "`flying` varchar NOT NULL," +
+                "`votes` varchar NOT NULL" +
                 ");");
 
         //server data table
@@ -122,30 +124,75 @@ public class SQLite {
     //UPDATER STUFF
 
     public void updateTable(String table) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
 
         //temp table
         update("CREATE TABLE IF NOT EXISTS temp (" +
-                "`server` varchar PRIMARY KEY," +
-                "`spawn` varchar NOT NULL," +
-                "`joins` varchar NOT NULL," +
-                "`world_resource_time` varchar NOT NULL," +
-                "`world_resource_spawn` varchar NOT NULL," +
-                "`nether_resource_spawn` varchar NOT NULL," +
-                "`end_resource_spawn` varchar NOT NULL" +
+                "`player` varchar PRIMARY KEY," +
+                "`balance` varchar NOT NULL," +
+                "`ranked` varchar NOT NULL," +
+                "`perms` varchar NOT NULL," +
+                "`prefix` varchar NOT NULL," +
+                "`suffix` varchar NOT NULL," +
+                "`color` varchar NOT NULL," +
+                "`level` varchar NOT NULL," +
+                "`prestige` varchar NOT NULL," +
+                "`vanish` varchar NOT NULL," +
+                "`god` varchar NOT NULL," +
+                "`homes` varchar NOT NULL," +
+                "`flying` varchar NOT NULL," +
+                "`votes` varchar NOT NULL" +
                 ");");
+
+        String sqlQuery = "INSERT OR REPLACE INTO temp values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
         try {
-            ResultSet rsTable = getResult("SELECT * FROM " + table + ";");
-            while (rsTable.next()) {
-                String server = rsTable.getString("server");
-                String spawn = rsTable.getString("spawn");
-                String joins = rsTable.getString("joins");
-                update("INSERT OR REPLACE INTO temp(server, spawn, joins, world_resource_time, world_resource_spawn, nether_resource_spawn, end_resource_spawn) VALUES('" + server + "','" + spawn + "','" + joins + "','" + 0 + "','" + 0 + "','" + 0 + "','" + 0 + "');");
+            ResultSet rs = getResult("SELECT * FROM " + table + ";");
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            int number = 1;
+
+            while (rs.next()) {
+                String uuid = rs.getString("player");
+                String balance = rs.getString("balance");
+                String ranked = rs.getString("ranked");
+                String perms = rs.getString("perms");
+                String prefix = rs.getString("prefix");
+                String suffix = rs.getString("suffix");
+                String color = rs.getString("color");
+                String level = rs.getString("level");
+                String prestige = rs.getString("prestige");
+                String vanish = rs.getString("vanish");
+                String god = rs.getString("god");
+                String homes = rs.getString("homes");
+                String flying = rs.getString("flying");
+
+                pstmt.setString(1, uuid);
+                pstmt.setString(2, balance);
+                pstmt.setString(3, ranked);
+                pstmt.setString(4, perms);
+                pstmt.setString(5, prefix);
+                pstmt.setString(6, suffix);
+                pstmt.setString(7, color);
+                pstmt.setString(8, level);
+                pstmt.setString(9, prestige);
+                pstmt.setString(10, vanish);
+                pstmt.setString(11, god);
+                pstmt.setString(12, homes);
+                pstmt.setString(13, flying);
+                pstmt.setString(14, "0");
+                pstmt.addBatch();
+
+                System.out.println(pu.format("&e" + uuid + " converted: " + number++));
             }
-            update("DROP TABLE " + table + ";");
-            update("ALTER TABLE temp RENAME TO " + table + ";");
+            pstmt.executeBatch();
+            pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        update("DROP TABLE " + table + ";");
+        update("ALTER TABLE temp RENAME TO " + table + ";");
     }
 
     //BOOSTER DATA TABLE
@@ -245,8 +292,8 @@ public class SQLite {
 
     //PLAYER DATA TABLE
 
-    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, String flying) {
-        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "','" + level + "','" + prestige + "','" + vanish + "','" + god + "','" + homes + "','" + flying + "');");
+    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, String flying, String votes) {
+        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "','" + level + "','" + prestige + "','" + vanish + "','" + god + "','" + homes + "','" + flying + "','" + votes + "');");
     }
 
     public void deposit(String uuid, String value) {
@@ -360,7 +407,8 @@ public class SQLite {
                 String god = rs.getString("god");
                 String homes = rs.getString("homes");
                 String flying = rs.getString("flying");
-                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, false);
+                String votes = rs.getString("votes");
+                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes, false);
                 count++;
             }
             Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bPlayer Account Data Loaded: &3" + count));
