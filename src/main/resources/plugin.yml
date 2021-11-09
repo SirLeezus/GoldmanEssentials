@@ -260,7 +260,7 @@ commands:
     description: Teleport randomly in the world you're in.
     permission: essentials.command.randomteleport
     aliases: [rtp]
-    usage: "/randomteleport &f<player>"
+    usage: "/randomteleport"
   rules:
     description: List of all the server rules.
     permission: essentials.command.rules

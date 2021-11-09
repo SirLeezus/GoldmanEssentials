@@ -110,11 +110,14 @@ public class PU {
     public void rtpPlayer(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Bukkit.getScheduler().runTask(plugin, () -> {
-            int x = -10000 + random.nextInt(20000);
-            int y = 100;
-            int z = -10000 + random.nextInt(20000);
-
             World world = player.getWorld();
+
+            int borderMax = (int) world.getWorldBorder().getSize() * 5;
+            int borderMin = borderMax - (borderMax + borderMax);
+            int x = borderMin + random.nextInt(borderMax);
+            int y = 100;
+            int z = borderMin + random.nextInt(borderMax);
+
             Location location = new Location(player.getWorld(), x, y, z);
 
             if (world.getWorldBorder().isInside(location)) {
@@ -591,16 +594,39 @@ public class PU {
 
         long milliseconds = System.currentTimeMillis();
         long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + Settings.PVP_DELAY.getValue();
-        data.setPvPTimer(uuid, time);
+        data.setPVPTimer(uuid, time);
 
         data.addPvPTaskActive(uuid, new BukkitRunnable() {
             @Override
             public void run() {
-                data.removePvPTimer(uuid);
+                data.removePVPTimer(uuid);
                 data.removePvPTaskActive(uuid);
             }
 
         }.runTaskLater(plugin, Settings.PVP_DELAY.getValue() * 20L));
+    }
+
+    public void addRandomTeleportDelay(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+
+        if (data.isRTPTaskActive(uuid)) {
+            BukkitTask task = data.getRTPDelayTask(uuid);
+            task.cancel();
+        }
+
+        long milliseconds = System.currentTimeMillis();
+        long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + Settings.RTP_DELAY.getValue();
+        data.setRTPTimer(uuid, time);
+
+        data.addRTPTaskActive(uuid, new BukkitRunnable() {
+            @Override
+            public void run() {
+                data.removeRTPTimer(uuid);
+                data.removeRTPTaskActive(uuid);
+            }
+
+        }.runTaskLater(plugin, Settings.RTP_DELAY.getValue() * 20L));
     }
 
     public void addSpamDelay(UUID uuid) {

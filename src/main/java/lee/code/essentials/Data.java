@@ -46,6 +46,8 @@ public class Data {
     private final ConcurrentHashMap<UUID, UUID> activeArmorStands = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerPvPTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Long> playerPvPTimer = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BukkitTask> playerRTPTask = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Long> playerRTPTimer = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerSpamTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> resourceWorldMenuTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, List<UUID>> sleepingPlayers = new ConcurrentHashMap<>();
@@ -90,17 +92,38 @@ public class Data {
         return playerPvPTask.get(uuid);
     }
 
+    public boolean isRTPTaskActive(UUID player) {
+        return playerRTPTask.containsKey(player);
+    }
+    public void addRTPTaskActive(UUID player, BukkitTask task) {
+        playerRTPTask.put(player, task);
+    }
+    public void removeRTPTaskActive(UUID player) {
+        playerRTPTask.remove(player);
+    }
+    public BukkitTask getRTPDelayTask(UUID uuid) {
+        return playerRTPTask.get(uuid);
+    }
+
     public void setBackLocation(UUID uuid, String location) { playersBackLocations.put(uuid, location); }
     public String getBackLocation(UUID uuid) { return playersBackLocations.get(uuid); }
     public boolean hasBackLocation(UUID uuid) { return playersBackLocations.containsKey(uuid); }
 
-    public void setPvPTimer(UUID player, long time) {
+    public void setPVPTimer(UUID player, long time) {
         playerPvPTimer.put(player, time);
     }
-    public void removePvPTimer(UUID player) {
+    public void removePVPTimer(UUID player) {
         playerPvPTimer.remove(player);
     }
     public long getPVPTimer(UUID player) { return playerPvPTimer.getOrDefault(player, 0L); }
+
+    public void setRTPTimer(UUID player, long time) {
+        playerRTPTimer.put(player, time);
+    }
+    public void removeRTPTimer(UUID player) {
+        playerRTPTimer.remove(player);
+    }
+    public long getRTPTimer(UUID player) { return playerRTPTimer.getOrDefault(player, 0L); }
 
     public boolean isResourceWorldTaskActive(UUID player) {
         return resourceWorldMenuTask.containsKey(player);

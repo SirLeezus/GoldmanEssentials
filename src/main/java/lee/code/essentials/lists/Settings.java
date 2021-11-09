@@ -8,6 +8,7 @@ public enum Settings {
 
     CLICK_DELAY(5),
     PVP_DELAY(10),
+    RTP_DELAY(30),
     SPAM_DELAY(1),
     BOT_KICK_DELAY(30),
     DEFAULT_PLAYER_HOMES(10),

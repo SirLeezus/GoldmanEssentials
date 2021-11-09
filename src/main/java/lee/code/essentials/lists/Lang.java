@@ -201,6 +201,8 @@ public enum Lang {
     ERROR_DELETEHOME_BED("&cYou can't delete your bed home, you just need to remove the bed or sleep in another bed."),
     ERROR_LIST_PAGE_NOT_NUMBER("&cThe input &6{0} &cis not a number. &a&lUse&7: &e(1)"),
     ERROR_ARMOR_STAND_EDIT("&cThat armor stand is currently being edited by another player."),
+    ERROR_RANDOM_TELEPORT_DELAY("&7You will need to wait {0} &7to use random teleport again."),
+    ERROR_RANDOM_WORLD_TYPE("&cYou can only use random teleport in normal worlds."),
     ERROR_EXP_BOTTLE_POINTS("&cYou need at least 8 exp to store some in a bottle!"),
     ERROR_COMMAND_BOOSTER("&cThere are currently no active boosters."),
     ERROR_COMMAND_BACK("&cYou currently don't have any saved back locations."),

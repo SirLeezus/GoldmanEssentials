@@ -104,6 +104,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.seen");
         defaultPerms.add("essentials.command.afk");
         defaultPerms.add("essentials.command.vote");
+        defaultPerms.add("essentials.command.randomteleport");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");
