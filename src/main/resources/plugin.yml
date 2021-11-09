@@ -82,7 +82,7 @@ commands:
   teleport:
     description: Teleport to a player.
     permission: essentials.command.teleport
-    aliases: [tp]
+    aliases: [tp, tpa]
     usage: "/teleport &f<player>"
   back:
     description: Teleport back to your most recent saved locaiton.
@@ -192,6 +192,7 @@ commands:
   sellall:
     description: Sell all of the item you're holding to the server.
     permission: essentials.command.sellall
+    aliases: [sellhand]
     usage: "/sellall"
   worth:
     description: Check the server sell worth of a item you're holding.

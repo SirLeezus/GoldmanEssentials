@@ -5,7 +5,6 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.Settings;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +27,7 @@ public class SetHomeCMD implements CommandExecutor {
 
             if (args.length > 0) {
                 String name = pu.buildStringFromArgs(args, 0).replaceAll("[^a-zA-Z0-9 ]", "");
-                int maxHomes = Settings.MAX_PLAYER_HOMES.getValue();
+                int maxHomes = pu.getMaxHomes(player);
                 int homesSaved = cache.getHomes(uuid).size();
                 if (!name.equalsIgnoreCase("bed")) {
                     if (!name.isEmpty() && !cache.isAlreadyHome(uuid, name)) {

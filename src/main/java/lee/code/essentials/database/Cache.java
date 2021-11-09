@@ -455,8 +455,8 @@ public class Cache {
             String[] split = StringUtils.split(homes, ',');
 
             List<String> names = new ArrayList<>();
-            for (String home : split) names.add(plugin.getPU().unFormatPlayerHomeName(home));
             names.add("bed");
+            for (String home : split) names.add(plugin.getPU().unFormatPlayerHomeName(home));
             return names;
         }
     }

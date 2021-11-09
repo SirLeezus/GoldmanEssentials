@@ -687,6 +687,19 @@ public class PU {
         return exp;
     }
 
+    public int getMaxHomes(Player player) {
+        int defaultHomeAmount = Settings.DEFAULT_PLAYER_HOMES.getValue();
+        int homeAmountGiven = Settings.ACCRUED_HOME_AMOUNT_GIVEN.getValue();
+        int maxAccruedClaims = Settings.ACCRUED_HOME_MAX.getValue();
+        int baseTimeRequired = Settings.ACCRUED_HOME_BASE_TIME_REQUIRED.getValue();
+
+        int time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20;
+        int accruedHomes = time / baseTimeRequired * homeAmountGiven;
+        if (accruedHomes > maxAccruedClaims) accruedHomes = maxAccruedClaims;
+
+        return accruedHomes + defaultHomeAmount;
+    }
+
     public int getFreeSpace(Player player, ItemStack item) {
         item.setAmount(1);
         int freeSpaceCount = 0;

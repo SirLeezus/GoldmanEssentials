@@ -39,10 +39,11 @@ public class JoinListener implements Listener {
         UUID uuid = player.getUniqueId();
         Cache cache = plugin.getCache();
 
-        //player counter
+        //first time
         if (!player.hasPlayedBefore()) {
             cache.addPlayerCounter();
-            player.teleportAsync(cache.getSpawn());
+            Location spawn = cache.getSpawn();
+            if (spawn != null) player.teleportAsync(spawn);
             player.getInventory().addItem(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 5));
             plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cache.getPlayerCounter()) })));
         }

@@ -191,7 +191,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("give").setTabCompleter(new GiveTab());
         getCommand("weather").setTabCompleter(new WeatherTab());
         getCommand("help").setTabCompleter(new HelpTab());
-        getCommand("sell").setTabCompleter(new HelpTab());
+        getCommand("sell").setTabCompleter(new SellTab());
         getCommand("worth").setTabCompleter(new WorthTab());
         getCommand("sellall").setTabCompleter(new SellAllTab());
         getCommand("home").setTabCompleter(new HomeTab());
