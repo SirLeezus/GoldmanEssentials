@@ -30,7 +30,7 @@ public class RulesCMD implements CommandExecutor {
             lines.add(pu.formatC("&31. &eHacking is not allowed."));
             lines.add(pu.formatC("&32. &eExploiting bugs is not allowed."));
             lines.add(pu.formatC("&33. &eCreating unnecessary massive redstone contraptions is not allowed."));
-            lines.add(pu.formatC("&34. &ePlacing a massive amount of block entities (Chests, Signs, Campfires) in the same area is not allowed."));
+            lines.add(pu.formatC("&34. &ePlacing a massive amount of block entities (Chests, Signs, Campfires, Heads, ect.) in the same area is not allowed."));
             lines.add(pu.formatC("&35. &eDo not lie or cheat players, keep your word."));
             lines.add(pu.formatC("&36. &eDon't be a bully."));
             lines.add(pu.formatC("&37. &eNo claiming around other player's bases if they don't want you near them."));

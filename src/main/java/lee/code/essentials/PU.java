@@ -107,6 +107,11 @@ public class PU {
         return WordUtils.capitalize(format);
     }
 
+    public String formatDecimal(double value) {
+        DecimalFormat formatter = new DecimalFormat("#,###.00");
+        return formatter.format(value);
+    }
+
     public void rtpPlayer(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Bukkit.getScheduler().runTask(plugin, () -> {

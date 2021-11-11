@@ -33,6 +33,7 @@ public enum Lang {
     AUTO_RESTART_WARNING_START("&eThe server is about to restart!"),
     AUTO_RESTART_WARNING_END("&eThe server is restarting!"),
     AUTO_RESTART_TIME("&2&lRestarting in &e&l{0}&6&ls"),
+    DEATH_CORDS("&cYou died at &b(&eW&7:&6{0} &eX&7:&6{1} &eY&7:&6{2} &eZ&7:&6{3}&b) &cUse &6/back &cto return to death location."),
     STAFF_CHAT_COLOR("&#5628FF : "),
     STORE("https://journey.buycraft.net"),
     DISCORD("https://discord.gg/UP65uzBP7m"),
