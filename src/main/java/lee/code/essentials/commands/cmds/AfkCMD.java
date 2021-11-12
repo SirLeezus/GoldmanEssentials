@@ -24,7 +24,8 @@ public class AfkCMD implements CommandExecutor {
             UUID uuid = player.getUniqueId();
             if (!data.isAFK(uuid)) {
                 data.addAFK(uuid);
-                plugin.getServer().sendMessage(player.displayName().append(pu.formatC(" &7is AFK.")));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK_ON.getComponent(null)));
+                pu.updateDisplayName(player, true);
             }
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;

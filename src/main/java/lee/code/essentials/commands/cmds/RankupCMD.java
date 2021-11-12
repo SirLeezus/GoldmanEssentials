@@ -85,7 +85,7 @@ public class RankupCMD implements CommandExecutor {
                         if (!player.hasPermission("essentials.command.namecolor")) cache.setColor(uuid, nextColor);
                         cache.setRank(uuid, nextRank);
                         cache.setPrefix(uuid, nextRankPrefix);
-                        plugin.getPU().updateDisplayName(player);
+                        plugin.getPU().updateDisplayName(player, false);
                         player.giveExp(expAmount);
                         cache.deposit(uuid, cashAmount);
                         plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_BROADCAST.getComponent(new String[]{player.getName(), nextRankPrefix})));
@@ -114,7 +114,7 @@ public class RankupCMD implements CommandExecutor {
                                 for (String criteria : progress.getAwardedCriteria()) progress.revokeCriteria(criteria);
                             }
                         }
-                        plugin.getPU().updateDisplayName(player);
+                        plugin.getPU().updateDisplayName(player, false);
                         player.giveExp(expAmount);
                         cache.deposit(uuid, cashAmount);
                         plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_PRESTIGE_BROADCAST.getComponent(new String[]{player.getName(), playerNextPrestige})));

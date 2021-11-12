@@ -25,7 +25,7 @@ public class SetColorCMD implements CommandExecutor {
                     if (plugin.getData().getColorNames().contains(args[1])) {
                         String color = args[1];
                         cache.setColor(target.getUniqueId(), color);
-                        plugin.getPU().updateDisplayName(target);
+                        plugin.getPU().updateDisplayName(target, false);
                         sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETCOLOR_SUCCESSFUL.getComponent(new String[] { target.getName(), ChatColor.valueOf(color) + color })));
                     }
                 } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));

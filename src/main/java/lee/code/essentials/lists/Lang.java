@@ -28,6 +28,8 @@ public enum Lang {
     PLAYER_QUIT(" &7left the server."),
     MESSAGE_SENT("&9[&eYou &9-> &e{0}&9] "),
     AFK("&7The player &6{0} &7is currently AFK."),
+    AFK_ON("&7You're now AFK."),
+    AFK_OFF("&7You're no longer AFK."),
     VOTE("&2The player &6{0} &2just voted for the server and received &6$1,000&2!"),
     BOT_CHECKER_KICK("&cYou failed to verify you're not a bot so you've been kicked."),
     AUTO_RESTART_WARNING_START("&eThe server is about to restart!"),

@@ -32,7 +32,7 @@ public class SetRankCMD implements CommandExecutor {
                         cache.setRank(tUUID, rank);
                         cache.setPrefix(tUUID, RankList.valueOf(rank).getPrefix());
                     } else if (plugin.getPU().getPremiumRanks().contains(rank)) cache.setSuffix(tUUID, " " + PremiumRankList.valueOf(rank).getSuffix());
-                    plugin.getPU().updateDisplayName(target);
+                    plugin.getPU().updateDisplayName(target, false);
                     if (!target.isOp()) plugin.getPermissionManager().register(target);
                     sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKSET_SUCCESSFUL.getComponent(new String[] { rank, target.getName() })));
                 } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));

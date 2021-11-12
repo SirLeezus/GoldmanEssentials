@@ -411,7 +411,7 @@ public class PU {
     }
 
     @SuppressWarnings("deprecation")
-    public void updateDisplayName(Player player) {
+    public void updateDisplayName(Player player, boolean afk) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
         Data data = plugin.getData();
@@ -445,7 +445,7 @@ public class PU {
             team.addEntry(player.getName());
 
             String prefix = cache.getPrefix(uuid) + " ";
-            String suffix = cache.getSuffix(uuid);
+            String suffix = afk ? " &c&lAFK" + cache.getSuffix(uuid) : cache.getSuffix(uuid);
             org.bukkit.ChatColor color = org.bukkit.ChatColor.valueOf(cache.getColor(uuid));
             int prestigeLevel = cache.getPrestige(uuid);
             String prestige = prestigeLevel != 0 ? " &7[&a&l" + prestigeLevel + "&7]" : "";

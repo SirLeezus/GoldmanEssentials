@@ -110,7 +110,7 @@ public class JoinListener implements Listener {
         for (NamespacedKey key : plugin.getData().getRecipeKeys()) e.getPlayer().discoverRecipe(key);
 
         //update player display name
-        plugin.getPU().updateDisplayName(player);
+        plugin.getPU().updateDisplayName(player, false);
 
         //set join message format
         if (plugin.getData().getVanishedPlayers().contains(uuid)) e.joinMessage(null);

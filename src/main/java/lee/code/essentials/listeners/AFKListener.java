@@ -3,6 +3,9 @@ package lee.code.essentials.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
+import lee.code.essentials.lists.Lang;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +24,9 @@ public class AFKListener implements Listener {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (data.isAFK(uuid)) data.removeAFK(uuid);
+        if (data.isAFK(uuid)) toggleAFK(player, false);
+
+
     }
 
     @EventHandler
@@ -31,7 +36,8 @@ public class AFKListener implements Listener {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (data.isAFK(uuid)) data.removeAFK(uuid);
+        if (data.isAFK(uuid)) toggleAFK(player, false);
+
     }
 
     @EventHandler
@@ -41,7 +47,7 @@ public class AFKListener implements Listener {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (data.isAFK(uuid)) data.removeAFK(uuid);
+        if (data.isAFK(uuid)) toggleAFK(player, false);
     }
 
     @EventHandler
@@ -51,6 +57,23 @@ public class AFKListener implements Listener {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (data.isAFK(uuid)) data.removeAFK(uuid);
+        if (data.isAFK(uuid)) toggleAFK(player, false);
+    }
+
+    private void toggleAFK(Player player, boolean afk) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
+        Data data = plugin.getData();
+        PU pu = plugin.getPU();
+        UUID uuid = player.getUniqueId();
+
+        if (!afk) {
+            data.removeAFK(uuid);
+            pu.updateDisplayName(player, false);
+            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK_OFF.getComponent(null)));
+        }
+    }
+
+    private void updateAFKLocation(Player player) {
+
     }
 }

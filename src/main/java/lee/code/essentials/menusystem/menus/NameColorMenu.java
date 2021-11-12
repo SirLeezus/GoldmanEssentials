@@ -49,7 +49,7 @@ public class NameColorMenu extends Menu {
                 if (plugin.getPU().getNameColorItems().contains(clickedItem)) {
                     String id = getColorID(clickedItem);
                     cache.setColor(uuid, id);
-                    plugin.getPU().updateDisplayName(player);
+                    plugin.getPU().updateDisplayName(player, false);
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COLOR_MENU_SELECT.getComponent(new String[] { ChatColor.valueOf(id) + plugin.getPU().formatCapitalization(id) })));
                     player.getInventory().close();
                 } else if (clickedItem.equals(close)) player.getInventory().close();

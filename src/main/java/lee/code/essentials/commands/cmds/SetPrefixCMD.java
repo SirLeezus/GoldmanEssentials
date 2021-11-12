@@ -23,7 +23,7 @@ public class SetPrefixCMD implements CommandExecutor {
                 if (target != null) {
                     String prefix = plugin.getPU().buildStringFromArgs(args, 1) + " ";
                     cache.setPrefix(target.getUniqueId(), prefix);
-                    plugin.getPU().updateDisplayName(target);
+                    plugin.getPU().updateDisplayName(target, false);
                     sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETPREFIX_SUCCESSFUL.getComponent(new String[]{target.getName(), plugin.getPU().format(prefix)})));
                 } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_ONLINE.getComponent(new String[]{args[0]})));
