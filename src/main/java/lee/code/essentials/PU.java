@@ -279,6 +279,10 @@ public class PU {
         return EnumSet.allOf(BoosterDropBlocks.class).stream().map(BoosterDropBlocks::getBlock).collect(Collectors.toList());
     }
 
+    public List<Component> getBroadcasts() {
+        return EnumSet.allOf(Broadcasts.class).stream().map(Broadcasts::getComponent).collect(Collectors.toList());
+    }
+
     public int getItemAmount(Player player, ItemStack item) {
         if (item == null) return 0;
         int amount = 0;

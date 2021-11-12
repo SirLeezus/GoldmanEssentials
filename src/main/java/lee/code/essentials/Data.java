@@ -39,6 +39,7 @@ public class Data {
     @Getter private final List<UUID> afkPlayers = new ArrayList<>();
     @Getter private final List<String> whitelistedWorlds = new ArrayList<>();
     @Getter @Setter private int teamNumber = 0;
+    @Getter @Setter private int lastBroadcast = 0;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();

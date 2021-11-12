@@ -1,9 +1,11 @@
 package lee.code.essentials.listeners;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.Settings;
+import lee.code.essentials.managers.TabListManager;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -36,6 +38,8 @@ public class JoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = e.getPlayer();
+        PU pu = plugin.getPU();
+        TabListManager tabListManager = plugin.getTabListManager();
         UUID uuid = player.getUniqueId();
         Cache cache = plugin.getCache();
 
@@ -45,7 +49,7 @@ public class JoinListener implements Listener {
             Location spawn = cache.getSpawn();
             if (spawn != null) player.teleportAsync(spawn);
             player.getInventory().addItem(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 5));
-            plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cache.getPlayerCounter()) })));
+            Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cache.getPlayerCounter()) })));
         }
 
         //bot checker
@@ -60,7 +64,7 @@ public class JoinListener implements Listener {
 
         //booster bar check
         if (cache.isBoosterActive()) {
-            player.showBossBar(plugin.getPU().getBoosterBar());
+            player.showBossBar(pu.getBoosterBar());
         }
 
         //flying check
@@ -79,7 +83,7 @@ public class JoinListener implements Listener {
             e.joinMessage(null);
             long secondsLeft = cache.getTempBanTime(uuid);
             if (secondsLeft > 0) {
-                player.kick(Lang.TEMPBANNED.getComponent(new String[] { plugin.getPU().formatSeconds(secondsLeft), cache.getBanReason(uuid) }));
+                player.kick(Lang.TEMPBANNED.getComponent(new String[] { pu.formatSeconds(secondsLeft), cache.getBanReason(uuid) }));
                 return;
             } else cache.setTempBannedPlayer(uuid, null, "0", 0, false);
 
@@ -110,7 +114,10 @@ public class JoinListener implements Listener {
         for (NamespacedKey key : plugin.getData().getRecipeKeys()) e.getPlayer().discoverRecipe(key);
 
         //update player display name
-        plugin.getPU().updateDisplayName(player, false);
+        pu.updateDisplayName(player, false);
+
+        //update tablist
+        tabListManager.updatePlayer(player);
 
         //set join message format
         if (plugin.getData().getVanishedPlayers().contains(uuid)) e.joinMessage(null);

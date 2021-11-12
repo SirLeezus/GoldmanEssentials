@@ -26,7 +26,7 @@ public class ColorsCMD implements CommandExecutor {
         lines.add(Component.text("  §0&0  §1&1  §2&2  §3&3  §4&4"));
         lines.add(Component.text("  §5&5  §6&6  §7&7  §8&8  §9&9"));
         lines.add(Component.text("  §a&a  §b&b  §c&c  §d&d  §e&e"));
-        lines.add(Component.text("  §f&f  §k&k§r  §l&l§r  §m&m§r  §n&n§r"));
+        lines.add(Component.text("  §f&f  &k§kl§r  §l&l§r  §m&m§r  §n&n§r"));
         lines.add(Component.text("  §o&o§r  §r&r"));
 
         lines.add(Component.text(""));
