@@ -29,7 +29,7 @@ public class SetHomeCMD implements CommandExecutor {
                 String name = pu.buildStringFromArgs(args, 0).replaceAll("[^a-zA-Z0-9 ]", "");
                 int maxHomes = pu.getMaxHomes(player);
                 int homesSaved = cache.getHomes(uuid).size();
-                if (!name.equalsIgnoreCase("bed")) {
+                if (!name.equalsIgnoreCase("bed") && !name.equalsIgnoreCase("page")) {
                     if (!name.isEmpty() && !cache.isAlreadyHome(uuid, name)) {
                         if (homesSaved < maxHomes) {
                             if (data.getWhitelistedWorlds().contains(player.getWorld().getName())) {

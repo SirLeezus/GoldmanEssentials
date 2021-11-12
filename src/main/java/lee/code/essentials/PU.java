@@ -408,6 +408,32 @@ public class PU {
         });
     }
 
+    public void scheduleAutoBroadcast() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                int lastPlayed = data.getLastBroadcast();
+                List<Component> broadcasts = getBroadcasts();
+                Component play = broadcasts.get(lastPlayed);
+                Bukkit.getServer().sendMessage(Lang.TIP.getComponent(null).append(play));
+                if (lastPlayed + 1 > getBroadcasts().size() - 1) data.setLastBroadcast(0);
+                else data.setLastBroadcast(lastPlayed + 1);
+            }
+        }, 10, 300 * 20);
+    }
+
+    public void scheduleTabListUpdater() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                Bukkit.getServer().sendPlayerListHeaderAndFooter(Lang.TABLIST_HEADER.getComponent(null), Lang.TABLIST_FOOTER.getComponent(new String[] { String.valueOf(getOnlinePlayers().size()) }));
+            }
+        }, 10, 40);
+    }
+
     public String getProgressBar(int current, int max, int totalBars, String symbol, String completedColor, String notCompletedColor) {
         float percent = (float) current / max;
         int progressBars = (int) (totalBars * percent);
@@ -653,7 +679,7 @@ public class PU {
                 data.removeSpamTaskActive(uuid);
             }
 
-        }.runTaskLater(plugin, Settings.SPAM_DELAY.getValue() * 20L));
+        }.runTaskLater(plugin, 10));
     }
 
     public void applyHeadSkin(ItemStack head, String base64, UUID uuid) {

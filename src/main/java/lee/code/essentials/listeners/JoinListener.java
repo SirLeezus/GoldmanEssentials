@@ -5,7 +5,6 @@ import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.Settings;
-import lee.code.essentials.managers.TabListManager;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -39,7 +38,7 @@ public class JoinListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = e.getPlayer();
         PU pu = plugin.getPU();
-        TabListManager tabListManager = plugin.getTabListManager();
+
         UUID uuid = player.getUniqueId();
         Cache cache = plugin.getCache();
 
@@ -115,9 +114,6 @@ public class JoinListener implements Listener {
 
         //update player display name
         pu.updateDisplayName(player, false);
-
-        //update tablist
-        tabListManager.updatePlayer(player);
 
         //set join message format
         if (plugin.getData().getVanishedPlayers().contains(uuid)) e.joinMessage(null);

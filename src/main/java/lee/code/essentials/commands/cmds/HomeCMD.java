@@ -31,7 +31,7 @@ public class HomeCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
-            if (args.length == 1) {
+            if (args.length > 0 && !args[0].equals("page")) {
                 if (!args[0].equalsIgnoreCase("bed")) {
                     String name = pu.buildStringFromArgs(args, 0);
                     if (cache.hasHome(uuid)) {

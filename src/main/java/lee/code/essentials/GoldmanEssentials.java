@@ -2,7 +2,6 @@ package lee.code.essentials;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.vexsoftware.votifier.model.Vote;
 import lee.code.cache.CacheAPI;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
@@ -11,7 +10,6 @@ import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;
-import lee.code.essentials.managers.TabListManager;
 import lee.code.essentials.managers.WorldManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,7 +20,6 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private PermissionManager permissionManager;
     @Getter private Data data;
     @Getter private SQLite sqLite;
-    @Getter private TabListManager tabListManager;
     @Getter private WorldManager worldManager;
     @Getter private Cache cache;
     @Getter private CacheAPI cacheAPI;
@@ -36,7 +33,6 @@ public class GoldmanEssentials extends JavaPlugin {
         this.permissionManager = new PermissionManager();
         this.data = new Data();
         this.sqLite = new SQLite();
-        this.tabListManager = new TabListManager();
         this.cache = new Cache();
         this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
@@ -56,13 +52,13 @@ public class GoldmanEssentials extends JavaPlugin {
         data.loadListData();
         data.loadMOTDFile();
 
-        tabListManager.scheduleTabListUpdater();
-
         permissionManager.loadPerms();
         pU.registerTamedEntityFix();
         pU.scheduleEntityChunkCleaner();
         pU.scheduleBoosterChecker();
         pU.scheduleAutoRestart();
+        pU.scheduleAutoBroadcast();
+        pU.scheduleTabListUpdater();
     }
 
     @Override
