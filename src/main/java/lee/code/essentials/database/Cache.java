@@ -1193,10 +1193,14 @@ public class Cache {
     public void addVote(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+        SQLite SQL = plugin.getSqLite();
+
         String sUUID = String.valueOf(uuid);
         try (Jedis jedis = pool.getResource()) {
-            int votes = Integer.parseInt(jedis.hget("votes", sUUID)) + 1;
-            jedis.hset("votes", sUUID, String.valueOf(votes));
+            String votes = String.valueOf(Integer.parseInt(jedis.hget("votes", sUUID)) + 1);
+            jedis.hset("votes", sUUID, votes);
+
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setVotes(sUUID, votes));
         }
     }
 

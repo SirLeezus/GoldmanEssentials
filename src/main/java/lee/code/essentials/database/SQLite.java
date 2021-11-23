@@ -356,6 +356,10 @@ public class SQLite {
         update("UPDATE player_data SET flying ='" + flying + "' WHERE player ='" + uuid + "';");
     }
 
+    public void setVotes(String uuid, String votes) {
+        update("UPDATE player_data SET votes ='" + votes + "' WHERE player ='" + uuid + "';");
+    }
+
     public void loadPunishmentData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
