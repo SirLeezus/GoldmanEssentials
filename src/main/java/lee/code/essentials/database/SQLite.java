@@ -15,6 +15,56 @@ public class SQLite {
     private Connection connection;
     private Statement statement;
 
+    private final String playerDataTable = "CREATE TABLE IF NOT EXISTS player_data (" +
+            "`player` varchar PRIMARY KEY," +
+            "`balance` varchar NOT NULL," +
+            "`ranked` varchar NOT NULL," +
+            "`perms` varchar NOT NULL," +
+            "`prefix` varchar NOT NULL," +
+            "`suffix` varchar NOT NULL," +
+            "`color` varchar NOT NULL," +
+            "`level` varchar NOT NULL," +
+            "`prestige` varchar NOT NULL," +
+            "`vanish` varchar NOT NULL," +
+            "`god` varchar NOT NULL," +
+            "`homes` varchar NOT NULL," +
+            "`flying` varchar NOT NULL," +
+            "`votes` varchar NOT NULL" +
+            ");";
+
+    private final String serverDataTable = "CREATE TABLE IF NOT EXISTS server (" +
+            "`server` varchar PRIMARY KEY," +
+            "`spawn` varchar NOT NULL," +
+            "`joins` varchar NOT NULL," +
+            "`world_resource_time` varchar NOT NULL," +
+            "`world_resource_spawn` varchar NOT NULL," +
+            "`nether_resource_spawn` varchar NOT NULL," +
+            "`end_resource_spawn` varchar NOT NULL" +
+            ");";
+
+    private final String punishmentDataTable = "CREATE TABLE IF NOT EXISTS punishment (" +
+            "`player` varchar PRIMARY KEY," +
+            "`staff` varchar NOT NULL," +
+            "`datebanned` varchar NOT NULL," +
+            "`datemuted` varchar NOT NULL," +
+            "`banned` varchar NOT NULL," +
+            "`tempbanned` varchar NOT NULL," +
+            "`tempmuted` varchar NOT NULL," +
+            "`muted` varchar NOT NULL," +
+            "`banreason` varchar NOT NULL," +
+            "`mutereason` varchar NOT NULL," +
+            "`bot` varchar NOT NULL" +
+            ");";
+
+    private final String boosterDataTable = "CREATE TABLE IF NOT EXISTS boosters (" +
+            "`id` varchar PRIMARY KEY," +
+            "`player` varchar NOT NULL," +
+            "`multiplier` varchar NOT NULL," +
+            "`time` varchar NOT NULL," +
+            "`active` varchar NOT NULL," +
+            "`duration` varchar NOT NULL" +
+            ");";
+
     public void connect() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         connection = null;
@@ -66,133 +116,84 @@ public class SQLite {
 
     public void loadTables() {
         //player data table
-        update("CREATE TABLE IF NOT EXISTS player_data (" +
-                "`player` varchar PRIMARY KEY," +
-                "`balance` varchar NOT NULL," +
-                "`ranked` varchar NOT NULL," +
-                "`perms` varchar NOT NULL," +
-                "`prefix` varchar NOT NULL," +
-                "`suffix` varchar NOT NULL," +
-                "`color` varchar NOT NULL," +
-                "`level` varchar NOT NULL," +
-                "`prestige` varchar NOT NULL," +
-                "`vanish` varchar NOT NULL," +
-                "`god` varchar NOT NULL," +
-                "`homes` varchar NOT NULL," +
-                "`flying` varchar NOT NULL," +
-                "`votes` varchar NOT NULL" +
-                ");");
-
-        //server data table
-        update("CREATE TABLE IF NOT EXISTS server (" +
-                "`server` varchar PRIMARY KEY," +
-                "`spawn` varchar NOT NULL," +
-                "`joins` varchar NOT NULL," +
-                "`world_resource_time` varchar NOT NULL," +
-                "`world_resource_spawn` varchar NOT NULL," +
-                "`nether_resource_spawn` varchar NOT NULL," +
-                "`end_resource_spawn` varchar NOT NULL" +
-                ");");
-
-        //punishment data table
-        update("CREATE TABLE IF NOT EXISTS punishment (" +
-                "`player` varchar PRIMARY KEY," +
-                "`staff` varchar NOT NULL," +
-                "`datebanned` varchar NOT NULL," +
-                "`datemuted` varchar NOT NULL," +
-                "`banned` varchar NOT NULL," +
-                "`tempbanned` varchar NOT NULL," +
-                "`tempmuted` varchar NOT NULL," +
-                "`muted` varchar NOT NULL," +
-                "`banreason` varchar NOT NULL," +
-                "`mutereason` varchar NOT NULL," +
-                "`bot` varchar NOT NULL" +
-                ");");
-
-        //server data table
-        update("CREATE TABLE IF NOT EXISTS boosters (" +
-                "`id` varchar PRIMARY KEY," +
-                "`player` varchar NOT NULL," +
-                "`multiplier` varchar NOT NULL," +
-                "`time` varchar NOT NULL," +
-                "`active` varchar NOT NULL," +
-                "`duration` varchar NOT NULL" +
-                ");");
-
+        update(playerDataTable);
+        update(serverDataTable);
+        update(punishmentDataTable);
+        update(boosterDataTable);
     }
 
     //UPDATER STUFF
 
-    public void updateTable(String table) {
+    public void updateTable(SQLTables table) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
 
-        //temp table
-        update("CREATE TABLE IF NOT EXISTS temp (" +
-                "`player` varchar PRIMARY KEY," +
-                "`balance` varchar NOT NULL," +
-                "`ranked` varchar NOT NULL," +
-                "`perms` varchar NOT NULL," +
-                "`prefix` varchar NOT NULL," +
-                "`suffix` varchar NOT NULL," +
-                "`color` varchar NOT NULL," +
-                "`level` varchar NOT NULL," +
-                "`prestige` varchar NOT NULL," +
-                "`vanish` varchar NOT NULL," +
-                "`god` varchar NOT NULL," +
-                "`homes` varchar NOT NULL," +
-                "`flying` varchar NOT NULL," +
-                "`votes` varchar NOT NULL" +
-                ");");
+        StringBuilder sqlQuery = new StringBuilder("INSERT OR REPLACE INTO temp values ");
+        int tempRows = 0;
 
-        String sqlQuery = "INSERT OR REPLACE INTO temp values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        switch (table) {
+            case PLAYER_DATA -> {
+                String temp = playerDataTable.replace(playerDataTable.substring(0, 27 + table.getTable().length()), "CREATE TABLE IF NOT EXISTS temp").trim();
+                update(temp);
+            }
+            case SERVER_DATA -> {
+                String temp = serverDataTable.replace(serverDataTable.substring(0, 27 + table.getTable().length()), "CREATE TABLE IF NOT EXISTS temp").trim();
+                update(temp);
+            }
+            case PUNISHMENT_DATA -> {
+                String temp = punishmentDataTable.replace(punishmentDataTable.substring(0, 27 + table.getTable().length()), "CREATE TABLE IF NOT EXISTS temp").trim();
+                update(temp);
+            }
+            case BOOSTER_DATA -> {
+                String temp = boosterDataTable.replace(boosterDataTable.substring(0, 27 + table.getTable().length()), "CREATE TABLE IF NOT EXISTS temp").trim();
+                update(temp);
+            }
+        }
 
         try {
-            ResultSet rs = getResult("SELECT * FROM " + table + ";");
-            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
-            int number = 1;
+            ResultSet rsTemp = getResult("SELECT * FROM temp;");
+            ResultSetMetaData rsTempMD = rsTemp.getMetaData();
+            tempRows = rsTempMD.getColumnCount();
 
-            while (rs.next()) {
-                String uuid = rs.getString("player");
-                String balance = rs.getString("balance");
-                String ranked = rs.getString("ranked");
-                String perms = rs.getString("perms");
-                String prefix = rs.getString("prefix");
-                String suffix = rs.getString("suffix");
-                String color = rs.getString("color");
-                String level = rs.getString("level");
-                String prestige = rs.getString("prestige");
-                String vanish = rs.getString("vanish");
-                String god = rs.getString("god");
-                String homes = rs.getString("homes");
-                String flying = rs.getString("flying");
-
-                pstmt.setString(1, uuid);
-                pstmt.setString(2, balance);
-                pstmt.setString(3, ranked);
-                pstmt.setString(4, perms);
-                pstmt.setString(5, prefix);
-                pstmt.setString(6, suffix);
-                pstmt.setString(7, color);
-                pstmt.setString(8, level);
-                pstmt.setString(9, prestige);
-                pstmt.setString(10, vanish);
-                pstmt.setString(11, god);
-                pstmt.setString(12, homes);
-                pstmt.setString(13, flying);
-                pstmt.setString(14, "0");
-                pstmt.addBatch();
-
-                System.out.println(pu.format("&e" + uuid + " converted: " + number++));
+            for (int t = 1; t <= rsTempMD.getColumnCount(); t++) {
+                if (t == 1) sqlQuery.append("(?");
+                else sqlQuery.append(",?");
             }
-            pstmt.executeBatch();
-            pstmt.close();
+            sqlQuery.append(")");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        update("DROP TABLE " + table + ";");
-        update("ALTER TABLE temp RENAME TO " + table + ";");
+        try {
+            ResultSet rs = getResult("SELECT * FROM " + table.getTable() + ";");
+            ResultSetMetaData rsMD = rs.getMetaData();
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery.toString());
+
+            int convertedNumber = 1;
+            int selectedRows = rsMD.getColumnCount();
+
+            while (rs.next()) {
+
+                for (int i = 1; tempRows >= i; i++) {
+                    if (selectedRows >= i) {
+                        String data = rs.getString(i);
+                        pstmt.setString(i, data);
+                    } else pstmt.setString(i, "0");
+                }
+                pstmt.addBatch();
+                System.out.println(pu.format("&e" + rs.getString(1) + " converted: &a#" + convertedNumber++));
+            }
+
+            pstmt.executeBatch();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        update("DROP TABLE " + table.getTable() + ";");
+        update("ALTER TABLE temp RENAME TO " + table.getTable() + ";");
     }
 
     //BOOSTER DATA TABLE

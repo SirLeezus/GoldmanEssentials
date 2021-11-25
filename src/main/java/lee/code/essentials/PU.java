@@ -475,7 +475,7 @@ public class PU {
             team.addEntry(player.getName());
 
             String prefix = cache.getPrefix(uuid) + " ";
-            String suffix = afk ? " &c&lAFK" + cache.getSuffix(uuid) : cache.getSuffix(uuid);
+            String suffix = afk ? cache.getSuffix(uuid) + " &c&lAFK" : cache.getSuffix(uuid);
             org.bukkit.ChatColor color = org.bukkit.ChatColor.valueOf(cache.getColor(uuid));
             int prestigeLevel = cache.getPrestige(uuid);
             String prestige = prestigeLevel != 0 ? " &7[&a&l" + prestigeLevel + "&7]" : "";
