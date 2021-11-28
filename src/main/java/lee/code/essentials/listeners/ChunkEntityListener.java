@@ -54,21 +54,27 @@ public class ChunkEntityListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         if (e.hasBlock()) {
             ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
+            Material type = item.getType();
             Chunk chunk = e.getPlayer().getChunk();
             Player player =  e.getPlayer();
 
-            if (item.getType().name().contains("BOAT")) {
+            if (type.name().contains("BOAT")) {
                 if (plugin.getPU().countEntitiesInChunk(chunk, EntityType.BOAT) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
                     e.setCancelled(true);
                     player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
                 }
-            } else if (item.getType().equals(Material.ITEM_FRAME)) {
+            } else if (type.equals(Material.ITEM_FRAME)) {
                 if (plugin.getPU().countEntitiesInChunk(chunk, EntityType.ITEM_FRAME) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
                     e.setCancelled(true);
                     player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
                 }
-            } else if (item.getType().equals(Material.ARMOR_STAND)) {
+            } else if (type.equals(Material.ARMOR_STAND)) {
                 if (plugin.getPU().countEntitiesInChunk(chunk, EntityType.ARMOR_STAND) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
+                    e.setCancelled(true);
+                    player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                }
+            } else if (type.equals(Material.GLOW_ITEM_FRAME)) {
+                if (plugin.getPU().countEntitiesInChunk(chunk, EntityType.GLOW_ITEM_FRAME) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
                     e.setCancelled(true);
                     player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
                 }

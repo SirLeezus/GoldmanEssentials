@@ -7,7 +7,6 @@ import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.Cache;
-import lee.code.essentials.database.SQLTables;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;

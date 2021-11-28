@@ -453,7 +453,7 @@ public class PU {
         Objective health = board.getObjective("health");
 
         if (health == null) {
-            Objective o = board.registerNewObjective("health", "health", Component.text(format("&c❤")), RenderType.HEARTS);
+            Objective o = board.registerNewObjective("health", "health", Component.text(format("\uE78E")), RenderType.HEARTS);
             o.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
 
@@ -475,17 +475,18 @@ public class PU {
             team.addEntry(player.getName());
 
             String prefix = cache.getPrefix(uuid) + " ";
-            String suffix = afk ? cache.getSuffix(uuid) + " &c&lAFK" : cache.getSuffix(uuid);
+            String suffix = cache.getSuffix(uuid);
             org.bukkit.ChatColor color = org.bukkit.ChatColor.valueOf(cache.getColor(uuid));
             int prestigeLevel = cache.getPrestige(uuid);
             String prestige = prestigeLevel != 0 ? " &7[&a&l" + prestigeLevel + "&7]" : "";
+            prestige = afk ? prestige + " &c&lAFK" : prestige;
 
             team.setColor(color);
-            team.setSuffix(format(prestige + suffix));
+            team.setSuffix(format(suffix + prestige));
             team.setPrefix(format(prefix));
 
-            player.setDisplayName(format(prefix + color + player.getName() + prestige + suffix));
-            player.setPlayerListName(format(prefix + color + player.getName() + prestige + suffix));
+            player.setDisplayName(format(prefix + color + player.getName() + suffix + prestige));
+            player.setPlayerListName(format(prefix + color + player.getName() + suffix + prestige));
         }
     }
 
@@ -717,11 +718,11 @@ public class PU {
         ItemStack item = new ItemStack(type);
         if (skin != null) plugin.getPU().applyHeadSkin(item, skin, UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffffff"));
         ItemMeta itemMeta = item.getItemMeta();
-        if (name != null) itemMeta.displayName(plugin.getPU().formatC(name));
+        if (name != null) itemMeta.displayName(formatC(name));
         if (lore != null) {
             String[] split = StringUtils.split(lore, "\n");
             List<Component> lines = new ArrayList<>();
-            for (String line : split) lines.add(plugin.getPU().formatC(line));
+            for (String line : split) lines.add(formatC(line));
             itemMeta.lore(lines);
         }
         item.setItemMeta(itemMeta);

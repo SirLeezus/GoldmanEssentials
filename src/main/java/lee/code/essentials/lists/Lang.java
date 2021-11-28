@@ -61,7 +61,7 @@ public enum Lang {
     SPAM_COMMAND("&cPlease slow down the speed you're requesting commands."),
     BOOSTER_TITLE("&6&lDrops x{0} Booster&a&l ends in {1}"),
     COLOR_MENU_SELECT("&aYour name color was successfully updated to &f{0}&a!"),
-    TABLIST_HEADER("&#228B22▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n&#4dc462&lJourney Survival\n&#228B22▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
+    TABLIST_HEADER("&#228B22▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n&r\uE790 &#4dc462&lJourney Survival &r\uE790\n&#228B22▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
     TABLIST_FOOTER("\n&#228B22&lOnline&7: &#4dc462{0}"),
     FIRST_JOIN_MESSAGE("&aThe player &6{0} &ajoined for the first time! Welcome to &2&lJourney Survival&a! &d#{1}"),
     SLEEPING_WEATHER_CLEARED_SUBTITLE("&#00E0FFWeather has been cleared!"),

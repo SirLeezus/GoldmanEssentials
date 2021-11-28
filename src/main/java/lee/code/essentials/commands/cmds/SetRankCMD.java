@@ -31,7 +31,7 @@ public class SetRankCMD implements CommandExecutor {
                         cache.setColor(tUUID, RankList.valueOf(rank).getColor());
                         cache.setRank(tUUID, rank);
                         cache.setPrefix(tUUID, RankList.valueOf(rank).getPrefix());
-                    } else if (plugin.getPU().getPremiumRanks().contains(rank)) cache.setSuffix(tUUID, " " + PremiumRankList.valueOf(rank).getSuffix());
+                    } else if (plugin.getPU().getPremiumRanks().contains(rank)) cache.setSuffix(tUUID, PremiumRankList.valueOf(rank).getSuffix());
                     plugin.getPU().updateDisplayName(target, false);
                     if (!target.isOp()) plugin.getPermissionManager().register(target);
                     sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKSET_SUCCESSFUL.getComponent(new String[] { rank, target.getName() })));
