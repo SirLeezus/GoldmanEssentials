@@ -14,13 +14,13 @@ public enum RankList {
     LEGEND("&e[&#FF7800Legend&e]", "LIGHT_PURPLE", 40, "MYTH", 5000, 5000, "5"),
     MYTH("&e[&#FF3909Myth&e]", "DARK_AQUA", 50, "IMMORTAL", 6000, 6000, "4"),
     IMMORTAL("&e[&#0074F6Immortal&e]", "DARK_GREEN", 60, "ASCENDANT", 7000, 7000, "3"),
-    ASCENDANT("&e[&#F500F5Ascendant&e]", "DARK_PURPLE", 75, "GOD", 8000, 8000, "2"),
-    GOD("&#FF7800[&e&lGod&#FF7800]","GOLD", 86, "LAST", 10000, 10000, "1"),
+    ASCENDANT("&e[&#F500F5Ascendant&e]", "DARK_PURPLE", 80, "GOD", 8000, 8000, "2"),
+    GOD("&#FF7800[&e&lGod&#FF7800]","GOLD", 90, "LAST", 10000, 10000, "1"),
 
     //STAFF
-    MOD("&d[&5&lMod&d]", "LIGHT_PURPLE", 86, "STAFF", 100000, 10000, "c"),
-    ADMIN("&2[&a&lAdmin&2]", "DARK_GREEN", 86, "STAFF", 100000, 10000, "b"),
-    OWNER("&6[&#F40000&lOwner&6]", "GOLD", 86, "STAFF", 100000, 10000, "a"),
+    MOD("&d[&5&lMod&d]", "LIGHT_PURPLE", 90, "STAFF", 100000, 10000, "c"),
+    ADMIN("&2[&a&lAdmin&2]", "DARK_GREEN", 90, "STAFF", 100000, 10000, "b"),
+    OWNER("&6[&#F40000&lOwner&6]", "GOLD", 90, "STAFF", 100000, 10000, "a"),
     ;
 
     @Getter private final String prefix;

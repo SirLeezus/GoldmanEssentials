@@ -3,14 +3,14 @@ package lee.code.essentials.listeners;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.nms.CustomChair;
-import net.minecraft.server.level.WorldServer;
+import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Stairs;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -48,8 +48,9 @@ public class ChairListener implements Listener {
                             }
                             Location location = block.getBlockData() instanceof Stairs ? block.getLocation().add(0.5, 0.3, 0.5) : block.getLocation().add(0.5, -0.2, 0.5);
                             CustomChair chair = new CustomChair(location);
-                            WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
-                            world.addEntity(chair);
+                            ServerLevel world = ((CraftWorld) location.getWorld()).getHandle();
+                            //b = addEntity()
+                            world.addFreshEntity(chair);
                             Entity entityChair = chair.getBukkitEntity();
                             entityChair.addPassenger(player);
                         }

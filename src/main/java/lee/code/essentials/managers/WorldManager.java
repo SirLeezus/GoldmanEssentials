@@ -4,10 +4,10 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Settings;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.util.logging.Level;
