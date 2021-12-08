@@ -84,6 +84,19 @@ public class HelpCMD implements CommandExecutor {
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_ARMOR_STAND_DIVIDER.getComponent(null));
 
+                } else if (args[0].equalsIgnoreCase("claiming")) {
+                    lines.add(Lang.COMMAND_HELP_CLAIMING_DIVIDER.getComponent(null));
+                    lines.add(Component.text(""));
+                    lines.add(pu.formatC("                &2&l&nHow To Claim Your Land"));
+                    lines.add(Component.text(""));
+                    lines.add(pu.formatC("&6Step 1&7: &eStand on the chunk you want to claim."));
+                    lines.add(Component.text(""));
+                    lines.add(pu.formatC("&6Step 2&7: &eRun the command /chunk claim."));
+                    lines.add(Component.text(""));
+                    lines.add(pu.formatC("&eCongratulations! If you followed this guide you should have claimed the chunk you're standing on."));
+                    lines.add(Component.text(""));
+                    lines.add(Lang.COMMAND_HELP_CLAIMING_DIVIDER.getComponent(null));
+
                 } else if (args[0].equalsIgnoreCase("store")) {
                     lines.add(Lang.COMMAND_HELP_STORE_DIVIDER.getComponent(null));
                     lines.add(Component.text(""));
@@ -137,7 +150,6 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("Ender pearls don't damage players when used.");
                     changes.add("Minecarts can be placed on anything and controlled.");
                     changes.add("Silk touch works on spawners.");
-                    changes.add("Entities can spawn on packed ice.");
                     changes.add("You can break individual slabs when sneaking.");
                     changes.add("You can deactivate a spawner using redstone.");
                     changes.add("A max of 25 entities of each type are allowed in one chunk.");

@@ -120,7 +120,7 @@ public class PU {
             int borderMax = (int) world.getWorldBorder().getSize() * 5;
             int borderMin = borderMax - (borderMax + borderMax);
             int x = borderMin + random.nextInt(borderMax);
-            int y = 100;
+            int y = 200;
             int z = borderMin + random.nextInt(borderMax);
 
             Location location = new Location(player.getWorld(), x, y, z);
@@ -134,7 +134,7 @@ public class PU {
                         Block block = ground.getBlock();
                         Material groundType = block.getType();
                         Vector box = block.getBoundingBox().getCenter();
-                        if (groundType != Material.AIR && groundType != Material.LAVA && groundType != Material.WATER) {
+                        if (!box.equals(new Vector(0, 0, 0)) && groundType != Material.AIR && groundType != Material.LAVA && groundType != Material.WATER) {
                             double bX = box.getX();
                             double bY = box.getY() + 0.5;
                             double bZ = box.getZ();

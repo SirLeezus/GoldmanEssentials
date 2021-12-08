@@ -19,9 +19,9 @@ public class WorldManager {
         PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
-        long worldSeed = 7882078983362791734L;
-        long netherSeed = -3441507048707832380L;
-        long endSeed = 7691349409794918337L;
+        long worldSeed = -5455996734552710106L;
+        long netherSeed = 3859012688492053540L;
+        long endSeed = 3859012688492053540L;
 
         if (cache.isResourceWorldsResetReady()) {
             WorldCreator wcWorld = new WorldCreator("world_resource_golden");
