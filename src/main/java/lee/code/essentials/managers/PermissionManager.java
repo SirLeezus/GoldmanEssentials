@@ -134,6 +134,7 @@ public class PermissionManager {
         defaultPerms.add("shop.command.signhelp");
         defaultPerms.add("shop.command.spawn");
         defaultPerms.add("shop.command.spawner");
+        defaultPerms.add("shop.command.daily");
 
         // locks
         defaultPerms.add("lock.command.lock");

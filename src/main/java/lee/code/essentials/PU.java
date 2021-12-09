@@ -84,7 +84,7 @@ public class PU {
 
     public String unFormatC(Component message) {
         PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
-        return serializer.serialize(message);
+        return message != null ? serializer.serialize(message) : "";
     }
 
     public String formatAmount(int value) {

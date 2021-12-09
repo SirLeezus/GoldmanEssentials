@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.ItemSellValues;
 import lee.code.essentials.lists.Lang;
@@ -18,6 +19,7 @@ public class SellAllCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
@@ -26,15 +28,15 @@ public class SellAllCMD implements CommandExecutor {
             ItemStack itemHand = new ItemStack(player.getInventory().getItemInMainHand());
             itemHand.setAmount(1);
 
-            if (plugin.getPU().getSellableItems().contains(itemHand)) {
+            if (pu.getSellableItems().contains(itemHand)) {
                 String name = itemHand.getType().name();
-                if (itemHand.hasItemMeta()) if (itemHand.getItemMeta().hasDisplayName()) name = plugin.getPU().unFormatC(itemHand.getItemMeta().displayName());
+                if (itemHand.hasItemMeta()) if (itemHand.getItemMeta().hasDisplayName()) name = pu.unFormatC(itemHand.getItemMeta().displayName());
                 if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
-                    int amount = plugin.getPU().getItemAmount(player, itemHand);
+                    int amount = pu.getItemAmount(player, itemHand);
                     long value = ItemSellValues.valueOf(name).getValue() * amount;
-                    plugin.getPU().takeItems(player, itemHand, amount);
+                    pu.takeItems(player, itemHand, amount);
                     cache.deposit(uuid, value);
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SELL_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatCapitalization(name), String.valueOf(amount), plugin.getPU().formatAmount(value) })));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SELL_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(name), String.valueOf(amount), pu.formatAmount(value) })));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
