@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -21,43 +20,41 @@ public class HeadDropListener implements Listener {
     public void onHeadDrop(EntityDeathEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
+        Entity entity = e.getEntity();
 
-        if (e.getEntity().getLastDamageCause() != null && e.getEntity().getLastDamageCause().getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
-            if (e.getEntity() instanceof Player player) {
+        if (e.getEntity().getKiller() != null) {
+            Player killer = e.getEntity().getKiller();
+            if (entity instanceof Player player) {
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta headMeta = (SkullMeta) head.getItemMeta();
                 headMeta.setOwningPlayer(player);
                 head.setItemMeta(headMeta);
                 player.getWorld().dropItemNaturally(player.getLocation(), head);
-            } else if (e.getEntity() instanceof EnderDragon) {
+            } else if (entity instanceof EnderDragon) {
                 ItemStack dragonHead = new ItemStack(Material.DRAGON_HEAD);
                 if (!e.getDrops().contains(dragonHead)) e.getDrops().add(dragonHead);
             } else {
-                boolean creative = false;
-                if (e.getEntity().getKiller() != null) {
-                    Player killer = e.getEntity().getKiller();
-                    if (killer.getGameMode().equals(GameMode.CREATIVE)) creative = true;
-                }
-                if (pu.rng() >= Settings.HEAD_DROP_RNG.getValue() || creative) {
+                if (pu.rng() >= Settings.HEAD_DROP_RNG.getValue() || killer.getGameMode().equals(GameMode.CREATIVE)) {
                     String type = e.getEntityType().name();
-
-                    if (e.getEntity() instanceof Sheep sheep) {
+                    if (entity instanceof Sheep sheep) {
                         DyeColor color = sheep.getColor();
                         if (color != null) type = color.name() + "_" + type;
                         else type = "WHITE_" + type;
-                    } else if (e.getEntity() instanceof Axolotl axolotl) {
+                    } else if (entity instanceof Axolotl axolotl) {
                         Axolotl.Variant variant = axolotl.getVariant();
                         type = variant.name() + "_" + type;
-                    } else if (e.getEntity() instanceof Parrot parrot) {
+                    } else if (entity instanceof Parrot parrot) {
                         Parrot.Variant variant = parrot.getVariant();
                         type = variant.name() + "_" + type;
-                    } else if (e.getEntity() instanceof Llama llama) {
-                        Llama.Color color = llama.getColor();
-                        type = color.name() + "_" + type;
-                    } else if (e.getEntity() instanceof TraderLlama traderLlama) {
-                        Llama.Color color = traderLlama.getColor();
-                        type = color.name() + "_" + type;
-                    } else if (e.getEntity() instanceof Villager villager) {
+                    } else if (entity instanceof Llama llama) {
+                        if (entity instanceof TraderLlama traderLlama) {
+                            Llama.Color color = traderLlama.getColor();
+                            type = color.name() + "_" + type;
+                        } else {
+                            Llama.Color color = llama.getColor();
+                            type = color.name() + "_" + type;
+                        }
+                    } else if (entity instanceof Villager villager) {
                         Villager.Profession villagerProfession = villager.getProfession();
                         Villager.Type villagerType = villager.getVillagerType();
                         if (villagerProfession != Villager.Profession.NONE) {
@@ -67,7 +64,7 @@ public class HeadDropListener implements Listener {
 
                     if (pu.getEntityHeads().contains(type)) {
                         ItemStack head = EntityHeads.valueOf(type).getHead();
-                        e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), head);
+                        entity.getWorld().dropItemNaturally(entity.getLocation(), head);
                     }
                 }
             }

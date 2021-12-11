@@ -3,11 +3,13 @@ package lee.code.essentials;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import lee.code.cache.CacheAPI;
+import lee.code.chunks.ChunkAPI;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
+import lee.code.essentials.hooks.Pl3xMap.Pl3xMapHook;
 import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.WorldManager;
@@ -26,6 +28,8 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private EssentialsAPI essentialsAPI;
     @Getter private EnchantsAPI enchantsAPI;
     @Getter private ProtocolManager protocolManagerAPI;
+    @Getter private ChunkAPI chunkAPI;
+    @Getter private Pl3xMapHook Pl3xMapHook;
 
     @Override
     public void onEnable() {
@@ -34,11 +38,13 @@ public class GoldmanEssentials extends JavaPlugin {
         this.data = new Data();
         this.sqLite = new SQLite();
         this.cache = new Cache();
+        this.chunkAPI = new ChunkAPI();
         this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
         this.enchantsAPI = new EnchantsAPI();
         this.worldManager = new WorldManager();
         this.protocolManagerAPI = ProtocolLibrary.getProtocolManager();
+        this.Pl3xMapHook = new Pl3xMapHook();
 
         registerCommands();
         registerListeners();
@@ -66,6 +72,7 @@ public class GoldmanEssentials extends JavaPlugin {
     public void onDisable() {
         pU.kickOnlinePlayers();
         sqLite.disconnect();
+        Pl3xMapHook.disable();
     }
 
     private void registerCommands() {

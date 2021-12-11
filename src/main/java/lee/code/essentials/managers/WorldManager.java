@@ -4,6 +4,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Settings;
+import net.pl3x.map.plugin.configuration.WorldConfig;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -77,7 +78,7 @@ public class WorldManager {
         WorldCreator wcWorld = new WorldCreator(newWorldName);
         wcWorld.environment(originalWorld.getEnvironment());
         wcWorld.seed(originalWorld.getSeed());
-        wcWorld.createWorld();
+        disablePl3xMapWorld(wcWorld.createWorld());
         Bukkit.getLogger().log(Level.INFO, pu.format("&2World Created: &6" + newWorldName));
     }
 
@@ -88,5 +89,10 @@ public class WorldManager {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void disablePl3xMapWorld(World world) {
+        WorldConfig worldConfig = WorldConfig.get(world);
+        worldConfig.MAP_ENABLED = false;
     }
 }
