@@ -3,6 +3,7 @@ package lee.code.essentials.hooks.Pl3xMap;
 import lee.code.chunks.ChunkAPI;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
+import lee.code.essentials.hooks.ChunkColors;
 import net.pl3x.map.api.Key;
 import net.pl3x.map.api.MapWorld;
 import net.pl3x.map.api.Point;

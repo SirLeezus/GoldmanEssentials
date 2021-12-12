@@ -1,4 +1,4 @@
-package lee.code.essentials.hooks.Pl3xMap;
+package lee.code.essentials.hooks;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +24,7 @@ public enum ChunkColors {
     RED(Color.decode("#FF0000")),
     WHITE(Color.decode("#FFFFFF")),
     YELLOW(Color.decode("#FFFF00")),
+
     ;
 
     @Getter
