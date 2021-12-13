@@ -19,7 +19,7 @@ public enum ChunkColors {
     DARK_RED(Color.decode("#8b0000")),
     GOLD(Color.decode("#ffd700")),
     GRAY(Color.decode("#A8A8A8")),
-    GREEN(Color.decode("#008000")),
+    GREEN(Color.decode("#32CD32")),
     LIGHT_PURPLE(Color.decode("#FF00FF")),
     RED(Color.decode("#FF0000")),
     WHITE(Color.decode("#FFFFFF")),
