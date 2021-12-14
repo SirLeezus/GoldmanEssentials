@@ -3,7 +3,6 @@ package lee.code.essentials.hooks.Pl3xMap;
 import lee.code.chunks.ChunkAPI;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
-import lee.code.essentials.hooks.ChunkColors;
 import lee.code.essentials.lists.Lang;
 import net.pl3x.map.api.Key;
 import net.pl3x.map.api.MapWorld;
@@ -43,8 +42,8 @@ public class Pl3xMapTask extends BukkitRunnable {
         ChunkAPI chunkAPI = plugin.getChunkAPI();
         provider.clearMarkers(); // TODO track markers instead of clearing them
         for (UUID uuid : chunkAPI.getUserList()) {
-            List<String> chunks = chunkAPI.getChunks(uuid);
-            if (!chunks.get(0).equals("")) {
+            if (chunkAPI.hasClaims(uuid)) {
+                List<String> chunks = chunkAPI.getChunks(uuid);
                 for (String chunk : chunks) {
                     if (isCurrentWorld(chunk)) drawChunk(chunk, uuid, false);
                 }

@@ -92,7 +92,10 @@ public class WorldManager {
     }
 
     private void disablePl3xMapWorld(World world) {
-        WorldConfig worldConfig = WorldConfig.get(world);
-        worldConfig.MAP_ENABLED = false;
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        if (plugin.isPl3xMapInstalled()) {
+            WorldConfig worldConfig = WorldConfig.get(world);
+            worldConfig.MAP_ENABLED = false;
+        }
     }
 }

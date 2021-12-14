@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.PremiumRankList;
@@ -21,6 +22,7 @@ public class RankListCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
@@ -29,40 +31,43 @@ public class RankListCMD implements CommandExecutor {
 
             int number = 1;
             String playerRank = cache.getRank(uuid);
+            String playerSuffix = cache.getSuffix(uuid);
+            Component spacer = Component.text("");
 
             lines.add(Lang.COMMAND_RANKLIST_TITLE.getComponent(null));
-            lines.add(Component.text(""));
+            lines.add(spacer);
             lines.add(Lang.COMMAND_RANKLIST_SERVER_RANKS.getComponent(null));
-            for (String rank : plugin.getPU().getRanks()) {
-                if (!RankList.valueOf(rank).getNextRank().equals("STAFF")) {
-                    String line = "&3" + number + "&b. " + RankList.valueOf(rank).getPrefix();
-                    if (playerRank.equals(rank)) line = "&3" + number + "&b. &2> " + RankList.valueOf(rank).getPrefix() + " &2<";
-                    lines.add(plugin.getPU().formatC(line));
+            for (String rank : pu.getRanks()) {
+                RankList sRank = RankList.valueOf(rank);
+                if (!sRank.isStaffRank()) {
+                    Component line = playerRank.equals(rank) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getPrefix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getPrefix() });
+                    lines.add(line);
                     number++;
                 }
             }
-            lines.add(Component.text(""));
+            lines.add(spacer);
 
             number = 1;
             lines.add(Lang.COMMAND_RANKLIST_STAFF_RANKS.getComponent(null));
-            for (String rank : plugin.getPU().getRanks()) {
-                if (RankList.valueOf(rank).getNextRank().equals("STAFF")) {
-                    String line = "&3" + number + "&b. " + RankList.valueOf(rank).getPrefix();
-                    if (playerRank.equals(rank)) line = "&3" + number + "&b. &2> " + RankList.valueOf(rank).getPrefix() + " &2<";
-                    lines.add(plugin.getPU().formatC(line));
+            for (String rank : pu.getRanks()) {
+                RankList sRank = RankList.valueOf(rank);
+                if (sRank.isStaffRank()) {
+                    Component line = playerRank.equals(rank) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getPrefix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getPrefix() });
+                    lines.add(line);
                     number++;
                 }
             }
-            lines.add(Component.text(""));
+            lines.add(spacer);
 
             number = 1;
-
             lines.add(Lang.COMMAND_RANKLIST_PREMIUM_RANKS.getComponent(null));
-            for (String rank : plugin.getPU().getPremiumRanks()) {
-                lines.add(plugin.getPU().formatC("&3" + number + "&b. " + PremiumRankList.valueOf(rank).getDisplayName() + PremiumRankList.valueOf(rank).getSuffix()));
+            for (String rank : pu.getPremiumRanks()) {
+                PremiumRankList sRank = PremiumRankList.valueOf(rank);
+                Component line = playerSuffix.equals(sRank.getSuffix()) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + " " + sRank.getSuffix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + " " + sRank.getSuffix() });
+                lines.add(line);
                 number++;
             }
-            lines.add(Component.text(""));
+            lines.add(spacer);
             lines.add(Lang.COMMAND_RANKLIST_SPLITTER.getComponent(null));
 
             for (Component line : lines) player.sendMessage(line);

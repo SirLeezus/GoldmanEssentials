@@ -26,7 +26,7 @@ public class AddPermCMD implements CommandExecutor {
                 UUID tUUID = targetPlayer.getUniqueId();
                 String name = targetPlayer.getName();
                 String perm = args[1];
-                if (!cache.hasPerms(tUUID, perm)) {
+                if (!cache.hasPerm(tUUID, perm)) {
                     cache.addPerm(tUUID, perm);
                     if (targetPlayer.isOnline()) {
                         Player tPlayer = targetPlayer.getPlayer();

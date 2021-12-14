@@ -342,7 +342,7 @@ public class Cache {
         }
     }
 
-    public boolean hasPerms(UUID uuid, String perm) {
+    public boolean hasPerm(UUID uuid, String perm) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
 

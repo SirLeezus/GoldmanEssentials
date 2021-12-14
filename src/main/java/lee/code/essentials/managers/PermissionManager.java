@@ -2,7 +2,10 @@ package lee.code.essentials.managers;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
+import lee.code.essentials.lists.PremiumRankList;
+import lee.code.essentials.lists.RankList;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -11,9 +14,11 @@ import java.util.*;
 
 public class PermissionManager {
 
-    private final List<String> perms = new ArrayList<>();
     private final List<String> defaultPerms = new ArrayList<>();
     private final List<String> staffPerms = new ArrayList<>();
+    private final List<String> vipPerms = new ArrayList<>();
+    private final List<String> mvpPerms = new ArrayList<>();
+    private final List<String> elitePerms = new ArrayList<>();
 
     public void register(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
@@ -25,47 +30,33 @@ public class PermissionManager {
 
         for (PermissionAttachmentInfo perm : player.getEffectivePermissions()) attachment.setPermission(perm.getPermission(), false);
 
-        String rank = cache.getRank(uuid);
-
+        RankList rank = RankList.valueOf(cache.getRank(uuid));
         switch (rank) {
-            case "MOD":
-            case "ADMIN":
+            case MOD:
+            case ADMIN:
                 for (String perm : defaultPerms) attachment.setPermission(perm, true);
                 for (String perm : staffPerms) attachment.setPermission(perm, true);
                 break;
             default: for (String perm : defaultPerms) attachment.setPermission(perm, true);
         }
-
         for (String perm : cache.getPerms(uuid)) attachment.setPermission(perm, true);
         player.recalculatePermissions();
         player.updateCommands();
     }
 
-    public Collection<String> getCommands(UUID uuid) {
+    public Collection<String> getCommands(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-
-        Collection<String> commands = new ArrayList<>(Collections.singleton(""));
-
-        for (String perm : perms) {
-            String command = perm.substring(perm.lastIndexOf(".") + 1);
-            Command registeredCommand = plugin.getServer().getCommandMap().getCommand(command);
-            if (registeredCommand != null) {
-                List<String> aliases = registeredCommand.getAliases();
-                commands.addAll(aliases);
-                commands.add(command);
-            }
-        }
-
-        for (String perm : cache.getPerms(uuid)) {
-            String command = perm.substring(perm.lastIndexOf(".") + 1);
-            Command registeredCommand = plugin.getServer().getCommandMap().getCommand(command);
-            if (registeredCommand != null) {
-                List<String> aliases = registeredCommand.getAliases();
-                commands.addAll(aliases);
-                commands.add(command);
-            }
-        }
+        Collection<String> commands = new HashSet<>();
+        CommandMap commandMap = plugin.getServer().getCommandMap();
+         for (Map.Entry<String, Command> sCommand : commandMap.getKnownCommands().entrySet()) {
+             String perm = sCommand.getValue().getPermission();
+             if (perm != null && player.hasPermission(perm)) {
+                 Command command = sCommand.getValue();
+                 List<String> aliases = command.getAliases();
+                 commands.addAll(aliases);
+                 commands.add(command.getName());
+             }
+         }
         return commands;
     }
 
@@ -163,7 +154,94 @@ public class PermissionManager {
         staffPerms.add("essentials.command.enderchest");
         staffPerms.add("lock.command.admin");
 
-        perms.addAll(defaultPerms);
-        perms.addAll(staffPerms);
+        // vip
+        vipPerms.add("essentials.command.glow");
+        vipPerms.add("pets.use.sheep");
+        vipPerms.add("pets.use.pink_sheep");
+        vipPerms.add("pets.use.parrot");
+        vipPerms.add("pets.use.red_parrot");
+        vipPerms.add("pets.use.pig");
+        vipPerms.add("trails.use.redstone");
+        vipPerms.add("trails.use.flame");
+        vipPerms.add("trails.use.halo");
+        vipPerms.add("trails.use.block_break");
+
+        //mvp
+        mvpPerms.addAll(vipPerms);
+        mvpPerms.add("essentials.command.namecolor");
+        mvpPerms.add("chunk.command.fly");
+        mvpPerms.add("pets.use.panda");
+        mvpPerms.add("pets.use.playful_panda");
+        mvpPerms.add("pets.use.fox");
+        mvpPerms.add("pets.use.red_fox");
+        mvpPerms.add("pets.use.cow");
+        mvpPerms.add("pets.use.brown_and_white_cow");
+        mvpPerms.add("pets.use.villager");
+        mvpPerms.add("pets.use.swamp_villager");
+        mvpPerms.add("pets.use.goat");
+        mvpPerms.add("pets.use.axolotl");
+        mvpPerms.add("pets.use.leucistic_axolotl");
+        mvpPerms.add("trails.use.soul_fire_flame");
+        mvpPerms.add("trails.use.villager_happy");
+        mvpPerms.add("trails.use.drip_lava");
+        mvpPerms.add("trails.use.enchantment_table");
+        mvpPerms.add("trails.use.snowflake");
+        mvpPerms.add("trails.use.crit");
+        mvpPerms.add("trails.use.halo");
+        mvpPerms.add("trails.use.helix");
+        mvpPerms.add("trails.use.arrow_shoot");
+        mvpPerms.add("trails.use.snowball_throw");
+
+        //elite
+        elitePerms.addAll(vipPerms);
+        elitePerms.addAll(mvpPerms);
+        elitePerms.add("pets.use.desert_villager");
+        elitePerms.add("pets.use.savanna_villager");
+        elitePerms.add("pets.use.snow_fox");
+        elitePerms.add("pets.use.llama");
+        elitePerms.add("pets.use.brown_llama");
+        elitePerms.add("pets.use.gold_axolotl");
+        elitePerms.add("pets.use.blue_axolotl");
+        elitePerms.add("pets.use.cat");
+        elitePerms.add("pets.use.all_black_cat");
+        elitePerms.add("pets.use.red_cat");
+        elitePerms.add("pets.use.polar_bear");
+        elitePerms.add("trails.use.magic_crit");
+        elitePerms.add("trails.use.nautilus");
+        elitePerms.add("trails.use.drip_water");
+        elitePerms.add("trails.use.portal");
+        elitePerms.add("trails.use.wax_on");
+        elitePerms.add("trails.use.wax_off");
+        elitePerms.add("trails.use.spit");
+        elitePerms.add("trails.use.totem");
+        elitePerms.add("trails.use.dragon_breath");
+        elitePerms.add("trails.use.spinning_helix");
+        elitePerms.add("trails.use.sphere");
+        elitePerms.add("trails.use.cone");
+        elitePerms.add("trails.use.trident_throw");
+        elitePerms.add("trails.use.ender_pearl_throw");
+    }
+
+    public void addPremiumPerms(UUID uuid, PremiumRankList rank) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+
+        switch (rank) {
+            case VIP:
+                for (String perm : vipPerms) {
+                    if (!cache.hasPerm(uuid, perm)) cache.addPerm(uuid, perm);
+                }
+                break;
+            case MVP:
+                for (String perm : mvpPerms) {
+                    if (!cache.hasPerm(uuid, perm)) cache.addPerm(uuid, perm);
+                }
+                break;
+            case ELITE:
+                for (String perm : elitePerms) {
+                    if (!cache.hasPerm(uuid, perm)) cache.addPerm(uuid, perm);
+                }
+                break;
+        }
     }
 }

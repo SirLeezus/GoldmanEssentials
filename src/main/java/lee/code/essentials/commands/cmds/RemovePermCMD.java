@@ -3,6 +3,7 @@ package lee.code.essentials.commands.cmds;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
+import lee.code.essentials.managers.PermissionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -18,6 +19,7 @@ public class RemovePermCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PermissionManager pm = plugin.getPermissionManager();
         Cache cache = plugin.getCache();
 
         if (args.length > 1) {
@@ -26,11 +28,11 @@ public class RemovePermCMD implements CommandExecutor {
                 UUID tUUID = targetPlayer.getUniqueId();
                 String name = targetPlayer.getName();
                 String perm = args[1];
-                if (cache.hasPerms(tUUID, perm)) {
+                if (cache.hasPerm(tUUID, perm)) {
                     cache.removePerm(tUUID, perm);
                     if (targetPlayer.isOnline()) {
                         Player tPlayer = targetPlayer.getPlayer();
-                        if (tPlayer != null && !tPlayer.isOp()) plugin.getPermissionManager().register(tPlayer);
+                        if (tPlayer != null && !tPlayer.isOp()) pm.register(tPlayer);
                     }
                     sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_REMOVEPERM_SUCCESSFUL.getComponent(new String[] { perm, name })));
                 } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_REMOVEPERM_DOES_NOT_HAVE.getComponent(new String[] { name, perm })));

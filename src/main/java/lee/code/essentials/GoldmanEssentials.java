@@ -31,8 +31,11 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private ChunkAPI chunkAPI;
     @Getter private Pl3xMapHook Pl3xMapHook;
 
+    @Getter private boolean pl3xMapInstalled = false;
+
     @Override
     public void onEnable() {
+        checkDependencies();
         this.pU = new PU();
         this.permissionManager = new PermissionManager();
         this.data = new Data();
@@ -44,7 +47,7 @@ public class GoldmanEssentials extends JavaPlugin {
         this.enchantsAPI = new EnchantsAPI();
         this.worldManager = new WorldManager();
         this.protocolManagerAPI = ProtocolLibrary.getProtocolManager();
-        this.Pl3xMapHook = new Pl3xMapHook();
+        if (pl3xMapInstalled) this.Pl3xMapHook = new Pl3xMapHook();
 
         registerCommands();
         registerListeners();
@@ -72,7 +75,7 @@ public class GoldmanEssentials extends JavaPlugin {
     public void onDisable() {
         pU.kickOnlinePlayers();
         sqLite.disconnect();
-        Pl3xMapHook.disable();
+        if (pl3xMapInstalled) Pl3xMapHook.disable();
     }
 
     private void registerCommands() {
@@ -268,6 +271,10 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PortalListener(), this);
         getServer().getPluginManager().registerEvents(new AFKListener(), this);
         getServer().getPluginManager().registerEvents(new VoteListener(), this);
+    }
+
+    private void checkDependencies() {
+        pl3xMapInstalled = getServer().getPluginManager().getPlugin("Pl3xMap") != null;
     }
 
     public static GoldmanEssentials getPlugin() {
