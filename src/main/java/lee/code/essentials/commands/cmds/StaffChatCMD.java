@@ -20,8 +20,10 @@ public class StaffChatCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
 
         if (sender instanceof Player player) {
+            UUID uuid = player.getUniqueId();
             if (args.length > 0) {
                 String message = plugin.getPU().buildStringFromArgs(args, 0);
 
@@ -31,8 +33,6 @@ public class StaffChatCMD implements CommandExecutor {
                     }
                 }
             } else {
-                UUID uuid = player.getUniqueId();
-                Data data = plugin.getData();
                 if (!data.isStaffChatting(uuid)) {
                     data.addStaffChat(uuid);
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_STAFFCHAT_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.ON.getString() })));

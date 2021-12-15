@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
@@ -15,13 +16,14 @@ public class SoundCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
 
         if (args.length > 1) {
             if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
                 Player target = Bukkit.getPlayer(args[1]);
                 if (target != null) {
                     String sound = args[0].toLowerCase();
-                    if (plugin.getData().getSoundNames().contains(sound)) {
+                    if (data.getSoundNames().contains(sound)) {
                         target.playSound(target.getLocation(), Sound.valueOf(sound.toUpperCase()), 1, 1);
                         sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SOUND_SUCCESSFUL.getComponent(new String[] { sound, target.getName() })));
                     }
@@ -31,7 +33,7 @@ public class SoundCMD implements CommandExecutor {
         } else if (args.length > 0) {
             if (sender instanceof Player player) {
                 String sound = args[0].toLowerCase();
-                if (plugin.getData().getSoundNames().contains(sound)) {
+                if (data.getSoundNames().contains(sound)) {
                     player.playSound(player.getLocation(), Sound.valueOf(sound.toUpperCase()), 1, 1);
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SOUND_SUCCESSFUL.getComponent(new String[] { sound, player.getName() })));
                 }

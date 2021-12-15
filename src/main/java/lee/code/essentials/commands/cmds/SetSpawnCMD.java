@@ -20,22 +20,27 @@ public class SetSpawnCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
-
             String worldName = player.getWorld().getName();
             Location location = player.getLocation();
-
-            if (args.length < 1) {
+            if (args.length > 1) {
+                String world = args[0].toUpperCase();
+                switch (world) {
+                    case "resource_world" -> {
+                        cache.setWorldResourceSpawn(location);
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[]{pu.formatCapitalization(worldName), worldName})));
+                    }
+                    case "resource_nether" -> {
+                        cache.setNetherResourceSpawn(location);
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[]{pu.formatCapitalization(worldName), worldName})));
+                    }
+                    case "resource_end" -> {
+                        cache.setEndResourceSpawn(location);
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(worldName), worldName })));
+                    }
+                }
+            } else {
                 cache.setSpawn(location);
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_MAIN_SUCCESSFUL.getComponent(new String[] { worldName })));
-            } else if (args[0].equalsIgnoreCase("resource_world")) {
-                cache.setWorldResourceSpawn(location);
-                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(args[0]), worldName })));
-            } else if (args[0].equalsIgnoreCase("resource_nether")) {
-                cache.setNetherResourceSpawn(location);
-                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(args[0]), worldName })));
-            } else if (args[0].equalsIgnoreCase("resource_end")) {
-                cache.setEndResourceSpawn(location);
-                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(args[0]), worldName })));
             }
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;

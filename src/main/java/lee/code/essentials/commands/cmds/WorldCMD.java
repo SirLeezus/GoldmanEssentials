@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
@@ -17,11 +18,12 @@ public class WorldCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
 
         if (sender instanceof Player player) {
             if (args.length > 0) {
                 String worldString = args[0].toLowerCase();
-                if (plugin.getData().getWorldNames().contains(worldString)) {
+                if (data.getWorldNames().contains(worldString)) {
                     World world = Bukkit.getWorld(worldString);
                     Location loc = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getY());
                     player.teleportAsync(loc);

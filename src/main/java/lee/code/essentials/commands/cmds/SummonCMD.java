@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
@@ -16,11 +17,12 @@ public class SummonCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
 
         if (sender instanceof Player player) {
             if (args.length > 0) {
                 String entityName = args[0].toLowerCase();
-                if (plugin.getData().getEntityNames().contains(entityName)) {
+                if (data.getEntityNames().contains(entityName)) {
                     int amount = 1;
                     if (args.length > 1) {
                         Scanner buyScanner = new Scanner(args[1]);

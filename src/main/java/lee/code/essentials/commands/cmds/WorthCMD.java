@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.lists.ItemSellValues;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
@@ -22,22 +23,23 @@ public class WorthCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
 
         if (sender instanceof Player player) {
             if (args.length < 1) {
                 ItemStack itemHand = new ItemStack(player.getInventory().getItemInMainHand());
                 itemHand.setAmount(1);
 
-                if (plugin.getPU().getSellableItems().contains(itemHand)) {
+                if (pu.getSellableItems().contains(itemHand)) {
                     String name = itemHand.getType().name();
                     if (itemHand.hasItemMeta()) {
                         if (itemHand.getItemMeta().hasDisplayName()) {
-                            name = plugin.getPU().unFormatC(itemHand.getItemMeta().displayName());
+                            name = pu.unFormatC(itemHand.getItemMeta().displayName());
                         }
                     }
                     if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
                         long value = ItemSellValues.valueOf(name).getValue();
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { plugin.getPU().formatCapitalization(name), plugin.getPU().formatAmount(value) })));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(name), pu.formatAmount(value) })));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
             } else {
@@ -61,7 +63,7 @@ public class WorthCMD implements CommandExecutor {
                     if (page < 0) return true;
                     int position = page * maxDisplayed + 1;
 
-                    List<ItemStack> items = plugin.getPU().getSellableItems();
+                    List<ItemStack> items = pu.getSellableItems();
                     List<Component> lines = new ArrayList<>();
 
                     lines.add(Lang.COMMAND_WORTH_LIST_TITLE.getComponent(null));
@@ -72,7 +74,7 @@ public class WorthCMD implements CommandExecutor {
                         if (index >= items.size()) break;
                         if (items.get(index) != null) {
                             Material type = items.get(index).getType();
-                            lines.add(Lang.COMMAND_WORTH_LIST_LINE.getComponent(new String[] { String.valueOf(position), plugin.getPU().formatCapitalization(type.name()), plugin.getPU().formatAmount(ItemSellValues.valueOf(type.name()).getValue()) }));
+                            lines.add(Lang.COMMAND_WORTH_LIST_LINE.getComponent(new String[] { String.valueOf(position), pu.formatCapitalization(type.name()), pu.formatAmount(ItemSellValues.valueOf(type.name()).getValue()) }));
                             position++;
                         }
                     }

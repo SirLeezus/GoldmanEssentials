@@ -117,17 +117,23 @@ public class PU {
         Bukkit.getScheduler().runTask(plugin, () -> {
             World world = player.getWorld();
 
-            int borderMax = (int) world.getWorldBorder().getSize() * 5;
-            int borderMin = borderMax - (borderMax + borderMax);
-            int x = borderMin + random.nextInt(borderMax);
-            int y = 200;
-            int z = borderMin + random.nextInt(borderMax);
+            WorldBorder border = world.getWorldBorder();
+            Location center = border.getCenter();
+            double radius = border.getSize() / 2d;
+            double xMin = center.getX() - radius;
+            double xMax = center.getX() + radius;
+            double zMin = center.getZ() - radius;
+            double zMax = center.getZ() + radius;
+
+            double x = xMin + random.nextDouble(xMax + xMax);
+            double y = 200;
+            double z = zMin + random.nextDouble(zMax + zMax);
 
             Location location = new Location(player.getWorld(), x, y, z);
 
             if (world.getWorldBorder().isInside(location)) {
                 world.loadChunk(location.getChunk());
-                for (int i = y; i > 50; i--) {
+                for (double i = y; i > 100; i--) {
                     Location loc = new Location(player.getWorld(), x, i, z);
                     if (loc.getBlock().getType() == Material.AIR) {
                         Location ground = loc.subtract(0, 1, 0);

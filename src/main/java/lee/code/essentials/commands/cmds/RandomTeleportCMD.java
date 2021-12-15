@@ -24,7 +24,7 @@ public class RandomTeleportCMD implements CommandExecutor {
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
-            if (data.isRTPTaskActive(uuid)) {
+            if (data.isRTPTaskActive(uuid) && !player.hasPermission("essentials.command.bypass")) {
                 long time = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                 long delay = data.getRTPTimer(uuid);
                 if (time < delay) {
@@ -36,7 +36,6 @@ public class RandomTeleportCMD implements CommandExecutor {
                 pu.addRandomTeleportDelay(uuid);
                 pu.rtpPlayer(player);
             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOM_WORLD_TYPE.getComponent(null)));
-
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
     }

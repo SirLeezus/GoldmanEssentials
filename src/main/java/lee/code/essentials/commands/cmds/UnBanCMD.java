@@ -20,15 +20,15 @@ public class UnBanCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (args.length > 0) {
-            OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
-            if (targetPlayer != null) {
-                UUID tUUID = targetPlayer.getUniqueId();
+            OfflinePlayer tPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
+            if (tPlayer != null) {
+                UUID tUUID = tPlayer.getUniqueId();
                 if (cache.isBanned(tUUID)) {
                     cache.setBannedPlayer(tUUID, null, "0", false);
-                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { targetPlayer.getName() })));
+                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { tPlayer.getName() })));
                 } else if (cache.isTempBanned(tUUID)) {
                     cache.setTempBannedPlayer(tUUID, null, "0", 0, false);
-                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { targetPlayer.getName() })));
+                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNBANNED.getComponent(new String[] { tPlayer.getName() })));
                 }
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
         } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));

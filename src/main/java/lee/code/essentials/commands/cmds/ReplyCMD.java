@@ -28,8 +28,8 @@ public class ReplyCMD implements CommandExecutor {
             if (args.length > 0) {
                 UUID uuid = player.getUniqueId();
                 if (cache.hasLastReplied(uuid)) {
-                    UUID uuidTarget = cache.getLastReplied(uuid);
-                    OfflinePlayer oTarget = Bukkit.getPlayer(uuidTarget);
+                    UUID tUUID = cache.getLastReplied(uuid);
+                    OfflinePlayer oTarget = Bukkit.getPlayer(tUUID);
                     if (oTarget != null) {
                         if (oTarget.isOnline()) {
                             Player target = oTarget.getPlayer();

@@ -21,15 +21,15 @@ public class UnMuteCMD implements CommandExecutor {
         Cache cache = plugin.getCache();
 
         if (args.length > 0) {
-            OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
-            if (targetPlayer != null) {
-                UUID tUUID = targetPlayer.getUniqueId();
+            OfflinePlayer tPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
+            if (tPlayer != null) {
+                UUID tUUID = tPlayer.getUniqueId();
                 if (cache.isMuted(tUUID)) {
                     cache.setMutedPlayer(tUUID, "0", false);
-                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { targetPlayer.getName() })));
+                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { tPlayer.getName() })));
                 } else if (cache.isTempMuted(tUUID)) {
                     cache.setTempMutedPlayer(tUUID, "0", 0, false);
-                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { targetPlayer.getName() })));
+                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { tPlayer.getName() })));
                 }
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));
         } else sender.sendMessage(Lang.USAGE.getComponent(new String[] { command.getUsage() }));

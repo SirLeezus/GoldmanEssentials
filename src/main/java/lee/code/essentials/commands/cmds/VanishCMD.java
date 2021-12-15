@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
@@ -21,10 +22,11 @@ public class VanishCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
+        Data data = plugin.getData();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
-            List<UUID> vanishedPlayers = plugin.getData().getVanishedPlayers();
+            List<UUID> vanishedPlayers = data.getVanishedPlayers();
 
             if (cache.isVanishPlayer(uuid)) {
                 cache.setVanishPlayer(uuid, false);

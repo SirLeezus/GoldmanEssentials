@@ -27,12 +27,13 @@ public class VoteCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
             List<Component> lines = new ArrayList<>();
+            Component spacer = Component.text("");
             lines.add(Lang.COMMAND_VOTE_TITLE.getComponent(null));
-            lines.add(Component.text(""));
+            lines.add(spacer);
             lines.add(Lang.COMMAND_VOTE_TOTAL_VOTES.getComponent(new String[]{ String.valueOf(cache.getTotalVotes(uuid)) }));
             lines.add(Lang.COMMAND_VOTE_WEBSITE.getComponent(null).append(pu.formatC(" &6[&cLINK&6]").hoverEvent(pu.formatC("&6Click to preview link!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://www.planetminecraft.com/server/journey-survival-5279490"))));
             lines.add(Lang.COMMAND_VOTE_REWARDS.getComponent(null));
-            lines.add(Component.text(""));
+            lines.add(spacer);
             lines.add(Lang.COMMAND_VOTE_SPLITTER.getComponent(null));
 
             for (Component line : lines) player.sendMessage(line);

@@ -1,6 +1,8 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -17,6 +19,8 @@ public class SpawnerCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
+        Data data = plugin.getData();
 
         if (args.length > 1) {
             OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[1]);
@@ -24,9 +28,9 @@ public class SpawnerCMD implements CommandExecutor {
                 if (targetPlayer.isOnline()) {
                     Player target = targetPlayer.getPlayer();
                     if (target != null) {
-                        String type = args[0];
-                        if (plugin.getData().getEntityNames().contains(type)) {
-                            ItemStack spawner = plugin.getPU().createSpawner(EntityType.valueOf(type.toUpperCase()));
+                        String type = args[0].toLowerCase();
+                        if (data.getEntityNames().contains(type)) {
+                            ItemStack spawner = pu.createSpawner(EntityType.valueOf(type.toUpperCase()));
                             target.getInventory().addItem(spawner);
                         }
                     } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[1] })));
@@ -35,9 +39,9 @@ public class SpawnerCMD implements CommandExecutor {
 
         } else if (args.length > 0) {
             if (sender instanceof Player player) {
-                String type = args[0];
-                if (plugin.getData().getEntityNames().contains(type)) {
-                    ItemStack spawner = plugin.getPU().createSpawner(EntityType.valueOf(type.toUpperCase()));
+                String type = args[0].toLowerCase();;
+                if (data.getEntityNames().contains(type)) {
+                    ItemStack spawner = pu.createSpawner(EntityType.valueOf(type.toUpperCase()));
                     player.getInventory().addItem(spawner);
                 }
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
