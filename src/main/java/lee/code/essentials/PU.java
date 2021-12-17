@@ -114,7 +114,21 @@ public class PU {
 
     public void rtpPlayer(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        Data data = plugin.getData();
+
+        UUID uuid = player.getUniqueId();
+        int maxAttempts = 10;
+
+        if (data.isRTPTaskActive(uuid) && !player.hasPermission("essentials.command.bypass")) {
+            long time = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+            long delay = data.getRTPTimer(uuid);
+            if (time < delay) {
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOM_TELEPORT_DELAY.getComponent(new String[] { formatSeconds(delay - time) })));
+                return;
+            }
+        }
+
+        if (data.getRTPAttempt(uuid) < maxAttempts) {
             World world = player.getWorld();
 
             WorldBorder border = world.getWorldBorder();
@@ -132,9 +146,9 @@ public class PU {
             Location location = new Location(player.getWorld(), x, y, z);
 
             if (world.getWorldBorder().isInside(location)) {
-                world.loadChunk(location.getChunk());
-                for (double i = y; i > 100; i--) {
-                    Location loc = new Location(player.getWorld(), x, i, z);
+                world.getChunkAtAsync(location, false);
+                for (double i = location.getY(); i > 50; i--) {
+                    Location loc = new Location(player.getWorld(), location.getX(), i, location.getZ());
                     if (loc.getBlock().getType() == Material.AIR) {
                         Location ground = loc.subtract(0, 1, 0);
                         Block block = ground.getBlock();
@@ -147,13 +161,19 @@ public class PU {
                             Location teleportLocation = new Location(block.getWorld(), bX, bY, bZ);
                             player.teleportAsync(teleportLocation);
                             player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                            addRandomTeleportDelay(uuid);
+                            data.clearRTPAttempts(uuid);
                             return;
                         }
                     }
                 }
             }
+            data.addRTPAttempt(uuid, 1);
             rtpPlayer(player);
-        });
+        } else {
+            data.clearRTPAttempts(uuid);
+            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND.getComponent(null)));
+        }
     }
 
     public String getDate() {

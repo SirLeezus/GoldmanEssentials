@@ -49,6 +49,7 @@ public class Data {
     private final ConcurrentHashMap<UUID, Long> playerPvPTimer = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerRTPTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Long> playerRTPTimer = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Integer> playerRTPAttempts = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerSpamTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> resourceWorldMenuTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, List<UUID>> sleepingPlayers = new ConcurrentHashMap<>();
@@ -79,6 +80,12 @@ public class Data {
     public void removeArmorStandActive(UUID player) {
         activeArmorStands.remove(player);
     }
+
+    public int getRTPAttempt(UUID player) {
+        return playerRTPAttempts.getOrDefault(player, 0);
+    }
+    public void clearRTPAttempts(UUID player) { playerRTPAttempts.remove(player); }
+    public void addRTPAttempt(UUID player, int number) { playerRTPAttempts.put(player, getRTPAttempt(player) + number); }
 
     public boolean isPvPTaskActive(UUID player) {
         return playerPvPTask.containsKey(player);

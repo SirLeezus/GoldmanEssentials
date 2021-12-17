@@ -194,7 +194,7 @@ public enum Lang {
     COMMAND_WEATHER_THUNDER("&aThe weather has been changed to &ethunderstorm&a."),
     COMMAND_CLEAR("&aThe player &6{0} &ainventory was successfully cleared."),
     ERROR_NOT_CONSOLE_COMMAND("&cThis command does not work in console."),
-    ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND("&cPlease try again, no safe location could be found to teleport you."),
+    ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND("&cPlease try again, no safe location could be found."),
     ERROR_SELL_NOT_SELLABLE("&cThe item you're currently holding can't be sold to the server. Use &6/worth list &cfor a list of items that can be sold to the server."),
     ERROR_ADDPERM_HAS_PERM("&cThe player &6{0} &calready has the permission &b{1}&c."),
     ERROR_REMOVEPERM_DOES_NOT_HAVE("&cThe player &6{0} &cdoes not have the permission &b{1}&c."),
