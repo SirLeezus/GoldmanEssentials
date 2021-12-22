@@ -19,6 +19,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -466,7 +467,7 @@ public class PU {
         return Strings.repeat("" + completedColor + symbol, progressBars) + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
     }
 
-    @SuppressWarnings("deprecation")
+
     public void updateDisplayName(Player player, boolean afk) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
@@ -486,13 +487,10 @@ public class PU {
         String rank = cache.getRank(uuid);
         String priority = RankList.valueOf(rank).getPriority();
 
-        //make new way of sorting teams
         String name = priority + data.getTeamNumber();
         data.setTeamNumber(data.getTeamNumber() + 1);
 
-        if (board.getTeam(name) == null) {
-            board.registerNewTeam(name);
-        }
+        if (board.getTeam(name) == null) board.registerNewTeam(name);
 
         Team team = board.getTeam(name);
 
@@ -502,17 +500,21 @@ public class PU {
 
             String prefix = cache.getPrefix(uuid) + " ";
             String suffix = cache.getSuffix(uuid);
-            org.bukkit.ChatColor color = org.bukkit.ChatColor.valueOf(cache.getColor(uuid));
+            String colorString = cache.getColor(uuid);
+            String colorChar = "&" + org.bukkit.ChatColor.valueOf(colorString).getChar();
+            NamedTextColor namedTextColor = NameTextColors.valueOf(colorString).getColor();
             int prestigeLevel = cache.getPrestige(uuid);
-            String prestige = prestigeLevel != 0 ? " &7[&a&l" + prestigeLevel + "&7]" : "";
-            prestige = afk ? prestige + " &c&lAFK" : prestige;
+            String levelColor = "&a&l";
+            if (prestigeLevel >= 10) levelColor = "&e&l";
+            String prestige = prestigeLevel != 0 ? "&6[" + levelColor + prestigeLevel + "&6] " : "";
+            suffix = afk ? suffix + " &c&lAFK" : suffix;
 
-            team.setColor(color);
-            team.setSuffix(format(suffix + prestige));
-            team.setPrefix(format(prefix));
+            team.color(namedTextColor);
+            team.suffix(formatC(suffix));
+            team.prefix(formatC(prefix + prestige));
 
-            player.setDisplayName(format(prefix + color + player.getName() + suffix + prestige));
-            player.setPlayerListName(format(prefix + color + player.getName() + suffix + prestige));
+            player.displayName(formatC(prefix + prestige + colorChar + player.getName() + suffix));
+            player.playerListName(formatC(prefix + prestige + colorChar + player.getName() + suffix));
         }
     }
 
@@ -574,6 +576,27 @@ public class PU {
                 }
             }
         }), 0L, 20L);
+    }
+
+    public void scheduleAFKChecker() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                UUID uuid = player.getUniqueId();
+                if (!data.isAFK(uuid)) {
+                    long time = data.getPlayerLastMovedTime(uuid);
+                    long milliseconds = System.currentTimeMillis();
+                    long currentTimeDifferance =  TimeUnit.MILLISECONDS.toSeconds(milliseconds) - TimeUnit.MILLISECONDS.toSeconds(time);
+                    if (currentTimeDifferance > Settings.AFK_TIME.getValue()) {
+                        data.addAFK(uuid);
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK_ON.getComponent(null)));
+                        updateDisplayName(player, true);
+                    }
+                }
+            }
+        }), 0L, 100L);
     }
 
     public void scheduleAutoRestart() {

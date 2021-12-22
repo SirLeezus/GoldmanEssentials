@@ -5,11 +5,11 @@ import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -23,10 +23,10 @@ public class AFKListener implements Listener {
         Data data = plugin.getData();
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
+        long milliseconds = System.currentTimeMillis();
 
-        if (data.isAFK(uuid)) toggleAFK(player, false);
-
-
+        if (data.isAFK(uuid)) setNotAFK(player);
+        data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
     @EventHandler
@@ -35,9 +35,10 @@ public class AFKListener implements Listener {
         Data data = plugin.getData();
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
+        long milliseconds = System.currentTimeMillis();
 
-        if (data.isAFK(uuid)) toggleAFK(player, false);
-
+        if (data.isAFK(uuid)) setNotAFK(player);
+        data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
     @EventHandler
@@ -46,8 +47,10 @@ public class AFKListener implements Listener {
         Data data = plugin.getData();
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
+        long milliseconds = System.currentTimeMillis();
 
-        if (data.isAFK(uuid)) toggleAFK(player, false);
+        if (data.isAFK(uuid)) setNotAFK(player);
+        data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
     @EventHandler
@@ -57,23 +60,29 @@ public class AFKListener implements Listener {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (data.isAFK(uuid)) toggleAFK(player, false);
+        if (data.isAFK(uuid)) setNotAFK(player);
     }
 
-    private void toggleAFK(Player player, boolean afk) {
+    @EventHandler
+    public void onAFKJoin(PlayerJoinEvent e) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
+        Data data = plugin.getData();
+        Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
+        long milliseconds = System.currentTimeMillis();
+
+        if (data.isAFK(uuid)) setNotAFK(player);
+        data.setPlayerLastMovedTime(uuid, milliseconds);
+    }
+
+    private void setNotAFK(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
         Data data = plugin.getData();
         PU pu = plugin.getPU();
         UUID uuid = player.getUniqueId();
 
-        if (!afk) {
-            data.removeAFK(uuid);
-            pu.updateDisplayName(player, false);
-            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK_OFF.getComponent(null)));
-        }
-    }
-
-    private void updateAFKLocation(Player player) {
-
+        data.removeAFK(uuid);
+        pu.updateDisplayName(player, false);
+        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK_OFF.getComponent(null)));
     }
 }

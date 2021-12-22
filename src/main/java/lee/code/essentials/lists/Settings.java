@@ -19,6 +19,7 @@ public enum Settings {
     HEAD_DROP_RNG(980),
     AUTO_RESTART(86400 * 20),
     RESOURCE_WORLD_RESET(86400),
+    AFK_TIME(60),
     ;
 
     @Getter private final int value;

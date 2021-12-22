@@ -26,20 +26,23 @@ public class PermissionManager {
         UUID uuid = player.getUniqueId();
 
         PermissionAttachment attachment = player.addAttachment(plugin);
-        attachment.getPermissions().clear();
+        if (!player.isOp()) {
+            attachment.getPermissions().clear();
 
-        for (PermissionAttachmentInfo perm : player.getEffectivePermissions()) attachment.setPermission(perm.getPermission(), false);
+            for (PermissionAttachmentInfo perm : player.getEffectivePermissions()) attachment.setPermission(perm.getPermission(), false);
 
-        RankList rank = RankList.valueOf(cache.getRank(uuid));
-        switch (rank) {
-            case MOD:
-            case ADMIN:
-                for (String perm : defaultPerms) attachment.setPermission(perm, true);
-                for (String perm : staffPerms) attachment.setPermission(perm, true);
-                break;
-            default: for (String perm : defaultPerms) attachment.setPermission(perm, true);
-        }
-        for (String perm : cache.getPerms(uuid)) attachment.setPermission(perm, true);
+            RankList rank = RankList.valueOf(cache.getRank(uuid));
+            switch (rank) {
+                case MOD:
+                case ADMIN:
+                    for (String perm : defaultPerms) attachment.setPermission(perm, true);
+                    for (String perm : staffPerms) attachment.setPermission(perm, true);
+                    break;
+                default: for (String perm : defaultPerms) attachment.setPermission(perm, true);
+            }
+            for (String perm : cache.getPerms(uuid)) attachment.setPermission(perm, true);
+        } else for (String perm : defaultPerms) attachment.setPermission(perm, true);
+
         player.recalculatePermissions();
         player.updateCommands();
     }
@@ -65,6 +68,8 @@ public class PermissionManager {
         //bukkit
         defaultPerms.add("bukkit.command.tps");
         defaultPerms.add("bukkit.command.ping");
+        defaultPerms.add("allow.ride.dolphin");
+        defaultPerms.add("allow.special.dolphin");
 
         // essentials
         defaultPerms.add("essentials.command.spawn");

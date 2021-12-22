@@ -54,6 +54,7 @@ public class Data {
     private final ConcurrentHashMap<UUID, BukkitTask> resourceWorldMenuTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, List<UUID>> sleepingPlayers = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, BukkitTask> sleepTasks = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Long> playerLastMovedTimer = new ConcurrentHashMap<>();
 
     public boolean isAFK(UUID uuid) { return afkPlayers.contains(uuid); }
     public void addAFK(UUID uuid) { afkPlayers.add(uuid); }
@@ -168,6 +169,11 @@ public class Data {
     public boolean arePlayersVanished() {
         return !vanishedPlayers.isEmpty();
     }
+
+    public void setPlayerLastMovedTime(UUID uuid, long time) {
+        playerLastMovedTimer.put(uuid, time);
+    }
+    public long getPlayerLastMovedTime(UUID uuid) { return playerLastMovedTimer.get(uuid); }
 
     public boolean hasPlayerClickDelay(UUID uuid) {
         return playerClickDelay.contains(uuid);

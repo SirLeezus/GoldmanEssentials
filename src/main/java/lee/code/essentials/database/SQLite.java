@@ -413,10 +413,12 @@ public class SQLite {
                 String homes = rs.getString("homes");
                 String flying = rs.getString("flying");
                 String votes = rs.getString("votes");
+
                 cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes, false);
                 count++;
             }
             Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bPlayer Account Data Loaded: &3" + count));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -462,6 +464,48 @@ public class SQLite {
 
                 cache.setServerData(spawn, joins, worldResourceTime, worldResourceSpawn, netherResourceSpawn, endResourceSpawn);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void resetMainWorldHomes() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+
+        HashMap<String, String> newHomeData = new HashMap<>();
+        for (UUID uuid : cache.getUserList()) {
+            if (cache.hasHome(uuid)) {
+                StringBuilder newHomes = new StringBuilder();
+                for (String home : cache.getHomes(uuid)) {
+                    String[] split = home.split("\\+", 7);
+                    if (split.length > 1) {
+                        if (!split[1].equals("world")) {
+                            if (newHomes.isEmpty()) newHomes.append(home);
+                            else newHomes.append(",").append(home);
+                        }
+                    }
+                }
+
+                if (newHomes.isEmpty()) newHomes.append("0");
+                newHomeData.put(String.valueOf(uuid), newHomes.toString());
+                System.out.println("Getting Updated: " + uuid);
+            }
+        }
+
+        String key = "homes";
+        String sqlQuery = "UPDATE player_data SET " + key + " = ? WHERE player = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+
+            for (Map.Entry<String, String> user : newHomeData.entrySet()) {
+                pstmt.setString(1, user.getValue());
+                pstmt.setString(2, user.getKey());
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+            pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

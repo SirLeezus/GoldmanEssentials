@@ -122,7 +122,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("No swing delay with tools or weapons.");
                     changes.add("You can put any item on your head.");
                     changes.add("Item frames can be used to filter hoppers.");
-                    changes.add("Armor stands can be edited by sneak-clicking them.");
+                    changes.add("Armor stands can be edited by sneak-right-clicking them.");
                     changes.add("You can store exp by sneak-clicking glass bottles.");
                     changes.add("Trampling is disabled.");
                     changes.add("Llamas can be controlled when they have carpet on them.");
@@ -158,6 +158,10 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("All entities have a chance of dropping a head.");
                     changes.add("You can toggle item frame invisibility by sneak-right-clicking them with shears.");
                     changes.add("Enchantments can be taken off items in anvils and put on enchanted books.");
+                    changes.add("All protection enchantments can be put on the same armor.");
+                    changes.add("Witches and some villagers have a chance of dropping their hat.");
+                    changes.add("Dolphins can be controlled by right-clicking them, you can also use space bar to spit when riding a dolphin.");
+                    changes.add("If you hold a compass a direction bar will appear on your screen.");
 
                     for (String change : changes) {
                         lines.add(pu.formatC("&3" + number + "&b. &6" + change));

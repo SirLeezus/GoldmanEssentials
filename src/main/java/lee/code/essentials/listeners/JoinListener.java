@@ -93,7 +93,7 @@ public class JoinListener implements Listener {
         if (attribute != null) attribute.setBaseValue(23.4);
 
         //register perms
-        if (!player.isOp()) plugin.getPermissionManager().register(player);
+        plugin.getPermissionManager().register(player);
 
         //vanish check
         if (cache.isVanishPlayer(uuid)) {

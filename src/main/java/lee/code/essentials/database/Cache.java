@@ -1204,6 +1204,33 @@ public class Cache {
         }
     }
 
+    private void addPlayerToUserList(String uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getChunksPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            if (jedis.exists("userList")) {
+                String list = jedis.get("userList");
+                jedis.set("userList", list + "," + uuid);
+            } else jedis.set("userList", uuid);
+        }
+    }
+
+    public List<UUID> getUserList() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getChunksPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            List<UUID> players = new ArrayList<>();
+            if (jedis.exists("userList")) {
+                String users = jedis.get("userList");
+                String[] split = StringUtils.split(users, ',');
+                for (String player : split) players.add(UUID.fromString(player));
+                return players;
+            } return players;
+        }
+    }
+
     public void createDefaultColumns(UUID uuid) {
         setPlayerData(uuid, "0", "NOMAD", "n", RankList.NOMAD.getPrefix(), "n", "YELLOW", "0", "0", "0", "0", "0", "0", "0", true);
         setPunishmentData(uuid, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", true);
@@ -1232,6 +1259,7 @@ public class Cache {
             pipe.hset("flying", sUUID, flying);
             pipe.hset("votes", sUUID, votes);
             pipe.sync();
+            addPlayerToUserList(sUUID);
             if (sql) Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPlayerData(sUUID, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes));
         }
     }
