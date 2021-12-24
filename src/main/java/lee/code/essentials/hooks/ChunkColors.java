@@ -1,4 +1,4 @@
-package lee.code.essentials.hooks.pl3xmap;
+package lee.code.essentials.hooks;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

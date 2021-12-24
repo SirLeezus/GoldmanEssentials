@@ -1,4 +1,4 @@
-package lee.code.essentials.hooks.pl3xmap;
+package lee.code.essentials.hooks;
 
 import lee.code.chunks.ChunkAPI;
 import lee.code.essentials.GoldmanEssentials;

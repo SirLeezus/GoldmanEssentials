@@ -9,7 +9,7 @@ import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
-import lee.code.essentials.hooks.pl3xmap.Pl3xMapHook;
+import lee.code.essentials.hooks.Pl3xMapHook;
 import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.WorldManager;
@@ -29,7 +29,7 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private EnchantsAPI enchantsAPI;
     @Getter private ProtocolManager protocolManagerAPI;
     @Getter private ChunkAPI chunkAPI;
-    @Getter private Pl3xMapHook Pl3xMapHook;
+    @Getter private Pl3xMapHook pl3xMapHook;
 
     @Getter private boolean pl3xMapInstalled = false;
 
@@ -47,7 +47,7 @@ public class GoldmanEssentials extends JavaPlugin {
         this.enchantsAPI = new EnchantsAPI();
         this.worldManager = new WorldManager();
         this.protocolManagerAPI = ProtocolLibrary.getProtocolManager();
-        if (pl3xMapInstalled) this.Pl3xMapHook = new Pl3xMapHook();
+        if (pl3xMapInstalled) this.pl3xMapHook = new Pl3xMapHook();
 
         registerCommands();
         registerListeners();
@@ -76,7 +76,7 @@ public class GoldmanEssentials extends JavaPlugin {
     public void onDisable() {
         pU.kickOnlinePlayers();
         sqLite.disconnect();
-        if (pl3xMapInstalled) Pl3xMapHook.disable();
+        if (pl3xMapInstalled) pl3xMapHook.disable();
     }
 
     private void registerCommands() {

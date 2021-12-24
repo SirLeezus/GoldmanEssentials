@@ -1,4 +1,4 @@
-package lee.code.essentials.hooks.pl3xmap;
+package lee.code.essentials.hooks;
 
 import lee.code.essentials.GoldmanEssentials;
 import net.pl3x.map.api.Key;
