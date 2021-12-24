@@ -55,6 +55,22 @@ public class Data {
     private final ConcurrentHashMap<String, List<UUID>> sleepingPlayers = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, BukkitTask> sleepTasks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Long> playerLastMovedTimer = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, UUID> playerRequestingTrade = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BukkitTask> playerTradeRequestTask = new ConcurrentHashMap<>();
+
+    public void setTradeRequesting(UUID owner, UUID trader) { playerRequestingTrade.put(owner, trader); }
+    public void removeTradeRequesting(UUID uuid) {
+        playerRequestingTrade.remove(uuid);
+        getTradeRequestTask(uuid).cancel();
+        removeTradeRequestTask(uuid);
+    }
+    public boolean isTradeRequestingPlayer(UUID owner, UUID trader) {
+        if (!playerRequestingTrade.containsKey(owner)) return false;
+        else return playerRequestingTrade.get(owner).equals(trader);
+    }
+    public void setTradeRequestTask(UUID uuid, BukkitTask task) { playerTradeRequestTask.put(uuid, task); }
+    private void removeTradeRequestTask(UUID uuid) { playerTradeRequestTask.remove(uuid); }
+    private BukkitTask getTradeRequestTask(UUID uuid) { return playerTradeRequestTask.get(uuid); }
 
     public boolean isAFK(UUID uuid) { return afkPlayers.contains(uuid); }
     public void addAFK(UUID uuid) { afkPlayers.add(uuid); }

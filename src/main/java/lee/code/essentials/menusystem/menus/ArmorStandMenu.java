@@ -7,7 +7,6 @@ import lee.code.essentials.menusystem.PlayerMU;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
@@ -38,15 +37,12 @@ public class ArmorStandMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = pmu.getOwner();
 
-        if (!(e.getClickedInventory() == player.getInventory())) {
-            if (plugin.getData().hasPlayerClickDelay(player.getUniqueId())) return;
-            else plugin.getPU().addPlayerClickDelay(player.getUniqueId());
+        ItemStack clickedItem = e.getCurrentItem();
 
+        if (!(e.getClickedInventory() == player.getInventory())) {
             int slot = e.getSlot();
-            ItemStack clickedItem = e.getCurrentItem();
             ItemStack cursorItem = player.getItemOnCursor();
             ArmorStand armorStand = pmu.getArmorStand();
             EntityEquipment equipment = armorStand.getEquipment();
@@ -56,72 +52,26 @@ public class ArmorStandMenu extends Menu {
                 return;
             }
 
-            if (equipment != null) {
-                switch (slot) {
-                    case 13:
-                        equipmentChange(player, EquipmentSlot.HEAD, slot, equipment, cursorItem, clickedItem);
-                        break;
-                    case 22:
-                        equipmentChange(player, EquipmentSlot.CHEST, slot, equipment, cursorItem, clickedItem);
-                        break;
-                    case 31:
-                        equipmentChange(player, EquipmentSlot.LEGS, slot, equipment, cursorItem, clickedItem);
-                        break;
-                    case 40:
-                        equipmentChange(player, EquipmentSlot.FEET, slot, equipment, cursorItem, clickedItem);
-                        break;
-                    case 21:
-                        equipmentChange(player, EquipmentSlot.OFF_HAND, slot, equipment, cursorItem, clickedItem);
-                        break;
-                    case 23:
-                        equipmentChange(player, EquipmentSlot.HAND, slot, equipment, cursorItem, clickedItem);
-                        break;
-
-                    case 45:
-                    case 46:
-                    case 47:
-                    case 48:
-                    case 50:
-                    case 51:
-                    case 52:
-                    case 53:
-                        if (clickedItem != null) updateSetting(player, armorStand, clickedItem, slot);
-                        break;
-
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 10:
-                    case 11:
-                    case 12:
-                    case 14:
-                    case 15:
-                    case 16:
-                    case 18:
-                    case 19:
-                    case 20:
-                    case 24:
-                    case 25:
-                    case 26:
-                    case 28:
-                    case 29:
-                    case 30:
-                    case 32:
-                    case 33:
-                    case 34:
-                    case 49:
-                        double amount = 0.01;
-                        if (e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) amount = 0.10;
-                        if (e.getClick().isLeftClick()) amount = amount - amount - amount;
-                        if (slot == 49) amount = amount * 50;
-                        updatePosition(armorStand, slot, amount);
-                        playClickSound(player);
-                        break;
+            switch (slot) {
+                case 13 -> equipmentChange(player, EquipmentSlot.HEAD, slot, equipment, cursorItem, clickedItem);
+                case 22 -> equipmentChange(player, EquipmentSlot.CHEST, slot, equipment, cursorItem, clickedItem);
+                case 31 -> equipmentChange(player, EquipmentSlot.LEGS, slot, equipment, cursorItem, clickedItem);
+                case 40 -> equipmentChange(player, EquipmentSlot.FEET, slot, equipment, cursorItem, clickedItem);
+                case 21 -> equipmentChange(player, EquipmentSlot.OFF_HAND, slot, equipment, cursorItem, clickedItem);
+                case 23 -> equipmentChange(player, EquipmentSlot.HAND, slot, equipment, cursorItem, clickedItem);
+                case 45, 46, 47, 48, 50, 51, 52, 53 -> {
+                    if (clickedItem != null) updateSetting(player, armorStand, clickedItem, slot);
+                }
+                case 3, 4, 5, 10, 11, 12, 14, 15, 16, 18, 19, 20, 24, 25, 26, 28, 29, 30, 32, 33, 34, 49 -> {
+                    double amount = 0.01;
+                    if (e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) amount = 0.10;
+                    if (e.getClick().isLeftClick()) amount = amount - amount - amount;
+                    if (slot == 49) amount = amount * 50;
+                    updatePosition(armorStand, slot, amount);
+                    playClickSound(player);
                 }
             }
-        } else if (e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) {
-            e.setCancelled(true);
-        } else if (e.getClickedInventory() == player.getInventory()) e.setCancelled(false);
+        } else e.setCancelled(e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY));
     }
 
     @Override
@@ -131,235 +81,233 @@ public class ArmorStandMenu extends Menu {
         ArmorStand armorStand = pmu.getArmorStand();
         EntityEquipment equipment = armorStand.getEquipment();
 
-        if (equipment != null) {
-            ItemStack helmet = equipment.getHelmet();
-            ItemStack chest = equipment.getChestplate();
-            ItemStack pants = equipment.getLeggings();
-            ItemStack boots = equipment.getBoots();
-            ItemStack rightHand = equipment.getItemInMainHand();
-            ItemStack leftHand = equipment.getItemInOffHand();
+        ItemStack helmet = equipment.getHelmet();
+        ItemStack chest = equipment.getChestplate();
+        ItemStack pants = equipment.getLeggings();
+        ItemStack boots = equipment.getBoots();
+        ItemStack rightHand = equipment.getItemInMainHand();
+        ItemStack leftHand = equipment.getItemInOffHand();
 
-            ItemStack allow = new ItemStack(asSettingTrue);
-            ItemStack deny = new ItemStack(asSettingFalse);
-            ItemStack position = new ItemStack(asPosition);
-            ItemStack headPosition = new ItemStack(asHeadPosition);
-            ItemStack torsoPosition = new ItemStack(asTorsoPosition);
-            ItemStack leftArmPosition = new ItemStack(asLeftArmPosition);
-            ItemStack rightArmPosition = new ItemStack(asRightArmPosition);
-            ItemStack leftLegPosition = new ItemStack(asLeftLegPosition);
-            ItemStack rightLegPosition = new ItemStack(asRightLegPosition);
-            ItemStack directionPosition = new ItemStack(asDirectionPosition);
+        ItemStack allow = new ItemStack(asSettingTrue);
+        ItemStack deny = new ItemStack(asSettingFalse);
+        ItemStack position = new ItemStack(asPosition);
+        ItemStack headPosition = new ItemStack(asHeadPosition);
+        ItemStack torsoPosition = new ItemStack(asTorsoPosition);
+        ItemStack leftArmPosition = new ItemStack(asLeftArmPosition);
+        ItemStack rightArmPosition = new ItemStack(asRightArmPosition);
+        ItemStack leftLegPosition = new ItemStack(asLeftLegPosition);
+        ItemStack rightLegPosition = new ItemStack(asRightLegPosition);
+        ItemStack directionPosition = new ItemStack(asDirectionPosition);
 
-            ItemMeta allowMeta = allow.getItemMeta();
-            ItemMeta denyMeta = deny.getItemMeta();
-            ItemMeta positionMeta = position.getItemMeta();
-            ItemMeta headPositionMeta = headPosition.getItemMeta();
-            ItemMeta torsoPositionMeta = torsoPosition.getItemMeta();
-            ItemMeta leftArmPositionMeta = leftArmPosition.getItemMeta();
-            ItemMeta rightArmPositionMeta = rightArmPosition.getItemMeta();
-            ItemMeta leftLegPositionMeta = leftLegPosition.getItemMeta();
-            ItemMeta rightLegPositionMeta = rightLegPosition.getItemMeta();
-            ItemMeta directionPositionMeta = directionPosition.getItemMeta();
+        ItemMeta allowMeta = allow.getItemMeta();
+        ItemMeta denyMeta = deny.getItemMeta();
+        ItemMeta positionMeta = position.getItemMeta();
+        ItemMeta headPositionMeta = headPosition.getItemMeta();
+        ItemMeta torsoPositionMeta = torsoPosition.getItemMeta();
+        ItemMeta leftArmPositionMeta = leftArmPosition.getItemMeta();
+        ItemMeta rightArmPositionMeta = rightArmPosition.getItemMeta();
+        ItemMeta leftLegPositionMeta = leftLegPosition.getItemMeta();
+        ItemMeta rightLegPositionMeta = rightLegPosition.getItemMeta();
+        ItemMeta directionPositionMeta = directionPosition.getItemMeta();
 
-            String resultTrue = Lang.TRUE.getString(null);
-            String resultFalse = Lang.FALSE.getString(null);
+        String resultTrue = Lang.TRUE.getString(null);
+        String resultFalse = Lang.FALSE.getString(null);
 
-            if (armorStand.isInvulnerable()) {
-                allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_INVULNERABLE.getComponent(new String[] { resultTrue }));
-                allow.setItemMeta(allowMeta);
-                inventory.setItem(45, allow);
-            } else {
-                denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_INVULNERABLE.getComponent(new String[] { resultFalse }));
-                deny.setItemMeta(denyMeta);
-                inventory.setItem(45, deny);
-            }
-
-            if (armorStand.hasArms()) {
-                allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_ARMS.getComponent(new String[] { resultTrue }));
-                allow.setItemMeta(allowMeta);
-                inventory.setItem(46, allow);
-            } else {
-                denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_ARMS.getComponent(new String[] { resultFalse }));
-                deny.setItemMeta(denyMeta);
-                inventory.setItem(46, deny);
-            }
-
-            if (armorStand.hasBasePlate()) {
-                allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_PLATE.getComponent(new String[] { resultTrue }));
-                allow.setItemMeta(allowMeta);
-                inventory.setItem(47, allow);
-            } else {
-                denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_PLATE.getComponent(new String[] { resultFalse }));
-                deny.setItemMeta(denyMeta);
-                inventory.setItem(47, deny);
-            }
-
-            if (armorStand.isSmall()) {
-                allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_SMALL.getComponent(new String[] { resultTrue }));
-                allow.setItemMeta(allowMeta);
-                inventory.setItem(48, allow);
-            } else {
-                denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_SMALL.getComponent(new String[] { resultFalse }));
-                deny.setItemMeta(denyMeta);
-                inventory.setItem(48, deny);
-            }
-
-            if (armorStand.isVisible()) {
-                allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_VISIBLE.getComponent(new String[] { resultTrue }));
-                allow.setItemMeta(allowMeta);
-                inventory.setItem(50, allow);
-            } else {
-                denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_VISIBLE.getComponent(new String[] { resultFalse }));
-                deny.setItemMeta(denyMeta);
-                inventory.setItem(50, deny);
-            }
-
-            if (armorStand.isCustomNameVisible()) {
-                allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_NAME_VISIBLE.getComponent(new String[] { resultTrue }));
-                allow.setItemMeta(allowMeta);
-                inventory.setItem(51, allow);
-            } else {
-                denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_NAME_VISIBLE.getComponent(new String[] { resultFalse }));
-                deny.setItemMeta(denyMeta);
-                inventory.setItem(51, deny);
-            }
-
-            if (armorStand.isGlowing()) {
-                allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GLOWING.getComponent(new String[] { resultTrue }));
-                allow.setItemMeta(allowMeta);
-                inventory.setItem(52, allow);
-            } else {
-                denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GLOWING.getComponent(new String[] { resultFalse }));
-                deny.setItemMeta(denyMeta);
-                inventory.setItem(52, deny);
-            }
-
-            if (armorStand.hasGravity()) {
-                allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GRAVITY.getComponent(new String[] { resultTrue }));
-                allow.setItemMeta(allowMeta);
-                inventory.setItem(53, allow);
-            } else {
-                denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GRAVITY.getComponent(new String[] { resultFalse }));
-                deny.setItemMeta(denyMeta);
-                inventory.setItem(53, deny);
-            }
-
-            //POSITION LOCATION
-
-            positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getX()) }));
-            position.setItemMeta(positionMeta);
-            inventory.setItem(3, position);
-
-            positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getY()) }));
-            position.setItemMeta(positionMeta);
-            inventory.setItem(4, position);
-
-            positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getZ()) }));
-            position.setItemMeta(positionMeta);
-            inventory.setItem(5, position);
-
-            //POSITION HEAD
-
-            headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getX()) }));
-            headPosition.setItemMeta(headPositionMeta);
-            inventory.setItem(10, headPosition);
-
-            headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getY()) }));
-            headPosition.setItemMeta(headPositionMeta);
-            inventory.setItem(11, headPosition);
-
-            headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getZ()) }));
-            headPosition.setItemMeta(headPositionMeta);
-            inventory.setItem(12, headPosition);
-
-            //POSITION TORSO
-
-            torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getX()) }));
-            torsoPosition.setItemMeta(torsoPositionMeta);
-            inventory.setItem(14, torsoPosition);
-
-            torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getY()) }));
-            torsoPosition.setItemMeta(torsoPositionMeta);
-            inventory.setItem(15, torsoPosition);
-
-            torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getZ()) }));
-            torsoPosition.setItemMeta(torsoPositionMeta);
-            inventory.setItem(16, torsoPosition);
-
-            //POSITION LEFT ARM
-
-            leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getX()) }));
-            leftArmPosition.setItemMeta(leftArmPositionMeta);
-            inventory.setItem(18, leftArmPosition);
-
-            leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getY()) }));
-            leftArmPosition.setItemMeta(leftArmPositionMeta);
-            inventory.setItem(19, leftArmPosition);
-
-            leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getZ()) }));
-            leftArmPosition.setItemMeta(leftArmPositionMeta);
-            inventory.setItem(20, leftArmPosition);
-
-            //POSITION RIGHT ARM
-
-            rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getX()) }));
-            rightArmPosition.setItemMeta(rightArmPositionMeta);
-            inventory.setItem(24, rightArmPosition);
-
-            rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getY()) }));
-            rightArmPosition.setItemMeta(rightArmPositionMeta);
-            inventory.setItem(25, rightArmPosition);
-
-            rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getZ()) }));
-            rightArmPosition.setItemMeta(rightArmPositionMeta);
-            inventory.setItem(26, rightArmPosition);
-
-            //POSITION LEFT LEG
-
-            leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getX()) }));
-            leftLegPosition.setItemMeta(leftLegPositionMeta);
-            inventory.setItem(28, leftLegPosition);
-
-            leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getY()) }));
-            leftLegPosition.setItemMeta(leftLegPositionMeta);
-            inventory.setItem(29, leftLegPosition);
-
-            leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getZ()) }));
-            leftLegPosition.setItemMeta(leftLegPositionMeta);
-            inventory.setItem(30, leftLegPosition);
-
-            //POSITION RIGHT LEG
-
-            rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getX()) }));
-            rightLegPosition.setItemMeta(rightLegPositionMeta);
-            inventory.setItem(32, rightLegPosition);
-
-            rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getY()) }));
-            rightLegPosition.setItemMeta(rightLegPositionMeta);
-            inventory.setItem(33, rightLegPosition);
-
-            rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getZ()) }));
-            rightLegPosition.setItemMeta(rightLegPositionMeta);
-            inventory.setItem(34, rightLegPosition);
-
-            //POSITION DIRECTION
-
-            directionPositionMeta.displayName(Lang.MENU_ARMOR_STAND_DIRECTION_POSITION.getComponent(new String[] { plugin.getPU().shortenDouble(armorStand.getLocation().getYaw()) }));
-            CompassMeta compassMeta = (CompassMeta) directionPositionMeta;
-            compassMeta.setLodestone(armorStand.getLocation().add(armorStand.getLocation().getDirection().setY(0).normalize().multiply(5)));
-            compassMeta.setLodestoneTracked(true);
-            directionPosition.setItemMeta(directionPositionMeta);
-            inventory.setItem(49, directionPosition);
-
-            //ARMOR STAND
-
-            inventory.setItem(13, helmet);
-            inventory.setItem(21, leftHand);
-            inventory.setItem(22, chest);
-            inventory.setItem(23, rightHand);
-            inventory.setItem(31, pants);
-            inventory.setItem(40, boots);
+        if (armorStand.isInvulnerable()) {
+            allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_INVULNERABLE.getComponent(new String[] { resultTrue }));
+            allow.setItemMeta(allowMeta);
+            inventory.setItem(45, allow);
+        } else {
+            denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_INVULNERABLE.getComponent(new String[] { resultFalse }));
+            deny.setItemMeta(denyMeta);
+            inventory.setItem(45, deny);
         }
+
+        if (armorStand.hasArms()) {
+            allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_ARMS.getComponent(new String[] { resultTrue }));
+            allow.setItemMeta(allowMeta);
+            inventory.setItem(46, allow);
+        } else {
+            denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_ARMS.getComponent(new String[] { resultFalse }));
+            deny.setItemMeta(denyMeta);
+            inventory.setItem(46, deny);
+        }
+
+        if (armorStand.hasBasePlate()) {
+            allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_PLATE.getComponent(new String[] { resultTrue }));
+            allow.setItemMeta(allowMeta);
+            inventory.setItem(47, allow);
+        } else {
+            denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_PLATE.getComponent(new String[] { resultFalse }));
+            deny.setItemMeta(denyMeta);
+            inventory.setItem(47, deny);
+        }
+
+        if (armorStand.isSmall()) {
+            allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_SMALL.getComponent(new String[] { resultTrue }));
+            allow.setItemMeta(allowMeta);
+            inventory.setItem(48, allow);
+        } else {
+            denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_SMALL.getComponent(new String[] { resultFalse }));
+            deny.setItemMeta(denyMeta);
+            inventory.setItem(48, deny);
+        }
+
+        if (armorStand.isVisible()) {
+            allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_VISIBLE.getComponent(new String[] { resultTrue }));
+            allow.setItemMeta(allowMeta);
+            inventory.setItem(50, allow);
+        } else {
+            denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_VISIBLE.getComponent(new String[] { resultFalse }));
+            deny.setItemMeta(denyMeta);
+            inventory.setItem(50, deny);
+        }
+
+        if (armorStand.isCustomNameVisible()) {
+            allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_NAME_VISIBLE.getComponent(new String[] { resultTrue }));
+            allow.setItemMeta(allowMeta);
+            inventory.setItem(51, allow);
+        } else {
+            denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_NAME_VISIBLE.getComponent(new String[] { resultFalse }));
+            deny.setItemMeta(denyMeta);
+            inventory.setItem(51, deny);
+        }
+
+        if (armorStand.isGlowing()) {
+            allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GLOWING.getComponent(new String[] { resultTrue }));
+            allow.setItemMeta(allowMeta);
+            inventory.setItem(52, allow);
+        } else {
+            denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GLOWING.getComponent(new String[] { resultFalse }));
+            deny.setItemMeta(denyMeta);
+            inventory.setItem(52, deny);
+        }
+
+        if (armorStand.hasGravity()) {
+            allowMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GRAVITY.getComponent(new String[] { resultTrue }));
+            allow.setItemMeta(allowMeta);
+            inventory.setItem(53, allow);
+        } else {
+            denyMeta.displayName(Lang.MENU_ARMOR_STAND_SETTING_GRAVITY.getComponent(new String[] { resultFalse }));
+            deny.setItemMeta(denyMeta);
+            inventory.setItem(53, deny);
+        }
+
+        //POSITION LOCATION
+
+        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getX()) }));
+        position.setItemMeta(positionMeta);
+        inventory.setItem(3, position);
+
+        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getY()) }));
+        position.setItemMeta(positionMeta);
+        inventory.setItem(4, position);
+
+        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getZ()) }));
+        position.setItemMeta(positionMeta);
+        inventory.setItem(5, position);
+
+        //POSITION HEAD
+
+        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getX()) }));
+        headPosition.setItemMeta(headPositionMeta);
+        inventory.setItem(10, headPosition);
+
+        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getY()) }));
+        headPosition.setItemMeta(headPositionMeta);
+        inventory.setItem(11, headPosition);
+
+        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getZ()) }));
+        headPosition.setItemMeta(headPositionMeta);
+        inventory.setItem(12, headPosition);
+
+        //POSITION TORSO
+
+        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getX()) }));
+        torsoPosition.setItemMeta(torsoPositionMeta);
+        inventory.setItem(14, torsoPosition);
+
+        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getY()) }));
+        torsoPosition.setItemMeta(torsoPositionMeta);
+        inventory.setItem(15, torsoPosition);
+
+        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getZ()) }));
+        torsoPosition.setItemMeta(torsoPositionMeta);
+        inventory.setItem(16, torsoPosition);
+
+        //POSITION LEFT ARM
+
+        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getX()) }));
+        leftArmPosition.setItemMeta(leftArmPositionMeta);
+        inventory.setItem(18, leftArmPosition);
+
+        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getY()) }));
+        leftArmPosition.setItemMeta(leftArmPositionMeta);
+        inventory.setItem(19, leftArmPosition);
+
+        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getZ()) }));
+        leftArmPosition.setItemMeta(leftArmPositionMeta);
+        inventory.setItem(20, leftArmPosition);
+
+        //POSITION RIGHT ARM
+
+        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getX()) }));
+        rightArmPosition.setItemMeta(rightArmPositionMeta);
+        inventory.setItem(24, rightArmPosition);
+
+        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getY()) }));
+        rightArmPosition.setItemMeta(rightArmPositionMeta);
+        inventory.setItem(25, rightArmPosition);
+
+        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getZ()) }));
+        rightArmPosition.setItemMeta(rightArmPositionMeta);
+        inventory.setItem(26, rightArmPosition);
+
+        //POSITION LEFT LEG
+
+        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getX()) }));
+        leftLegPosition.setItemMeta(leftLegPositionMeta);
+        inventory.setItem(28, leftLegPosition);
+
+        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getY()) }));
+        leftLegPosition.setItemMeta(leftLegPositionMeta);
+        inventory.setItem(29, leftLegPosition);
+
+        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getZ()) }));
+        leftLegPosition.setItemMeta(leftLegPositionMeta);
+        inventory.setItem(30, leftLegPosition);
+
+        //POSITION RIGHT LEG
+
+        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getX()) }));
+        rightLegPosition.setItemMeta(rightLegPositionMeta);
+        inventory.setItem(32, rightLegPosition);
+
+        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getY()) }));
+        rightLegPosition.setItemMeta(rightLegPositionMeta);
+        inventory.setItem(33, rightLegPosition);
+
+        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getZ()) }));
+        rightLegPosition.setItemMeta(rightLegPositionMeta);
+        inventory.setItem(34, rightLegPosition);
+
+        //POSITION DIRECTION
+
+        directionPositionMeta.displayName(Lang.MENU_ARMOR_STAND_DIRECTION_POSITION.getComponent(new String[] { plugin.getPU().shortenDouble(armorStand.getLocation().getYaw()) }));
+        CompassMeta compassMeta = (CompassMeta) directionPositionMeta;
+        compassMeta.setLodestone(armorStand.getLocation().add(armorStand.getLocation().getDirection().setY(0).normalize().multiply(5)));
+        compassMeta.setLodestoneTracked(true);
+        directionPosition.setItemMeta(directionPositionMeta);
+        inventory.setItem(49, directionPosition);
+
+        //ARMOR STAND
+
+        inventory.setItem(13, helmet);
+        inventory.setItem(21, leftHand);
+        inventory.setItem(22, chest);
+        inventory.setItem(23, rightHand);
+        inventory.setItem(31, pants);
+        inventory.setItem(40, boots);
     }
 
     private void equipmentChange(Player player, EquipmentSlot equipmentSlot, int inventorySlot, EntityEquipment equipment, ItemStack cursorItem, ItemStack clickedItem) {

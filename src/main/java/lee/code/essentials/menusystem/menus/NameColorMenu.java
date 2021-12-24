@@ -1,12 +1,14 @@
 package lee.code.essentials.menusystem.menus;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.PlayerMU;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -36,26 +38,26 @@ public class NameColorMenu extends Menu {
     public void handleMenu(InventoryClickEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
+        PU pu = plugin.getPU();
 
         Player player = pmu.getOwner();
         UUID uuid = player.getUniqueId();
-        if (!(e.getClickedInventory() == player.getInventory())) {
-            if (plugin.getData().hasPlayerClickDelay(uuid)) return;
-            else plugin.getPU().addPlayerClickDelay(uuid);
 
-            ItemStack clickedItem = e.getCurrentItem();
+        ItemStack clickedItem = e.getCurrentItem();
 
-            if (clickedItem != null) {
-                if (plugin.getPU().getNameColorItems().contains(clickedItem)) {
-                    String id = getColorID(clickedItem);
-                    cache.setColor(uuid, id);
-                    plugin.getPU().updateDisplayName(player, false);
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COLOR_MENU_SELECT.getComponent(new String[] { ChatColor.valueOf(id) + plugin.getPU().formatCapitalization(id) })));
-                    player.getInventory().close();
-                } else if (clickedItem.equals(close)) player.getInventory().close();
-                playClickSound(player);
-            }
-        }
+        if (clickedItem == null) return;
+        if (e.getClickedInventory() == player.getInventory()) return;
+        if (clickedItem.getType().equals(Material.AIR)) return;
+        if (clickedItem.equals(fillerGlass)) return;
+
+        if (pu.getNameColorItems().contains(clickedItem)) {
+            String id = getColorID(clickedItem);
+            cache.setColor(uuid, id);
+            pu.updateDisplayName(player, false);
+            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COLOR_MENU_SELECT.getComponent(new String[] { ChatColor.valueOf(id) + pu.formatCapitalization(id) })));
+            player.getInventory().close();
+        } else if (clickedItem.equals(close)) player.getInventory().close();
+        playClickSound(player);
     }
 
     @Override

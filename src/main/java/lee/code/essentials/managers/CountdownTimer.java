@@ -64,6 +64,10 @@ public class CountdownTimer implements Runnable {
         secondsLeft--;
     }
 
+    public void stop() {
+        if (assignedTaskId != null) Bukkit.getScheduler().cancelTask(assignedTaskId);
+    }
+
     /**
      * Gets the total seconds this timer was set to run for
      *

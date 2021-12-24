@@ -19,7 +19,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -395,16 +394,31 @@ public class PU {
 
     public void teleportTimer(Player player, Player target) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-
+        UUID pUUID = player.getUniqueId();
+        UUID tUUID = player.getUniqueId();
         scheduler.runTaskLater(plugin, () -> {
-
-            if (Bukkit.getOnlinePlayers().contains(player) && plugin.getData().isPlayerRequestingTeleportForTarget(player.getUniqueId(), target.getUniqueId())) {
-                plugin.getData().removePlayerRequestingTeleport(player.getUniqueId());
+            if (player.isOnline() && data.isPlayerRequestingTeleportForTarget(pUUID, tUUID)) {
+                data.removePlayerRequestingTeleport(pUUID);
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_REQUEST_EXPIRED.getComponent(new String[] { target.getName() })));
             }
 
         },1200L);
+    }
+
+    public void tradeTimer(Player owner, Player trader) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        UUID ownerUUID = owner.getUniqueId();
+        UUID traderUUID = trader.getUniqueId();
+        data.setTradeRequestTask(ownerUUID, scheduler.runTaskLater(plugin, () -> {
+            if (owner.isOnline() && data.isTradeRequestingPlayer(ownerUUID, traderUUID)) {
+                owner.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TRADE_REQUEST_EXPIRED.getComponent(new String[] { trader.getName() })));
+                data.removeTradeRequesting(ownerUUID);
+            }
+        },1200L));
     }
 
     public void kickOnlinePlayers() {
@@ -591,7 +605,6 @@ public class PU {
                     long currentTimeDifferance =  TimeUnit.MILLISECONDS.toSeconds(milliseconds) - TimeUnit.MILLISECONDS.toSeconds(time);
                     if (currentTimeDifferance > Settings.AFK_TIME.getValue()) {
                         data.addAFK(uuid);
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK_ON.getComponent(null)));
                         updateDisplayName(player, true);
                     }
                 }
@@ -811,7 +824,8 @@ public class PU {
         return accruedHomes + defaultHomeAmount;
     }
 
-    public int getFreeSpace(Player player, ItemStack item) {
+    public int getFreeSpace(Player player, ItemStack itemStack) {
+        ItemStack item = new ItemStack(itemStack);
         item.setAmount(1);
         int freeSpaceCount = 0;
         for (int slot = 0; slot <= 35; slot++) {

@@ -41,8 +41,8 @@ public class TeleportCMD implements CommandExecutor {
                                 if (data.isAFK(targetUUID)) player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK.getComponent(new String[] { target.getName() })));
 
                                 Component targetMessage = Lang.REQUEST_TELEPORT_TARGET.getComponent(new String[] { player.getName() });
-                                Component accept = Lang.REQUEST_TELEPORT_ACCEPT.getComponent(null).hoverEvent(Lang.REQUEST_TELEPORT_ACCEPT_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + player.getName()));
-                                Component deny = Lang.REQUEST_TELEPORT_DENY.getComponent(null).hoverEvent(Lang.REQUEST_TELEPORT_DENY_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny " + player.getName()));
+                                Component accept = Component.text("               ").append(Lang.REQUEST_ACCEPT.getComponent(null).hoverEvent(Lang.REQUEST_TELEPORT_ACCEPT_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + player.getName())));
+                                Component deny = Component.text("        ").append(Lang.REQUEST_DENY.getComponent(null).hoverEvent(Lang.REQUEST_TELEPORT_DENY_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny " + player.getName())));
 
                                 data.setPlayerRequestingTeleport(uuid, targetUUID);
                                 target.sendMessage(targetMessage.append(accept).append(deny));

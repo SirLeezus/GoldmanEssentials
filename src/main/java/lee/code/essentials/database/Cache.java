@@ -307,6 +307,28 @@ public class Cache {
         }
     }
 
+    public void addPermList(UUID uuid, List<String> newPerms) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        SQLite SQL = plugin.getSqLite();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String perms = jedis.hget("perms", sUUID);
+            String[] split = StringUtils.split(perms, ',');
+            List<String> playerPerms = new ArrayList<>(Arrays.asList(split));
+            for (String perm : newPerms) {
+                if (!playerPerms.contains(perm)) {
+                    playerPerms.add(perm);
+                    String newPermString = StringUtils.join(playerPerms, ",");
+                    jedis.hset("perms", sUUID, newPermString);
+                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setPerm(sUUID, newPermString));
+                }
+            }
+        }
+    }
+
     public void removePerm(UUID uuid, String perm) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         SQLite SQL = plugin.getSqLite();

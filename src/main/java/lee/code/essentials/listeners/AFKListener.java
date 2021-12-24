@@ -8,6 +8,7 @@ import lee.code.essentials.lists.Lang;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -75,6 +76,18 @@ public class AFKListener implements Listener {
         data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
+    @EventHandler
+    public void onAFKInventoryClick(InventoryClickEvent e) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
+        Data data = plugin.getData();
+        Player player = (Player) e.getWhoClicked();
+        UUID uuid = player.getUniqueId();
+        long milliseconds = System.currentTimeMillis();
+
+        if (data.isAFK(uuid)) setNotAFK(player);
+        data.setPlayerLastMovedTime(uuid, milliseconds);
+    }
+
     private void setNotAFK(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
         Data data = plugin.getData();
@@ -83,6 +96,5 @@ public class AFKListener implements Listener {
 
         data.removeAFK(uuid);
         pu.updateDisplayName(player, false);
-        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK_OFF.getComponent(null)));
     }
 }

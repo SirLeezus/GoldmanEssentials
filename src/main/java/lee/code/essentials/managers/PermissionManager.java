@@ -101,6 +101,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.afk");
         defaultPerms.add("essentials.command.vote");
         defaultPerms.add("essentials.command.randomteleport");
+        defaultPerms.add("essentials.command.trade");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");
@@ -198,7 +199,6 @@ public class PermissionManager {
         mvpPerms.add("trails.use.snowball_throw");
 
         //elite
-        elitePerms.addAll(vipPerms);
         elitePerms.addAll(mvpPerms);
         elitePerms.add("pets.use.desert_villager");
         elitePerms.add("pets.use.savanna_villager");
@@ -232,21 +232,9 @@ public class PermissionManager {
         Cache cache = plugin.getCache();
 
         switch (rank) {
-            case VIP:
-                for (String perm : vipPerms) {
-                    if (!cache.hasPerm(uuid, perm)) cache.addPerm(uuid, perm);
-                }
-                break;
-            case MVP:
-                for (String perm : mvpPerms) {
-                    if (!cache.hasPerm(uuid, perm)) cache.addPerm(uuid, perm);
-                }
-                break;
-            case ELITE:
-                for (String perm : elitePerms) {
-                    if (!cache.hasPerm(uuid, perm)) cache.addPerm(uuid, perm);
-                }
-                break;
+            case VIP -> cache.addPermList(uuid, vipPerms);
+            case MVP -> cache.addPermList(uuid, mvpPerms);
+            case ELITE -> cache.addPermList(uuid, elitePerms);
         }
     }
 }

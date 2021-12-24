@@ -9,7 +9,7 @@ import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.database.SQLite;
-import lee.code.essentials.hooks.Pl3xMap.Pl3xMapHook;
+import lee.code.essentials.hooks.pl3xmap.Pl3xMapHook;
 import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.WorldManager;
@@ -160,6 +160,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("iteminfo").setExecutor(new ItemInfoCMD());
         getCommand("afk").setExecutor(new AfkCMD());
         getCommand("vote").setExecutor(new VoteCMD());
+        getCommand("trade").setExecutor(new TradeCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -240,6 +241,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("iteminfo").setTabCompleter(new ItemInfoTab());
         getCommand("afk").setTabCompleter(new AfkTab());
         getCommand("vote").setTabCompleter(new VoteTab());
+        getCommand("trade").setTabCompleter(new TradeTab());
     }
 
     private void registerListeners() {

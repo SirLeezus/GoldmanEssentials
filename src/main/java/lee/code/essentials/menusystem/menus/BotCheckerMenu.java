@@ -6,6 +6,7 @@ import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.PlayerMU;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -35,15 +36,17 @@ public class BotCheckerMenu extends Menu {
         UUID uuid = player.getUniqueId();
         Cache cache = plugin.getCache();
 
-        if (!(e.getClickedInventory() == player.getInventory())) {
-            ItemStack clickedItem = e.getCurrentItem();
-            if (clickedItem != null) {
-                if (clickedItem.equals(botChecker)) {
-                    cache.setBotChecked(uuid);
-                    player.closeInventory();
-                    playClickSound(player);
-                }
-            }
+        ItemStack clickedItem = e.getCurrentItem();
+
+        if (clickedItem == null) return;
+        if (e.getClickedInventory() == player.getInventory()) return;
+        if (clickedItem.getType().equals(Material.AIR)) return;
+        if (clickedItem.equals(fillerGlass)) return;
+
+        if (clickedItem.equals(botChecker)) {
+            cache.setBotChecked(uuid);
+            player.closeInventory();
+            playClickSound(player);
         }
     }
 
