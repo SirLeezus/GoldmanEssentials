@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
@@ -11,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Scanner;
 import java.util.UUID;
 
 public class MoneyCMD implements CommandExecutor {
@@ -19,13 +19,13 @@ public class MoneyCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
         if (args.length > 2) {
             OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[1]);
             if (target != null) {
-                Scanner buyScanner = new Scanner(args[2]);
-                if (buyScanner.hasNextLong()) {
+                if (pu.containOnlyNumbers(args[2])) {
                     long amount = Long.parseLong(args[2]);
                     UUID tUUID = target.getUniqueId();
                     String subCommand = args[0];
@@ -34,18 +34,18 @@ public class MoneyCMD implements CommandExecutor {
                     switch (subCommand) {
                         case "set" -> {
                             cache.setBalance(tUUID, amount);
-                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
-                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET.getComponent(new String[]{target.getName(), pu.formatAmount(amount)})));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET_TARGET.getComponent(new String[]{pu.formatAmount(amount)})));
                         }
                         case "remove" -> {
                             cache.withdraw(tUUID, amount);
-                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
-                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE.getComponent(new String[]{target.getName(), pu.formatAmount(amount)})));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE_TARGET.getComponent(new String[]{pu.formatAmount(amount)})));
                         }
                         case "give" -> {
                             cache.deposit(tUUID, amount);
-                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE.getComponent(new String[]{target.getName(), plugin.getPU().formatAmount(amount)})));
-                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE_TARGET.getComponent(new String[]{plugin.getPU().formatAmount(amount)})));
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE.getComponent(new String[]{target.getName(), pu.formatAmount(amount)})));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE_TARGET.getComponent(new String[]{pu.formatAmount(amount)})));
                         }
                         default -> sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getComponent(new String[]{ args[0] })));
                     }

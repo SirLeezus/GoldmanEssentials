@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
@@ -22,6 +23,7 @@ public class BalanceTopCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
         if (sender instanceof Player player) {
@@ -37,8 +39,7 @@ public class BalanceTopCMD implements CommandExecutor {
 
             //page check
             if (args.length > 0) {
-                Scanner numberScanner = new Scanner(args[0]);
-                if (numberScanner.hasNextInt()) {
+                if (pu.containOnlyNumbers(args[0])) {
                     page = Integer.parseInt(args[0]);
                 } else {
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_LIST_PAGE_NOT_NUMBER.getComponent(new String[]{ args[0] } )));
@@ -66,12 +67,12 @@ public class BalanceTopCMD implements CommandExecutor {
                     String posColor = "&3";
                     if (offlinePlayer.getName() != null) {
                         String name = offlinePlayer.getName();
-                        String balance = plugin.getPU().formatAmount(sortedMap.get(thePlayer));
+                        String balance = pu.formatAmount(sortedMap.get(thePlayer));
                         if (name.equals(player.getName())) {
                             posColor = "&2";
                             onPage = true;
                         }
-                        lines.add(plugin.getPU().formatC(posColor + position + ". &e" + name + " &7| &6$" + balance));
+                        lines.add(pu.formatC(posColor + position + ". &e" + name + " &7| &6$" + balance));
                         position++;
                     }
                 }
@@ -81,7 +82,7 @@ public class BalanceTopCMD implements CommandExecutor {
 
             if (!onPage) {
                 lines.add(Component.text(""));
-                lines.add(plugin.getPU().formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| &6$" + plugin.getPU().formatAmount(sortedMap.get(String.valueOf(uuid)))));
+                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| &6$" + pu.formatAmount(sortedMap.get(String.valueOf(uuid)))));
             }
 
             lines.add(Component.text(""));

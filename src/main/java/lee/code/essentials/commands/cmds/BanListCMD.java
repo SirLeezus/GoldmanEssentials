@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
@@ -14,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.UUID;
 
 public class BanListCMD implements CommandExecutor {
@@ -22,6 +22,7 @@ public class BanListCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
         int index;
@@ -30,8 +31,7 @@ public class BanListCMD implements CommandExecutor {
 
         //page check
         if (args.length > 0) {
-            Scanner sellScanner = new Scanner(args[0]);
-            if (sellScanner.hasNextInt()) {
+            if (pu.containOnlyNumbers(args[0])) {
                 page = Integer.parseInt(args[0]);
             } else {
                 sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_LIST_PAGE_NOT_NUMBER.getComponent(new String[]{ args[2]} )));
@@ -66,10 +66,10 @@ public class BanListCMD implements CommandExecutor {
                 if (offlinePlayer.getName() != null) name = offlinePlayer.getName();
                 long timeBanned = cache.getTempBanTime(pUUID);
                 if (timeBanned < 0) timeBanned = 0;
-                if (cache.isTempBanned(pUUID)) time = plugin.getPU().formatSeconds(timeBanned);
+                if (cache.isTempBanned(pUUID)) time = pu.formatSeconds(timeBanned);
                 OfflinePlayer offlineStaff = Bukkit.getOfflinePlayer(cache.getStaffWhoPunished(pUUID));
                 if (offlineStaff.getName() != null) staff = offlineStaff.getName();
-                lines.add(plugin.getPU().formatC("&3" + position + ". &6" + name + " &3Time: &7" + time + " &3Reason: &7" + cache.getBanReason(pUUID)).hoverEvent(plugin.getPU().formatC("&3Date: &7" + cache.getBanDate(pUUID) + "\n&3Staff Member: &7" + staff )));
+                lines.add(pu.formatC("&3" + position + ". &6" + name + " &3Time: &7" + time + " &3Reason: &7" + cache.getBanReason(pUUID)).hoverEvent(pu.formatC("&3Date: &7" + cache.getBanDate(pUUID) + "\n&3Staff Member: &7" + staff )));
             }
         }
 

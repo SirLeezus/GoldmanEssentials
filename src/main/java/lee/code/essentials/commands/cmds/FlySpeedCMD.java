@@ -1,5 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -7,17 +9,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Scanner;
-
 public class FlySpeedCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
 
         if (sender instanceof Player player) {
             if (args.length > 0) {
-                Scanner numberScanner = new Scanner(args[0]);
-                if (numberScanner.hasNextInt()) {
+                if (pu.containOnlyNumbers(args[0])) {
                     int number = Integer.parseInt(args[0]);
                     float speed = (float) 0;
                     if (number <= 10) {

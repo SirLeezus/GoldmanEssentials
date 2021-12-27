@@ -66,8 +66,7 @@ public class HomeCMD implements CommandExecutor {
                     int page = 0;
 
                     if (args.length == 2) {
-                        Scanner numberScanner = new Scanner(args[1]);
-                        if (numberScanner.hasNextInt()) {
+                        if (pu.containOnlyNumbers(args[1])) {
                             page = Integer.parseInt(args[1]);
                         } else {
                             player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_LIST_PAGE_NOT_NUMBER.getComponent(new String[]{ args[0] } )));

@@ -1,6 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
@@ -10,19 +11,18 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class RemoveBoosterCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         Cache cache = plugin.getCache();
 
         if (args.length > 0) {
             if (cache.areBoosters()) {
-                Scanner numberScanner = new Scanner(args[0]);
-                if (numberScanner.hasNextInt()) {
+                if (pu.containOnlyNumbers(args[0])) {
                     String id = args[0];
                     List<String> ids = cache.getBoosterIDStringList();
                     if (ids.contains(id)) {

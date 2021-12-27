@@ -836,4 +836,8 @@ public class PU {
         }
         return freeSpaceCount;
     }
+
+    public boolean containOnlyNumbers(String string) {
+        return string.matches("[0-9]+");
+    }
 }
