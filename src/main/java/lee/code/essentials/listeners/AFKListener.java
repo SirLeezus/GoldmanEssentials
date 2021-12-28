@@ -4,9 +4,9 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.lists.Lang;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class AFKListener implements Listener {
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onAFKMove(PlayerMoveEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
@@ -30,7 +30,7 @@ public class AFKListener implements Listener {
         data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onAFKCommand(PlayerCommandPreprocessEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
@@ -42,7 +42,7 @@ public class AFKListener implements Listener {
         data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onAFKChat(AsyncChatEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
         Data data = plugin.getData();
@@ -54,7 +54,7 @@ public class AFKListener implements Listener {
         data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onAFKQuit(PlayerQuitEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
         Data data = plugin.getData();
@@ -64,7 +64,7 @@ public class AFKListener implements Listener {
         if (data.isAFK(uuid)) setNotAFK(player);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onAFKJoin(PlayerJoinEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
         Data data = plugin.getData();
@@ -76,7 +76,7 @@ public class AFKListener implements Listener {
         data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onAFKInventoryClick(InventoryClickEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
         Data data = plugin.getData();
