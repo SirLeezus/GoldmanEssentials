@@ -5,6 +5,7 @@ import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 public class QuitListener implements Listener {
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = e.getPlayer();

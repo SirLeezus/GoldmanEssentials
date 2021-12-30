@@ -104,6 +104,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("itemname").setExecutor(new ItemNameCMD());
         getCommand("zap").setExecutor(new ZapCMD());
         getCommand("advancement").setExecutor(new AdvancementCMD());
+        getCommand("checkadvancement").setExecutor(new CheckAdvancementCMD());
         getCommand("ranklist").setExecutor(new RankListCMD());
         getCommand("setrank").setExecutor(new SetRankCMD());
         getCommand("summon").setExecutor(new SummonCMD());
@@ -184,6 +185,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("itemname").setTabCompleter(new ItemNameTab());
         getCommand("zap").setTabCompleter(new ZapTab());
         getCommand("advancement").setTabCompleter(new AdvancementTab());
+        getCommand("checkadvancement").setTabCompleter(new CheckAdvancementTab());
         getCommand("ranklist").setTabCompleter(new RankListTab());
         getCommand("setrank").setTabCompleter(new SetRankTab());
         getCommand("summon").setTabCompleter(new SummonTab());

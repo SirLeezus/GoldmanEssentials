@@ -26,7 +26,7 @@ public class VoteListener implements Listener {
         OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(user);
         if (player != null) {
             UUID uuid = player.getUniqueId();
-            cache.deposit(uuid, 1000);
+            cache.deposit(uuid, 10000);
             cache.addVote(uuid);
         }
     }

@@ -118,6 +118,10 @@ commands:
     description: Give a player an advancement.
     permission: essentials.command.advancement
     usage: "/advancement &f<grant/revoke> <player> <advancement>"
+  checkadvancement:
+    description: Check your process on a advancement.
+    permission: essentials.command.checkadvancement
+    usage: "/checkadvancement &f<advancement>"
   ranklist:
     description: Lists all the ranks in the server.
     permission: essentials.command.ranklist
