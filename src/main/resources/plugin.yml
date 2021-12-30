@@ -300,7 +300,7 @@ commands:
   removebooster:
     description: Remove a booster from queue.
     permission: essentials.command.removebooster
-    usage: "/addbooster &f<id>"
+    usage: "/removebooster &f<id>"
   booster:
     description: Check booster status.
     permission: essentials.command.booster
