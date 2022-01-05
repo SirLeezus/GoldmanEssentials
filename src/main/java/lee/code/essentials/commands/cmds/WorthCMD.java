@@ -26,19 +26,21 @@ public class WorthCMD implements CommandExecutor {
 
         if (sender instanceof Player player) {
             if (args.length < 1) {
-                ItemStack itemHand = new ItemStack(player.getInventory().getItemInMainHand());
-                itemHand.setAmount(1);
-
-                if (pu.getSellableItems().contains(itemHand)) {
-                    String name = itemHand.getType().name();
-                    if (itemHand.hasItemMeta()) {
-                        if (itemHand.getItemMeta().hasDisplayName()) {
-                            name = pu.unFormatC(itemHand.getItemMeta().displayName());
+                ItemStack handItem = new ItemStack(player.getInventory().getItemInMainHand());
+                int stackSize = handItem.getAmount();
+                handItem.setAmount(1);
+                if (pu.getSellableItems().contains(handItem)) {
+                    String name = handItem.getType().name();
+                    if (handItem.hasItemMeta()) {
+                        if (handItem.getItemMeta().hasDisplayName()) {
+                            name = pu.unFormatC(handItem.getItemMeta().displayName());
                         }
                     }
-                    if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
+                    if (ItemSellValues.valueOf(name).getItem().equals(handItem)) {
                         long value = ItemSellValues.valueOf(name).getValue();
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(name), pu.formatAmount(value) })));
+                        long handValue = value * stackSize;
+                        long inventoryValue = value * pu.getItemAmount(player, handItem);
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(name), pu.formatAmount(value), pu.formatAmount(handValue), pu.formatAmount(inventoryValue) })));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
             } else {

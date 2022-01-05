@@ -163,6 +163,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("Dolphins can be controlled by right-clicking them, you can also use space bar to spit when riding a dolphin.");
                     changes.add("If you hold a compass a direction bar will appear on your screen.");
                     changes.add("Hoes will replant crops if you break them with one.");
+                    changes.add("Rainbow sheep drop random color wool when sheared.");
 
                     for (String change : changes) {
                         lines.add(pu.formatC("&3" + number + "&b. &6" + change));

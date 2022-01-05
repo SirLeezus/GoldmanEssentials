@@ -309,8 +309,9 @@ public class PU {
         return EnumSet.allOf(Broadcasts.class).stream().map(Broadcasts::getComponent).collect(Collectors.toList());
     }
 
-    public int getItemAmount(Player player, ItemStack item) {
-        if (item == null) return 0;
+    public int getItemAmount(Player player, ItemStack targetItem) {
+        ItemStack item = new ItemStack(targetItem);
+        item.setAmount(1);
         int amount = 0;
         for (int i = 0; i < 36; i++) {
             ItemStack slot = player.getInventory().getItem(i);
