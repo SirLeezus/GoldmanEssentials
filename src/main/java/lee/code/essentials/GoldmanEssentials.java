@@ -277,6 +277,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AFKListener(), this);
         getServer().getPluginManager().registerEvents(new VoteListener(), this);
         getServer().getPluginManager().registerEvents(new PatchesListener(), this);
+        getServer().getPluginManager().registerEvents(new WrenchListener(), this);
     }
 
     private void checkDependencies() {
