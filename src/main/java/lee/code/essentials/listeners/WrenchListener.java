@@ -38,7 +38,6 @@ public class WrenchListener implements Listener {
                 if (block != null) {
                     BlockData blockData = block.getBlockData();
                     if (blockData instanceof Directional directional) {
-                        System.out.println(directional.getFacing());
                         switch (directional.getFacing()) {
                             case NORTH -> directional.setFacing(BlockFace.EAST);
                             case EAST -> directional.setFacing(BlockFace.SOUTH);
