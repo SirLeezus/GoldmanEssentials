@@ -1,5 +1,6 @@
 package lee.code.essentials.listeners;
 
+import lee.code.chunks.ChunkAPI;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
@@ -21,6 +22,7 @@ public class WrenchListener implements Listener {
     @EventHandler
     public void onWrenchInteract(PlayerInteractEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        ChunkAPI chunkAPI = plugin.getChunkAPI();
         Data data = plugin.getData();
         PU pu = plugin.getPU();
 
@@ -36,20 +38,22 @@ public class WrenchListener implements Listener {
 
                 Block block = e.getClickedBlock();
                 if (block != null) {
-                    BlockData blockData = block.getBlockData();
-                    if (blockData instanceof Directional directional) {
-                        switch (directional.getFacing()) {
-                            case NORTH -> directional.setFacing(BlockFace.EAST);
-                            case EAST -> directional.setFacing(BlockFace.SOUTH);
-                            case SOUTH -> directional.setFacing(BlockFace.WEST);
-                            case WEST -> {
-                                if (directional.getFaces().contains(BlockFace.UP)) directional.setFacing(BlockFace.UP);
-                                else directional.setFacing(BlockFace.NORTH);
+                    if (chunkAPI.canInteractInChunk(uuid, block.getChunk())) {
+                        BlockData blockData = block.getBlockData();
+                        if (blockData instanceof Directional directional) {
+                            switch (directional.getFacing()) {
+                                case NORTH -> directional.setFacing(BlockFace.EAST);
+                                case EAST -> directional.setFacing(BlockFace.SOUTH);
+                                case SOUTH -> directional.setFacing(BlockFace.WEST);
+                                case WEST -> {
+                                    if (directional.getFaces().contains(BlockFace.UP)) directional.setFacing(BlockFace.UP);
+                                    else directional.setFacing(BlockFace.NORTH);
+                                }
+                                case UP -> directional.setFacing(BlockFace.DOWN);
+                                case DOWN -> directional.setFacing(BlockFace.NORTH);
                             }
-                            case UP -> directional.setFacing(BlockFace.DOWN);
-                            case DOWN -> directional.setFacing(BlockFace.NORTH);
+                            block.setBlockData(directional);
                         }
-                        block.setBlockData(directional);
                     }
                 }
             }
