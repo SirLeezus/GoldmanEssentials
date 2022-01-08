@@ -164,6 +164,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("If you hold a compass a direction bar will appear on your screen.");
                     changes.add("Hoes will replant crops if you break them with one.");
                     changes.add("Rainbow sheep drop random color wool when sheared.");
+                    changes.add("A wrench has been added as a recipe, it can rotate blocks with direction data.");
 
                     for (String change : changes) {
                         lines.add(pu.formatC("&3" + number + "&b. &6" + change));
