@@ -208,6 +208,9 @@ public class PU {
             if (item.hasItemMeta()) {
                 ItemMeta itemMeta = item.getItemMeta();
 
+                //hat check
+                if (itemMeta.hasCustomModelData()) materialName = "Magic";
+
                 //display name
                 if (itemMeta.hasDisplayName()) itemName = itemMeta.displayName();
                 else if (itemMeta.hasEnchants()) itemName = itemName.color(NamedTextColor.AQUA);
