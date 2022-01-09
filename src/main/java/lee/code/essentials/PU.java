@@ -546,6 +546,12 @@ public class PU {
         return Strings.repeat("" + completedColor + symbol, progressBars) + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
     }
 
+    public void clearScoreBoard() {
+        ScoreboardManager boardManager = Bukkit.getScoreboardManager();
+        Scoreboard board = boardManager.getMainScoreboard();
+        for (Team team : board.getTeams()) team.unregister();
+    }
+
 
     public void updateDisplayName(Player player, boolean afk) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();

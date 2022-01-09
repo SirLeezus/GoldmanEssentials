@@ -69,6 +69,7 @@ public class GoldmanEssentials extends JavaPlugin {
         pU.scheduleAutoRestart();
         pU.scheduleTabListUpdater();
         pU.scheduleAFKChecker();
+        pU.clearScoreBoard();
         //pU.scheduleAutoBroadcast();
     }
 
