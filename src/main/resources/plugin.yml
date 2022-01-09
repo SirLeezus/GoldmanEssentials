@@ -341,3 +341,7 @@ commands:
     description: Request to trade with another player.
     permission: essentials.command.trade
     usage: "/trade &f<player>"
+  duel:
+    description: Request to pvp with another player.
+    permission: essentials.command.duel
+    usage: "/duel &f<player>"

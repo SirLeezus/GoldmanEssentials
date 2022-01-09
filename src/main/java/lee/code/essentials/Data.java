@@ -45,8 +45,6 @@ public class Data {
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, String> playersBackLocations = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> activeArmorStands = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<UUID, BukkitTask> playerPvPTask = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<UUID, Long> playerPvPTimer = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerRTPTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Long> playerRTPTimer = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Integer> playerRTPAttempts = new ConcurrentHashMap<>();
@@ -56,7 +54,39 @@ public class Data {
     private final ConcurrentHashMap<String, BukkitTask> sleepTasks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Long> playerLastMovedTimer = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> playerRequestingTrade = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<UUID, BukkitTask> playerTradeRequestTask = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BukkitTask> playerRequestTradeTask = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, UUID> playerRequestingDuel = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BukkitTask> playerRequestDuelTask = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, UUID> playerCurrentlyDueling = new ConcurrentHashMap<>();
+
+    public boolean isDuelRequestingPlayer(UUID owner, UUID target) {
+        if (!playerRequestingDuel.containsKey(owner)) return false;
+        else return playerRequestingDuel.get(owner).equals(target);
+    }
+    public void removeDuelRequesting(UUID uuid) {
+        playerRequestingDuel.remove(uuid);
+        getDuelRequestTask(uuid).cancel();
+        removeDuelRequestTask(uuid);
+    }
+    public boolean isDuelingPlayer(UUID uuid, UUID target) {
+        if (playerCurrentlyDueling.contains(uuid)) return playerCurrentlyDueling.get(uuid).equals(target);
+        else if (playerCurrentlyDueling.contains(target)) return playerCurrentlyDueling.get(target).equals(uuid);
+        else return false;
+    }
+    public void removeDuelingPlayer(UUID uuid, UUID target) {
+        playerCurrentlyDueling.remove(uuid);
+        playerCurrentlyDueling.remove(target);
+    }
+    public void setDuelingPlayer(UUID uuid, UUID target) {
+        playerCurrentlyDueling.put(uuid, target);
+        playerCurrentlyDueling.put(target, uuid);
+    }
+    public void setDuelRequesting(UUID owner, UUID target) { playerRequestingDuel.put(owner, target); }
+    private BukkitTask getDuelRequestTask(UUID uuid) { return playerRequestDuelTask.get(uuid); }
+    private void removeDuelRequestTask(UUID uuid) { playerRequestDuelTask.remove(uuid); }
+    public void setDuelRequestTask(UUID uuid, BukkitTask task) { playerRequestDuelTask.put(uuid, task); }
+    public boolean isDuelCurrent(UUID uuid) { return playerCurrentlyDueling.contains(uuid); }
+    public UUID getDuelCurrentPlayer(UUID uuid) { return playerCurrentlyDueling.get(uuid); }
 
     public void setTradeRequesting(UUID owner, UUID trader) { playerRequestingTrade.put(owner, trader); }
     public void removeTradeRequesting(UUID uuid) {
@@ -68,9 +98,9 @@ public class Data {
         if (!playerRequestingTrade.containsKey(owner)) return false;
         else return playerRequestingTrade.get(owner).equals(trader);
     }
-    public void setTradeRequestTask(UUID uuid, BukkitTask task) { playerTradeRequestTask.put(uuid, task); }
-    private void removeTradeRequestTask(UUID uuid) { playerTradeRequestTask.remove(uuid); }
-    private BukkitTask getTradeRequestTask(UUID uuid) { return playerTradeRequestTask.get(uuid); }
+    public void setTradeRequestTask(UUID uuid, BukkitTask task) { playerRequestTradeTask.put(uuid, task); }
+    private void removeTradeRequestTask(UUID uuid) { playerRequestTradeTask.remove(uuid); }
+    private BukkitTask getTradeRequestTask(UUID uuid) { return playerRequestTradeTask.get(uuid); }
 
     public boolean isAFK(UUID uuid) { return afkPlayers.contains(uuid); }
     public void addAFK(UUID uuid) { afkPlayers.add(uuid); }
@@ -104,19 +134,6 @@ public class Data {
     public void clearRTPAttempts(UUID player) { playerRTPAttempts.remove(player); }
     public void addRTPAttempt(UUID player, int number) { playerRTPAttempts.put(player, getRTPAttempt(player) + number); }
 
-    public boolean isPvPTaskActive(UUID player) {
-        return playerPvPTask.containsKey(player);
-    }
-    public void addPvPTaskActive(UUID player, BukkitTask task) {
-        playerPvPTask.put(player, task);
-    }
-    public void removePvPTaskActive(UUID player) {
-        playerPvPTask.remove(player);
-    }
-    public BukkitTask getPvPDelayTask(UUID uuid) {
-        return playerPvPTask.get(uuid);
-    }
-
     public boolean isRTPTaskActive(UUID player) {
         return playerRTPTask.containsKey(player);
     }
@@ -133,14 +150,6 @@ public class Data {
     public void setBackLocation(UUID uuid, String location) { playersBackLocations.put(uuid, location); }
     public String getBackLocation(UUID uuid) { return playersBackLocations.get(uuid); }
     public boolean hasBackLocation(UUID uuid) { return playersBackLocations.containsKey(uuid); }
-
-    public void setPVPTimer(UUID player, long time) {
-        playerPvPTimer.put(player, time);
-    }
-    public void removePVPTimer(UUID player) {
-        playerPvPTimer.remove(player);
-    }
-    public long getPVPTimer(UUID player) { return playerPvPTimer.getOrDefault(player, 0L); }
 
     public void setRTPTimer(UUID player, long time) {
         playerRTPTimer.put(player, time);

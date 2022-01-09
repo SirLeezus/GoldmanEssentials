@@ -400,26 +400,87 @@ public class PU {
         UUID pUUID = player.getUniqueId();
         UUID tUUID = player.getUniqueId();
         scheduler.runTaskLater(plugin, () -> {
-            if (player.isOnline() && data.isPlayerRequestingTeleportForTarget(pUUID, tUUID)) {
+            if (data.isPlayerRequestingTeleportForTarget(pUUID, tUUID)) {
+                if (player.isOnline()) player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_REQUEST_EXPIRED.getComponent(new String[] { target.getName() })));
                 data.removePlayerRequestingTeleport(pUUID);
-                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_REQUEST_EXPIRED.getComponent(new String[] { target.getName() })));
             }
-
         },1200L);
     }
 
-    public void tradeTimer(Player owner, Player trader) {
+    public void tradeRequestTimer(Player owner, Player trader) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         UUID ownerUUID = owner.getUniqueId();
         UUID traderUUID = trader.getUniqueId();
         data.setTradeRequestTask(ownerUUID, scheduler.runTaskLater(plugin, () -> {
-            if (owner.isOnline() && data.isTradeRequestingPlayer(ownerUUID, traderUUID)) {
-                owner.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TRADE_REQUEST_EXPIRED.getComponent(new String[] { trader.getName() })));
+            if (data.isTradeRequestingPlayer(ownerUUID, traderUUID)) {
+                if (owner.isOnline()) owner.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TRADE_REQUEST_EXPIRED.getComponent(new String[] { trader.getName() })));
                 data.removeTradeRequesting(ownerUUID);
             }
         },1200L));
+    }
+
+    public void pvpRequestTimer(Player owner, Player target) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        UUID ownerUUID = owner.getUniqueId();
+        UUID targetUUID = target.getUniqueId();
+        data.setDuelRequestTask(ownerUUID, scheduler.runTaskLater(plugin, () -> {
+            if (data.isDuelRequestingPlayer(ownerUUID, targetUUID)) {
+                if (owner.isOnline()) owner.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_DUEL_REQUEST_EXPIRED.getComponent(new String[] { target.getName() })));
+                data.removeDuelRequesting(ownerUUID);
+            }
+        },1200L));
+    }
+
+    public void addPlayerClickDelay(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        plugin.getData().addPlayerClickDelay(uuid);
+        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        scheduler.runTaskLater(plugin, () -> plugin.getData().removePlayerClickDelay(uuid), Settings.CLICK_DELAY.getValue());
+    }
+
+    public void addRandomTeleportDelay(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+
+        if (data.isRTPTaskActive(uuid)) {
+            BukkitTask task = data.getRTPDelayTask(uuid);
+            task.cancel();
+        }
+
+        long milliseconds = System.currentTimeMillis();
+        long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + Settings.RTP_DELAY.getValue();
+        data.setRTPTimer(uuid, time);
+
+        data.addRTPTaskActive(uuid, new BukkitRunnable() {
+            @Override
+            public void run() {
+                data.removeRTPTimer(uuid);
+                data.removeRTPTaskActive(uuid);
+            }
+
+        }.runTaskLater(plugin, Settings.RTP_DELAY.getValue() * 20L));
+    }
+
+    public void addSpamDelay(UUID uuid) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+
+        if (data.isSpamTaskActive(uuid)) {
+            BukkitTask task = data.getSpamDelayTask(uuid);
+            task.cancel();
+        }
+
+        data.addSpamTaskActive(uuid, new BukkitRunnable() {
+            @Override
+            public void run() {
+                data.removeSpamTaskActive(uuid);
+            }
+
+        }.runTaskLater(plugin, 10));
     }
 
     public void kickOnlinePlayers() {
@@ -673,77 +734,6 @@ public class PU {
             }
         }
         return 0;
-    }
-
-    public void addPlayerClickDelay(UUID uuid) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        plugin.getData().addPlayerClickDelay(uuid);
-        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.runTaskLater(plugin, () -> plugin.getData().removePlayerClickDelay(uuid), Settings.CLICK_DELAY.getValue());
-    }
-
-    public void addPlayerPvPDelay(UUID uuid) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Data data = plugin.getData();
-
-        if (data.isPvPTaskActive(uuid)) {
-            BukkitTask task = data.getPvPDelayTask(uuid);
-            task.cancel();
-        }
-
-        long milliseconds = System.currentTimeMillis();
-        long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + Settings.PVP_DELAY.getValue();
-        data.setPVPTimer(uuid, time);
-
-        data.addPvPTaskActive(uuid, new BukkitRunnable() {
-            @Override
-            public void run() {
-                data.removePVPTimer(uuid);
-                data.removePvPTaskActive(uuid);
-            }
-
-        }.runTaskLater(plugin, Settings.PVP_DELAY.getValue() * 20L));
-    }
-
-    public void addRandomTeleportDelay(UUID uuid) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Data data = plugin.getData();
-
-        if (data.isRTPTaskActive(uuid)) {
-            BukkitTask task = data.getRTPDelayTask(uuid);
-            task.cancel();
-        }
-
-        long milliseconds = System.currentTimeMillis();
-        long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + Settings.RTP_DELAY.getValue();
-        data.setRTPTimer(uuid, time);
-
-        data.addRTPTaskActive(uuid, new BukkitRunnable() {
-            @Override
-            public void run() {
-                data.removeRTPTimer(uuid);
-                data.removeRTPTaskActive(uuid);
-            }
-
-        }.runTaskLater(plugin, Settings.RTP_DELAY.getValue() * 20L));
-    }
-
-    public void addSpamDelay(UUID uuid) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Data data = plugin.getData();
-
-        if (data.isSpamTaskActive(uuid)) {
-            BukkitTask task = data.getSpamDelayTask(uuid);
-            task.cancel();
-        }
-
-        data.addSpamTaskActive(uuid, new BukkitRunnable() {
-            @Override
-            public void run() {
-                data.removeSpamTaskActive(uuid);
-            }
-
-        }.runTaskLater(plugin, 10));
     }
 
     public void applyHeadSkin(ItemStack head, String base64, UUID uuid) {

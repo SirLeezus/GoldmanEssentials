@@ -1,5 +1,6 @@
 package lee.code.essentials.listeners;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
@@ -36,11 +37,12 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Player player = e.getPlayer();
         PU pu = plugin.getPU();
-
-        UUID uuid = player.getUniqueId();
+        Data data = plugin.getData();
         Cache cache = plugin.getCache();
+
+        Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
 
         //first time
         if (!player.hasPlayedBefore()) {
@@ -53,7 +55,7 @@ public class JoinListener implements Listener {
 
         //bot checker
         if (!cache.hasBeenBotChecked(uuid)) {
-            new BotCheckerMenu(plugin.getData().getPlayerMU(uuid)).open();
+            new BotCheckerMenu(data.getPlayerMU(uuid)).open();
             player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
             BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
             scheduler.runTaskLater(plugin, () -> {
@@ -97,10 +99,10 @@ public class JoinListener implements Listener {
 
         //vanish check
         if (cache.isVanishPlayer(uuid)) {
-            if (!plugin.getData().getVanishedPlayers().contains(uuid)) plugin.getData().addVanishedPlayer(uuid);
-            for (Player oPlayer : Bukkit.getOnlinePlayers()) if (!plugin.getData().getVanishedPlayers().contains(oPlayer.getUniqueId())) oPlayer.hidePlayer(plugin, player);
-        } else if (plugin.getData().arePlayersVanished()) {
-            for (UUID vUUID : plugin.getData().getVanishedPlayers()) {
+            if (!data.getVanishedPlayers().contains(uuid)) data.addVanishedPlayer(uuid);
+            for (Player oPlayer : Bukkit.getOnlinePlayers()) if (!data.getVanishedPlayers().contains(oPlayer.getUniqueId())) oPlayer.hidePlayer(plugin, player);
+        } else if (data.arePlayersVanished()) {
+            for (UUID vUUID : data.getVanishedPlayers()) {
                 OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(vUUID);
                 if (oPlayer.isOnline()) {
                     Player vPlayer = oPlayer.getPlayer();
@@ -110,16 +112,16 @@ public class JoinListener implements Listener {
         }
 
         //give all recipes
-        for (NamespacedKey key : plugin.getData().getRecipeKeys()) e.getPlayer().discoverRecipe(key);
+        for (NamespacedKey key : data.getRecipeKeys()) e.getPlayer().discoverRecipe(key);
 
         //update player display name
         pu.updateDisplayName(player, false);
 
         //set join message format
-        if (plugin.getData().getVanishedPlayers().contains(uuid)) e.joinMessage(null);
+        if (data.getVanishedPlayers().contains(uuid)) e.joinMessage(null);
         else e.joinMessage(player.displayName().append(Lang.PLAYER_JOIN.getComponent(null)));
 
         //motd
-        for (Component line : plugin.getData().getServerMOTD()) player.sendMessage(line);
+        for (Component line : data.getServerMOTD()) player.sendMessage(line);
     }
 }

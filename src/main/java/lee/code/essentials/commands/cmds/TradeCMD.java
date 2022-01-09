@@ -48,13 +48,13 @@ public class TradeCMD implements CommandExecutor {
                                         data.removeTradeRequesting(tUUID);
                                         target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TRADE_DENY_SENDER.getComponent(new String[] { player.getName() } )));
                                         player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TRADE_DENY_RECEIVER.getComponent(new String[] { target.getName() } )));
-                                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TRADE_NOT_ARG.getComponent(new String[] { args[1] })));
+                                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_NOT_ARG.getComponent(new String[] { args[1] })));
                                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TRADE_NO_PENDING_REQUEST.getComponent(new String[] { target.getName() })));
                             } else {
                                 if (!data.getPlayerMU(uuid).isOwnerTrading()) {
                                     if (!data.isTradeRequestingPlayer(uuid, tUUID)) {
                                         data.setTradeRequesting(uuid, tUUID);
-                                        pu.tradeTimer(player, target);
+                                        pu.tradeRequestTimer(player, target);
 
                                         Component targetMessage = Lang.REQUEST_TRADE_TARGET.getComponent(new String[] { player.getName() });
                                         Component accept = Component.text("            ").append(Lang.REQUEST_ACCEPT.getComponent(null).hoverEvent(Lang.REQUEST_TRADE_ACCEPT_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/trade " + player.getName() + " accept")));
