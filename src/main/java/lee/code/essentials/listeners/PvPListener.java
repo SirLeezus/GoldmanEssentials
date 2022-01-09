@@ -22,14 +22,14 @@ public class PvPListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
 
-        if (e.getDamager() instanceof Player attacker && e.getEntity() instanceof Player attacked) {
+        if (e.getDamager() instanceof Player attacker && e.getEntity() instanceof Player attacked && !attacker.getUniqueId().equals(attacked.getUniqueId())) {
             UUID uuid = attacker.getUniqueId();
             if (!data.isDuelCurrent(uuid)) {
                 attacker.sendActionBar(Lang.DUEL_INTERACT_WARNING.getComponent(new String[] { attacked.getName() }));
                 e.setCancelled(true);
             }
         } else if (e.getDamager() instanceof Projectile projectile) {
-            if (projectile.getShooter() instanceof Player attacker && e.getEntity() instanceof Player attacked) {
+            if (projectile.getShooter() instanceof Player attacker && e.getEntity() instanceof Player attacked && !attacker.getUniqueId().equals(attacked.getUniqueId())) {
                 UUID uuid = attacker.getUniqueId();
                 if (!data.isDuelCurrent(uuid)) {
                     attacker.sendActionBar(Lang.DUEL_INTERACT_WARNING.getComponent(new String[] { attacked.getName() }));
