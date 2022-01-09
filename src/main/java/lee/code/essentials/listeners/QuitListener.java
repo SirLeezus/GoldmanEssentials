@@ -2,6 +2,7 @@ package lee.code.essentials.listeners;
 
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ public class QuitListener implements Listener {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
         Data data = plugin.getData();
+        PU pu = plugin.getPU();
 
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
@@ -27,6 +29,12 @@ public class QuitListener implements Listener {
         if (cache.isBanned(uuid) || cache.isTempBanned(uuid)) {
             e.quitMessage(null);
             return;
+        }
+
+        //afk check
+        if (data.isAFK(uuid)) {
+            data.removeAFK(uuid);
+            pu.updateDisplayName(player, false);
         }
 
         //set quit message format

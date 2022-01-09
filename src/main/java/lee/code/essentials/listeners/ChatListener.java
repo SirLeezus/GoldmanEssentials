@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class ChatListener implements Listener {
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerChat(AsyncChatEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
@@ -36,6 +36,10 @@ public class ChatListener implements Listener {
                 if (!cache.isMuted(uuid)) {
                     if (!cache.isTempMuted(uuid)) {
                         if (cache.hasBeenBotChecked(uuid)) {
+                            if (data.isAFK(uuid)) {
+                                data.removeAFK(uuid);
+                                pu.updateDisplayName(player, false);
+                            }
                             Component message = pu.parseChatVariables(player, e.message());
                             if (!data.isStaffChatting(uuid)) {
                                 plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(pu.formatC("&8: &f")).append(message));
