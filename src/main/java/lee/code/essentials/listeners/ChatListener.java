@@ -6,6 +6,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
+import lee.code.essentials.lists.Settings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.TextColor;
@@ -16,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class ChatListener implements Listener {
 
@@ -40,7 +42,22 @@ public class ChatListener implements Listener {
                                 data.removeAFK(uuid);
                                 pu.updateDisplayName(player, false);
                             }
+
                             Component message = pu.parseChatVariables(player, e.message());
+                            if (data.isSpamLoggerViolation(uuid, message)) {
+                                boolean shouldMute = data.addSpamLoggerViolationCount(uuid);
+                                if (shouldMute) {
+                                    String reason = "Chat Spam";
+                                    int timeMuted = Settings.AUTO_MUTE_TIME.getValue();
+                                    long milliseconds = System.currentTimeMillis();
+                                    long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + timeMuted;
+                                    cache.setTempMutedPlayer(uuid, reason, time, true);
+                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.TEMPMUTED.getComponent(new String[] { pu.formatSeconds(timeMuted), reason })));
+                                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_TEMPMUTED.getComponent(new String[] { player.getName(), pu.formatSeconds(timeMuted), reason })));
+                                    return;
+                                }
+                            } else data.resetSpamLogger(uuid, message);
+
                             if (!data.isStaffChatting(uuid)) {
                                 plugin.getServer().sendMessage(player.displayName().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(pu.formatC("&8: &f")).append(message));
                             } else {

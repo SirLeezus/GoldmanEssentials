@@ -20,6 +20,8 @@ public enum Settings {
     AUTO_RESTART(86400 * 20),
     RESOURCE_WORLD_RESET(86400),
     AFK_TIME(60),
+    SPAM_ATTEMPTS(5),
+    AUTO_MUTE_TIME(1800),
     ;
 
     @Getter private final int value;

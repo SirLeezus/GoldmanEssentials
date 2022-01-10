@@ -1,5 +1,6 @@
 package lee.code.essentials.listeners;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
@@ -82,7 +83,8 @@ public class AFKListener implements Listener {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (data.isAFK(uuid)) setNotAFK(player);
+        long milliseconds = System.currentTimeMillis();
+        data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
@@ -106,6 +108,17 @@ public class AFKListener implements Listener {
         long milliseconds = System.currentTimeMillis();
 
         if (data.isAFK(uuid)) setNotAFK(player);
+        data.setPlayerLastMovedTime(uuid, milliseconds);
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onAFKChat(AsyncChatEvent e) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
+        Data data = plugin.getData();
+        Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
+
+        long milliseconds = System.currentTimeMillis();
         data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 

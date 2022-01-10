@@ -3,6 +3,7 @@ package lee.code.essentials;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.CustomCraftingRecipes;
 import lee.code.essentials.lists.Lang;
+import lee.code.essentials.lists.Settings;
 import lee.code.essentials.menusystem.PlayerMU;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,6 +59,24 @@ public class Data {
     private final ConcurrentHashMap<UUID, UUID> playerRequestingDuel = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerRequestDuelTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> playerCurrentlyDueling = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Integer> playerSpamLoggerCount = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Component> playerSpamLoggerString = new ConcurrentHashMap<>();
+
+    public void setSpamLoggerCount(UUID uuid, int count) { playerSpamLoggerCount.put(uuid, count); }
+    public boolean addSpamLoggerViolationCount(UUID uuid) {
+        if (!playerSpamLoggerCount.containsKey(uuid)) playerSpamLoggerCount.put(uuid, 1);
+        else playerSpamLoggerCount.put(uuid, playerSpamLoggerCount.get(uuid) + 1);
+        return playerSpamLoggerCount.get(uuid) >= Settings.SPAM_ATTEMPTS.getValue();
+    }
+    public void setSpamLoggerString(UUID uuid, Component component) { playerSpamLoggerString.put(uuid, component); }
+    public boolean isSpamLoggerViolation(UUID uuid, Component component) {
+        if (!playerSpamLoggerString.containsKey(uuid)) return false;
+        else return playerSpamLoggerString.get(uuid).equals(component);
+    }
+    public void resetSpamLogger(UUID uuid, Component component) {
+        playerSpamLoggerString.put(uuid, component);
+        playerSpamLoggerCount.put(uuid, 1);
+    }
 
     public boolean isDuelRequestingPlayer(UUID owner, UUID target) {
         if (!playerRequestingDuel.containsKey(owner)) return false;

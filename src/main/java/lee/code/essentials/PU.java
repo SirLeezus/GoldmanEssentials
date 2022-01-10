@@ -213,6 +213,7 @@ public class PU {
 
                 //display name
                 if (itemMeta.hasDisplayName()) itemName = itemMeta.displayName();
+                else if (itemMeta instanceof SkullMeta skullMeta && skullMeta.getOwningPlayer() != null) { itemName = formatC("&e" + skullMeta.getOwningPlayer().getName() + "'s Head"); }
                 else if (itemMeta.hasEnchants()) itemName = itemName.color(NamedTextColor.AQUA);
                 else if (itemMeta instanceof EnchantmentStorageMeta) itemName = itemName.color(NamedTextColor.YELLOW);
 

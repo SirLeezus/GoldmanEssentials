@@ -71,13 +71,14 @@ public class SpawnerListener implements Listener {
     }
 
     @EventHandler
-    public void onSpawnerAnvilRename(InventoryClickEvent e) {
+    public void onAnvilRenameDeny(InventoryClickEvent e) {
         if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
             if (e.getInventory().getType() != InventoryType.ANVIL) return;
             if (e.getSlotType() != InventoryType.SlotType.RESULT) return;
             ItemStack clicked = e.getInventory().getItem(0);
             if (clicked != null) {
                 if (clicked.getType().equals(Material.SPAWNER)) e.setCancelled(true);
+                if (clicked.getType().equals(Material.PLAYER_HEAD)) e.setCancelled(true);
             }
         }
     }
