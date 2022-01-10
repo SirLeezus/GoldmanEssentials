@@ -62,13 +62,11 @@ public class Data {
     private final ConcurrentHashMap<UUID, Integer> playerSpamLoggerCount = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Component> playerSpamLoggerString = new ConcurrentHashMap<>();
 
-    public void setSpamLoggerCount(UUID uuid, int count) { playerSpamLoggerCount.put(uuid, count); }
     public boolean addSpamLoggerViolationCount(UUID uuid) {
         if (!playerSpamLoggerCount.containsKey(uuid)) playerSpamLoggerCount.put(uuid, 1);
         else playerSpamLoggerCount.put(uuid, playerSpamLoggerCount.get(uuid) + 1);
         return playerSpamLoggerCount.get(uuid) >= Settings.SPAM_ATTEMPTS.getValue();
     }
-    public void setSpamLoggerString(UUID uuid, Component component) { playerSpamLoggerString.put(uuid, component); }
     public boolean isSpamLoggerViolation(UUID uuid, Component component) {
         if (!playerSpamLoggerString.containsKey(uuid)) return false;
         else return playerSpamLoggerString.get(uuid).equals(component);
