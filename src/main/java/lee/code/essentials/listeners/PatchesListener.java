@@ -1,16 +1,15 @@
 package lee.code.essentials.listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -41,6 +40,36 @@ public class PatchesListener implements Listener {
                                 for (String criteria : progressRideWorld.getRemainingCriteria()) progressRideWorld.awardCriteria(criteria);
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    //patches how rare ocelots are
+    @EventHandler
+    public void onOcelotSpawn(EntitySpawnEvent e) {
+        if (e.getEntity() instanceof Animals) {
+            Location location = e.getLocation();
+            Block block = location.getBlock();
+            if (!block.isLiquid() && block.getBiome().equals(Biome.JUNGLE)) {
+                if ((int) (Math.random() * 10) == 1) { // 10% chance
+                    location.getWorld().spawnEntity(location, EntityType.OCELOT);
+                }
+            }
+        }
+    }
+
+    //patch for how rare drowned drop tridents
+    @EventHandler
+    public void onDrownedDeath(EntityDeathEvent e) {
+        Entity entity = e.getEntity();
+        if (entity instanceof Drowned drowned) {
+            if (drowned.getEquipment().getItemInMainHand().getType().equals(Material.TRIDENT)) {
+                ItemStack trident = new ItemStack(Material.TRIDENT);
+                if (!e.getDrops().contains(trident)) {
+                    if ((int) (Math.random() * 2) == 1) { // 50% chance
+                        entity.getWorld().dropItemNaturally(entity.getLocation(), trident);
                     }
                 }
             }
