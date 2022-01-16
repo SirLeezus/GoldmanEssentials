@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
@@ -22,6 +23,7 @@ public class SellCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
         PU pu = plugin.getPU();
+        Data data = plugin.getData();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
@@ -29,7 +31,7 @@ public class SellCMD implements CommandExecutor {
             ItemStack itemHand = new ItemStack(player.getInventory().getItemInMainHand());
             itemHand.setAmount(1);
 
-            if (pu.getSellableItems().contains(itemHand)) {
+            if (data.getSupportedSellItems().contains(itemHand)) {
                 String name = itemHand.getType().name();
                 if (itemHand.hasItemMeta()) if (itemHand.getItemMeta().hasDisplayName()) name = itemHand.getItemMeta().getDisplayName();
                 if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {

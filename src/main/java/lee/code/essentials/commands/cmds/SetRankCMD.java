@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
@@ -24,6 +25,7 @@ public class SetRankCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PermissionManager pm = plugin.getPermissionManager();
         PU pu = plugin.getPU();
+        Data data = plugin.getData();
         Cache cache = plugin.getCache();
 
         if (args.length > 1) {
@@ -32,12 +34,12 @@ public class SetRankCMD implements CommandExecutor {
                 UUID tUUID = target.getUniqueId();
                 String rank = args[1].toUpperCase();
                 boolean premium = false;
-                if (pu.getRanks().contains(rank)) {
+                if (data.getRankKeys().contains(rank)) {
                     RankList normalRank = RankList.valueOf(rank);
                     cache.setColor(tUUID, normalRank.getColor());
                     cache.setRank(tUUID, rank);
                     cache.setPrefix(tUUID, normalRank.getPrefix());
-                } else if (pu.getPremiumRanks().contains(rank)) {
+                } else if (data.getPremiumRankKeys().contains(rank)) {
                     PremiumRankList premiumRank = PremiumRankList.valueOf(rank);
                     cache.setSuffix(tUUID, premiumRank.getSuffix());
                     pm.addPremiumPerms(tUUID, premiumRank);

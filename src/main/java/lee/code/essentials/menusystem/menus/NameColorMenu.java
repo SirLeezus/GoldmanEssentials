@@ -50,7 +50,7 @@ public class NameColorMenu extends Menu {
         if (clickedItem.getType().equals(Material.AIR)) return;
         if (clickedItem.equals(fillerGlass)) return;
 
-        if (pu.getNameColorItems().contains(clickedItem)) {
+        if (colorItems.contains(clickedItem)) {
             String id = getColorID(clickedItem);
             cache.setColor(uuid, id);
             pu.updateDisplayName(player, false);

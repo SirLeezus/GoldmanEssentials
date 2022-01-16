@@ -1,7 +1,7 @@
 package lee.code.essentials.listeners;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -24,7 +24,7 @@ public class BoosterListener implements Listener {
     public void onBoosterBlockBreak(BlockBreakEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
-        PU pu = plugin.getPU();
+        Data data = plugin.getData();
 
         if (cache.isBoosterActive()) {
             String id = cache.getActiveBoosterID();
@@ -33,7 +33,7 @@ public class BoosterListener implements Listener {
                 Block block = e.getBlock();
                 Location location = block.getLocation();
                 ItemStack mainHand = player.getInventory().getItemInMainHand();
-                if (pu.getBoosterDropBlocks().contains(block.getType())) {
+                if (data.getSupportedBoosterBlocks().contains(block.getType())) {
                     if (!mainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                         if (!block.getDrops().isEmpty()) {
                             int fortuneLevel = mainHand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS) ? mainHand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS) : 0;

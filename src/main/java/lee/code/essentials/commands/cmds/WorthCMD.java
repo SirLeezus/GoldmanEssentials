@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.lists.ItemSellValues;
@@ -23,13 +24,14 @@ public class WorthCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
+        Data data = plugin.getData();
 
         if (sender instanceof Player player) {
             if (args.length < 1) {
                 ItemStack handItem = new ItemStack(player.getInventory().getItemInMainHand());
                 int stackSize = handItem.getAmount();
                 handItem.setAmount(1);
-                if (pu.getSellableItems().contains(handItem)) {
+                if (data.getSupportedSellItems().contains(handItem)) {
                     String name = handItem.getType().name();
                     if (handItem.hasItemMeta()) {
                         if (handItem.getItemMeta().hasDisplayName()) {
@@ -63,7 +65,7 @@ public class WorthCMD implements CommandExecutor {
                     if (page < 0) return true;
                     int position = page * maxDisplayed + 1;
 
-                    List<ItemStack> items = pu.getSellableItems();
+                    List<ItemStack> items = data.getSupportedSellItems();
                     List<Component> lines = new ArrayList<>();
 
                     lines.add(Lang.COMMAND_WORTH_LIST_TITLE.getComponent(null));

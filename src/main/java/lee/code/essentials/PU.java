@@ -53,7 +53,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class PU {
 
@@ -281,38 +280,6 @@ public class PU {
         return formatter.format(value);
     }
 
-    public List<String> getRanks() {
-        return EnumSet.allOf(RankList.class).stream().map(RankList::name).collect(Collectors.toList());
-    }
-
-    public List<String> getCustomCraftingRecipes() {
-        return EnumSet.allOf(CustomCraftingRecipes.class).stream().map(CustomCraftingRecipes::name).collect(Collectors.toList());
-    }
-
-    public List<String> getPremiumRanks() {
-        return EnumSet.allOf(PremiumRankList.class).stream().map(PremiumRankList::name).collect(Collectors.toList());
-    }
-
-    public List<String> getEntityHeads() {
-        return EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).collect(Collectors.toList());
-    }
-
-    public List<ItemStack> getSellableItems() {
-        return EnumSet.allOf(ItemSellValues.class).stream().map(ItemSellValues::getItem).collect(Collectors.toList());
-    }
-
-    public List<ItemStack> getNameColorItems() {
-        return EnumSet.allOf(NameColorList.class).stream().map(NameColorList::getItem).collect(Collectors.toList());
-    }
-
-    public List<Material> getBoosterDropBlocks() {
-        return EnumSet.allOf(BoosterDropBlocks.class).stream().map(BoosterDropBlocks::getBlock).collect(Collectors.toList());
-    }
-
-    public List<Component> getBroadcasts() {
-        return EnumSet.allOf(Broadcasts.class).stream().map(Broadcasts::getComponent).collect(Collectors.toList());
-    }
-
     public int getItemAmount(Player player, ItemStack targetItem) {
         ItemStack item = new ItemStack(targetItem);
         item.setAmount(1);
@@ -514,22 +481,6 @@ public class PU {
                 }
             }
         });
-    }
-
-    public void scheduleAutoBroadcast() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Data data = plugin.getData();
-
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            if (!Bukkit.getOnlinePlayers().isEmpty()) {
-                int lastPlayed = data.getLastBroadcast();
-                List<Component> broadcasts = getBroadcasts();
-                Component play = broadcasts.get(lastPlayed);
-                Bukkit.getServer().sendMessage(Lang.TIP.getComponent(null).append(play));
-                if (lastPlayed + 1 > getBroadcasts().size() - 1) data.setLastBroadcast(0);
-                else data.setLastBroadcast(lastPlayed + 1);
-            }
-        }, 10, 300 * 20);
     }
 
     public void scheduleTabListUpdater() {

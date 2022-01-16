@@ -2,6 +2,7 @@ package lee.code.essentials.menusystem;
 
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.MenuItems;
+import lee.code.essentials.lists.NameColorList;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -12,7 +13,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Menu implements InventoryHolder {
 
@@ -84,7 +87,6 @@ public abstract class Menu implements InventoryHolder {
     }
 
     private List<ItemStack> getColorItems() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        return plugin.getPU().getNameColorItems();
+        return EnumSet.allOf(NameColorList.class).stream().map(NameColorList::getItem).collect(Collectors.toList());
     }
 }

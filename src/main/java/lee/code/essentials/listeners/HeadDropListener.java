@@ -1,5 +1,6 @@
 package lee.code.essentials.listeners;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.lists.EntityHeads;
@@ -20,6 +21,7 @@ public class HeadDropListener implements Listener {
     public void onHeadDrop(EntityDeathEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
+        Data data = plugin.getData();
         Entity entity = e.getEntity();
 
         if (e.getEntity().getKiller() != null) {
@@ -62,7 +64,7 @@ public class HeadDropListener implements Listener {
                         } else type = villagerType.name() + "_" + type;
                     }
 
-                    if (pu.getEntityHeads().contains(type)) {
+                    if (data.getEntityHeadKeys().contains(type)) {
                         ItemStack head = EntityHeads.valueOf(type).getHead();
                         entity.getWorld().dropItemNaturally(entity.getLocation(), head);
                     }

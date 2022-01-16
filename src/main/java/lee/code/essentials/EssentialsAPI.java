@@ -28,9 +28,9 @@ public class EssentialsAPI {
 
     public long getWorth(ItemStack item) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
+        Data data = plugin.getData();
         ItemStack checkItem = new ItemStack(item.getType());
-        if (pu.getSellableItems().contains(checkItem)) return ItemSellValues.valueOf(checkItem.getType().name()).getValue();
+        if (data.getSupportedSellItems().contains(checkItem)) return ItemSellValues.valueOf(checkItem.getType().name()).getValue();
         else return 0;
     }
 

@@ -1,9 +1,7 @@
 package lee.code.essentials;
 
 import lee.code.essentials.database.SQLite;
-import lee.code.essentials.lists.CustomCraftingRecipes;
-import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.Settings;
+import lee.code.essentials.lists.*;
 import lee.code.essentials.menusystem.PlayerMU;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +19,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class Data {
 
@@ -39,8 +38,14 @@ public class Data {
     @Getter private final List<UUID> staffChat = new ArrayList<>();
     @Getter private final List<UUID> afkPlayers = new ArrayList<>();
     @Getter private final List<String> whitelistedWorlds = new ArrayList<>();
+    @Getter private final List<Material> supportedBoosterBlocks = new ArrayList<>();
+    @Getter private final List<ItemStack> supportedSellItems = new ArrayList<>();
+    @Getter private final List<String> entityHeadKeys = new ArrayList<>();
+    @Getter private final List<String> premiumRankKeys = new ArrayList<>();
+    @Getter private final List<String> rankKeys = new ArrayList<>();
+    @Getter private final List<String> allRankKeys = new ArrayList<>();
+
     @Getter @Setter private int teamNumber = 0;
-    @Getter @Setter private int lastBroadcast = 0;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
@@ -317,13 +322,32 @@ public class Data {
         //materials
         for (Material material : Material.values()) materialNames.add(material.name().toLowerCase());
 
+        //supported booster blocks
+        supportedBoosterBlocks.addAll(EnumSet.allOf(BoosterDropBlocks.class).stream().map(BoosterDropBlocks::getBlock).collect(Collectors.toList()));
+
+        //supported sell items
+        supportedSellItems.addAll(EnumSet.allOf(ItemSellValues.class).stream().map(ItemSellValues::getItem).collect(Collectors.toList()));
+
+        //entity head keys
+        entityHeadKeys.addAll(EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).collect(Collectors.toList()));
+
+        //premium rank keys
+        premiumRankKeys.addAll(EnumSet.allOf(PremiumRankList.class).stream().map(PremiumRankList::name).collect(Collectors.toList()));
+
+        //rank keys
+        rankKeys.addAll(EnumSet.allOf(RankList.class).stream().map(RankList::name).collect(Collectors.toList()));
+
+        //all rank keys
+        allRankKeys.addAll(premiumRankKeys);
+        allRankKeys.addAll(rankKeys);
+
         //whitelisted worlds
         whitelistedWorlds.add("world");
         whitelistedWorlds.add("world_nether");
         whitelistedWorlds.add("world_the_end");
 
         //custom recipes
-        for (String recipe : plugin.getPU().getCustomCraftingRecipes()) {
+        for (String recipe : EnumSet.allOf(CustomCraftingRecipes.class).stream().map(CustomCraftingRecipes::name).collect(Collectors.toList())) {
             CustomCraftingRecipes.valueOf(recipe).registerRecipe();
         }
 
