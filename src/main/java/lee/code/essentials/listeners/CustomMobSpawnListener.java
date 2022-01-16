@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
-public class GiantListener implements Listener {
+public class CustomMobSpawnListener implements Listener {
 
     @EventHandler
     public void onGiantSpawn(CreatureSpawnEvent e) {

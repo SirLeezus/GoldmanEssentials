@@ -104,33 +104,31 @@ public class RankupCMD implements CommandExecutor {
 
             } else if (args[0].equalsIgnoreCase("prestige")) {
                 if (level >= maxLevel) {
-                    if (rank.equals(RankList.GOD.name())) {
-                        String playerNextPrestige = String.valueOf(cache.getPrestige(uuid) + 1);
-                        cache.addPrestige(uuid);
-                        cache.setLevel(uuid, "0");
+                    String playerNextPrestige = String.valueOf(cache.getPrestige(uuid) + 1);
+                    cache.addPrestige(uuid);
+                    cache.setLevel(uuid, "0");
 
-                        if (!nextRank.equals(staff)) {
-                            if (!player.hasPermission("essentials.command.namecolor")) cache.setColor(uuid, nextColor);
-                            cache.setRank(uuid, RankList.NOMAD.name());
-                            cache.setPrefix(uuid, RankList.NOMAD.getPrefix());
-                        }
+                    if (!nextRank.equals(staff)) {
+                        if (!player.hasPermission("essentials.command.namecolor")) cache.setColor(uuid, nextColor);
+                        cache.setRank(uuid, RankList.NOMAD.name());
+                        cache.setPrefix(uuid, RankList.NOMAD.getPrefix());
+                    }
 
-                        for (String sKey : plugin.getData().getAdvancementNames()) {
-                            NamespacedKey key = NamespacedKey.minecraft(sKey);
-                            Advancement advancement = Bukkit.getAdvancement(key);
-                            if (advancement != null) {
-                                AdvancementProgress progress = player.getAdvancementProgress(advancement);
-                                for (String criteria : progress.getAwardedCriteria()) progress.revokeCriteria(criteria);
-                            }
+                    for (String sKey : plugin.getData().getAdvancementNames()) {
+                        NamespacedKey key = NamespacedKey.minecraft(sKey);
+                        Advancement advancement = Bukkit.getAdvancement(key);
+                        if (advancement != null) {
+                            AdvancementProgress progress = player.getAdvancementProgress(advancement);
+                            for (String criteria : progress.getAwardedCriteria()) progress.revokeCriteria(criteria);
                         }
-                        pu.updateDisplayName(player, false);
-                        player.giveExp(expAmount);
-                        cache.deposit(uuid, cashAmount);
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_CASH.getComponent(new String[] { pu.formatAmount(cashAmount) })));
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_EXP.getComponent(new String[] { pu.formatAmount(expAmount) })));
-                        plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_PRESTIGE_BROADCAST.getComponent(new String[]{player.getName(), playerNextPrestige})));
-                        for (Player oPlayer : Bukkit.getOnlinePlayers()) oPlayer.playSound(oPlayer.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, 1);
-                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PRESTIGE_NOT_LAST.getComponent(null)));
+                    }
+                    pu.updateDisplayName(player, false);
+                    player.giveExp(expAmount);
+                    cache.deposit(uuid, cashAmount);
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_CASH.getComponent(new String[] { pu.formatAmount(cashAmount) })));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_EXP.getComponent(new String[] { pu.formatAmount(expAmount) })));
+                    plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_PRESTIGE_BROADCAST.getComponent(new String[]{player.getName(), playerNextPrestige})));
+                    for (Player oPlayer : Bukkit.getOnlinePlayers()) oPlayer.playSound(oPlayer.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, 1);
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PRESTIGE.getComponent(new String[] { pu.formatAmount(level), pu.formatAmount(maxLevel) })));
 
             } else if (args[0].equalsIgnoreCase("check")) {
