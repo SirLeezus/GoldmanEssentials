@@ -104,6 +104,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.trade");
         defaultPerms.add("essentials.command.checkadvancement");
         defaultPerms.add("essentials.command.duel");
+        defaultPerms.add("essentials.command.sort");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");

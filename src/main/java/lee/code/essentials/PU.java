@@ -43,7 +43,12 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
@@ -801,5 +806,31 @@ public class PU {
 
     public boolean containOnlyNumbers(String string) {
         return string.matches("-?[1-9]\\d*|0");
+    }
+
+    public String serializeItemStack(ItemStack item) {
+        try {
+            ByteArrayOutputStream io = new ByteArrayOutputStream();
+            BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
+            os.writeObject(item);
+            os.flush();
+            byte[] serializedObject = io.toByteArray();
+            return Base64.getEncoder().encodeToString(serializedObject);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ItemStack decodeItemStack(String serialized) {
+        try {
+            byte[] serializedObject = Base64.getDecoder().decode(serialized);
+            ByteArrayInputStream in = new ByteArrayInputStream(serializedObject);
+            BukkitObjectInputStream is = new BukkitObjectInputStream(in);
+            return (ItemStack) is.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
