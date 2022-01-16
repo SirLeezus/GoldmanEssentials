@@ -441,9 +441,10 @@ public class PU {
 
     public void addPlayerClickDelay(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        plugin.getData().addPlayerClickDelay(uuid);
+        Data data = plugin.getData();
+        data.addPlayerClickDelay(uuid);
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.runTaskLater(plugin, () -> plugin.getData().removePlayerClickDelay(uuid), Settings.CLICK_DELAY.getValue());
+        scheduler.runTaskLater(plugin, () -> data.removePlayerClickDelay(uuid), Settings.CLICK_DELAY.getValue());
     }
 
     public void addRandomTeleportDelay(UUID uuid) {

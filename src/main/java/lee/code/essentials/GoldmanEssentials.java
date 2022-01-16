@@ -281,6 +281,9 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VoteListener(), this);
         getServer().getPluginManager().registerEvents(new PatchesListener(), this);
         getServer().getPluginManager().registerEvents(new WrenchListener(), this);
+        getServer().getPluginManager().registerEvents(new DurabilityListener(), this);
+        getServer().getPluginManager().registerEvents(new TargetBlockListener(), this);
+        getServer().getPluginManager().registerEvents(new HiveBlockListener(), this);
     }
 
     private void checkDependencies() {
