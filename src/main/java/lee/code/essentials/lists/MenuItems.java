@@ -13,7 +13,6 @@ public enum MenuItems {
 
     FILLER_GLASS(Material.BLACK_STAINED_GLASS_PANE, "&r", null),
     TRADE_COUNT_DOWN(Material.LIME_STAINED_GLASS_PANE, "&r", null),
-    CLOSE_MENU(Material.BARRIER, "&c&lClose", null),
     NEXT_PAGE(Material.PAPER, "&eNext Page >", null),
     PREVIOUS_PAGE(Material.PAPER, "&e< Previous Page", null),
 
@@ -28,9 +27,9 @@ public enum MenuItems {
     ARMOR_STAND_RIGHT_LEG_POSITION(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", Lang.MENU_ARMOR_STAND_POSITION_LORE.getString(null)),
     ARMOR_STAND_DIRECTION_POSITION(Material.COMPASS, "", Lang.MENU_ARMOR_STAND_DIRECTION_POSITION_LORE.getString(null)),
 
-    RESOURCE_WORLD(Material.GRASS_BLOCK, "&a&lResource World", Lang.MENU_RESOURCE_WORLD_LORE.getString(null)),
-    RESOURCE_END(Material.END_STONE, "&5&lResource End", Lang.MENU_RESOURCE_WORLD_LORE.getString(null)),
-    RESOURCE_NETHER(Material.NETHERRACK, "&c&lResource Nether", Lang.MENU_RESOURCE_WORLD_LORE.getString(null)),
+    RESOURCE_WORLD(Material.GRASS_BLOCK, "&a&lResource World", null),
+    RESOURCE_END(Material.END_STONE, "&5&lResource End", null),
+    RESOURCE_NETHER(Material.NETHERRACK, "&c&lResource Nether", null),
 
     TRADE_CONFIRM_TRUE(Material.LIME_STAINED_GLASS_PANE, "&6&lTrade Confirmed&7: &aTrue", null),
     TRADE_CONFIRM_FALSE(Material.RED_STAINED_GLASS_PANE, "&6&lTrade Confirmed&7: &cFalse", null),

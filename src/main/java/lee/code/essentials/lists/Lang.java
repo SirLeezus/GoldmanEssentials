@@ -282,7 +282,6 @@ public enum Lang {
     ERROR_COMMAND_FLYSPEED_LIMIT("&cYou can only adjust your fly speed between 1 and 10."),
     MENU_ARMOR_STAND_POSITION_LORE("&7» Left-Click -0.01\n&7» Right-Click +0.01\n&7» Shift-Click x10"),
     MENU_ARMOR_STAND_DIRECTION_POSITION_LORE("&7» Left-Click -0.50\n&7» Right-Click +0.50\n&7» Shift-Click x50"),
-    MENU_RESOURCE_WORLD_LORE("\n \n&b&lNext Reset:\n{0}"),
     MENU_ARMOR_STAND_SETTING_INVULNERABLE("&6&lInvulnerable&7: {0}"),
     MENU_ARMOR_STAND_SETTING_ARMS("&6&lArms&7: {0}"),
     MENU_ARMOR_STAND_SETTING_PLATE("&6&lPlate&7: {0}"),
@@ -308,6 +307,7 @@ public enum Lang {
     MENU_BOT_CHECKER_ITEM_LORE("&7Click to verify you're not a bot."),
     MENU_BOT_CHECKER_ITEM_NAME("&6&lPlayer Verification"),
     MENU_RESOURCE_WORLD_LOCKED("&cYou need to unlock the advancement for entering this world type before you can use this resource world."),
+    MENU_RESOURCE_WORLD_CLOCK_NAME("&d&lNext Reset&7: {0}"),
     ;
 
     @Getter private final String string;

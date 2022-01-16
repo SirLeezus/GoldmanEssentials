@@ -22,8 +22,8 @@ public class SetSpawnCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             String worldName = player.getWorld().getName();
             Location location = player.getLocation();
-            if (args.length > 1) {
-                String world = args[0].toUpperCase();
+            if (args.length > 0) {
+                String world = args[0].toLowerCase();
                 switch (world) {
                     case "resource_world" -> {
                         cache.setWorldResourceSpawn(location);

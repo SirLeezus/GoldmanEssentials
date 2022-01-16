@@ -56,7 +56,7 @@ public class NameColorMenu extends Menu {
             pu.updateDisplayName(player, false);
             player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COLOR_MENU_SELECT.getComponent(new String[] { ChatColor.valueOf(id) + pu.formatCapitalization(id) })));
             player.getInventory().close();
-        } else if (clickedItem.equals(close)) player.getInventory().close();
+        }
         playClickSound(player);
     }
 
@@ -75,8 +75,6 @@ public class NameColorMenu extends Menu {
         for (int i = 27; i < 36; i++) {
             inventory.setItem(i, fillerGlass);
         }
-
-        inventory.setItem(31, close);
 
         if (!colorItems.isEmpty()) {
             for (ItemStack colorItem : colorItems) {

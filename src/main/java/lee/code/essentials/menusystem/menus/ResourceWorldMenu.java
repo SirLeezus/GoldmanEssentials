@@ -5,7 +5,6 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.MenuItems;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.PlayerMU;
 import net.kyori.adventure.text.Component;
@@ -33,7 +32,7 @@ public class ResourceWorldMenu extends Menu {
 
     @Override
     public int getSlots() {
-        return 36;
+        return 45;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class ResourceWorldMenu extends Menu {
         int slot = e.getSlot();
 
         switch (slot) {
-            case 10 -> {
+            case 28 -> {
                 Location location = cache.getWorldResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
@@ -62,7 +61,7 @@ public class ResourceWorldMenu extends Menu {
                 }
                 player.getInventory().close();
             }
-            case 13 -> {
+            case 31 -> {
                 Location location = cache.getNetherResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
@@ -77,7 +76,7 @@ public class ResourceWorldMenu extends Menu {
                 }
                 player.getInventory().close();
             }
-            case 16 -> {
+            case 34 -> {
                 Location location = cache.getEndResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
@@ -100,26 +99,16 @@ public class ResourceWorldMenu extends Menu {
         Player player = pmu.getOwner();
         UUID uuid = player.getUniqueId();
 
-        for (int i = 0; i < 9; i++) {
-            inventory.setItem(i, fillerGlass);
-        }
-        for (int i = 18; i < 36; i++) {
-            inventory.setItem(i, fillerGlass);
-        }
+        setFillerGlass();
 
-        inventory.setItem(31, close);
+        inventory.setItem(28, resourceWorld);
+        inventory.setItem(31, resourceNether);
+        inventory.setItem(34, resourceEnd);
 
-        inventory.setItem(9, fillerGlass);
-        inventory.setItem(11, fillerGlass);
-        inventory.setItem(12, fillerGlass);
-        inventory.setItem(14, fillerGlass);
-        inventory.setItem(15, fillerGlass);
-        inventory.setItem(17, fillerGlass);
-
-        scheduleUpdateWorldItem(uuid);
+        scheduleUpdateClockItem(uuid);
     }
 
-    private void scheduleUpdateWorldItem(UUID uuid) {
+    private void scheduleUpdateClockItem(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
         Data data = plugin.getData();
@@ -128,13 +117,9 @@ public class ResourceWorldMenu extends Menu {
             data.addResourceWorldTaskActive(uuid, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    String time = cache.isResourceWorldsResetReady() ? "&cNext Restart" : pu.formatSeconds(cache.getResourceWorldsTime());
-                    ItemStack world = pu.getItem(MenuItems.RESOURCE_WORLD.getType(), MenuItems.RESOURCE_WORLD.getName(), Lang.MENU_RESOURCE_WORLD_LORE.getString(new String[] { time }), null);
-                    ItemStack nether = pu.getItem(MenuItems.RESOURCE_NETHER.getType(), MenuItems.RESOURCE_NETHER.getName(), Lang.MENU_RESOURCE_WORLD_LORE.getString(new String[] { time }), null);
-                    ItemStack end = pu.getItem(MenuItems.RESOURCE_END.getType(), MenuItems.RESOURCE_END.getName(), Lang.MENU_RESOURCE_WORLD_LORE.getString(new String[] { time }), null);
-                    inventory.setItem(10, world);
-                    inventory.setItem(13, nether);
-                    inventory.setItem(16, end);
+                    String time = pu.formatSeconds(cache.getResourceWorldsTime());
+                    ItemStack clock = pu.getItem(Material.CLOCK, Lang.MENU_RESOURCE_WORLD_CLOCK_NAME.getString(new String[] { time }), null, null);
+                    inventory.setItem(13, clock);
                 }
             }.runTaskTimer(plugin, 1L, 20L));
         }

@@ -1,6 +1,5 @@
 package lee.code.essentials.menusystem;
 
-import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.MenuItems;
 import lee.code.essentials.lists.NameColorList;
 import net.kyori.adventure.text.Component;
@@ -29,7 +28,6 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack botChecker = MenuItems.BOT_CHECKER.getItem();
 
     protected ItemStack fillerGlass = MenuItems.FILLER_GLASS.getItem();
-    protected ItemStack close = MenuItems.CLOSE_MENU.getItem();
     protected ItemStack nextPage = MenuItems.NEXT_PAGE.getItem();
     protected ItemStack previousPage = MenuItems.PREVIOUS_PAGE.getItem();
 
