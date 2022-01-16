@@ -8,8 +8,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,13 +48,16 @@ public class PatchesListener implements Listener {
 
     //patches how rare ocelots are
     @EventHandler
-    public void onOcelotSpawn(EntitySpawnEvent e) {
-        if (e.getEntity() instanceof Animals) {
-            Location location = e.getLocation();
-            Block block = location.getBlock();
-            if (!block.isLiquid() && block.getBiome().equals(Biome.JUNGLE)) {
-                if ((int) (Math.random() * 10) == 1) { // 10% chance
-                    location.getWorld().spawnEntity(location, EntityType.OCELOT);
+    public void onOcelotSpawn(CreatureSpawnEvent e) {
+        CreatureSpawnEvent.SpawnReason spawnReason = e.getSpawnReason();
+        if (!spawnReason.equals(CreatureSpawnEvent.SpawnReason.CUSTOM) && !spawnReason.equals(CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) && !spawnReason.equals(CreatureSpawnEvent.SpawnReason.EGG)) {
+            if (e.getEntity() instanceof Animals) {
+                Location location = e.getLocation();
+                Block block = location.getBlock();
+                if (!block.isLiquid() && block.getBiome().equals(Biome.JUNGLE)) {
+                    if ((int) (Math.random() * 10) == 1) { // 10% chance
+                        location.getWorld().spawnEntity(location, EntityType.OCELOT);
+                    }
                 }
             }
         }
