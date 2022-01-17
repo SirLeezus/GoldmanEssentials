@@ -5,6 +5,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.Lang;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,6 +37,9 @@ public class QuitListener implements Listener {
             data.removeAFK(uuid);
             pu.updateDisplayName(player, false);
         }
+
+        //playtime update
+        cache.setPlayTime(uuid, player.getStatistic(Statistic.PLAY_ONE_MINUTE));
 
         //set quit message format
         if (data.getVanishedPlayers().contains(uuid)) {

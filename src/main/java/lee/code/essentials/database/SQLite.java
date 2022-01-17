@@ -29,7 +29,8 @@ public class SQLite {
             "`god` varchar NOT NULL," +
             "`homes` varchar NOT NULL," +
             "`flying` varchar NOT NULL," +
-            "`votes` varchar NOT NULL" +
+            "`votes` varchar NOT NULL," +
+            "`playtime` varchar NOT NULL" +
             ");";
 
     private final String serverDataTable = "CREATE TABLE IF NOT EXISTS server (" +
@@ -293,8 +294,8 @@ public class SQLite {
 
     //PLAYER DATA TABLE
 
-    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, String flying, String votes) {
-        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "','" + level + "','" + prestige + "','" + vanish + "','" + god + "','" + homes + "','" + flying + "','" + votes + "');");
+    public void setPlayerData(String uuid, String balance, String ranked, String perms, String prefix, String suffix, String color, String level, String prestige, String vanish, String god, String homes, String flying, String votes, String playtime) {
+        update("INSERT OR REPLACE INTO player_data (player, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes, playtime) VALUES( '" + uuid + "','" + balance + "','" + ranked + "','" + perms + "','" + prefix + "','" + suffix + "','" + color + "','" + level + "','" + prestige + "','" + vanish + "','" + god + "','" + homes + "','" + flying + "','" + votes + "','" + playtime + "');");
     }
 
     public void deposit(String uuid, String value) {
@@ -361,6 +362,10 @@ public class SQLite {
         update("UPDATE player_data SET votes ='" + votes + "' WHERE player ='" + uuid + "';");
     }
 
+    public void setPlayTime(String uuid, String playTime) {
+        update("UPDATE player_data SET playtime ='" + playTime + "' WHERE player ='" + uuid + "';");
+    }
+
     public void loadPunishmentData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
@@ -413,8 +418,9 @@ public class SQLite {
                 String homes = rs.getString("homes");
                 String flying = rs.getString("flying");
                 String votes = rs.getString("votes");
+                String playtime = rs.getString("playtime");
 
-                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes, false);
+                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes, playtime, false);
                 count++;
             }
             Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bPlayer Account Data Loaded: &3" + count));
@@ -464,48 +470,6 @@ public class SQLite {
 
                 cache.setServerData(spawn, joins, worldResourceTime, worldResourceSpawn, netherResourceSpawn, endResourceSpawn);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void resetMainWorldHomes() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-
-        HashMap<String, String> newHomeData = new HashMap<>();
-        for (UUID uuid : cache.getUserList()) {
-            if (cache.hasHome(uuid)) {
-                StringBuilder newHomes = new StringBuilder();
-                for (String home : cache.getHomes(uuid)) {
-                    String[] split = home.split("\\+", 7);
-                    if (split.length > 1) {
-                        if (!split[1].equals("world")) {
-                            if (newHomes.isEmpty()) newHomes.append(home);
-                            else newHomes.append(",").append(home);
-                        }
-                    }
-                }
-
-                if (newHomes.isEmpty()) newHomes.append("0");
-                newHomeData.put(String.valueOf(uuid), newHomes.toString());
-                System.out.println("Getting Updated: " + uuid);
-            }
-        }
-
-        String key = "homes";
-        String sqlQuery = "UPDATE player_data SET " + key + " = ? WHERE player = ?";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
-
-            for (Map.Entry<String, String> user : newHomeData.entrySet()) {
-                pstmt.setString(1, user.getValue());
-                pstmt.setString(2, user.getKey());
-                pstmt.addBatch();
-            }
-            pstmt.executeBatch();
-            pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

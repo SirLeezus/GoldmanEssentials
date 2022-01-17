@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class BalanceTopCMD implements CommandExecutor {
+public class PlayTimeTopCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -27,7 +27,7 @@ public class BalanceTopCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
-            Map<String, String> cPlayers = cache.getTopBalances();
+            Map<String, String> cPlayers = cache.getTopPlayTime();
             HashMap<String, Long> newMap = new HashMap<>();
             for (Map.Entry<String, String> entry : cPlayers.entrySet()) newMap.put(entry.getKey(), Long.parseLong(entry.getValue()));
             HashMap<String, Long> sortedMap = pu.sortByValue(newMap);
@@ -53,7 +53,7 @@ public class BalanceTopCMD implements CommandExecutor {
             List<String> players = new ArrayList<>(sortedMap.keySet());
             List<Component> lines = new ArrayList<>();
 
-            lines.add(Lang.COMMAND_BALANCETOP_TITLE.getComponent(null));
+            lines.add(Lang.COMMAND_PLAYTIMETOP_TITLE.getComponent(null));
             lines.add(Component.text(""));
 
             for (int i = 0; i < maxDisplayed; i++) {
@@ -66,12 +66,12 @@ public class BalanceTopCMD implements CommandExecutor {
                     String posColor = "&3";
                     if (offlinePlayer.getName() != null) {
                         String name = offlinePlayer.getName();
-                        String balance = pu.formatAmount(sortedMap.get(thePlayer));
+                        String timePlayed = pu.formatSeconds(sortedMap.get(thePlayer) / 20);
                         if (name.equals(player.getName())) {
                             posColor = "&2";
                             onPage = true;
                         }
-                        lines.add(pu.formatC(posColor + position + ". &e" + name + " &7| &6$" + balance));
+                        lines.add(pu.formatC(posColor + position + ". &e" + name + " &7| " + timePlayed));
                         position++;
                     }
                 }
@@ -81,13 +81,13 @@ public class BalanceTopCMD implements CommandExecutor {
 
             if (!onPage) {
                 lines.add(Component.text(""));
-                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| &6$" + pu.formatAmount(sortedMap.get(String.valueOf(uuid)))));
+                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| " + pu.formatSeconds(sortedMap.get(String.valueOf(uuid)) / 20)));
             }
 
             lines.add(Component.text(""));
-            Component next = Lang.NEXT_PAGE_TEXT.getComponent(null).hoverEvent(Lang.NEXT_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page + 1)));
+            Component next = Lang.NEXT_PAGE_TEXT.getComponent(null).hoverEvent(Lang.NEXT_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/playtimetop " + (page + 1)));
             Component split = Lang.PAGE_SPACER.getComponent(null);
-            Component prev = Lang.PREVIOUS_PAGE_TEXT.getComponent(null).hoverEvent(Lang.PREVIOUS_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page - 1)));
+            Component prev = Lang.PREVIOUS_PAGE_TEXT.getComponent(null).hoverEvent(Lang.PREVIOUS_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/playtimetop " + (page - 1)));
             lines.add(prev.append(split).append(next));
             for (Component message : lines) player.sendMessage(message);
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));

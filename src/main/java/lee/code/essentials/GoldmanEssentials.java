@@ -8,6 +8,7 @@ import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.SQLTables;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.hooks.Pl3xMapHook;
 import lee.code.essentials.listeners.*;
@@ -53,7 +54,7 @@ public class GoldmanEssentials extends JavaPlugin {
         registerListeners();
 
         sqLite.connect();
-        //sqLite.updateTable(SQLTables.PLAYER_DATA);
+        sqLite.updateTable(SQLTables.PLAYER_DATA);
 
         sqLite.loadTables();
         data.cacheDatabase();
@@ -69,6 +70,7 @@ public class GoldmanEssentials extends JavaPlugin {
         pU.scheduleAutoRestart();
         pU.scheduleTabListUpdater();
         pU.scheduleAFKChecker();
+        pU.schedulePlayTimeChecker();
         pU.clearScoreBoard();
     }
 
@@ -137,6 +139,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("kick").setExecutor(new KickCMD());
         getCommand("colors").setExecutor(new ColorsCMD());
         getCommand("playtime").setExecutor(new PlayTimeCMD());
+        getCommand("playtimetop").setExecutor(new PlayTimeTopCMD());
         getCommand("enderchest").setExecutor(new EnderChestCMD());
         getCommand("essreload").setExecutor(new ReloadCMD());
         getCommand("itemlore").setExecutor(new ItemLoreCMD());
@@ -220,6 +223,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("kick").setTabCompleter(new KickTab());
         getCommand("colors").setTabCompleter(new ColorsTab());
         getCommand("playtime").setTabCompleter(new PlayTimeTab());
+        getCommand("playtimetop").setTabCompleter(new PlayTimeTopTab());
         getCommand("invsee").setTabCompleter(new InvseeTab());
         getCommand("enderchest").setTabCompleter(new EnderChestTab());
         getCommand("essreload").setTabCompleter(new ReloadTab());

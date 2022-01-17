@@ -76,6 +76,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.balance");
         defaultPerms.add("essentials.command.balancetop");
         defaultPerms.add("essentials.command.playtime");
+        defaultPerms.add("essentials.command.playtimetop");
         defaultPerms.add("essentials.command.ranklist");
         defaultPerms.add("essentials.command.reply");
         defaultPerms.add("essentials.command.message");

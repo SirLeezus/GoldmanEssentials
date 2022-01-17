@@ -13,9 +13,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class BanListCMD implements CommandExecutor {
 
@@ -41,13 +41,28 @@ public class BanListCMD implements CommandExecutor {
 
         if (page < 0) return true;
 
-        List<String> players = new ArrayList<>(cache.getBanList());
-        List<Component> lines = new ArrayList<>();
+        //TODO change how date banned to long in sql
+        List<String> banedPlayers = new ArrayList<>(cache.getBanList());
+        HashMap<String, Long> banMap = new HashMap<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm aa");
+        for (String player : banedPlayers) {
+            try {
+                Date date = formatter.parse(cache.getBanDate(UUID.fromString(player)));
+                long dateTime = date.getTime();
+                banMap.put(player, dateTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        HashMap<String, Long> sortedMap = pu.sortByValue(banMap);
+        List<String> players = new ArrayList<>(sortedMap.keySet());
 
         if (players.isEmpty()) {
             sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_BANLIST_NO_BANS.getComponent(null)));
             return true;
         }
+
+        List<Component> lines = new ArrayList<>();
 
         lines.add(Lang.COMMAND_BANLIST_TITLE.getComponent(null));
         lines.add(Component.text(""));
@@ -69,7 +84,7 @@ public class BanListCMD implements CommandExecutor {
                 if (cache.isTempBanned(pUUID)) time = pu.formatSeconds(timeBanned);
                 OfflinePlayer offlineStaff = Bukkit.getOfflinePlayer(cache.getStaffWhoPunished(pUUID));
                 if (offlineStaff.getName() != null) staff = offlineStaff.getName();
-                lines.add(pu.formatC("&3" + position + ". &6" + name + " &3Time: &7" + time + " &3Reason: &7" + cache.getBanReason(pUUID)).hoverEvent(pu.formatC("&3Date: &7" + cache.getBanDate(pUUID) + "\n&3Staff Member: &7" + staff )));
+                lines.add(pu.formatC("&3" + position + ". &6" + name + " &3Time: &7" + time).hoverEvent(pu.formatC("&3Date: &7" + cache.getBanDate(pUUID) + "\n&3Staff Member: &7" + staff + "\n&3Reason: &7" + cache.getBanReason(pUUID))));
             }
         }
 

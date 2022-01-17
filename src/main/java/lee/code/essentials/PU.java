@@ -665,6 +665,18 @@ public class PU {
         }), 0L, 100L);
     }
 
+    public void schedulePlayTimeChecker() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Cache cache = plugin.getCache();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                UUID uuid = player.getUniqueId();
+                cache.setPlayTime(uuid, player.getStatistic(Statistic.PLAY_ONE_MINUTE));
+            }
+        }), 0L, 1200L);
+    }
+
     public String formatTime(long time) {
         long hours = time / 1000 + 6;
         long minutes = (time % 1000) * 60 / 1000;
@@ -832,5 +844,18 @@ public class PU {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public HashMap<String, Long> sortByValue(HashMap<String, Long> hm) {
+        // Create a list from elements of HashMap
+        List<Map.Entry<String, Long>> list = new LinkedList<>(hm.entrySet());
+
+        // Sort the list
+        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        // put data from sorted list to hashmap
+        HashMap<String, Long> temp = new LinkedHashMap<>();
+        for (Map.Entry<String, Long> aa : list) temp.put(aa.getKey(), aa.getValue());
+        return temp;
     }
 }

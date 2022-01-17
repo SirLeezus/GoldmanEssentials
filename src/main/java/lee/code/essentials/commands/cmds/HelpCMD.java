@@ -42,7 +42,8 @@ public class HelpCMD implements CommandExecutor {
                             String permission = sCommand.getPermission();
                             if (permission != null) {
                                 if (player.hasPermission(permission)) {
-                                    lines.add(Lang.COMMAND_HELP_ESSENTIALS.getComponent(new String[] { String.valueOf(number), sCommand.getUsage(), sCommand.getDescription() }));
+                                    String suggestCommand = sCommand.getUsage().contains(" ") ? sCommand.getUsage().split(" ")[0] : sCommand.getUsage();
+                                    lines.add(Lang.COMMAND_HELP_ESSENTIALS.getComponent(new String[] { String.valueOf(number), sCommand.getUsage() }).hoverEvent(Lang.COMMAND_HELP_ESSENTIALS_HOVER.getComponent(new String[] {  sCommand.getDescription() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand)));
                                     number++;
                                 }
                             }

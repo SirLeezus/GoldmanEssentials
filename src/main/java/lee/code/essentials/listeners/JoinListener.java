@@ -121,6 +121,9 @@ public class JoinListener implements Listener {
         if (data.getVanishedPlayers().contains(uuid)) e.joinMessage(null);
         else e.joinMessage(player.displayName().append(Lang.PLAYER_JOIN.getComponent(null)));
 
+        //playtime update
+        cache.setPlayTime(uuid, player.getStatistic(Statistic.PLAY_ONE_MINUTE));
+
         //motd
         for (Component line : data.getServerMOTD()) player.sendMessage(line);
     }
