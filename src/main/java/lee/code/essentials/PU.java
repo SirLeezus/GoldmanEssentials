@@ -586,6 +586,8 @@ public class PU {
 
     public void scheduleAutoRestart() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
         SimpleDateFormat s = new SimpleDateFormat("ss");
         sdf.setTimeZone(TimeZone.getTimeZone("PST"));
@@ -595,15 +597,18 @@ public class PU {
             String time = sdf.format(date);
             int sec = Integer.parseInt(s.format(date));
             if (time.equals(restartTime) && sec > 0 && sec < 5) {
-                CountdownTimer timer = new CountdownTimer(plugin,
-                        30,
-                        () -> Bukkit.getServer().sendMessage(Lang.WARNING.getComponent(null).append(Lang.AUTO_RESTART_WARNING_START.getComponent(null))),
-                        () -> {
-                            Bukkit.getServer().sendMessage(Lang.WARNING.getComponent(null).append(Lang.AUTO_RESTART_WARNING_END.getComponent(null)));
-                            Bukkit.getServer().shutdown();
-                        },
-                        (t) -> Bukkit.getServer().sendActionBar(Lang.AUTO_RESTART_TIME.getComponent(new String[] { String.valueOf(t.getSecondsLeft()) })));
-                timer.scheduleTimer();
+                if (!data.isAutoRestarting()) {
+                    data.setAutoRestarting(true);
+                    CountdownTimer timer = new CountdownTimer(plugin,
+                            30,
+                            () -> Bukkit.getServer().sendMessage(Lang.WARNING.getComponent(null).append(Lang.AUTO_RESTART_WARNING_START.getComponent(null))),
+                            () -> {
+                                Bukkit.getServer().sendMessage(Lang.WARNING.getComponent(null).append(Lang.AUTO_RESTART_WARNING_END.getComponent(null)));
+                                Bukkit.getServer().shutdown();
+                            },
+                            (t) -> Bukkit.getServer().sendActionBar(Lang.AUTO_RESTART_TIME.getComponent(new String[] { String.valueOf(t.getSecondsLeft()) })));
+                    timer.scheduleTimer();
+                }
             }
         }), 0L, 20L);
     }

@@ -46,6 +46,7 @@ public class Data {
     @Getter private final List<String> allRankKeys = new ArrayList<>();
 
     @Getter @Setter private int teamNumber = 0;
+    @Getter @Setter private boolean isAutoRestarting = false;
 
     private final ConcurrentHashMap<UUID, PlayerMU> playerMUList = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> playersRequestingTeleport = new ConcurrentHashMap<>();
