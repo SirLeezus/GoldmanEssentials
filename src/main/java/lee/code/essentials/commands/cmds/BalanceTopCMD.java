@@ -7,6 +7,7 @@ import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -71,7 +72,8 @@ public class BalanceTopCMD implements CommandExecutor {
                             posColor = "&2";
                             onPage = true;
                         }
-                        lines.add(pu.formatC(posColor + position + ". &e" + name + " &7| &6$" + balance));
+                        char nameColor = ChatColor.valueOf(cache.getColor(pUUID)).getChar();
+                        lines.add(pu.formatC(posColor + position + ". &" + nameColor + name + " &7| &6$" + balance));
                         position++;
                     }
                 }
@@ -81,7 +83,7 @@ public class BalanceTopCMD implements CommandExecutor {
 
             if (!onPage) {
                 lines.add(Component.text(""));
-                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| &6$" + pu.formatAmount(sortedMap.get(String.valueOf(uuid)))));
+                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &" + ChatColor.valueOf(cache.getColor(uuid)).getChar() + player.getName() + " &7| &6$" + pu.formatAmount(sortedMap.get(String.valueOf(uuid)))));
             }
 
             lines.add(Component.text(""));

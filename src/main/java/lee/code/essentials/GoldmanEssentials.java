@@ -54,7 +54,7 @@ public class GoldmanEssentials extends JavaPlugin {
         registerListeners();
 
         sqLite.connect();
-        sqLite.updateTable(SQLTables.PLAYER_DATA);
+        //sqLite.updateTable(SQLTables.PLAYER_DATA);
 
         sqLite.loadTables();
         data.cacheDatabase();

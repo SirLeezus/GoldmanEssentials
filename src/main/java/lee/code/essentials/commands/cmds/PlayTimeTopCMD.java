@@ -7,6 +7,7 @@ import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -67,11 +68,12 @@ public class PlayTimeTopCMD implements CommandExecutor {
                     if (offlinePlayer.getName() != null) {
                         String name = offlinePlayer.getName();
                         String timePlayed = pu.formatSeconds(sortedMap.get(thePlayer) / 20);
+                        char nameColor = ChatColor.valueOf(cache.getColor(pUUID)).getChar();
                         if (name.equals(player.getName())) {
                             posColor = "&2";
                             onPage = true;
                         }
-                        lines.add(pu.formatC(posColor + position + ". &e" + name + " &7| " + timePlayed));
+                        lines.add(pu.formatC(posColor + position + ". &" + nameColor + name + " &7| " + timePlayed));
                         position++;
                     }
                 }
@@ -81,7 +83,7 @@ public class PlayTimeTopCMD implements CommandExecutor {
 
             if (!onPage) {
                 lines.add(Component.text(""));
-                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &e" + player.getName() + " &7| " + pu.formatSeconds(sortedMap.get(String.valueOf(uuid)) / 20)));
+                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &" + ChatColor.valueOf(cache.getColor(uuid)).getChar() + player.getName() + " &7| " + pu.formatSeconds(sortedMap.get(String.valueOf(uuid)) / 20)));
             }
 
             lines.add(Component.text(""));

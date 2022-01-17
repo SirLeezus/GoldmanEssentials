@@ -106,7 +106,7 @@ public enum Lang {
     COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL("&aYou have successfully set the &3{0} &aspawn in world &b{1}&a!"),
     COMMAND_ITEMLORE_SUCCESSFUL("&aYou have successfully set lore line &e{0} &ato &7(&5&o{1}&a&7)&a for the item &e{2}&a!"),
     COMMAND_RELOAD_SUCCESSFUL("&aYou have successfully reloaded essential's text file."),
-    COMMAND_PLAYTIME_SUCCESSFUL("&aYou have played: &e{0}"),
+    COMMAND_PLAYTIME_SUCCESSFUL("&aYou have played&7: &e{0}"),
     COMMAND_GAMEMODE_SUCCESSFUL("&aYour gamemode was updated to &e{0}&a!"),
     COMMAND_FLY_TOGGLE_SUCCESSFUL("&aYour fly was successfully toggled {0}&a!"),
     COMMAND_GOD_TOGGLE_SUCCESSFUL("&aYour god mode was successfully toggled {0}&a!"),
