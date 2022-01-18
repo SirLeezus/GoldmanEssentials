@@ -17,7 +17,7 @@ public class PlayerMU {
     @Getter @Setter private boolean ownerTrading;
     @Getter @Setter private boolean traderTrading;
     @Getter @Setter private ArmorStand armorStand;
-    @Getter @Setter private int page;
+    @Getter @Setter private int homePage;
     @Getter @Setter private boolean isOwnerTradeConfirmed;
     @Getter @Setter private boolean isTraderTradeConfirmed;
     public Player getOwner() { return Bukkit.getPlayer(owner); }

@@ -46,6 +46,9 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack resourceEnd = MenuItems.RESOURCE_END.getItem();
     protected ItemStack resourceNether = MenuItems.RESOURCE_NETHER.getItem();
 
+    protected ItemStack homeBed = MenuItems.HOME_BED.getItem();
+    protected ItemStack homeClock = MenuItems.HOME_CLOCK.getItem();
+
     protected List<ItemStack> colorItems = getColorItems();
 
     public abstract Component getMenuName();

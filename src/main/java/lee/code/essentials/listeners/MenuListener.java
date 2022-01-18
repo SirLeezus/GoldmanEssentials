@@ -8,6 +8,7 @@ import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.PlayerMU;
 import lee.code.essentials.menusystem.TradeMenu;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
+import lee.code.essentials.menusystem.menus.HomeMenu;
 import lee.code.essentials.menusystem.menus.PlayerTradeMenu;
 import lee.code.essentials.menusystem.menus.ResourceWorldMenu;
 import org.bukkit.Bukkit;
@@ -82,6 +83,9 @@ public class MenuListener implements Listener {
                     if (pmu.isOwnerTrading()) pmu.getOwner().closeInventory();
                 }
             }
+        } else  if (holder instanceof HomeMenu) {
+            data.getHomeMenuTask(uuid).cancel();
+            data.removeHomeMenuTaskActive(uuid);
         }
     }
 

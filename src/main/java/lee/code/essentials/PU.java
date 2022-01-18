@@ -148,6 +148,7 @@ public class PU {
             double z = zMin + random.nextDouble(zMax + zMax);
 
             Location location = new Location(player.getWorld(), x, y, z);
+            Material[] blackList = new Material[] { Material.AIR, Material.CAVE_AIR, Material.VOID_AIR, Material.WATER, Material.LAVA, Material.BEDROCK };
 
             if (world.getWorldBorder().isInside(location)) {
                 world.getChunkAtAsync(location, false);
@@ -158,7 +159,7 @@ public class PU {
                         Block block = ground.getBlock();
                         Material groundType = block.getType();
                         Vector box = block.getBoundingBox().getCenter();
-                        if (!box.equals(new Vector(0, 0, 0)) && groundType != Material.AIR && groundType != Material.LAVA && groundType != Material.WATER) {
+                        if (!box.equals(new Vector(0, 0, 0)) && !Arrays.asList(blackList).contains(groundType) ) {
                             double bX = box.getX();
                             double bY = box.getY() + 0.5;
                             double bZ = box.getZ();
@@ -360,6 +361,11 @@ public class PU {
     public String unFormatPlayerHomeName(String home) {
         String[] split = home.split("\\+", 7);
         return split[0];
+    }
+
+    public String unFormatPlayerHomeWorld(String home) {
+        String[] split = home.split("\\+", 7);
+        return split[1];
     }
 
     public List<String> getOnlinePlayers() {

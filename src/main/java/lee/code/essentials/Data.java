@@ -57,6 +57,7 @@ public class Data {
     private final ConcurrentHashMap<UUID, Integer> playerRTPAttempts = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> playerSpamTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, BukkitTask> resourceWorldMenuTask = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BukkitTask> homeMenuTask = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, List<UUID>> sleepingPlayers = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, BukkitTask> sleepTasks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Long> playerLastMovedTimer = new ConcurrentHashMap<>();
@@ -185,14 +186,23 @@ public class Data {
     public boolean isResourceWorldTaskActive(UUID player) {
         return resourceWorldMenuTask.containsKey(player);
     }
-    public void addResourceWorldTaskActive(UUID player, BukkitTask task) {
-        resourceWorldMenuTask.put(player, task);
-    }
+    public void addResourceWorldTaskActive(UUID player, BukkitTask task) { resourceWorldMenuTask.put(player, task); }
     public void removeResourceWorldTaskActive(UUID player) {
         resourceWorldMenuTask.remove(player);
     }
     public BukkitTask getResourceWorldTask(UUID uuid) {
         return resourceWorldMenuTask.get(uuid);
+    }
+
+    public boolean isHomeMenuTaskActive(UUID player) {
+        return homeMenuTask.containsKey(player);
+    }
+    public void addHomeMenuTaskActive(UUID player, BukkitTask task) { homeMenuTask.put(player, task); }
+    public void removeHomeMenuTaskActive(UUID player) {
+        homeMenuTask.remove(player);
+    }
+    public BukkitTask getHomeMenuTask(UUID uuid) {
+        return homeMenuTask.get(uuid);
     }
 
     public boolean isSpamTaskActive(UUID player) {

@@ -8,7 +8,7 @@ public abstract class PaginatedMenu extends Menu {
         super(pmu);
     }
 
-    @Getter protected int maxItemsPerPage = 36;
+    @Getter protected int maxItemsPerPage = 28;
     protected int page = 0;
     protected int index = 0;
 

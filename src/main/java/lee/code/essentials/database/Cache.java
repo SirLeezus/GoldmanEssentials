@@ -4,6 +4,7 @@ import jedis.Jedis;
 import jedis.JedisPool;
 import jedis.Pipeline;
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.lists.RankList;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -456,6 +457,26 @@ public class Cache {
 
             String[] split = StringUtils.split(homes, ',');
             return new ArrayList<>(Arrays.asList(split));
+        }
+    }
+
+    public Location getHome(UUID uuid, String name) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        String sUUID = String.valueOf(uuid);
+
+        try (Jedis jedis = pool.getResource()) {
+            String homes = jedis.hget("homes", sUUID);
+
+            String[] split = StringUtils.split(homes, ',');
+            for (String home : split) {
+                if (pu.unFormatPlayerHomeName(home).equals(name)) {
+                    return pu.unFormatPlayerHomeLocation(home);
+                }
+            }
+            return null;
         }
     }
 
