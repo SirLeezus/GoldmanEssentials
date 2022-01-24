@@ -22,7 +22,7 @@ public class SignListener implements Listener {
         if (!sLine1.equals("[shop]") && !sLine1.equals("[lock]")) {
             int number = 0;
             for (Component line : lines) {
-                e.line(number, plugin.getPU().formatC(plugin.getPU().unFormatC(line)));
+                e.line(number, pu.formatC(pu.unFormatC(line)));
                 number++;
             }
         }

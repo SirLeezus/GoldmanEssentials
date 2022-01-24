@@ -117,7 +117,8 @@ public class ResourceWorldMenu extends Menu {
             data.addResourceWorldTaskActive(uuid, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    String time = pu.formatSeconds(cache.getResourceWorldsTime());
+                    long seconds = cache.getResourceWorldsTime();
+                    String time = seconds <= 0 ? "&cNext Restart" : pu.formatSeconds(seconds);
                     ItemStack clock = pu.getItem(Material.CLOCK, Lang.MENU_RESOURCE_WORLD_CLOCK_NAME.getString(new String[] { time }), null, null);
                     inventory.setItem(13, clock);
                 }

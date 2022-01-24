@@ -1,12 +1,15 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
+import lee.code.essentials.menusystem.menus.WelcomeMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,16 +18,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class HelpCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
         PU pu = plugin.getPU();
 
         if (sender instanceof Player player) {
-
+            UUID uuid = player.getUniqueId();
             List<Component> lines = new ArrayList<>();
             int number = 1;
 
@@ -36,7 +41,7 @@ public class HelpCMD implements CommandExecutor {
                     lines.add(Lang.COMMAND_HELP_ESSENTIALS_TITLE.getComponent(null));
                     lines.add(Component.text(""));
 
-                    for (String pCommand : plugin.getData().getPluginCommands()) {
+                    for (String pCommand : data.getPluginCommands()) {
                         Command sCommand = Bukkit.getCommandMap().getCommand(pCommand);
                         if (sCommand != null) {
                             String permission = sCommand.getPermission();
@@ -53,12 +58,8 @@ public class HelpCMD implements CommandExecutor {
                     lines.add(Lang.COMMAND_HELP_ESSENTIALS_DIVIDER.getComponent(null));
 
                 } else if (args[0].equalsIgnoreCase("welcome")) {
-                    lines.add(Lang.COMMAND_HELP_WELCOME_DIVIDER.getComponent(null));
-                    lines.add(Component.text(""));
-                    lines.add(pu.formatC(" &eWelcome to &2&lJourney Survival&e! To give you some insight on what type of server this is I'll quickly go through some helpful info! This is a survival server which focuses on vanilla gameplay mostly. The goal of the server is to build a place you enjoy and hopefully make some friends along the way. There is a economy and it's almost entirely player ran through player shops. \n\n You can also earn money and exp by ranking up. All ranks are designed around Minecraft's advancements and you have the option to prestige a unlimited amount of times. The PvP was reverted back to a 1.8 state, so swing delays don't exist. To get started use the wild warp villager at the spawn entrance and find a place you would like to start your journey. To claim your land simply run &6/chunk claim&e!"));
-                    lines.add(Component.text(""));
-                    lines.add(Lang.COMMAND_HELP_WELCOME_DIVIDER.getComponent(null));
-
+                    new WelcomeMenu(data.getPlayerMU(uuid)).open();
+                    player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
                 } else if (args[0].equalsIgnoreCase("hopperfilter")) {
                     lines.add(Lang.COMMAND_HELP_HOPPER_FILTER_DIVIDER.getComponent(null));
                     lines.add(Component.text(""));

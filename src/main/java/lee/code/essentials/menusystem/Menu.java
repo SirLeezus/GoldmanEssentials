@@ -49,6 +49,19 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack homeBed = MenuItems.HOME_BED.getItem();
     protected ItemStack homeClock = MenuItems.HOME_CLOCK.getItem();
 
+    protected ItemStack welcome1 = MenuItems.WELCOME_1.getItem();
+    protected ItemStack welcome2 = MenuItems.WELCOME_2.getItem();
+    protected ItemStack welcome3 = MenuItems.WELCOME_3.getItem();
+    protected ItemStack welcome4 = MenuItems.WELCOME_4.getItem();
+    protected ItemStack welcome5 = MenuItems.WELCOME_5.getItem();
+    protected ItemStack welcome6 = MenuItems.WELCOME_6.getItem();
+    protected ItemStack welcome7 = MenuItems.WELCOME_7.getItem();
+    protected ItemStack welcome8 = MenuItems.WELCOME_8.getItem();
+    protected ItemStack welcome9 = MenuItems.WELCOME_9.getItem();
+    protected ItemStack welcome10 = MenuItems.WELCOME_10.getItem();
+    protected ItemStack welcome11 = MenuItems.WELCOME_11.getItem();
+    protected ItemStack welcome12 = MenuItems.WELCOME_12.getItem();
+
     protected List<ItemStack> colorItems = getColorItems();
 
     public abstract Component getMenuName();
