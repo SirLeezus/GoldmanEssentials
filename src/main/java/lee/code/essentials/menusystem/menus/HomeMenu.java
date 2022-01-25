@@ -110,7 +110,6 @@ public class HomeMenu extends PaginatedMenu {
 
         List<String> homes = cache.getHomes(uuid);
         List<ItemStack> menuItems = new ArrayList<>();
-
         for (String home : homes) {
             String name = pu.unFormatPlayerHomeName(home);
             String world = pu.unFormatPlayerHomeWorld(home);

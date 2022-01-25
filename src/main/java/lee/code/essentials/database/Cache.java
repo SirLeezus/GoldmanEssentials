@@ -537,9 +537,8 @@ public class Cache {
                 if (!homeName.equals(name)) homeList.add(home);
             }
 
-            String newHomes = StringUtils.join(homeList, ",");
-            if (newHomes.isEmpty()) jedis.hset("homes", sUUID, "0");
-            else jedis.hset("homes", sUUID, newHomes);
+            String newHomes = homeList.isEmpty() ? "0" : StringUtils.join(homeList, ",");
+            jedis.hset("homes", sUUID, newHomes);
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> SQL.setHomes(sUUID, newHomes));
         }
     }

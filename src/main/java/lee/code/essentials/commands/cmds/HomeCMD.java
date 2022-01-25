@@ -48,8 +48,10 @@ public class HomeCMD implements CommandExecutor {
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_BED_NOT_SAVED.getComponent(null)));
                 }
             } else {
-                new HomeMenu(data.getPlayerMU(uuid)).open();
-                player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
+                if (cache.hasHome(uuid)) {
+                    new HomeMenu(data.getPlayerMU(uuid)).open();
+                    player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_NO_SAVED_HOMES.getComponent(null)));
             }
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
