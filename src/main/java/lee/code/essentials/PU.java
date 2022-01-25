@@ -59,7 +59,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class PU {
 
@@ -546,7 +545,6 @@ public class PU {
         Team team = board.getTeam(name);
 
         if (team != null) {
-            team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
             team.addEntry(player.getName());
 
             String prefix = cache.getPrefix(uuid) + " ";

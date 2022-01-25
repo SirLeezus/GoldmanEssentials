@@ -171,6 +171,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("Illusioners have a 10% chance to spawn with pillagers in the resource world.");
                     changes.add("Drowned have a 50% chance of dropping a trident if they're holding one.");
                     changes.add("Ocelots are more common in jungles.");
+                    changes.add("You can right-click minecarts with armor stands to insert a armor stand inside a minecart.");
 
                     for (String change : changes) {
                         lines.add(pu.formatC("&3" + number + "&b. &6" + change));
