@@ -62,8 +62,10 @@ public class HeadDropListener implements Listener {
                         if (villagerProfession != Villager.Profession.NONE) {
                             type = villagerType.name() + "_" + villagerProfession.name() + "_" + type;
                         } else type = villagerType.name() + "_" + type;
+                    } else if (entity instanceof MushroomCow mushroomCow) {
+                        MushroomCow.Variant variant = mushroomCow.getVariant();
+                        type = variant.name() + "_" + type;
                     }
-
                     if (data.getEntityHeadKeys().contains(type)) {
                         ItemStack head = EntityHeads.valueOf(type).getHead();
                         entity.getWorld().dropItemNaturally(entity.getLocation(), head);
