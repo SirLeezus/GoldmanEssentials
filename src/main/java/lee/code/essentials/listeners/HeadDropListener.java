@@ -5,6 +5,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.lists.EntityHeads;
 import lee.code.essentials.lists.Settings;
+import net.kyori.adventure.text.Component;
 import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -39,9 +40,13 @@ public class HeadDropListener implements Listener {
                 if (pu.rng() >= Settings.HEAD_DROP_RNG.getValue() || killer.getGameMode().equals(GameMode.CREATIVE)) {
                     String type = e.getEntityType().name();
                     if (entity instanceof Sheep sheep) {
-                        DyeColor color = sheep.getColor();
-                        if (color != null) type = color.name() + "_" + type;
-                        else type = "WHITE_" + type;
+                        if (sheep.name().equals(Component.text("jeb_"))) {
+                            type = "RAINBOW_" + type;
+                        } else {
+                            DyeColor color = sheep.getColor();
+                            if (color != null) type = color.name() + "_" + type;
+                            else type = "WHITE_" + type;
+                        }
                     } else if (entity instanceof Axolotl axolotl) {
                         Axolotl.Variant variant = axolotl.getVariant();
                         type = variant.name() + "_" + type;
