@@ -83,13 +83,13 @@ public class VoteTopCMD implements CommandExecutor {
 
             if (!onPage) {
                 lines.add(Component.text(""));
-                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &" + ChatColor.valueOf(cache.getColor(uuid)).getChar() + player.getName() + " &7| &6$" + pu.formatAmount(sortedMap.get(String.valueOf(uuid)))));
+                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &" + ChatColor.valueOf(cache.getColor(uuid)).getChar() + player.getName() + " &7| &a" + pu.formatAmount(sortedMap.get(String.valueOf(uuid)))));
             }
 
             lines.add(Component.text(""));
-            Component next = Lang.NEXT_PAGE_TEXT.getComponent(null).hoverEvent(Lang.NEXT_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page + 1)));
+            Component next = Lang.NEXT_PAGE_TEXT.getComponent(null).hoverEvent(Lang.NEXT_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/votetop " + (page + 1)));
             Component split = Lang.PAGE_SPACER.getComponent(null);
-            Component prev = Lang.PREVIOUS_PAGE_TEXT.getComponent(null).hoverEvent(Lang.PREVIOUS_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/baltop " + (page - 1)));
+            Component prev = Lang.PREVIOUS_PAGE_TEXT.getComponent(null).hoverEvent(Lang.PREVIOUS_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/votetop " + (page - 1)));
             lines.add(prev.append(split).append(next));
             for (Component message : lines) player.sendMessage(message);
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));

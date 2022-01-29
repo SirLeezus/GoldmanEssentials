@@ -161,7 +161,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("You can toggle item frame invisibility by sneak-right-clicking them with shears.");
                     changes.add("Enchantments can be taken off items in anvils and put on enchanted books.");
                     changes.add("All protection enchantments can be put on the same armor.");
-                    changes.add("Witches, Elder Guardians and villagers have a chance to dropping a hat on death.");
+                    changes.add("Witches, Elder Guardians and Villagers have a chance to dropping a hat on death.");
                     changes.add("Dolphins can be controlled by right-clicking them, you can also use space bar to spit when riding a dolphin.");
                     changes.add("If you hold a compass a direction bar will appear on your screen.");
                     changes.add("Hoes will replant crops if you break them with one.");
