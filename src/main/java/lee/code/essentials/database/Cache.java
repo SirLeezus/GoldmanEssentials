@@ -1252,6 +1252,15 @@ public class Cache {
         }
     }
 
+    public Map<String, String> getTopVotes() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        JedisPool pool = plugin.getCacheAPI().getEssentialsPool();
+
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.hgetAll("votes");
+        }
+    }
+
     public int getTotalVotes(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         JedisPool pool = plugin.getCacheAPI().getEssentialsPool();

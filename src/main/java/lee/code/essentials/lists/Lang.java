@@ -151,6 +151,7 @@ public enum Lang {
     COMMAND_COLORS_SPLITTER("&a------------------------"),
     COMMAND_WORTH_LIST_TITLE("&a----------- &e[ &2&lWorth List &e] &a-----------"),
     COMMAND_WORTH_LIST_SPLITTER("&a-------------------------------------"),
+    COMMAND_VOTETOP_TITLE("&a------ &e[ &2&lVoting Leaderboard &e] &a------"),
     COMMAND_BALANCETOP_TITLE("&a----- &e[ &2&lBalance Leaderboard &e] &a-----"),
     COMMAND_PLAYTIMETOP_TITLE("&a---- &e[ &2&lPlay Time Leaderboard &e] &a----"),
     COMMAND_BANLIST_TITLE("&a--------- &e[ &2&lBanned Players &e] &a---------"),

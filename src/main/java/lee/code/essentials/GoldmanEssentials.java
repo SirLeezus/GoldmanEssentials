@@ -164,6 +164,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("iteminfo").setExecutor(new ItemInfoCMD());
         getCommand("afk").setExecutor(new AfkCMD());
         getCommand("vote").setExecutor(new VoteCMD());
+        getCommand("votetop").setExecutor(new VoteTopCMD());
         getCommand("trade").setExecutor(new TradeCMD());
         getCommand("duel").setExecutor(new DuelCMD());
         getCommand("sort").setExecutor(new SortCMD());
@@ -249,6 +250,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("iteminfo").setTabCompleter(new ItemInfoTab());
         getCommand("afk").setTabCompleter(new AfkTab());
         getCommand("vote").setTabCompleter(new VoteTab());
+        getCommand("votetop").setTabCompleter(new VoteTopTab());
         getCommand("trade").setTabCompleter(new TradeTab());
         getCommand("duel").setTabCompleter(new DuelTab());
         getCommand("sort").setTabCompleter(new SortTab());

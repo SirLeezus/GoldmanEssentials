@@ -1,6 +1,5 @@
 package lee.code.essentials.nms;
 
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EntityType;

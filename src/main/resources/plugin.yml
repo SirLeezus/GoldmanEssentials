@@ -341,6 +341,10 @@ commands:
     description: Lists server voting info.
     permission: essentials.command.vote
     usage: "/vote"
+  votetop:
+    description: Checks the server voting leaderboard.
+    permission: essentials.command.votetop
+    usage: "/votetop"
   trade:
     description: Requests to trade with another player.
     permission: essentials.command.trade
