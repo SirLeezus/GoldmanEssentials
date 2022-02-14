@@ -56,7 +56,7 @@ public class HomeMenu extends PaginatedMenu {
 
         if (clickedItem.equals(previousPage)) {
             if (page == 0) {
-                player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_PREVIOUS_PAGE.getString(null));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PREVIOUS_PAGE.getComponent(null)));
             } else {
                 page = page - 1;
                 pmu.setHomePage(page);
@@ -71,7 +71,7 @@ public class HomeMenu extends PaginatedMenu {
                 super.open();
                 playClickSound(player);
                 scheduleUpdateClockItem(player, homes);
-            } else player.sendMessage(Lang.PREFIX.getString(null) + Lang.ERROR_NEXT_PAGE.getString(null));
+            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NEXT_PAGE.getComponent(null)));
 
         } else if (clickedItem.equals(homeBed)) {
             Location bedLocation = player.getBedSpawnLocation();

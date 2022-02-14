@@ -11,6 +11,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -56,16 +57,18 @@ public class SpawnerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onSpawnerExplode(EntityExplodeEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         World world = e.getLocation().getWorld();
 
-        for (Block block : e.blockList()) {
-            if (block.getState() instanceof CreatureSpawner cs) {
-                EntityType mob = cs.getSpawnedType();
-                ItemStack spawner = plugin.getPU().createSpawner(mob);
-                world.dropItemNaturally(block.getLocation(), spawner);
+        if (!e.isCancelled()) {
+            for (Block block : e.blockList()) {
+                if (block.getState() instanceof CreatureSpawner cs) {
+                    EntityType mob = cs.getSpawnedType();
+                    ItemStack spawner = plugin.getPU().createSpawner(mob);
+                    world.dropItemNaturally(block.getLocation(), spawner);
+                }
             }
         }
     }

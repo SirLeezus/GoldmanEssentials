@@ -765,10 +765,9 @@ public class PU {
     }
 
     public ItemStack getItem(Material type, String name, String lore, String skin) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
 
         ItemStack item = new ItemStack(type);
-        if (skin != null) plugin.getPU().applyHeadSkin(item, skin, UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffffff"));
+        if (skin != null) applyHeadSkin(item, skin, UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffffff"));
         ItemMeta itemMeta = item.getItemMeta();
         if (name != null) itemMeta.displayName(formatC(name));
         if (lore != null) {
