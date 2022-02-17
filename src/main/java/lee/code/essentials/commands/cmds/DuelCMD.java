@@ -34,59 +34,61 @@ public class DuelCMD implements CommandExecutor {
                         UUID tUUID = target.getUniqueId();
                         if (!uuid.equals(tUUID)) {
                             if (!data.isDuelCurrent(tUUID)) {
-                                if (args.length > 1) {
-                                    if (data.isDuelRequestingPlayer(tUUID, uuid)) {
-                                        if (args[1].equalsIgnoreCase("accept")) {
-                                            data.removeDuelRequesting(tUUID);
-                                            player.teleport(target.getLocation());
-                                            Title.Times times = Title.Times.of(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(100));
-                                            CountdownTimer timer = new CountdownTimer(plugin,
-                                                    10,
-                                                    () -> {
-                                                        if (player.isOnline() && target.isOnline()) {
-                                                            player.showTitle(Title.title(Lang.DUEL_TIMER_START_TITLE.getComponent(null), Component.text(""), times));
-                                                            target.showTitle(Title.title(Lang.DUEL_TIMER_START_TITLE.getComponent(null), Component.text(""), times));
-                                                        }
-                                                    },
-                                                    () -> {
-                                                        if (player.isOnline() && target.isOnline()) {
-                                                            data.setDuelingPlayer(tUUID, uuid);
-                                                            player.showTitle(Title.title(Lang.DUEL_TIMER_END_TITLE.getComponent(null), Component.text(""), times));
-                                                            target.showTitle(Title.title(Lang.DUEL_TIMER_END_TITLE.getComponent(null), Component.text(""), times));
-                                                            playPingSound(player, 2);
-                                                            playPingSound(target, 2);
-                                                        }
-                                                    },
-                                                    (t) ->  {
-                                                        if (player.isOnline() && target.isOnline()) {
-                                                            player.showTitle(Title.title(Lang.DUEL_TIMER_TITLE.getComponent(new String[] { String.valueOf(t.getSecondsLeft()) }), Component.text(""), times));
-                                                            target.showTitle(Title.title(Lang.DUEL_TIMER_TITLE.getComponent(new String[] { String.valueOf(t.getSecondsLeft()) }), Component.text(""), times));
-                                                            playPingSound(player, 1);
-                                                            playPingSound(target, 1);
-                                                        } else t.stop();
-                                                    });
-                                            timer.scheduleTimer();
-                                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_ACCEPT_SUCCESSFUL.getComponent(new String[] { target.getName() })));
-                                            target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_ACCEPT_TARGET_SUCCESSFUL.getComponent(new String[] { player.getName() })));
-                                        } else if (args[1].equalsIgnoreCase("deny")) {
-                                            data.removeDuelRequesting(tUUID);
-                                            target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_DENY_SENDER.getComponent(new String[] { player.getName() } )));
-                                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_DENY_RECEIVER.getComponent(new String[] { target.getName() } )));
-                                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_NOT_ARG.getComponent(new String[] { args[1] })));
-                                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_DUEL_NO_PENDING_REQUEST.getComponent(new String[] { target.getName() })));
-                                } else {
-                                    if (!data.isDuelRequestingPlayer(uuid, tUUID)) {
-                                        data.setDuelRequesting(uuid, tUUID);
-                                        pu.pvpRequestTimer(player, target);
+                                if (!data.isDuelCurrent(uuid)) {
+                                    if (args.length > 1) {
+                                        if (data.isDuelRequestingPlayer(tUUID, uuid)) {
+                                            if (args[1].equalsIgnoreCase("accept")) {
+                                                data.removeDuelRequesting(tUUID);
+                                                player.teleport(target.getLocation());
+                                                Title.Times times = Title.Times.of(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(100));
+                                                CountdownTimer timer = new CountdownTimer(plugin,
+                                                        10,
+                                                        () -> {
+                                                            if (player.isOnline() && target.isOnline()) {
+                                                                player.showTitle(Title.title(Lang.DUEL_TIMER_START_TITLE.getComponent(null), Component.text(""), times));
+                                                                target.showTitle(Title.title(Lang.DUEL_TIMER_START_TITLE.getComponent(null), Component.text(""), times));
+                                                            }
+                                                        },
+                                                        () -> {
+                                                            if (player.isOnline() && target.isOnline()) {
+                                                                data.setDuelingPlayer(tUUID, uuid);
+                                                                player.showTitle(Title.title(Lang.DUEL_TIMER_END_TITLE.getComponent(null), Component.text(""), times));
+                                                                target.showTitle(Title.title(Lang.DUEL_TIMER_END_TITLE.getComponent(null), Component.text(""), times));
+                                                                playPingSound(player, 2);
+                                                                playPingSound(target, 2);
+                                                            }
+                                                        },
+                                                        (t) ->  {
+                                                            if (player.isOnline() && target.isOnline()) {
+                                                                player.showTitle(Title.title(Lang.DUEL_TIMER_TITLE.getComponent(new String[] { String.valueOf(t.getSecondsLeft()) }), Component.text(""), times));
+                                                                target.showTitle(Title.title(Lang.DUEL_TIMER_TITLE.getComponent(new String[] { String.valueOf(t.getSecondsLeft()) }), Component.text(""), times));
+                                                                playPingSound(player, 1);
+                                                                playPingSound(target, 1);
+                                                            } else t.stop();
+                                                        });
+                                                timer.scheduleTimer();
+                                                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_ACCEPT_SUCCESSFUL.getComponent(new String[] { target.getName() })));
+                                                target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_ACCEPT_TARGET_SUCCESSFUL.getComponent(new String[] { player.getName() })));
+                                            } else if (args[1].equalsIgnoreCase("deny")) {
+                                                data.removeDuelRequesting(tUUID);
+                                                target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_DENY_SENDER.getComponent(new String[] { player.getName() } )));
+                                                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_DENY_RECEIVER.getComponent(new String[] { target.getName() } )));
+                                            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_NOT_ARG.getComponent(new String[] { args[1] })));
+                                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_DUEL_NO_PENDING_REQUEST.getComponent(new String[] { target.getName() })));
+                                    } else {
+                                        if (!data.isDuelRequestingPlayer(uuid, tUUID)) {
+                                            data.setDuelRequesting(uuid, tUUID);
+                                            pu.pvpRequestTimer(player, target);
 
-                                        Component targetMessage = Lang.REQUEST_DUEL_TARGET.getComponent(new String[] { player.getName() });
-                                        Component accept = Component.text("            ").append(Lang.REQUEST_ACCEPT.getComponent(null).hoverEvent(Lang.REQUEST_DUEL_ACCEPT_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/duel " + player.getName() + " accept")));
-                                        Component deny = Component.text("        ").append(Lang.REQUEST_DENY.getComponent(null).hoverEvent(Lang.REQUEST_DUEL_DENY_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/duel " + player.getName() + " deny")));
+                                            Component targetMessage = Lang.REQUEST_DUEL_TARGET.getComponent(new String[] { player.getName() });
+                                            Component accept = Component.text("            ").append(Lang.REQUEST_ACCEPT.getComponent(null).hoverEvent(Lang.REQUEST_DUEL_ACCEPT_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/duel " + player.getName() + " accept")));
+                                            Component deny = Component.text("        ").append(Lang.REQUEST_DENY.getComponent(null).hoverEvent(Lang.REQUEST_DUEL_DENY_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/duel " + player.getName() + " deny")));
 
-                                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_REQUEST_SUCCESSFUL.getComponent(new String[] { target.getName() })));
-                                        target.sendMessage(targetMessage.append(accept).append(deny));
-                                    } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_DUEL_REQUEST_ALREADY_SENT.getComponent(new String[] { target.getName() })));
-                                }
+                                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_DUEL_REQUEST_SUCCESSFUL.getComponent(new String[] { target.getName() })));
+                                            target.sendMessage(targetMessage.append(accept).append(deny));
+                                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_DUEL_REQUEST_ALREADY_SENT.getComponent(new String[] { target.getName() })));
+                                    }
+                                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_DUEL_REQUEST_YOUR_IN_DUEL.getComponent(null)));
                             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_DUEL_REQUEST_IN_DUEL.getComponent(new String[]{ target.getName() })));
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_DUEL_DUEL_SELF.getComponent(null)));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));

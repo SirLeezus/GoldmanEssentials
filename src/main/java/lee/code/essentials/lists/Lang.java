@@ -278,6 +278,7 @@ public enum Lang {
     ERROR_COMMAND_TRADE_NO_PENDING_REQUEST("&cThe player &6{0} &cdid not send you a trade request."),
     ERROR_COMMAND_DUEL_REQUEST_ALREADY_SENT("&cYou already have a pending duel request for the player &6{0}&c."),
     ERROR_COMMAND_DUEL_REQUEST_IN_DUEL("&cThe player &6{0} &cis already dueling a player."),
+    ERROR_COMMAND_DUEL_REQUEST_YOUR_IN_DUEL("&cYou're currently in a duel."),
     ERROR_COMMAND_DUEL_NO_PENDING_REQUEST("&cThe player &6{0} &cdid not send you a duel request."),
     ERROR_COMMAND_TELEPORTDENY_DENIED("&cSadly the player &6{0} &chas denied your teleport request."),
     ERROR_COMMAND_REPLY_NO_PLAYER("&cNo player was found for a reply."),

@@ -94,6 +94,7 @@ public enum ItemSellValues {
     RABBIT_HIDE(new ItemStack(Material.RABBIT_HIDE), 5),
     BREAD(new ItemStack(Material.BREAD), 5),
     APPLE(new ItemStack(Material.APPLE), 5),
+    EGG(new ItemStack(Material.EGG), 5),
     MELON(new ItemStack(Material.MELON), 5),
     PUMPKIN(new ItemStack(Material.PUMPKIN), 5),
     HONEYCOMB(new ItemStack(Material.HONEYCOMB), 5),
