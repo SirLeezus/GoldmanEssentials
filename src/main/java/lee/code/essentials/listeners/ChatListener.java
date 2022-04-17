@@ -38,10 +38,6 @@ public class ChatListener implements Listener {
                 if (!cache.isMuted(uuid)) {
                     if (!cache.isTempMuted(uuid)) {
                         if (cache.hasBeenBotChecked(uuid)) {
-                            if (data.isAFK(uuid)) {
-                                data.removeAFK(uuid);
-                                pu.updateDisplayName(player, false);
-                            }
 
                             Component message = pu.parseChatVariables(player, e.message());
                             if (data.isSpamLoggerViolation(uuid, message)) {
