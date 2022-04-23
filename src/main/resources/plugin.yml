@@ -267,7 +267,7 @@ commands:
   randomteleport:
     description: Teleports you randomly in the world you're in.
     permission: essentials.command.randomteleport
-    aliases: [rtp]
+    aliases: [rtp, wild]
     usage: "/randomteleport"
   rules:
     description: List of all the server rules.

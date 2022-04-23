@@ -141,12 +141,12 @@ public class PlayerTradeMenu extends TradeMenu {
                     6,
                     () -> {},
                     () -> {
+                        Player owner = pmu.getOwner();
+                        Player trader = pmu.getTrader();
+
                         if (pmu.isTraderTradeConfirmed() && pmu.isOwnerTradeConfirmed()) {
                             int[] ownerSlots = new int[]{14, 15, 16, 23, 24, 25, 32, 33, 34, 41, 42, 43};
                             int[] traderSlots = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30, 37, 38, 39};
-
-                            Player owner = pmu.getOwner();
-                            Player trader = pmu.getTrader();
 
                             pmu.setOwnerTrading(false);
                             pmu.setTraderTrading(false);
@@ -175,6 +175,11 @@ public class PlayerTradeMenu extends TradeMenu {
                             playVillagerYesSound(trader);
                             owner.showTitle(Title.title(Lang.TRADE_COMPLETED_TITLE.getComponent(null), Lang.TRADE_COMPLETED_SUBTITLE.getComponent(new String[] { trader.getName() }), times));
                             trader.showTitle(Title.title(Lang.TRADE_COMPLETED_TITLE.getComponent(null), Lang.TRADE_COMPLETED_SUBTITLE.getComponent(new String[] { owner.getName() }), times));
+                        } else {
+                            playVillagerNoSound(owner);
+                            playVillagerNoSound(trader);
+                            owner.closeInventory();
+                            trader.closeInventory();
                         }
                     },
                     (t) -> {
@@ -215,12 +220,8 @@ public class PlayerTradeMenu extends TradeMenu {
                                 }
                             }
                         } else {
-                            inventory.setItem(4, fillerGlass);
-                            inventory.setItem(13, fillerGlass);
-                            inventory.setItem(22, fillerGlass);
-                            inventory.setItem(31, fillerGlass);
-                            inventory.setItem(40, fillerGlass);
-                            inventory.setItem(49, fillerGlass);
+                            owner.closeInventory();
+                            trader.closeInventory();
                             playVillagerNoSound(owner);
                             playVillagerNoSound(trader);
                             t.stop();
