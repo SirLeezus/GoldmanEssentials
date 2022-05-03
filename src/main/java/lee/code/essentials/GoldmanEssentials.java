@@ -168,6 +168,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("trade").setExecutor(new TradeCMD());
         getCommand("duel").setExecutor(new DuelCMD());
         getCommand("sort").setExecutor(new SortCMD());
+        getCommand("bottlexp").setExecutor(new BottleXPCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -254,6 +255,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("trade").setTabCompleter(new TradeTab());
         getCommand("duel").setTabCompleter(new DuelTab());
         getCommand("sort").setTabCompleter(new SortTab());
+        getCommand("bottlexp").setTabCompleter(new BottleXPTab());
     }
 
     private void registerListeners() {
@@ -280,7 +282,6 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BackListener(), this);
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         getServer().getPluginManager().registerEvents(new BoosterListener(), this);
-        getServer().getPluginManager().registerEvents(new BottleEXPListener(), this);
         getServer().getPluginManager().registerEvents(new ItemFrameListener(), this);
         getServer().getPluginManager().registerEvents(new DragonEggListener(), this);
         getServer().getPluginManager().registerEvents(new PortalListener(), this);

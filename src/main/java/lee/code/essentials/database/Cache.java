@@ -15,8 +15,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toMap;
-
 public class Cache {
 
     public Location getSpawn() {

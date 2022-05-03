@@ -102,11 +102,12 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.afk");
         defaultPerms.add("essentials.command.vote");
         defaultPerms.add("essentials.command.randomteleport");
-        //defaultPerms.add("essentials.command.trade");
+        defaultPerms.add("essentials.command.trade");
         defaultPerms.add("essentials.command.checkadvancement");
         defaultPerms.add("essentials.command.duel");
         defaultPerms.add("essentials.command.sort");
         defaultPerms.add("essentials.command.votetop");
+        defaultPerms.add("essentials.command.bottlexp");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");

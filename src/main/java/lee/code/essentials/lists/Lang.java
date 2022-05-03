@@ -252,6 +252,7 @@ public enum Lang {
     ERROR_RANDOM_TELEPORT_DELAY("&7You will need to wait {0} &7to use random teleport again."),
     ERROR_RANDOM_WORLD_TYPE("&cYou can only use random teleport in normal worlds."),
     ERROR_EXP_BOTTLE_POINTS("&cYou need at least 8 exp to store some in a bottle!"),
+    ERROR_EXP_BOTTLE_NO_BOTTLE("&cYou need to be holding a glass bottle to use this command."),
     ERROR_COMMAND_BOOSTER("&cThere are currently no active boosters."),
     ERROR_COMMAND_BACK("&cYou currently don't have any saved back locations."),
     ERROR_COMMAND_TIME("&cThe time &e{0} &cis not an option."),

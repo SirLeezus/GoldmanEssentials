@@ -118,7 +118,8 @@ public class HelpCMD implements CommandExecutor {
 
                     lines.add(Lang.COMMAND_HELP_VANILLA_CHANGES_TITLE.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(pu.formatC("&a&lWorld Difficulty: &eNormal"));
+                    lines.add(pu.formatC("&a&lWorld Difficulty: &cHard"));
+                    lines.add(pu.formatC("&a&lSeed: &e2378573831528949225").clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, "2378573831528949225")).hoverEvent(pu.formatC("&eClick to Copy!")));
                     lines.add(Component.text(""));
 
                     changes.add("No swing delay with tools or weapons.");

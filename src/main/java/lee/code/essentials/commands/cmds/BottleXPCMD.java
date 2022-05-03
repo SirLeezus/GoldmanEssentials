@@ -1,30 +1,31 @@
-package lee.code.essentials.listeners;
+package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public class BottleEXPListener implements Listener {
+public class BottleXPCMD implements CommandExecutor {
 
-    @EventHandler
-    public void onShiftClickBottle(PlayerInteractEvent e) {
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
 
-        Player player = e.getPlayer();
-        if (player.isSneaking()) {
+        if (sender instanceof Player player) {
             ItemStack handItem = player.getInventory().getItemInMainHand();
             if (handItem.getType().equals(Material.GLASS_BOTTLE)) {
                 int amount = handItem.getAmount();
-                int exp = plugin.getPU().getPlayerExp(player);
+                int exp = pu.getPlayerExp(player);
                 int requiredEXP = 8;
                 if (exp > requiredEXP) {
-                    e.setCancelled(true);
                     int convertEXPBottleAmount = exp / requiredEXP;
                     if (convertEXPBottleAmount > amount) convertEXPBottleAmount = amount;
 
@@ -34,7 +35,7 @@ public class BottleEXPListener implements Listener {
                     else player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 
                     ItemStack expBottle = new ItemStack(Material.EXPERIENCE_BOTTLE);
-                    int space = plugin.getPU().getFreeSpace(player, expBottle);
+                    int space = pu.getFreeSpace(player, expBottle);
                     expBottle.setAmount(convertEXPBottleAmount);
 
                     if (space > convertEXPBottleAmount) player.getInventory().addItem(expBottle);
@@ -44,8 +45,9 @@ public class BottleEXPListener implements Listener {
                     player.setLevel(0);
                     player.giveExp(exp - requiredEXP * convertEXPBottleAmount);
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 0.5f);
-                } else player.sendActionBar(Lang.ERROR_EXP_BOTTLE_POINTS.getComponent(null));
-            }
-        }
+                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_EXP_BOTTLE_POINTS.getComponent(null)));
+            } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_EXP_BOTTLE_NO_BOTTLE.getComponent(null)));
+        } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
+        return true;
     }
 }

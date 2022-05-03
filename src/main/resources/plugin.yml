@@ -357,3 +357,8 @@ commands:
     description: Sorts containers alphabetically if you're looking at one.
     permission: essentials.command.sort
     usage: "/sort"
+  bottlexp:
+    description: Stores your exp in a glass bottle if you're holding one.
+    permission: essentials.command.bottlexp
+    usage: "/bottlexp"
+    aliases: [bxp]
