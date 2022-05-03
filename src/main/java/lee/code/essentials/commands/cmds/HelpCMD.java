@@ -194,6 +194,7 @@ public class HelpCMD implements CommandExecutor {
                     lines.add(pu.formatC("&36&b. &#FF9709Auto Sell").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FF9709Auto Sell\n\n&e&lHow does it work:\n&7When you sneak-right-click a chest, barrel or shulker box it'll sell the items inside it.\n\n&e&lSupported Items:\n&7All Hoes")));
                     lines.add(pu.formatC("&37&b. &#FF1700Life Steal").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FF1700Life Steal\n\n&e&lHow does it work:\n&7When you kill a mob or player you get health. Each level gives you more health per-kill.\n\n&e&lSupported Items:\n&7All Swords, All Axes")));
                     lines.add(pu.formatC("&38&b. &#CF6010Molten Shot").hoverEvent(pu.formatC("&5&lEnchantment:\n&#CF6010Molten Shot\n\n&e&lHow does it work:\n&7When a arrow is shot it's changed to a fireball. Each level yields a bigger explosion.\n\n&e&lSupported Items:\n&7Bow")));
+                    lines.add(pu.formatC("&39&b. &#FFBF00Smelting").hoverEvent(pu.formatC("&5&lEnchantment:\n&#FFBF00Smelting\n\n&e&lHow does it work:\n&7Smelts blocks when broken.\n\n&e&lSupported Items:\n&7All Axes, All Pickaxes, All Shovels")));
 
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_ENCHANTS_DIVIDER.getComponent(null));

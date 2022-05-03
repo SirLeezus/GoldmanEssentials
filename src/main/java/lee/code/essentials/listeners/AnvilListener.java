@@ -24,12 +24,9 @@ public class AnvilListener implements Listener {
             ItemMeta dupeMeta = dupe.getItemMeta();
             ItemStack resultStack = e.getResult();
             if (resultStack != null) {
-                String text = pu.unFormatC(resultStack.getItemMeta().displayName());
-                if (text.contains("#") || text.contains("&")) {
-                    dupeMeta.displayName(pu.formatC(pu.unFormatC(resultStack.getItemMeta().displayName())));
-                    dupe.setItemMeta(dupeMeta);
-                    e.setResult(dupe);
-                }
+                dupeMeta.displayName(pu.formatC(pu.unFormatC(resultStack.getItemMeta().displayName())));
+                dupe.setItemMeta(dupeMeta);
+                e.setResult(dupe);
             }
         }
     }

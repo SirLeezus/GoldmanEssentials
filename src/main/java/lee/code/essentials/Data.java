@@ -334,19 +334,19 @@ public class Data {
         for (Material material : Material.values()) materialNames.add(material.name().toLowerCase());
 
         //supported booster blocks
-        supportedBoosterBlocks.addAll(EnumSet.allOf(BoosterDropBlocks.class).stream().map(BoosterDropBlocks::getBlock).collect(Collectors.toList()));
+        supportedBoosterBlocks.addAll(EnumSet.allOf(BoosterDropBlocks.class).stream().map(BoosterDropBlocks::getBlock).toList());
 
         //supported sell items
-        supportedSellItems.addAll(EnumSet.allOf(ItemSellValues.class).stream().map(ItemSellValues::getItem).collect(Collectors.toList()));
+        supportedSellItems.addAll(EnumSet.allOf(ItemSellValues.class).stream().map(ItemSellValues::getItem).toList());
 
         //entity head keys
-        entityHeadKeys.addAll(EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).collect(Collectors.toList()));
+        entityHeadKeys.addAll(EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).toList());
 
         //premium rank keys
-        premiumRankKeys.addAll(EnumSet.allOf(PremiumRankList.class).stream().map(PremiumRankList::name).collect(Collectors.toList()));
+        premiumRankKeys.addAll(EnumSet.allOf(PremiumRankList.class).stream().map(PremiumRankList::name).toList());
 
         //rank keys
-        rankKeys.addAll(EnumSet.allOf(RankList.class).stream().map(RankList::name).collect(Collectors.toList()));
+        rankKeys.addAll(EnumSet.allOf(RankList.class).stream().map(RankList::name).toList());
 
         //all rank keys
         allRankKeys.addAll(premiumRankKeys);
@@ -358,7 +358,7 @@ public class Data {
         whitelistedWorlds.add("world_the_end");
 
         //custom recipes
-        for (String recipe : EnumSet.allOf(CustomCraftingRecipes.class).stream().map(CustomCraftingRecipes::name).collect(Collectors.toList())) {
+        for (String recipe : EnumSet.allOf(CustomCraftingRecipes.class).stream().map(CustomCraftingRecipes::name).toList()) {
             CustomCraftingRecipes.valueOf(recipe).registerRecipe();
         }
 

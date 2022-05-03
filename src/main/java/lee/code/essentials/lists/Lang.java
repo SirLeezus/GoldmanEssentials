@@ -261,6 +261,7 @@ public enum Lang {
     ERROR_COMMAND_TELEPORT_NOT_REQUESTING("&cThe player &6{0} &cis not currently requesting teleportation."),
     ERROR_COMMAND_MONEY_VALUE("&cThe input &6{0} &cis not a number."),
     ERROR_COMMAND_WRONG_COMMAND_ARG("&cThe input &6{0} &cis not a option for this command."),
+    ERROR_COMMAND_PAY_ZERO("&cYou can't send someone &6$0&c."),
     ERROR_COMMAND_PAY_INSUFFICIENT_FUNDS("&cYou can't send &e{0} &6${1} &cbecause you only have &6${2}&c."),
     ERROR_COMMAND_PAY_SELF("&cYou can't pay yourself."),
     ERROR_COMMAND_PAY_NOT_NUMBER("&cThe input &6{0} &cis not a whole number. &a&lUse&7: &e(1)"),

@@ -831,6 +831,12 @@ public class PU {
         return string.matches("-?[1-9]\\d*|0");
     }
 
+    public int getDropCount(int level) {
+        int j = random.nextInt(level + 2) - 1;
+        if (j < 0) j = 0;
+        return (j + 1);
+    }
+
     public String serializeItemStack(ItemStack item) {
         try {
             ByteArrayOutputStream io = new ByteArrayOutputStream();

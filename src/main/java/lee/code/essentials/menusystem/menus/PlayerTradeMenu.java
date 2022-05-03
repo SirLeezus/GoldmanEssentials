@@ -70,10 +70,17 @@ public class PlayerTradeMenu extends TradeMenu {
                                     checkBothConfirmed();
                                     playClickOnSound(trader);
                                 } else if (clickedItem.equals(confirmTradeTrue)) {
-                                    inventory.setItem(47, confirmTradeFalse);
-                                    pmu.setTraderTradeConfirmed(false);
-                                    checkBothConfirmed();
-                                    playClickOffSound(trader);
+                                    if (pmu.isTraderTradeConfirmed() && pmu.isOwnerTradeConfirmed()) {
+                                        owner.closeInventory();
+                                        trader.closeInventory();
+                                        playVillagerNoSound(owner);
+                                        playVillagerNoSound(trader);
+                                    } else {
+                                        inventory.setItem(47, confirmTradeFalse);
+                                        pmu.setTraderTradeConfirmed(false);
+                                        checkBothConfirmed();
+                                        playClickOffSound(trader);
+                                    }
                                 }
                             }
                         }
@@ -87,10 +94,17 @@ public class PlayerTradeMenu extends TradeMenu {
                                     checkBothConfirmed();
                                     playClickOnSound(owner);
                                 } else if (clickedItem.equals(confirmTradeTrue)) {
-                                    inventory.setItem(51, confirmTradeFalse);
-                                    pmu.setOwnerTradeConfirmed(false);
-                                    checkBothConfirmed();
-                                    playClickOffSound(owner);
+                                    if (pmu.isTraderTradeConfirmed() && pmu.isOwnerTradeConfirmed()) {
+                                        owner.closeInventory();
+                                        trader.closeInventory();
+                                        playVillagerNoSound(owner);
+                                        playVillagerNoSound(trader);
+                                    } else {
+                                        inventory.setItem(51, confirmTradeFalse);
+                                        pmu.setOwnerTradeConfirmed(false);
+                                        checkBothConfirmed();
+                                        playClickOffSound(owner);
+                                    }
                                 }
                             }
                         }
@@ -175,11 +189,6 @@ public class PlayerTradeMenu extends TradeMenu {
                             playVillagerYesSound(trader);
                             owner.showTitle(Title.title(Lang.TRADE_COMPLETED_TITLE.getComponent(null), Lang.TRADE_COMPLETED_SUBTITLE.getComponent(new String[] { trader.getName() }), times));
                             trader.showTitle(Title.title(Lang.TRADE_COMPLETED_TITLE.getComponent(null), Lang.TRADE_COMPLETED_SUBTITLE.getComponent(new String[] { owner.getName() }), times));
-                        } else {
-                            playVillagerNoSound(owner);
-                            playVillagerNoSound(trader);
-                            owner.closeInventory();
-                            trader.closeInventory();
                         }
                     },
                     (t) -> {
@@ -220,10 +229,6 @@ public class PlayerTradeMenu extends TradeMenu {
                                 }
                             }
                         } else {
-                            owner.closeInventory();
-                            trader.closeInventory();
-                            playVillagerNoSound(owner);
-                            playVillagerNoSound(trader);
                             t.stop();
                         }
                     });

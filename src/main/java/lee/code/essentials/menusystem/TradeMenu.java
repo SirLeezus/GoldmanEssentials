@@ -4,7 +4,6 @@ import lee.code.essentials.lists.MenuItems;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,11 +21,9 @@ public abstract class TradeMenu implements InventoryHolder {
         this.trading = trading;
     }
 
-    @Getter
-    protected PlayerMU pmu;
+    @Getter protected PlayerMU pmu;
     protected Inventory inventory;
-    @Getter
-    protected UUID trading;
+    @Getter protected UUID trading;
 
     protected ItemStack fillerGlass = MenuItems.FILLER_GLASS.getItem();
     protected ItemStack tradeCountDown = MenuItems.TRADE_COUNT_DOWN.getItem();

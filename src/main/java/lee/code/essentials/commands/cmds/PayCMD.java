@@ -31,16 +31,19 @@ public class PayCMD implements CommandExecutor {
                     UUID targetUUID = target.getUniqueId();
                     if (pu.containOnlyNumbers(args[1])) {
                         long payAmount = Long.parseLong(args[1]);
+                        if (payAmount < 0) payAmount = 0;
                         long senderBalance = cache.getBalance(uuid);
                         if (!targetUUID.equals(uuid)) {
                             if (senderBalance >= payAmount) {
-                                cache.withdraw(uuid, payAmount);
-                                cache.deposit(targetUUID, payAmount);
-                                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_PAY_SENDER_SUCCESSFUL.getComponent(new String[] { target.getName(), pu.formatAmount(payAmount) })));
-                                if (target.isOnline()) {
-                                    Player oTarget = target.getPlayer();
-                                    if (oTarget != null) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_PAY_TARGET_SUCCESSFUL.getComponent(new String[] { pu.formatAmount(payAmount), player.getName() })));
-                                }
+                                if (payAmount != 0) {
+                                    cache.withdraw(uuid, payAmount);
+                                    cache.deposit(targetUUID, payAmount);
+                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_PAY_SENDER_SUCCESSFUL.getComponent(new String[] { target.getName(), pu.formatAmount(payAmount) })));
+                                    if (target.isOnline()) {
+                                        Player oTarget = target.getPlayer();
+                                        if (oTarget != null) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_PAY_TARGET_SUCCESSFUL.getComponent(new String[] { pu.formatAmount(payAmount), player.getName() })));
+                                    }
+                                } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PAY_ZERO.getComponent(null)));
                             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PAY_INSUFFICIENT_FUNDS.getComponent(new String[] { target.getName(), pu.formatAmount(payAmount), pu.formatAmount(senderBalance) })));
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PAY_SELF.getComponent(null)));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PAY_NOT_NUMBER.getComponent(new String[] { args[1] })));
