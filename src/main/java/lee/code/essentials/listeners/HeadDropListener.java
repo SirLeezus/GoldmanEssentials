@@ -70,6 +70,9 @@ public class HeadDropListener implements Listener {
                     } else if (entity instanceof MushroomCow mushroomCow) {
                         MushroomCow.Variant variant = mushroomCow.getVariant();
                         type = variant.name() + "_" + type;
+                    } else if (entity instanceof Frog frog) {
+                        Frog.Variant variant = frog.getVariant();
+                        type = variant.name() + "_" + type;
                     }
                     if (data.getEntityHeadKeys().contains(type)) {
                         ItemStack head = EntityHeads.valueOf(type).getHead();

@@ -1,12 +1,12 @@
 package lee.code.essentials.nms;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 
 public class CustomChair extends ArmorStand {
 
@@ -20,7 +20,7 @@ public class CustomChair extends ArmorStand {
         this.setMarker(true);
         this.setInvisible(true);
         this.setSmall(true);
-        this.setCustomName(new TextComponent("chair"));
+        this.setCustomName(Component.literal("chair"));
     }
 
     //prevent saving... I think...

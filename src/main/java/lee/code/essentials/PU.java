@@ -481,13 +481,13 @@ public class PU {
             public void onPacketSending(PacketEvent event) {
                 if (event.getPacketType() == PacketType.Play.Server.ENTITY_METADATA) {
                     PacketContainer packet = event.getPacket();
-
                     List<WrappedWatchableObject> watchableCollection = packet.getWatchableCollectionModifier().read(0);
-
                     for (WrappedWatchableObject object : watchableCollection) {
                         if (object != null && object.getIndex() == 18) {
                             String value = object.getValue().toString();
-                            if (value.startsWith("Optional")) object.setValue(Optional.of(UUID.randomUUID()));
+                            if (value.startsWith("Optional") && !value.startsWith("OptionalInt") && object.getValue() != Optional.empty()) {
+                                object.setValue(Optional.empty());
+                            }
                         }
                     }
                 }
@@ -610,6 +610,8 @@ public class PU {
                             () -> Bukkit.getServer().sendMessage(Lang.WARNING.getComponent(null).append(Lang.AUTO_RESTART_WARNING_START.getComponent(null))),
                             () -> {
                                 Bukkit.getServer().sendMessage(Lang.WARNING.getComponent(null).append(Lang.AUTO_RESTART_WARNING_END.getComponent(null)));
+                                Bukkit.getServer().savePlayers();
+                                for (World world : Bukkit.getWorlds()) world.save();
                                 Bukkit.getServer().shutdown();
                             },
                             (t) -> Bukkit.getServer().sendActionBar(Lang.AUTO_RESTART_TIME.getComponent(new String[] { String.valueOf(t.getSecondsLeft()) })));

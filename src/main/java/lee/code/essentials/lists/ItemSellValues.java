@@ -28,6 +28,7 @@ public enum ItemSellValues {
     INK_SAC(new ItemStack(Material.INK_SAC), 2),
     BRICK(new ItemStack(Material.BRICK), 3),
     CARROT(new ItemStack(Material.CARROT), 3),
+    CACTUS(new ItemStack(Material.CACTUS), 3),
     GLOW_INK_SAC(new ItemStack(Material.GLOW_INK_SAC), 3),
     WHITE_WOOL(new ItemStack(Material.WHITE_WOOL), 3),
     ORANGE_WOOL(new ItemStack(Material.ORANGE_WOOL), 3),
