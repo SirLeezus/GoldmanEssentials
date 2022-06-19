@@ -357,8 +357,8 @@ public class Data {
         whitelistedWorlds.add("world_the_end");
 
         //custom recipes
-        for (String recipe : EnumSet.allOf(CustomCraftingRecipes.class).stream().map(CustomCraftingRecipes::name).toList()) {
-            CustomCraftingRecipes.valueOf(recipe).registerRecipe();
+        for (String recipe : EnumSet.allOf(CustomCraftingRecipe.class).stream().map(CustomCraftingRecipe::name).toList()) {
+            CustomCraftingRecipe.valueOf(recipe).registerRecipe();
         }
 
         //recipes

@@ -13,7 +13,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 @AllArgsConstructor
-public enum CustomCraftingRecipes {
+public enum CustomCraftingRecipe {
     // A B C D E F G
     //1.17 missing recipes
     BUNDLE(new ItemStack(Material.BUNDLE), "ABA,B B,BBB", new Material[] {Material.STRING,  Material.RABBIT_HIDE}, false, 0, null),

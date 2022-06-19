@@ -3,8 +3,8 @@ main: lee.code.essentials.GoldmanEssentials
 version: ${project.version}
 api-version: 1.19
 author: Lee
-depend: [ProtocolLib, RedisCache]
-softdepend: [GoldmanEnchants, Votifier, Pl3xMap]
+depend: [ProtocolLib, RedisCache, GoldmanCore]
+softdepend: [GoldmanEnchants, Votifier]
 commands:
   essreload:
     description: Reloads plugin text files.

@@ -170,6 +170,13 @@
             <scope>system</scope>
             <systemPath>C:\Users\Lee\Documents\APIs\pl3xmap-1.18-2.jar</systemPath>
         </dependency>
+        <!-- GoldmanCore API -->
+        <dependency>
+            <groupId>lee.code.core</groupId>
+            <artifactId>goldman-core</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- NuVotifier API -->
         <dependency>
             <groupId>com.github.NuVotifier.NuVotifier</groupId>

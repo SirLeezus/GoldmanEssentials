@@ -297,7 +297,7 @@ public class GoldmanEssentials extends JavaPlugin {
     }
 
     private void checkDependencies() {
-        pl3xMapInstalled = getServer().getPluginManager().getPlugin("Pl3xMap") != null;
+       pl3xMapInstalled = getServer().getPluginManager().getPlugin("Pl3xMap") != null;
     }
 
     public static GoldmanEssentials getPlugin() {

@@ -36,6 +36,8 @@ public class HeadDropListener implements Listener {
             } else if (entity instanceof EnderDragon) {
                 ItemStack dragonHead = new ItemStack(Material.DRAGON_HEAD);
                 if (!e.getDrops().contains(dragonHead)) e.getDrops().add(dragonHead);
+            } else if (entity instanceof Warden) {
+                e.getDrops().add(EntityHeads.valueOf(e.getEntityType().name()).getHead());
             } else {
                 if (pu.rng() >= Settings.HEAD_DROP_RNG.getValue() || killer.getGameMode().equals(GameMode.CREATIVE)) {
                     String type = e.getEntityType().name();
