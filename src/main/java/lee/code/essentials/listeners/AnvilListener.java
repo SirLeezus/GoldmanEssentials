@@ -1,6 +1,8 @@
 package lee.code.essentials.listeners;
 
 import lee.code.core.util.bukkit.BukkitUtils;
+import lee.code.essentials.GoldmanEssentials;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
@@ -20,7 +22,8 @@ public class AnvilListener implements Listener {
             ItemMeta dupeMeta = dupe.getItemMeta();
             ItemStack resultStack = e.getResult();
             if (resultStack != null) {
-                dupeMeta.displayName(BukkitUtils.parseColorComponentLiteral(BukkitUtils.serializeComponent(resultStack.getItemMeta().displayName())));
+                Component name = BukkitUtils.parseColorComponentLiteral(BukkitUtils.serializeComponent(resultStack.getItemMeta().displayName()));
+                dupeMeta.displayName(GoldmanEssentials.getPlugin().getPU().parseVariables(name));
                 dupe.setItemMeta(dupeMeta);
                 e.setResult(dupe);
             }

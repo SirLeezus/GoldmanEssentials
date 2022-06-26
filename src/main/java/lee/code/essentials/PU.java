@@ -9,6 +9,7 @@ import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.*;
@@ -64,9 +65,11 @@ public class PU {
 
     private final String lRegex = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)";
     private final String iRegex = "(?i)\\[item]";
+    private final String eRegex = "(?<=\\:)(.*?)(?=\\:)";
     private final Pattern hexRegex = Pattern.compile("\\&#[a-fA-F0-9]{6}");
     private final Pattern itemRegex = Pattern.compile(iRegex, Pattern.DOTALL);
     private final Pattern linkRegex = Pattern.compile(lRegex, Pattern.DOTALL);
+    private final Pattern emojiRegex = Pattern.compile(eRegex, Pattern.DOTALL);
     private final Random random = new Random();
     @Getter private BossBar boosterBar;
 
@@ -197,19 +200,22 @@ public class PU {
         return sdf.format(resultDate) + " PST";
     }
 
-    public Component parseChatVariables(Player player, Component message) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        EnchantsAPI enchantsAPI = plugin.getEnchantsAPI();
+    public Component parseVariables(Player player, Component message) {
+        Component newComponent = parseChatItem(player, message);
+        return parseVariables(newComponent);
+    }
+
+    private Component parseChatItem(Player player, Component message) {
+        EnchantsAPI enchantsAPI = GoldmanEssentials.getPlugin().getEnchantsAPI();
+
         String text = PlainTextComponentSerializer.plainText().serialize(message);
-
-        Matcher itemMatcher = itemRegex.matcher(text);
-        Component newMessage = message;
-
         ItemStack item = player.getInventory().getItemInMainHand();
         String materialName = formatCapitalization(item.getType().name());
         Component itemName = Component.text(materialName).color(NamedTextColor.WHITE);
         Component lore = Component.empty();
+        Component newMessage = message;
 
+        Matcher itemMatcher = itemRegex.matcher(text);
         if (itemMatcher.find()) {
             if (item.hasItemMeta()) {
                 ItemMeta itemMeta = item.getItemMeta();
@@ -251,7 +257,31 @@ public class PU {
                 newMessage = newMessage.replaceText(replace);
             }
         }
+        return newMessage;
+    }
 
+    public Component parseVariables(Component message) {
+        String text = PlainTextComponentSerializer.plainText().serialize(message);
+        Component newMessage = message;
+
+        //emoji parse
+        Matcher emojiMatcher = emojiRegex.matcher(text);
+        HashMap<String, TextReplacementConfig> replaceConfigs = new HashMap<>();
+        while (emojiMatcher.find()) {
+            String match = emojiMatcher.group();
+            if (GoldmanEssentials.getPlugin().getData().getEmojiKeys().contains(match.toUpperCase())) {
+                TextReplacementConfig textReplacementConfig = TextReplacementConfig.builder()
+                        .matchLiteral(":" + match + ":")
+                        .replacement(Component.text(Emoji.valueOf(match.toUpperCase()).getUnicode()).hoverEvent(BukkitUtils.parseColorComponent("&6:" + match.toLowerCase() + ":")))
+                        .build();
+                replaceConfigs.put(match, textReplacementConfig);
+            }
+        }
+        for (TextReplacementConfig config : replaceConfigs.values()) {
+            newMessage = newMessage.replaceText(config);
+        }
+
+        //link matcher
         Matcher linkMatcher = linkRegex.matcher(text);
         while (linkMatcher.find()) {
             String match = linkMatcher.group();
@@ -259,6 +289,7 @@ public class PU {
             TextReplacementConfig replace = TextReplacementConfig.builder().matchLiteral(match).replacement(newInfo).build();
             newMessage = newMessage.replaceText(replace);
         }
+
         return newMessage;
     }
 

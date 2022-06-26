@@ -362,3 +362,7 @@ commands:
     permission: essentials.command.bottlexp
     usage: "/bottlexp"
     aliases: [bxp]
+  emojis:
+    description: List of all emojis you can use in chat, anvils, books and sings.
+    permission: essentials.command.emojis
+    usage: "/emojis"

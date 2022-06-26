@@ -1,7 +1,7 @@
 package lee.code.essentials.listeners;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,15 +14,14 @@ public class SignListener implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onSignChange(SignChangeEvent e) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         List<Component> lines = e.lines();
         Component line1 = lines.get(0);
-        String sLine1 = pu.unFormatC(line1);
+        String sLine1 = BukkitUtils.serializeComponent(line1);
         if (!sLine1.equals("[shop]") && !sLine1.equals("[lock]")) {
             int number = 0;
             for (Component line : lines) {
-                e.line(number, pu.formatC(pu.unFormatC(line)));
+                Component newLine = BukkitUtils.parseColorComponent(BukkitUtils.serializeComponent(line));
+                e.line(number, GoldmanEssentials.getPlugin().getPU().parseVariables(newLine));
                 number++;
             }
         }

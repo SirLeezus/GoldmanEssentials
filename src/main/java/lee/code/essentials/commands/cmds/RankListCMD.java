@@ -65,7 +65,7 @@ public class RankListCMD implements CommandExecutor {
             lines.add(Lang.COMMAND_RANKLIST_PREMIUM_RANKS.getComponent(null));
             for (String rank : data.getPremiumRankKeys()) {
                 PremiumRankList sRank = PremiumRankList.valueOf(rank);
-                Component line = playerSuffix.equals(sRank.getSuffix()) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + " " + sRank.getSuffix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + " " + sRank.getSuffix() });
+                Component line = playerSuffix.equals(sRank.getSuffix()) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + sRank.getSuffix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + sRank.getSuffix() });
                 lines.add(line);
                 number++;
             }

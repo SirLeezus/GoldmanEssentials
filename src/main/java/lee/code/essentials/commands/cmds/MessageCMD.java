@@ -41,8 +41,13 @@ public class MessageCMD implements CommandExecutor {
                                     Component message = Component.text(pu.buildStringFromArgs(args, 1));
                                     cache.setLastReplied(targetUUID, uuid);
                                     cache.setLastReplied(uuid, targetUUID);
-                                    player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() }).append(pu.parseChatVariables(player, message.color(TextColor.color(0, 220, 234)))));
-                                    target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() }).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " ")).append(pu.parseChatVariables(player, message.color(TextColor.color(0, 220, 234)))));
+
+                                    player.sendMessage(Lang.MESSAGE_SENT.getComponent(new String[] { target.getName() })
+                                            .append(pu.parseVariables(player, message.color(TextColor.color(0, 220, 234)))));
+
+                                    target.sendMessage(Lang.MESSAGE_RECEIVED.getComponent(new String[] { player.getName() })
+                                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell " + player.getName() + " "))
+                                            .append(pu.parseVariables(player, message.color(TextColor.color(0, 220, 234)))));
                                 }
                             } else {
                                 long time = cache.getTempMuteTime(uuid);

@@ -39,7 +39,7 @@ public class ChatListener implements Listener {
                     if (!cache.isTempMuted(uuid)) {
                         if (cache.hasBeenBotChecked(uuid)) {
 
-                            Component message = pu.parseChatVariables(player, e.message());
+                            Component message = pu.parseVariables(player, e.message());
                             if (data.isSpamLoggerViolation(uuid, message)) {
                                 boolean shouldMute = data.addSpamLoggerViolationCount(uuid);
                                 if (shouldMute) {

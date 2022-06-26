@@ -8,7 +8,6 @@ import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.Cache;
-import lee.code.essentials.database.SQLTables;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.hooks.Pl3xMapHook;
 import lee.code.essentials.listeners.*;
@@ -169,6 +168,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("duel").setExecutor(new DuelCMD());
         getCommand("sort").setExecutor(new SortCMD());
         getCommand("bottlexp").setExecutor(new BottleXPCMD());
+        getCommand("emojis").setExecutor(new EmojisCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -256,6 +256,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("duel").setTabCompleter(new DuelTab());
         getCommand("sort").setTabCompleter(new SortTab());
         getCommand("bottlexp").setTabCompleter(new BottleXPTab());
+        getCommand("emojis").setTabCompleter(new EmojisTab());
     }
 
     private void registerListeners() {

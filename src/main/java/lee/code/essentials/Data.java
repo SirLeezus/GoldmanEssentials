@@ -43,6 +43,7 @@ public class Data {
     @Getter private final List<String> premiumRankKeys = new ArrayList<>();
     @Getter private final List<String> rankKeys = new ArrayList<>();
     @Getter private final List<String> allRankKeys = new ArrayList<>();
+    @Getter private final List<String> emojiKeys = new ArrayList<>();
 
     @Getter @Setter private int teamNumber = 0;
     @Getter @Setter private boolean isAutoRestarting = false;
@@ -346,6 +347,9 @@ public class Data {
 
         //rank keys
         rankKeys.addAll(EnumSet.allOf(RankList.class).stream().map(RankList::name).toList());
+
+        //emoji keys
+        emojiKeys.addAll(EnumSet.allOf(Emoji.class).stream().map(Emoji::name).toList());
 
         //all rank keys
         allRankKeys.addAll(premiumRankKeys);
