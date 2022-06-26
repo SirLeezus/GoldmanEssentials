@@ -50,6 +50,8 @@ public class EmojisCMD implements CommandExecutor {
                 }
             }
 
+            if (displayLines.size() <= 2) return true;
+
             displayLines.add(Component.text(""));
             Component next = Lang.EMOJIS_NEXT_PAGE_TEXT.getComponent(null).hoverEvent(Lang.NEXT_PAGE_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/emojis " + (page + 1)));
             Component split = Lang.PAGE_SPACER.getComponent(null);
