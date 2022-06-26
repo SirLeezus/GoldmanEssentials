@@ -206,6 +206,7 @@ public enum Lang {
     COMMAND_VOTE_TOTAL_VOTES("&e&lTotal Votes: &a{0}"),
     COMMAND_VOTE_REWARDS("&e&lReward: &6$5,000"),
     COMMAND_VOTE_WEBSITE("&e&lWebsite:"),
+    COMMAND_CHECK_ADVANCEMENT_ADVANCEMENT_TITLE_HOVER("&6Click for more details about the &a{0} &6advancement!"),
     COMMAND_CHECK_ADVANCEMENT_ADVANCEMENT_TITLE("&e&lAdvancement Name&7: "),
     COMMAND_CHECK_ADVANCEMENT_ADVANCEMENT_DESCRIPTION("&e&lAdvancement Description&7: \n"),
     COMMAND_RANKUP_HOVER("&e&lTotal Advancements&7: &a{0}&7/&a{1}"),
