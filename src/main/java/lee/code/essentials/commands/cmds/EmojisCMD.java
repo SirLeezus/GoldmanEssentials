@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.core.util.bukkit.BukkitUtils;
-import lee.code.essentials.lists.Emoji;
+import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -20,25 +20,7 @@ public class EmojisCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (sender instanceof Player player) {
-            int maxRow = 20; int count = 1; int total = 1;
-            Component componentBuilder = Component.empty();
-            List<Component> lines = new ArrayList<>();
-
-            for (Emoji emoji : Emoji.values()) {
-                componentBuilder = componentBuilder
-                        .append(Component.text(emoji.getUnicode() + " ")
-                                .hoverEvent(BukkitUtils.parseColorComponent("&6:" + emoji.name().toLowerCase() + ":"))
-                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, ":" + emoji.name().toLowerCase() + ":"))
-                                .append(Component.text()));
-                if (count == maxRow || total == Emoji.values().length) {
-                    lines.add(componentBuilder);
-                    componentBuilder = Component.empty();
-                    count = 0;
-                }
-                count++;
-                total++;
-            }
-
+            List<Component> lines = GoldmanEssentials.getPlugin().getData().getEmojiLines();
             List<Component> displayLines = new ArrayList<>();
 
             int index;

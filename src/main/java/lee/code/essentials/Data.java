@@ -1,5 +1,6 @@
 package lee.code.essentials;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
 import lee.code.essentials.menusystem.PlayerMU;
@@ -44,6 +45,7 @@ public class Data {
     @Getter private final List<String> rankKeys = new ArrayList<>();
     @Getter private final List<String> allRankKeys = new ArrayList<>();
     @Getter private final List<String> emojiKeys = new ArrayList<>();
+    @Getter private final List<Component> emojiLines = new ArrayList<>();
 
     @Getter @Setter private int teamNumber = 0;
     @Getter @Setter private boolean isAutoRestarting = false;
@@ -385,6 +387,25 @@ public class Data {
             if (!key.contains("/root")) {
                 if (key.contains("story/") || key.contains("nether/") || key.contains("end/") || key.contains("adventure/") || key.contains("husbandry/")) advancementNames.add(key);
             }
+        }
+
+        //emoji lines
+        int maxRow = 20; int count = 1; int total = 1;
+        Component componentBuilder = Component.empty();
+
+        for (Emoji emoji : Emoji.values()) {
+            componentBuilder = componentBuilder
+                    .append(Component.text(emoji.getUnicode() + " ")
+                            .hoverEvent(BukkitUtils.parseColorComponent("&6:" + emoji.name().toLowerCase() + ":"))
+                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, ":" + emoji.name().toLowerCase() + ":"))
+                            .append(Component.text()));
+            if (count == maxRow || total == Emoji.values().length) {
+                emojiLines.add(componentBuilder);
+                componentBuilder = Component.empty();
+                count = 0;
+            }
+            count++;
+            total++;
         }
     }
 }
