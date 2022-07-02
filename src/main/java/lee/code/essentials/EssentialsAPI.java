@@ -2,6 +2,7 @@ package lee.code.essentials;
 
 import lee.code.essentials.database.Cache;
 import lee.code.essentials.lists.ItemSellValues;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -44,5 +45,9 @@ public class EssentialsAPI {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Cache cache = plugin.getCache();
         return Integer.parseInt(cache.getBoosterMultiplier(cache.getActiveBoosterID()));
+    }
+
+    public boolean isDuelingPlayer(UUID uuid, UUID target) {
+        return GoldmanEssentials.getPlugin().getData().isDuelingPlayer(uuid, target);
     }
 }
