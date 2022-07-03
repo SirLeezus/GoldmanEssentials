@@ -28,6 +28,7 @@ public enum CustomCraftingRecipe {
     DIAMOND_HORSE_ARMOR(new ItemStack(Material.DIAMOND_HORSE_ARMOR), "A A,AAA,A A", new Material[] { Material.DIAMOND }, false, 0, null),
     WRENCH(new ItemStack(Material.GUNPOWDER), "A A, A , A ", new Material[] { Material.IRON_INGOT }, false, 3000, "&fWrench"),
     TRIDENT(new ItemStack(Material.TRIDENT), "ABA,DCD,DCD", new Material[] { Material.IRON_INGOT, Material.NETHER_STAR, Material.STICK, Material.PRISMARINE_SHARD }, false, 0, null),
+    TOTEM_OF_UNDYING(new ItemStack(Material.TOTEM_OF_UNDYING), "AAA,BAB,CAC", new Material[] { Material.GOLD_INGOT, Material.EMERALD, Material.EXPERIENCE_BOTTLE }, false, 0, null),
     ;
 
     @Getter private final ItemStack item;

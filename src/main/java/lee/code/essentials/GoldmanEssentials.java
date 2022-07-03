@@ -295,6 +295,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HiveBlockListener(), this);
         getServer().getPluginManager().registerEvents(new CustomMobSpawnListener(), this);
         getServer().getPluginManager().registerEvents(new MineCartListener(), this);
+        getServer().getPluginManager().registerEvents(new TotemListener(), this);
     }
 
     private void checkDependencies() {
