@@ -27,6 +27,7 @@ public enum CustomCraftingRecipe {
     GOLDEN_HORSE_ARMOR(new ItemStack(Material.GOLDEN_HORSE_ARMOR), "A A,AAA,A A", new Material[] { Material.GOLD_INGOT }, false, 0, null),
     DIAMOND_HORSE_ARMOR(new ItemStack(Material.DIAMOND_HORSE_ARMOR), "A A,AAA,A A", new Material[] { Material.DIAMOND }, false, 0, null),
     WRENCH(new ItemStack(Material.GUNPOWDER), "A A, A , A ", new Material[] { Material.IRON_INGOT }, false, 3000, "&fWrench"),
+    TRIDENT(new ItemStack(Material.TRIDENT), "ABA,DCD,DCD", new Material[] { Material.IRON_INGOT, Material.NETHER_STAR, Material.STICK, Material.PRISMARINE_SHARD }, false, 0, null),
     ;
 
     @Getter private final ItemStack item;

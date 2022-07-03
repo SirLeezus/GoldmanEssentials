@@ -161,7 +161,9 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("All entities have a chance of dropping a head.");
                     changes.add("You can toggle item frame invisibility by sneak-right-clicking them with shears.");
                     changes.add("Enchantments can be taken off items in anvils and put on enchanted books.");
-                    changes.add("All protection enchantments can be put on the same armor.");
+                    changes.add("You can cross-enchant items instead of it requiring the same type.");
+                    changes.add("All enchants that can be put on a type of tool or weapon no longer have enchantment conflicts.");
+                    changes.add("You can disenchant enchanted books if you hold a normal book in your off-hand and sneak-click the enchanted book you want to disenchant.");
                     changes.add("Witches, Elder Guardians and Villagers have a chance to dropping a hat on death.");
                     changes.add("Dolphins can be controlled by right-clicking them, you can also use space bar to spit when riding a dolphin.");
                     changes.add("If you hold a compass a direction bar will appear on your screen.");
@@ -172,7 +174,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("Illusioners have a 10% chance to spawn with pillagers in the resource world.");
                     changes.add("Drowned have a 50% chance of dropping a trident if they're holding one.");
                     changes.add("Ocelots are more common in jungles.");
-                    changes.add("You can right-click minecarts with armor stands to insert a armor stand inside a minecart.");
+                    changes.add("You can right-click minecarts with a armor stand to insert a armor stand inside a minecart.");
 
                     for (String change : changes) {
                         lines.add(pu.formatC("&3" + number + "&b. &6" + change));

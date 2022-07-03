@@ -49,19 +49,19 @@ public class JoinListener implements Listener {
             cache.addPlayerCounter();
             Location spawn = cache.getSpawn();
             if (spawn != null) player.teleportAsync(spawn);
-            player.getInventory().addItem(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 5));
+            player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 25));
             Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cache.getPlayerCounter()) })));
         }
 
-        //bot checker
-        if (!cache.hasBeenBotChecked(uuid)) {
-            new BotCheckerMenu(data.getPlayerMU(uuid)).open();
-            player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
-            BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-            scheduler.runTaskLater(plugin, () -> {
-                if (!cache.hasBeenBotChecked(uuid)) player.kick(Lang.BOT_CHECKER_KICK.getComponent(null));
-            }, Settings.BOT_KICK_DELAY.getValue() * 20L);
-        }
+        //bot checker - removed for now
+//        if (!cache.hasBeenBotChecked(uuid)) {
+//            new BotCheckerMenu(data.getPlayerMU(uuid)).open();
+//            player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
+//            BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+//            scheduler.runTaskLater(plugin, () -> {
+//                if (!cache.hasBeenBotChecked(uuid)) player.kick(Lang.BOT_CHECKER_KICK.getComponent(null));
+//            }, Settings.BOT_KICK_DELAY.getValue() * 20L);
+//        }
 
         //booster bar check
         if (cache.isBoosterActive()) {
