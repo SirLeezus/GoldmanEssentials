@@ -1,9 +1,9 @@
 package lee.code.essentials.menusystem.menus;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.PlayerMU;
@@ -38,7 +38,7 @@ public class ResourceWorldMenu extends Menu {
     @Override
     public void handleMenu(InventoryClickEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         Player player = pmu.getOwner();
 
@@ -53,7 +53,7 @@ public class ResourceWorldMenu extends Menu {
 
         switch (slot) {
             case 28 -> {
-                Location location = cache.getWorldResourceSpawn();
+                Location location = cacheManager.getWorldResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
                     player.teleportAsync(location);
@@ -62,7 +62,7 @@ public class ResourceWorldMenu extends Menu {
                 player.getInventory().close();
             }
             case 31 -> {
-                Location location = cache.getNetherResourceSpawn();
+                Location location = cacheManager.getNetherResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
                     NamespacedKey key = NamespacedKey.minecraft("story/enter_the_nether");
@@ -77,7 +77,7 @@ public class ResourceWorldMenu extends Menu {
                 player.getInventory().close();
             }
             case 34 -> {
-                Location location = cache.getEndResourceSpawn();
+                Location location = cacheManager.getEndResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
                     NamespacedKey key = NamespacedKey.minecraft("story/enter_the_end");
@@ -110,16 +110,15 @@ public class ResourceWorldMenu extends Menu {
 
     private void scheduleUpdateClockItem(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         Data data = plugin.getData();
-        PU pu = plugin.getPU();
         if (!data.isResourceWorldTaskActive(uuid)) {
             data.addResourceWorldTaskActive(uuid, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    long seconds = cache.getResourceWorldsTime();
-                    String time = seconds <= 0 ? "&cNext Restart" : pu.formatSeconds(seconds);
-                    ItemStack clock = pu.getItem(Material.CLOCK, Lang.MENU_RESOURCE_WORLD_CLOCK_NAME.getString(new String[] { time }), null, null);
+                    long seconds = cacheManager.getResourceResetTime();
+                    String time = seconds <= 0 ? "&cNext Restart" : BukkitUtils.parseSeconds(seconds);
+                    ItemStack clock = BukkitUtils.getItem(Material.CLOCK, Lang.MENU_RESOURCE_WORLD_CLOCK_NAME.getString(new String[] { time }), null, null, true);
                     inventory.setItem(13, clock);
                 }
             }.runTaskTimer(plugin, 1L, 20L));

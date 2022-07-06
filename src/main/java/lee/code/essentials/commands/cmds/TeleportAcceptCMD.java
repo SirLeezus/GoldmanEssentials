@@ -1,8 +1,8 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -19,13 +19,12 @@ public class TeleportAcceptCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
-        PU pu = plugin.getPU();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
-                if (pu.getOnlinePlayers().contains(args[0])) {
+                if (BukkitUtils.getOnlinePlayers().contains(args[0])) {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         if (target != player) {

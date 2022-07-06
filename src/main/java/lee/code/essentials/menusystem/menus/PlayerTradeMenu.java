@@ -1,5 +1,6 @@
 package lee.code.essentials.menusystem.menus;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
@@ -117,9 +118,6 @@ public class PlayerTradeMenu extends TradeMenu {
 
     @Override
     public void setMenuItems() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
-
         setTradeMenu();
 
         Player owner = pmu.getOwner();
@@ -132,13 +130,13 @@ public class PlayerTradeMenu extends TradeMenu {
         ItemStack ownerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta ownerSkullMeta = (SkullMeta) ownerHead.getItemMeta();
         ownerSkullMeta.setOwningPlayer(owner);
-        ownerSkullMeta.displayName(pu.formatC("&6" + owner.getName()));
+        ownerSkullMeta.displayName(BukkitUtils.parseColorComponent("&6" + owner.getName()));
         ownerHead.setItemMeta(ownerSkullMeta);
 
         ItemStack traderHead = new ItemStack(Material.PLAYER_HEAD);;
         SkullMeta traderSkullMeta = (SkullMeta) traderHead.getItemMeta();
         traderSkullMeta.setOwningPlayer(trader);
-        traderSkullMeta.displayName(pu.formatC("&6" + trader.getName()));
+        traderSkullMeta.displayName(BukkitUtils.parseColorComponent("&6" + trader.getName()));
         traderHead.setItemMeta(traderSkullMeta);
 
         inventory.setItem(6, ownerHead);
@@ -146,12 +144,10 @@ public class PlayerTradeMenu extends TradeMenu {
     }
 
     private void checkBothConfirmed() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
-        Title.Times times = Title.Times.of(Duration.ofMillis(500), Duration.ofMillis(3000), Duration.ofMillis(1000));
+        Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(3000), Duration.ofMillis(1000));
 
         if (pmu.isTraderTradeConfirmed() && pmu.isOwnerTradeConfirmed()) {
-            CountdownTimer timer = new CountdownTimer(plugin,
+            CountdownTimer timer = new CountdownTimer(GoldmanEssentials.getPlugin(),
                     6,
                     () -> {},
                     () -> {
@@ -168,7 +164,7 @@ public class PlayerTradeMenu extends TradeMenu {
                             for (int slot : ownerSlots) {
                                 ItemStack item = inventory.getItem(slot);
                                 if (item != null && !item.getType().equals(Material.AIR)) {
-                                    if (pu.getFreeSpace(trader, item) >= item.getAmount()) {
+                                    if (BukkitUtils.getFreeSpace(trader, item) >= item.getAmount()) {
                                         trader.getInventory().addItem(item);
                                     } else trader.getWorld().dropItemNaturally(trader.getLocation(), item);
                                 }
@@ -177,7 +173,7 @@ public class PlayerTradeMenu extends TradeMenu {
                             for (int slot : traderSlots) {
                                 ItemStack item = inventory.getItem(slot);
                                 if (item != null && !item.getType().equals(Material.AIR)) {
-                                    if (pu.getFreeSpace(owner, item) >= item.getAmount()) {
+                                    if (BukkitUtils.getFreeSpace(owner, item) >= item.getAmount()) {
                                         owner.getInventory().addItem(item);
                                     } else owner.getWorld().dropItemNaturally(owner.getLocation(), item);
                                 }
@@ -239,7 +235,7 @@ public class PlayerTradeMenu extends TradeMenu {
     public void returnTradeItems(UUID user) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
-        Title.Times times = Title.Times.of(Duration.ofMillis(500), Duration.ofMillis(3000), Duration.ofMillis(1000));
+        Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(3000), Duration.ofMillis(1000));
         boolean isOwner = pmu.getOwnerUUID().equals(user);
         int[] userSlots = isOwner ? new int[]{14, 15, 16, 23, 24, 25, 32, 33, 34, 41, 42, 43} : new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30, 37, 38, 39};
 
@@ -254,7 +250,7 @@ public class PlayerTradeMenu extends TradeMenu {
         for (int slot : userSlots) {
             ItemStack item = inventory.getItem(slot);
             if (item != null && !item.getType().equals(Material.AIR)) {
-                if (pu.getFreeSpace(userPlayer, item) >= item.getAmount()) {
+                if (BukkitUtils.getFreeSpace(userPlayer, item) >= item.getAmount()) {
                     userPlayer.getInventory().addItem(item);
                 } else userPlayer.getWorld().dropItemNaturally(userPlayer.getLocation(), item);
                 inventory.setItem(slot, air);

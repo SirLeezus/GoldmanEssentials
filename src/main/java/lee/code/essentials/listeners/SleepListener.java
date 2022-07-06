@@ -1,8 +1,8 @@
 package lee.code.essentials.listeners;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
@@ -27,7 +27,6 @@ public class SleepListener implements Listener {
     public void onPlayerSleep(PlayerBedEnterEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
-        PU pu = plugin.getPU();
         
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
@@ -41,13 +40,13 @@ public class SleepListener implements Listener {
                 data.addSleepingPlayer(worldName, uuid);
 
                 AtomicLong time = new AtomicLong(world.getTime());
-                Title.Times times = Title.Times.of(Duration.ZERO, Ticks.duration(3), Duration.ZERO);
+                Title.Times times = Title.Times.times(Duration.ZERO, Ticks.duration(3), Duration.ZERO);
 
                 data.addSleepTask(worldName, new BukkitRunnable() {
 
                     @Override
                     public void run() {
-                        int percent = data.getSleepingPlayersSize(worldName) * 100 / pu.getOnlinePlayers().size();
+                        int percent = data.getSleepingPlayersSize(worldName) * 100 / BukkitUtils.getOnlinePlayers().size();
                         double base = Math.round(percent * 10.0) / 20.0;
                         long speed = (long) base;
                         long worldTime = world.getTime();
@@ -63,7 +62,7 @@ public class SleepListener implements Listener {
                                 if (oPlayer.isOnline()) {
                                     Player sleepingPlayer = oPlayer.getPlayer();
                                     if (sleepingPlayer != null) {
-                                        sleepingPlayer.showTitle(Title.title(Lang.SLEEPING_TITLE.getComponent(new String[] { pu.formatTime(world.getTime()) }), Lang.SLEEPING_SUBTITLE.getComponent(new String[] { String.valueOf(data.getSleepingPlayersSize(worldName)), String.valueOf(pu.getOnlinePlayers().size()) }), times));
+                                        sleepingPlayer.showTitle(Title.title(Lang.SLEEPING_TITLE.getComponent(new String[] { BukkitUtils.parseMinecraftTime(world.getTime()) }), Lang.SLEEPING_SUBTITLE.getComponent(new String[] { String.valueOf(data.getSleepingPlayersSize(worldName)), String.valueOf(BukkitUtils.getOnlinePlayers().size()) }), times));
                                     } else data.removeSleepingPlayer(worldName, sUUID);
                                 }
                             }

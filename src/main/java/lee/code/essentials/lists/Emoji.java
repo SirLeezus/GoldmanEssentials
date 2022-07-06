@@ -7,6 +7,8 @@ import org.bukkit.Material;
 @AllArgsConstructor
 public enum Emoji {
 
+//    MAD("\uE59B"),
+//    HAPPY("\uE59C"),
     PIG("\uE855"),
     SHEEP("\uE857"),
     COW("\uE859"),

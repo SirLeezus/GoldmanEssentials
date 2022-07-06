@@ -1,8 +1,9 @@
 package lee.code.essentials.menusystem.menus;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.PlayerMU;
@@ -37,7 +38,7 @@ public class NameColorMenu extends Menu {
     @Override
     public void handleMenu(InventoryClickEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         PU pu = plugin.getPU();
 
         Player player = pmu.getOwner();
@@ -52,9 +53,9 @@ public class NameColorMenu extends Menu {
 
         if (colorItems.contains(clickedItem)) {
             String id = getColorID(clickedItem);
-            cache.setColor(uuid, id);
+            cacheManager.setColor(uuid, id);
             pu.updateDisplayName(player, false);
-            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COLOR_MENU_SELECT.getComponent(new String[] { ChatColor.valueOf(id) + pu.formatCapitalization(id) })));
+            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COLOR_MENU_SELECT.getComponent(new String[] { ChatColor.valueOf(id) + BukkitUtils.parseCapitalization(id) })));
             player.getInventory().close();
         }
         playClickSound(player);
@@ -63,7 +64,7 @@ public class NameColorMenu extends Menu {
     @Override
     public void setMenuItems() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         Player player = pmu.getOwner();
         UUID uuid = player.getUniqueId();
@@ -81,7 +82,7 @@ public class NameColorMenu extends Menu {
                 if (colorItem != null) {
                     String id = getColorID(colorItem);
 
-                    if (cache.getColor(uuid).equals(id)) {
+                    if (cacheManager.getColor(uuid).name().equals(id)) {
                         ItemMeta itemMeta = colorItem.getItemMeta();
                         itemMeta.addEnchant(Enchantment.PROTECTION_FALL, 1, false);
                         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -94,7 +95,6 @@ public class NameColorMenu extends Menu {
     }
 
     private String getColorID(ItemStack item) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        return ChatColor.stripColor(plugin.getPU().unFormatC(item.getItemMeta().displayName()).toUpperCase().replaceAll(" ", "_"));
+        return ChatColor.stripColor(BukkitUtils.serializeComponent(item.getItemMeta().displayName()).toUpperCase().replaceAll(" ", "_"));
     }
 }

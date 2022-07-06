@@ -1,9 +1,10 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,21 +21,21 @@ public class SetHomeCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
         PU pu = plugin.getPU();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
-                String name = pu.buildStringFromArgs(args, 0).replaceAll("[^a-zA-Z0-9 ]", "");
+                String name = BukkitUtils.buildStringFromArgs(args, 0).replaceAll("[^a-zA-Z0-9 ]", "");
                 int maxHomes = pu.getMaxHomes(player);
-                int homesSaved = cache.getHomes(uuid).size();
+                int homesSaved = cacheManager.getHomes(uuid).size();
                 if (!name.equalsIgnoreCase("bed")) {
-                    if (!name.isEmpty() && !cache.isAlreadyHome(uuid, name)) {
-                        if (homesSaved < maxHomes) {
+                    if (!name.isEmpty() && !cacheManager.isAlreadyHome(uuid, name)) {
+                        if (homesSaved <= maxHomes) {
                             if (data.getWhitelistedWorlds().contains(player.getWorld().getName())) {
-                                String homeLocation = pu.formatPlayerHomeLocation(name, player.getLocation());
-                                cache.addHome(uuid, homeLocation);
+                                String homeLocation = pu.serializeHomeLocation(name, player.getLocation());
+                                cacheManager.addHome(uuid, homeLocation);
                                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETHOME_SUCCESSFUL.getComponent(new String[] { name })));
                             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_SUPPORTED_WORLD.getComponent(null)));
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_MAX_HOMES.getComponent(new String[] { String.valueOf(maxHomes) })));

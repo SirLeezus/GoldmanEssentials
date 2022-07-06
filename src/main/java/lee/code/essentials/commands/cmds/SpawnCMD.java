@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -15,10 +15,10 @@ public class SpawnCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (sender instanceof Player player) {
-            Location spawn = cache.getSpawn();
+            Location spawn = cacheManager.getSpawn();
             if (spawn != null) {
                 player.teleportAsync(spawn);
                 player.sendActionBar(Lang.TELEPORT.getComponent(null));

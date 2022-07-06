@@ -1,8 +1,8 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -21,8 +21,7 @@ public class VoteCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-        PU pu = plugin.getPU();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
@@ -30,8 +29,8 @@ public class VoteCMD implements CommandExecutor {
             Component spacer = Component.text("");
             lines.add(Lang.COMMAND_VOTE_TITLE.getComponent(null));
             lines.add(spacer);
-            lines.add(Lang.COMMAND_VOTE_TOTAL_VOTES.getComponent(new String[]{ String.valueOf(cache.getTotalVotes(uuid)) }));
-            lines.add(Lang.COMMAND_VOTE_WEBSITE.getComponent(null).append(pu.formatC(" &6[&cLINK&6]").hoverEvent(pu.formatC("&6Click to preview link!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://www.planetminecraft.com/server/journey-survival-5279490"))));
+            lines.add(Lang.COMMAND_VOTE_TOTAL_VOTES.getComponent(new String[]{ String.valueOf(cacheManager.getVotes(uuid)) }));
+            lines.add(Lang.COMMAND_VOTE_WEBSITE.getComponent(null).append(BukkitUtils.parseColorComponent(" &6[&cLINK&6]").hoverEvent(BukkitUtils.parseColorComponent("&6Click to preview link!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://www.planetminecraft.com/server/journey-survival-5279490"))));
             lines.add(Lang.COMMAND_VOTE_REWARDS.getComponent(null));
             lines.add(spacer);
             lines.add(Lang.COMMAND_VOTE_SPLITTER.getComponent(null));

@@ -1,7 +1,7 @@
 package lee.code.essentials.listeners;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,33 +16,33 @@ public class GodModeListener implements Listener {
     @EventHandler
     public void onGodModeEntityDamageByEntity(EntityDamageByEntityEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (e.getEntity() instanceof Player player) {
             UUID uuid = player.getUniqueId();
-            if (cache.isGodPlayer(uuid)) e.setCancelled(true);
+            if (cacheManager.isGodPlayer(uuid)) e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onGodModeEntityDamage(EntityDamageEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (e.getEntity() instanceof Player player) {
             UUID uuid = player.getUniqueId();
-            if (cache.isGodPlayer(uuid)) e.setCancelled(true);
+            if (cacheManager.isGodPlayer(uuid)) e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onGodModeEntityDamageByBlock(EntityDamageByBlockEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (e.getEntity() instanceof Player player) {
             UUID uuid = player.getUniqueId();
-            if (cache.isGodPlayer(uuid)) e.setCancelled(true);
+            if (cacheManager.isGodPlayer(uuid)) e.setCancelled(true);
         }
     }
 }

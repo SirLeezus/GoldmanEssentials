@@ -1,8 +1,8 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.chunks.ChunkAPI;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Material;
 import org.bukkit.block.*;
@@ -20,7 +20,6 @@ public class SortCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         ChunkAPI chunkAPI = plugin.getChunkAPI();
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
@@ -40,7 +39,7 @@ public class SortCMD implements CommandExecutor {
                         return item1.compareTo(item2);
                     });
                     for (ItemStack item : arrayNewItems) container.getInventory().addItem(item);
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SORT_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(block.getType().name()) })));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SORT_SUCCESSFUL.getComponent(new String[] { BukkitUtils.parseCapitalization(block.getType().name()) })));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SORT_INTERACT.getComponent(null)));
             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SORT_NO_CONTAINER.getComponent(null)));
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));

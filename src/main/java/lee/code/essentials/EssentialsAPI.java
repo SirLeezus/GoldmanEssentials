@@ -1,8 +1,7 @@
 package lee.code.essentials;
 
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.ItemSellValues;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -11,20 +10,20 @@ public class EssentialsAPI {
 
     public void deposit(UUID uuid, long amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-        cache.deposit(uuid, amount);
+        CacheManager cacheManager = plugin.getCacheManager();
+        cacheManager.deposit(uuid, amount);
     }
 
     public void withdraw(UUID uuid, long amount) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-        cache.withdraw(uuid, amount);
+        CacheManager cacheManager = plugin.getCacheManager();
+        cacheManager.withdraw(uuid, amount);
     }
 
     public long getBalance(UUID uuid) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-        return cache.getBalance(uuid);
+        CacheManager cacheManager = plugin.getCacheManager();
+        return cacheManager.getBalance(uuid);
     }
 
     public long getWorth(ItemStack item) {
@@ -37,14 +36,14 @@ public class EssentialsAPI {
 
     public boolean isBoosterActive() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-        return cache.isBoosterActive();
+        CacheManager cacheManager = plugin.getCacheManager();
+        return cacheManager.isBoosterActive();
     }
 
     public int getBoosterMultiplier() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-        return Integer.parseInt(cache.getBoosterMultiplier(cache.getActiveBoosterID()));
+        CacheManager cacheManager = plugin.getCacheManager();
+        return cacheManager.getBoosterMultiplier(cacheManager.getActiveBoosterID());
     }
 
     public boolean isDuelingPlayer(UUID uuid, UUID target) {

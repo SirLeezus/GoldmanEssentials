@@ -1,6 +1,6 @@
 package lee.code.essentials.lists;
 
-import lee.code.essentials.GoldmanEssentials;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -58,7 +58,6 @@ public enum MenuItems {
     @Getter private final String lore;
 
     public ItemStack getItem() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        return plugin.getPU().getItem(type, name, lore, null);
+        return BukkitUtils.getItem(type, name, lore, null, true);
     }
 }

@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -18,17 +18,18 @@ public class UnMuteCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (args.length > 0) {
             OfflinePlayer tPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
             if (tPlayer != null) {
+                UUID senderUUID = sender instanceof Player player ? player.getUniqueId() : UUID.fromString(Lang.SERVER_UUID.getString());
                 UUID tUUID = tPlayer.getUniqueId();
-                if (cache.isMuted(tUUID)) {
-                    cache.setMutedPlayer(tUUID, "0", false);
+                if (cacheManager.isMuted(tUUID)) {
+                    cacheManager.setMutedPlayer(tUUID, senderUUID, "0", false);
                     plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { tPlayer.getName() })));
-                } else if (cache.isTempMuted(tUUID)) {
-                    cache.setTempMutedPlayer(tUUID, "0", 0, false);
+                } else if (cacheManager.isTempMuted(tUUID)) {
+                    cacheManager.setTempMutedPlayer(tUUID,senderUUID, "0", 0);
                     plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_UNMUTED.getComponent(new String[] { tPlayer.getName() })));
                 }
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));

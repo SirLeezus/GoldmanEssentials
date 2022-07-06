@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
@@ -20,7 +21,7 @@ public class AdvancementCMD implements CommandExecutor {
 
         if (sender instanceof Player player) {
             if (args.length > 2) {
-                if (plugin.getPU().getOnlinePlayers().contains(args[1])) {
+                if (BukkitUtils.getOnlinePlayers().contains(args[1])) {
                     Player target = Bukkit.getPlayer(args[1]);
                     if (target != null) {
                         String subCommand = args[0].toLowerCase();

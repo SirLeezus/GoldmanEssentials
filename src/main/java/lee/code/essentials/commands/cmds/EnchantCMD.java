@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -19,7 +19,6 @@ public class EnchantCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
 
         if (sender instanceof Player player) {
             if (args.length > 0) {
@@ -33,7 +32,7 @@ public class EnchantCMD implements CommandExecutor {
                         if (enchantment != null) {
                             int amount = 1;
                             if (args.length > 1) {
-                                if (pu.containOnlyNumbers(args[1])) amount = Integer.parseInt(args[1]);
+                                if (BukkitUtils.containOnlyNumbers(args[1])) amount = Integer.parseInt(args[1]);
                                 itemMeta.addEnchant(enchantment, amount, true);
                             } else if (itemMeta.hasEnchant(enchantment)) {
                                 itemMeta.removeEnchant(enchantment);

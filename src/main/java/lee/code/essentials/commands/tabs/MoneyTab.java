@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.tabs;
 
-import lee.code.essentials.GoldmanEssentials;
+import lee.code.core.util.bukkit.BukkitUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -18,13 +18,11 @@ public class MoneyTab implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
         if (sender instanceof Player) {
             if (args.length == 1) {
                 return StringUtil.copyPartialMatches(args[0], Arrays.asList("set", "remove", "give"), new ArrayList<>());
             } else if (args.length == 2) {
-                return StringUtil.copyPartialMatches(args[1], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[1], BukkitUtils.getOnlinePlayers(), new ArrayList<>());
             } else return blank;
         } else return blank;
     }

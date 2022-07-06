@@ -2,7 +2,7 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -21,16 +21,17 @@ public class VanishCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         Data data = plugin.getData();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
             List<UUID> vanishedPlayers = data.getVanishedPlayers();
 
-            if (cache.isVanishPlayer(uuid)) {
-                cache.setVanishPlayer(uuid, false);
+            if (cacheManager.isVanishPlayer(uuid)) {
+                cacheManager.setVanishPlayer(uuid, false);
                 player.setGameMode(GameMode.SURVIVAL);
+                cacheManager.setFlying(uuid, true);
                 player.setAllowFlight(true);
                 player.setFlying(true);
                 for (Player oPlayer : Bukkit.getOnlinePlayers()) if (!vanishedPlayers.contains(oPlayer.getUniqueId())) oPlayer.showPlayer(plugin, player);
@@ -43,7 +44,7 @@ public class VanishCMD implements CommandExecutor {
                 }
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_VANISH_TOGGLE_SUCCESSFUL.getComponent(new String[] { Lang.OFF.getString(null) })));
             } else {
-                cache.setVanishPlayer(uuid, true);
+                cacheManager.setVanishPlayer(uuid, true);
                 player.setGameMode(GameMode.SPECTATOR);
                 for (Player oPlayer : Bukkit.getOnlinePlayers()) if (!vanishedPlayers.contains(oPlayer.getUniqueId())) oPlayer.hidePlayer(plugin, player);
                 for (UUID vUUID : vanishedPlayers) {

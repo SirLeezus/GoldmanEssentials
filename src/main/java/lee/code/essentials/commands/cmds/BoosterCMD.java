@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
@@ -18,30 +18,28 @@ public class BoosterCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (sender instanceof Player player) {
-            if (cache.areBoosters()) {
-                String activeID = cache.getActiveBoosterID();
-                String activeName = cache.getBoosterPlayerName(activeID);
-                String activeMultiplier = cache.getBoosterMultiplier(activeID);
-                List<Integer> queue = cache.getBoosterIDIntegerList();
+            if (cacheManager.areBoosters()) {
+                int activeID = cacheManager.getActiveBoosterID();
+                String activeName = cacheManager.getBoosterPlayerName(activeID);
+                int activeMultiplier = cacheManager.getBoosterMultiplier(activeID);
+                List<Integer> queue = cacheManager.getBoosterIDList();
                 int number = 1;
 
                 List<Component> lines = new ArrayList<>();
 
                 lines.add(Lang.COMMAND_BOOSTER_TITLE.getComponent(null));
                 lines.add(Component.text(""));
-                lines.add(Lang.COMMAND_BOOSTER_ACTIVE.getComponent(new String[] { activeMultiplier, activeName }).hoverEvent(Lang.COMMAND_BOOSTER_ID_HOVER.getComponent(new String[] { activeID })));
+                lines.add(Lang.COMMAND_BOOSTER_ACTIVE.getComponent(new String[] { String.valueOf(activeMultiplier), activeName }).hoverEvent(Lang.COMMAND_BOOSTER_ID_HOVER.getComponent(new String[] { String.valueOf(activeID) })));
                 lines.add(Component.text(""));
                 if (queue.size() > 1) {
                     for (int id : queue) {
-                        if (!String.valueOf(id).equals(activeID)) {
-                            String qNumber = String.valueOf(number);
-                            String qID = String.valueOf(id);
-                            String qName = cache.getBoosterPlayerName(qID);
-                            String qMultiplier = cache.getBoosterMultiplier(qID);
-                            lines.add(Lang.COMMAND_BOOSTER_QUEUE.getComponent(new String[] { qNumber, qMultiplier, qName }).hoverEvent(Lang.COMMAND_BOOSTER_ID_HOVER.getComponent(new String[] { qID })));
+                        if (id != activeID) {
+                            String qName = cacheManager.getBoosterPlayerName(id);
+                            int qMultiplier = cacheManager.getBoosterMultiplier(id);
+                            lines.add(Lang.COMMAND_BOOSTER_QUEUE.getComponent(new String[] { String.valueOf(number), String.valueOf(qMultiplier), qName }).hoverEvent(Lang.COMMAND_BOOSTER_ID_HOVER.getComponent(new String[] { String.valueOf(id) })));
                             number++;
                         }
                     }

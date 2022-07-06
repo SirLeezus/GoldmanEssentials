@@ -1,9 +1,10 @@
 package lee.code.essentials.menusystem.menus;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.Settings;
 import lee.code.essentials.menusystem.PaginatedMenu;
@@ -41,7 +42,7 @@ public class HomeMenu extends PaginatedMenu {
     @Override
     public void handleMenu(InventoryClickEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         Player player = pmu.getOwner();
         UUID uuid = player.getUniqueId();
@@ -52,7 +53,7 @@ public class HomeMenu extends PaginatedMenu {
         if (clickedItem.getType().equals(Material.AIR)) return;
         if (clickedItem.equals(fillerGlass)) return;
 
-        List<String> homes = cache.getHomes(uuid);
+        List<String> homes = cacheManager.getHomes(uuid);
 
         if (clickedItem.equals(previousPage)) {
             if (page == 0) {
@@ -100,7 +101,7 @@ public class HomeMenu extends PaginatedMenu {
     public void setMenuItems() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         Player player = pmu.getOwner();
         page = pmu.getHomePage();
@@ -108,11 +109,11 @@ public class HomeMenu extends PaginatedMenu {
 
         addMenuBorder();
 
-        List<String> homes = cache.getHomes(uuid);
+        List<String> homes = cacheManager.getHomes(uuid);
         List<ItemStack> menuItems = new ArrayList<>();
         for (String home : homes) {
-            String name = pu.unFormatPlayerHomeName(home);
-            String world = pu.unFormatPlayerHomeWorld(home);
+            String name = pu.parseHomeName(home);
+            String world = pu.parseHomeWorld(home);
 
             ItemStack itemHome = switch (world) {
                 case "world_nether" -> new ItemStack(Material.NETHERRACK);
@@ -154,7 +155,7 @@ public class HomeMenu extends PaginatedMenu {
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         NamespacedKey key = new NamespacedKey(plugin, "home-location");
         String sHome = container.get(key, PersistentDataType.STRING);
-        return sHome != null ? plugin.getPU().unFormatPlayerHomeLocation(sHome) : null;
+        return sHome != null ? plugin.getPU().parseHomeLocation(sHome) : null;
     }
 
     private String getItemHomeName(ItemStack item) {
@@ -181,9 +182,13 @@ public class HomeMenu extends PaginatedMenu {
                 @Override
                 public void run() {
                     long time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20;
-                    String timePlayed = pu.formatSeconds(time);
-                    String timeRequired = pu.formatSeconds(Settings.ACCRUED_HOME_BASE_TIME_REQUIRED.getValue());
-                    ItemStack clock = pu.getItem(Material.CLOCK, Lang.MENU_HOME_CLOCK_NAME.getString(), Lang.MENU_HOME_CLOCK_LORE.getString(new String[] { timePlayed, timeRequired, String.valueOf(defaultHomes), String.valueOf(accruedHomes), String.valueOf(Settings.ACCRUED_HOME_MAX.getValue()), String.valueOf(usedHomes), String.valueOf(maxHomes) }), null);
+                    String timePlayed = BukkitUtils.parseSeconds(time);
+                    String timeRequired = BukkitUtils.parseSeconds(Settings.ACCRUED_HOME_BASE_TIME_REQUIRED.getValue());
+                    ItemStack clock = BukkitUtils.getItem(Material.CLOCK,
+                            Lang.MENU_HOME_CLOCK_NAME.getString(),
+                            Lang.MENU_HOME_CLOCK_LORE.getString(new String[] { timePlayed, timeRequired, String.valueOf(defaultHomes),
+                                    String.valueOf(accruedHomes), String.valueOf(Settings.ACCRUED_HOME_MAX.getValue()),
+                                    String.valueOf(usedHomes), String.valueOf(maxHomes) }), null, true);
                     inventory.setItem(4, clock);
                 }
             }.runTaskTimer(plugin, 1L, 20L));

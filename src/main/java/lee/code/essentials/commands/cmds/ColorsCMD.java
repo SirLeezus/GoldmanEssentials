@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.GoldmanEssentials;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -17,8 +17,6 @@ public class ColorsCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
         List<Component> lines = new ArrayList<>();
 
         lines.add(Lang.COMMAND_COLORS_TITLE.getComponent(null));
@@ -30,7 +28,7 @@ public class ColorsCMD implements CommandExecutor {
         lines.add(Component.text("  §o&o§r  §r&r"));
 
         lines.add(Component.text(""));
-        lines.add(plugin.getPU().formatC("&#059CF8Hex Colors: ").append(Component.text("&#F500AE").color(TextColor.color(245, 0, 174))).hoverEvent(plugin.getPU().formatC("&#FFF667Click to open website!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://htmlcolorcodes.com")));
+        lines.add(BukkitUtils.parseColorComponent("&#059CF8Hex Colors: ").append(Component.text("&#F500AE").color(TextColor.color(245, 0, 174))).hoverEvent(BukkitUtils.parseColorComponent("&#FFF667Click to open website!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://htmlcolorcodes.com")));
         lines.add(Component.text(""));
         lines.add(Lang.COMMAND_COLORS_SPLITTER.getComponent(null));
 

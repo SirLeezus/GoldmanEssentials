@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public enum PremiumRankList {
+public enum PremiumRank {
 
     VIP("&#ffffff\uE507", "&#FCFF2D&lVIP"),
     MVP("&#ffffff\uE505", "&#00D8F6&lMVP"),

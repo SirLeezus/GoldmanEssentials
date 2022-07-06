@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.tabs;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -19,11 +19,11 @@ public class RemoveBoosterTab implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (sender instanceof Player) {
             if (args.length == 1) {
-                return StringUtil.copyPartialMatches(args[0], cache.getBoosterIDStringList(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[0], cacheManager.getBoosterIDStringList(), new ArrayList<>());
             } else return blank;
         } else return blank;
     }

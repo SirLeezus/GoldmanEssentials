@@ -1,8 +1,8 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -19,13 +19,12 @@ public class MoneyCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (args.length > 2) {
             OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[1]);
             if (target != null) {
-                if (pu.containOnlyNumbers(args[2])) {
+                if (BukkitUtils.containOnlyNumbers(args[2])) {
                     long amount = Long.parseLong(args[2]);
                     UUID tUUID = target.getUniqueId();
                     String subCommand = args[0];
@@ -33,19 +32,19 @@ public class MoneyCMD implements CommandExecutor {
 
                     switch (subCommand) {
                         case "set" -> {
-                            cache.setBalance(tUUID, amount);
-                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET.getComponent(new String[]{target.getName(), pu.formatAmount(amount)})));
-                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET_TARGET.getComponent(new String[]{pu.formatAmount(amount)})));
+                            cacheManager.setBalance(tUUID, amount);
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET.getComponent(new String[]{target.getName(), BukkitUtils.parseValue(amount) })));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_SET_TARGET.getComponent(new String[]{ BukkitUtils.parseValue(amount) })));
                         }
                         case "remove" -> {
-                            cache.withdraw(tUUID, amount);
-                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE.getComponent(new String[]{target.getName(), pu.formatAmount(amount)})));
-                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE_TARGET.getComponent(new String[]{pu.formatAmount(amount)})));
+                            cacheManager.withdraw(tUUID, amount);
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE.getComponent(new String[]{target.getName(), BukkitUtils.parseValue(amount)})));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_REMOVE_TARGET.getComponent(new String[]{ BukkitUtils.parseValue(amount) })));
                         }
                         case "give" -> {
-                            cache.deposit(tUUID, amount);
-                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE.getComponent(new String[]{target.getName(), pu.formatAmount(amount)})));
-                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE_TARGET.getComponent(new String[]{pu.formatAmount(amount)})));
+                            cacheManager.deposit(tUUID, amount);
+                            sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE.getComponent(new String[]{target.getName(), BukkitUtils.parseValue(amount)})));
+                            if (oTarget != null && oTarget.isOnline()) oTarget.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_MONEY_GIVE_TARGET.getComponent(new String[]{ BukkitUtils.parseValue(amount) })));
                         }
                         default -> sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_WRONG_COMMAND_ARG.getComponent(new String[]{ args[0] })));
                     }

@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.tabs;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,7 +25,7 @@ public class AdvancementTab implements TabCompleter {
             if (args.length == 1) {
                 return StringUtil.copyPartialMatches(args[0], Arrays.asList("grant", "revoke"), new ArrayList<>());
             } else if (args.length == 2) {
-                return StringUtil.copyPartialMatches(args[1], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[1], BukkitUtils.getOnlinePlayers(), new ArrayList<>());
             } else if (args.length == 3) {
                 return StringUtil.copyPartialMatches(args[2], plugin.getData().getAdvancementNames(), new ArrayList<>());
             }  else return blank;

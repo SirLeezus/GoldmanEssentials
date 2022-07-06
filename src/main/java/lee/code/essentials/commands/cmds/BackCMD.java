@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
@@ -21,7 +22,7 @@ public class BackCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
             if (data.hasBackLocation(uuid)) {
-                Location location = plugin.getPU().unFormatPlayerLocation(data.getBackLocation(uuid));
+                Location location = BukkitUtils.parseLocation(data.getBackLocation(uuid));
                 player.teleportAsync(location);
                 player.sendActionBar(Lang.TELEPORT.getComponent(null));
             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_BACK.getComponent(null)));

@@ -3,10 +3,10 @@ package lee.code.essentials.commands.cmds;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.PremiumRankList;
-import lee.code.essentials.lists.RankList;
+import lee.code.essentials.lists.PremiumRank;
+import lee.code.essentials.lists.Rank;
 import lee.code.essentials.managers.PermissionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -26,7 +26,7 @@ public class SetRankCMD implements CommandExecutor {
         PermissionManager pm = plugin.getPermissionManager();
         PU pu = plugin.getPU();
         Data data = plugin.getData();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (args.length > 1) {
             OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
@@ -35,13 +35,13 @@ public class SetRankCMD implements CommandExecutor {
                 String rank = args[1].toUpperCase();
                 boolean premium = false;
                 if (data.getRankKeys().contains(rank)) {
-                    RankList normalRank = RankList.valueOf(rank);
-                    cache.setColor(tUUID, normalRank.getColor());
-                    cache.setRank(tUUID, rank);
-                    cache.setPrefix(tUUID, normalRank.getPrefix());
+                    Rank normalRank = Rank.valueOf(rank);
+                    cacheManager.setColor(tUUID, normalRank.getColor());
+                    cacheManager.setRank(tUUID, rank);
+                    cacheManager.setPrefix(tUUID, normalRank.getPrefix());
                 } else if (data.getPremiumRankKeys().contains(rank)) {
-                    PremiumRankList premiumRank = PremiumRankList.valueOf(rank);
-                    cache.setSuffix(tUUID, premiumRank.getSuffix());
+                    PremiumRank premiumRank = PremiumRank.valueOf(rank);
+                    cacheManager.setSuffix(tUUID, premiumRank.getSuffix());
                     pm.addPremiumPerms(tUUID, premiumRank);
                     premium = true;
                 }
@@ -50,7 +50,7 @@ public class SetRankCMD implements CommandExecutor {
                     if (tPlayer != null) {
                         pu.updateDisplayName(tPlayer, false);
                         pm.register(tPlayer);
-                        if (premium) tPlayer.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETRANK_PREMIUM_SUCCESSFUL.getComponent(new String[] { PremiumRankList.valueOf(rank).getDisplayName() })));
+                        if (premium) tPlayer.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETRANK_PREMIUM_SUCCESSFUL.getComponent(new String[] { PremiumRank.valueOf(rank).getDisplayName() })));
                     }
                 }
                 sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKSET_SUCCESSFUL.getComponent(new String[] { rank, target.getName() })));

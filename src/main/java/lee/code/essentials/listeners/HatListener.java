@@ -1,5 +1,6 @@
 package lee.code.essentials.listeners;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,14 +16,16 @@ public class HatListener implements Listener {
     @EventHandler
     public void onHelmetSlotClick(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player player) {
-            InventoryType type = e.getInventory().getType();
-            if (type == InventoryType.CRAFTING) {
-                if (e.getSlot() == 39) {
-                    ItemStack item = player.getItemOnCursor();
-                    e.setCancelled(true);
-                    ItemStack helmet = player.getInventory().getHelmet();
-                    player.setItemOnCursor(Objects.requireNonNullElseGet(helmet, () -> new ItemStack(Material.AIR)));
-                    player.getInventory().setHelmet(item);
+            if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+                InventoryType type = e.getInventory().getType();
+                if (type == InventoryType.CRAFTING) {
+                    if (e.getSlot() == 39) {
+                        e.setCancelled(true);
+                        ItemStack item = player.getItemOnCursor();
+                        ItemStack helmet = player.getInventory().getHelmet();
+                        player.setItemOnCursor(Objects.requireNonNullElseGet(helmet, () -> new ItemStack(Material.AIR)));
+                        player.getInventory().setHelmet(item);
+                    }
                 }
             }
         }

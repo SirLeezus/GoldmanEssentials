@@ -3,10 +3,10 @@ package lee.code.essentials.commands.cmds;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.PremiumRankList;
-import lee.code.essentials.lists.RankList;
+import lee.code.essentials.lists.PremiumRank;
+import lee.code.essentials.lists.Rank;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,22 +25,22 @@ public class RankListCMD implements CommandExecutor {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
         Data data = plugin.getData();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
             List<Component> lines = new ArrayList<>();
 
             int number = 1;
-            String playerRank = cache.getRank(uuid);
-            String playerSuffix = cache.getSuffix(uuid);
+            String playerRank = cacheManager.getRank(uuid);
+            String playerSuffix = cacheManager.getSuffix(uuid);
             Component spacer = Component.text("");
 
             lines.add(Lang.COMMAND_RANKLIST_TITLE.getComponent(null));
             lines.add(spacer);
             lines.add(Lang.COMMAND_RANKLIST_SERVER_RANKS.getComponent(null));
             for (String rank : data.getRankKeys()) {
-                RankList sRank = RankList.valueOf(rank);
+                Rank sRank = Rank.valueOf(rank);
                 if (!sRank.isStaffRank()) {
                     Component line = playerRank.equals(rank) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getPrefix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getPrefix() });
                     lines.add(line);
@@ -52,7 +52,7 @@ public class RankListCMD implements CommandExecutor {
             number = 1;
             lines.add(Lang.COMMAND_RANKLIST_STAFF_RANKS.getComponent(null));
             for (String rank : data.getRankKeys()) {
-                RankList sRank = RankList.valueOf(rank);
+                Rank sRank = Rank.valueOf(rank);
                 if (sRank.isStaffRank()) {
                     Component line = playerRank.equals(rank) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getPrefix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getPrefix() });
                     lines.add(line);
@@ -64,7 +64,7 @@ public class RankListCMD implements CommandExecutor {
             number = 1;
             lines.add(Lang.COMMAND_RANKLIST_PREMIUM_RANKS.getComponent(null));
             for (String rank : data.getPremiumRankKeys()) {
-                PremiumRankList sRank = PremiumRankList.valueOf(rank);
+                PremiumRank sRank = PremiumRank.valueOf(rank);
                 Component line = playerSuffix.equals(sRank.getSuffix()) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + sRank.getSuffix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + sRank.getSuffix() });
                 lines.add(line);
                 number++;

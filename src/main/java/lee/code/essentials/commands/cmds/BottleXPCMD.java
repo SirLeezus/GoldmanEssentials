@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
@@ -23,7 +24,7 @@ public class BottleXPCMD implements CommandExecutor {
             ItemStack handItem = player.getInventory().getItemInMainHand();
             if (handItem.getType().equals(Material.GLASS_BOTTLE)) {
                 int amount = handItem.getAmount();
-                int exp = pu.getPlayerExp(player);
+                int exp = BukkitUtils.getPlayerExp(player);
                 int requiredEXP = 8;
                 if (exp > requiredEXP) {
                     int convertEXPBottleAmount = exp / requiredEXP;
@@ -35,7 +36,7 @@ public class BottleXPCMD implements CommandExecutor {
                     else player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 
                     ItemStack expBottle = new ItemStack(Material.EXPERIENCE_BOTTLE);
-                    int space = pu.getFreeSpace(player, expBottle);
+                    int space = BukkitUtils.getFreeSpace(player, expBottle);
                     expBottle.setAmount(convertEXPBottleAmount);
 
                     if (space > convertEXPBottleAmount) player.getInventory().addItem(expBottle);

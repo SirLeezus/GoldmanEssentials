@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
@@ -19,7 +20,7 @@ public class KickCMD implements CommandExecutor {
         if (args.length > 1) {
             OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
             if (target != null) {
-                String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
+                String reason = BukkitUtils.buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
                 if (!reason.isBlank()) {
                     if (target.isOnline()) {
                         Player tPlayer = target.getPlayer();

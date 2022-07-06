@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BanListTab implements TabCompleter {
+public class PunishedTab implements TabCompleter {
 
     private final List<String> blank = new ArrayList<>();
     

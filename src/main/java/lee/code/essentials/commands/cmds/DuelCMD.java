@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
@@ -29,7 +30,7 @@ public class DuelCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
             if (args.length > 0) {
-                if (pu.getOnlinePlayers().contains(args[0])) {
+                if (BukkitUtils.getOnlinePlayers().contains(args[0])) {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         UUID tUUID = target.getUniqueId();
@@ -79,7 +80,7 @@ public class DuelCMD implements CommandExecutor {
                                     } else {
                                         if (!data.isDuelRequestingPlayer(uuid, tUUID)) {
                                             data.setDuelRequesting(uuid, tUUID);
-                                            pu.pvpRequestTimer(player, target);
+                                            pu.pvpRequestTimeoutTimer(player, target);
 
                                             Component targetMessage = Lang.REQUEST_DUEL_TARGET.getComponent(new String[] { player.getName() });
                                             Component accept = Component.text("            ").append(Lang.REQUEST_ACCEPT.getComponent(null).hoverEvent(Lang.REQUEST_DUEL_ACCEPT_HOVER.getComponent(new String[] { player.getName() })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/duel " + player.getName() + " accept")));

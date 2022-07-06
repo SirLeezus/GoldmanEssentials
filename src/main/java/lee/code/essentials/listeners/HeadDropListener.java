@@ -39,7 +39,7 @@ public class HeadDropListener implements Listener {
             } else if (entity instanceof Warden) {
                 e.getDrops().add(EntityHeads.valueOf(e.getEntityType().name()).getHead());
             } else {
-                if (pu.rng() >= Settings.HEAD_DROP_RNG.getValue() || killer.getGameMode().equals(GameMode.CREATIVE)) {
+                if (pu.headDropRNG() >= Settings.HEAD_DROP_RNG.getValue() || killer.getGameMode().equals(GameMode.CREATIVE)) {
                     String type = e.getEntityType().name();
                     if (entity instanceof Sheep sheep) {
                         if (sheep.name().equals(Component.text("jeb_"))) {

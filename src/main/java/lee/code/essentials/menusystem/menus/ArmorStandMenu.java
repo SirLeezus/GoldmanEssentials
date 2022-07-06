@@ -1,5 +1,6 @@
 package lee.code.essentials.menusystem.menus;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.Menu;
@@ -76,7 +77,6 @@ public class ArmorStandMenu extends Menu {
 
     @Override
     public void setMenuItems() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         setFillerGlass();
         ArmorStand armorStand = pmu.getArmorStand();
         EntityEquipment equipment = armorStand.getEquipment();
@@ -194,106 +194,105 @@ public class ArmorStandMenu extends Menu {
         }
 
         //POSITION LOCATION
-
-        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getX()) }));
+        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLocation().getX()) }));
         position.setItemMeta(positionMeta);
         inventory.setItem(3, position);
 
-        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getY()) }));
+        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLocation().getY()) }));
         position.setItemMeta(positionMeta);
         inventory.setItem(4, position);
 
-        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getZ()) }));
+        positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLocation().getZ()) }));
         position.setItemMeta(positionMeta);
         inventory.setItem(5, position);
 
         //POSITION HEAD
 
-        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getX()) }));
+        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getHeadPose().getX()) }));
         headPosition.setItemMeta(headPositionMeta);
         inventory.setItem(10, headPosition);
 
-        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getY()) }));
+        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getHeadPose().getY()) }));
         headPosition.setItemMeta(headPositionMeta);
         inventory.setItem(11, headPosition);
 
-        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getZ()) }));
+        headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getHeadPose().getZ()) }));
         headPosition.setItemMeta(headPositionMeta);
         inventory.setItem(12, headPosition);
 
         //POSITION TORSO
 
-        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getX()) }));
+        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getBodyPose().getX()) }));
         torsoPosition.setItemMeta(torsoPositionMeta);
         inventory.setItem(14, torsoPosition);
 
-        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getY()) }));
+        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getBodyPose().getY()) }));
         torsoPosition.setItemMeta(torsoPositionMeta);
         inventory.setItem(15, torsoPosition);
 
-        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getZ()) }));
+        torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getBodyPose().getZ()) }));
         torsoPosition.setItemMeta(torsoPositionMeta);
         inventory.setItem(16, torsoPosition);
 
         //POSITION LEFT ARM
 
-        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getX()) }));
+        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftArmPose().getX()) }));
         leftArmPosition.setItemMeta(leftArmPositionMeta);
         inventory.setItem(18, leftArmPosition);
 
-        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getY()) }));
+        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftArmPose().getY()) }));
         leftArmPosition.setItemMeta(leftArmPositionMeta);
         inventory.setItem(19, leftArmPosition);
 
-        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getZ()) }));
+        leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftArmPose().getZ()) }));
         leftArmPosition.setItemMeta(leftArmPositionMeta);
         inventory.setItem(20, leftArmPosition);
 
         //POSITION RIGHT ARM
 
-        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getX()) }));
+        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightArmPose().getX()) }));
         rightArmPosition.setItemMeta(rightArmPositionMeta);
         inventory.setItem(24, rightArmPosition);
 
-        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getY()) }));
+        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightArmPose().getY()) }));
         rightArmPosition.setItemMeta(rightArmPositionMeta);
         inventory.setItem(25, rightArmPosition);
 
-        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getZ()) }));
+        rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightArmPose().getZ()) }));
         rightArmPosition.setItemMeta(rightArmPositionMeta);
         inventory.setItem(26, rightArmPosition);
 
         //POSITION LEFT LEG
 
-        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getX()) }));
+        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftLegPose().getX()) }));
         leftLegPosition.setItemMeta(leftLegPositionMeta);
         inventory.setItem(28, leftLegPosition);
 
-        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getY()) }));
+        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftLegPose().getY()) }));
         leftLegPosition.setItemMeta(leftLegPositionMeta);
         inventory.setItem(29, leftLegPosition);
 
-        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getZ()) }));
+        leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftLegPose().getZ()) }));
         leftLegPosition.setItemMeta(leftLegPositionMeta);
         inventory.setItem(30, leftLegPosition);
 
         //POSITION RIGHT LEG
 
-        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getX()) }));
+        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightLegPose().getX()) }));
         rightLegPosition.setItemMeta(rightLegPositionMeta);
         inventory.setItem(32, rightLegPosition);
 
-        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getY()) }));
+        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightLegPose().getY()) }));
         rightLegPosition.setItemMeta(rightLegPositionMeta);
         inventory.setItem(33, rightLegPosition);
 
-        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getZ()) }));
+        rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightLegPose().getZ()) }));
         rightLegPosition.setItemMeta(rightLegPositionMeta);
         inventory.setItem(34, rightLegPosition);
 
         //POSITION DIRECTION
 
-        directionPositionMeta.displayName(Lang.MENU_ARMOR_STAND_DIRECTION_POSITION.getComponent(new String[] { plugin.getPU().shortenDouble(armorStand.getLocation().getYaw()) }));
+        directionPositionMeta.displayName(Lang.MENU_ARMOR_STAND_DIRECTION_POSITION.getComponent(new String[] { BukkitUtils.parseShortDecimalValue(armorStand.getLocation().getYaw()) }));
         CompassMeta compassMeta = (CompassMeta) directionPositionMeta;
         compassMeta.setLodestone(armorStand.getLocation().add(armorStand.getLocation().getDirection().setY(0).normalize().multiply(5)));
         compassMeta.setLodestoneTracked(true);
@@ -325,7 +324,6 @@ public class ArmorStandMenu extends Menu {
     }
 
     private void updateSetting(Player player, ArmorStand armorStand, ItemStack item, int slot) {
-
         ItemStack allow = new ItemStack(asSettingTrue);
         ItemStack deny = new ItemStack(asSettingFalse);
 
@@ -419,8 +417,6 @@ public class ArmorStandMenu extends Menu {
     }
 
     private void updatePosition(ArmorStand armorStand, int slot, double amount) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
         ItemStack position = new ItemStack(asPosition);
         ItemStack headPosition = new ItemStack(asHeadPosition);
         ItemStack torsoPosition = new ItemStack(asTorsoPosition);
@@ -472,154 +468,154 @@ public class ArmorStandMenu extends Menu {
         switch (slot) {
             case 3:
                 armorStand.teleport(new Location(armorStand.getWorld(), pX + amount, pY, pZ, pYaw, pPitch));
-                positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getX()) }));
+                positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLocation().getX()) }));
                 position.setItemMeta(positionMeta);
                 inventory.setItem(slot, position);
                 break;
             case 4:
                 if (!armorStand.hasGravity()) {
                     armorStand.teleport(new Location(armorStand.getWorld(), pX, pY + amount, pZ, pYaw, pPitch));
-                    positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getY()) }));
+                    positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLocation().getY()) }));
                     position.setItemMeta(positionMeta);
                     inventory.setItem(slot, position);
                 }
                 break;
             case 5:
                 armorStand.teleport(new Location(armorStand.getWorld(), pX, pY, pZ + amount, pYaw, pPitch));
-                positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLocation().getZ()) }));
+                positionMeta.displayName(Lang.MENU_ARMOR_STAND_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLocation().getZ()) }));
                 position.setItemMeta(positionMeta);
                 inventory.setItem(slot, position);
                 break;
 
             case 10:
                 armorStand.setHeadPose(new EulerAngle(hX + amount, hY, hZ));
-                headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getX()) }));
+                headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getHeadPose().getX()) }));
                 headPosition.setItemMeta(headPositionMeta);
                 inventory.setItem(slot, headPosition);
                 break;
 
             case 11:
                 armorStand.setHeadPose(new EulerAngle(hX, hY + amount, hZ));
-                headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getY()) }));
+                headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getHeadPose().getY()) }));
                 headPosition.setItemMeta(headPositionMeta);
                 inventory.setItem(slot, headPosition);
                 break;
 
             case 12:
                 armorStand.setHeadPose(new EulerAngle(hX, hY, hZ + amount));
-                headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getHeadPose().getZ()) }));
+                headPositionMeta.displayName(Lang.MENU_ARMOR_STAND_HEAD_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getHeadPose().getZ()) }));
                 headPosition.setItemMeta(headPositionMeta);
                 inventory.setItem(slot, headPosition);
                 break;
 
             case 14:
                 armorStand.setBodyPose(new EulerAngle(tX + amount, tY, tZ));
-                torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getX()) }));
+                torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getBodyPose().getX()) }));
                 torsoPosition.setItemMeta(torsoPositionMeta);
                 inventory.setItem(slot, torsoPosition);
                 break;
 
             case 15:
                 armorStand.setBodyPose(new EulerAngle(tX, tY + amount, tZ));
-                torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getY()) }));
+                torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getBodyPose().getY()) }));
                 torsoPosition.setItemMeta(torsoPositionMeta);
                 inventory.setItem(slot, torsoPosition);
                 break;
 
             case 16:
                 armorStand.setBodyPose(new EulerAngle(tX, tY, tZ + amount));
-                torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getBodyPose().getZ()) }));
+                torsoPositionMeta.displayName(Lang.MENU_ARMOR_STAND_TORSO_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getBodyPose().getZ()) }));
                 torsoPosition.setItemMeta(torsoPositionMeta);
                 inventory.setItem(slot, torsoPosition);
                 break;
 
             case 18:
                 armorStand.setLeftArmPose(new EulerAngle(laX + amount, laY, laZ));
-                leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getX()) }));
+                leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftArmPose().getX()) }));
                 leftArmPosition.setItemMeta(leftArmPositionMeta);
                 inventory.setItem(slot, leftArmPosition);
                 break;
 
             case 19:
                 armorStand.setLeftArmPose(new EulerAngle(laX, laY + amount, laZ));
-                leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getY()) }));
+                leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftArmPose().getY()) }));
                 leftArmPosition.setItemMeta(leftArmPositionMeta);
                 inventory.setItem(slot, leftArmPosition);
                 break;
 
             case 20:
                 armorStand.setLeftArmPose(new EulerAngle(laX, laY, laZ + amount));
-                leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftArmPose().getZ()) }));
+                leftArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftArmPose().getZ()) }));
                 leftArmPosition.setItemMeta(leftArmPositionMeta);
                 inventory.setItem(slot, leftArmPosition);
                 break;
 
             case 24:
                 armorStand.setRightArmPose(new EulerAngle(raX + amount, raY, raZ));
-                rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getX()) }));
+                rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightArmPose().getX()) }));
                 rightArmPosition.setItemMeta(rightArmPositionMeta);
                 inventory.setItem(slot, rightArmPosition);
                 break;
 
             case 25:
                 armorStand.setRightArmPose(new EulerAngle(raX , raY + amount, raZ));
-                rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getY()) }));
+                rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightArmPose().getY()) }));
                 rightArmPosition.setItemMeta(rightArmPositionMeta);
                 inventory.setItem(slot, rightArmPosition);
                 break;
 
             case 26:
                 armorStand.setRightArmPose(new EulerAngle(raX , raY, raZ + amount));
-                rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightArmPose().getZ()) }));
+                rightArmPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_ARM_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightArmPose().getZ()) }));
                 rightArmPosition.setItemMeta(rightArmPositionMeta);
                 inventory.setItem(slot, rightArmPosition);
                 break;
 
             case 28:
                 armorStand.setLeftLegPose(new EulerAngle(llX + amount, llY, llZ));
-                leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getX()) }));
+                leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftLegPose().getX()) }));
                 leftLegPosition.setItemMeta(leftLegPositionMeta);
                 inventory.setItem(slot, leftLegPosition);
                 break;
 
             case 29:
                 armorStand.setLeftLegPose(new EulerAngle(llX, llY + amount, llZ));
-                leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getY()) }));
+                leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftLegPose().getY()) }));
                 leftLegPosition.setItemMeta(leftLegPositionMeta);
                 inventory.setItem(slot, leftLegPosition);
                 break;
 
             case 30:
                 armorStand.setLeftLegPose(new EulerAngle(llX, llY, llZ + amount));
-                leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getLeftLegPose().getZ()) }));
+                leftLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_LEFT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getLeftLegPose().getZ()) }));
                 leftLegPosition.setItemMeta(leftLegPositionMeta);
                 inventory.setItem(slot, leftLegPosition);
                 break;
 
             case 32:
                 armorStand.setRightLegPose(new EulerAngle(rlX + amount, rlY, rlZ));
-                rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getX()) }));
+                rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cX&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightLegPose().getX()) }));
                 rightLegPosition.setItemMeta(rightLegPositionMeta);
                 inventory.setItem(slot, rightLegPosition);
                 break;
 
             case 33:
                 armorStand.setRightLegPose(new EulerAngle(rlX, rlY + amount, rlZ));
-                rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getY()) }));
+                rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cY&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightLegPose().getY()) }));
                 rightLegPosition.setItemMeta(rightLegPositionMeta);
                 inventory.setItem(slot, rightLegPosition);
                 break;
 
             case 34:
                 armorStand.setRightLegPose(new EulerAngle(rlX, rlY, rlZ  + amount));
-                rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + plugin.getPU().shortenDouble(armorStand.getRightLegPose().getZ()) }));
+                rightLegPositionMeta.displayName(Lang.MENU_ARMOR_STAND_RIGHT_LEG_POSITION.getComponent(new String[] { "&cZ&7: &6" + BukkitUtils.parseShortDecimalValue(armorStand.getRightLegPose().getZ()) }));
                 rightLegPosition.setItemMeta(rightLegPositionMeta);
                 inventory.setItem(slot, rightLegPosition);
                 break;
 
             case 49:
                 armorStand.teleport(new Location(armorStand.getWorld(), pX, pY, pZ, pYaw + (float) amount, pPitch));
-                directionPositionMeta.displayName(Lang.MENU_ARMOR_STAND_DIRECTION_POSITION.getComponent(new String[] { plugin.getPU().shortenDouble(armorStand.getLocation().getYaw()) }));
+                directionPositionMeta.displayName(Lang.MENU_ARMOR_STAND_DIRECTION_POSITION.getComponent(new String[] { BukkitUtils.parseShortDecimalValue(armorStand.getLocation().getYaw()) }));
                 CompassMeta compassMeta = (CompassMeta) directionPositionMeta;
                 compassMeta.setLodestone(armorStand.getLocation().add(armorStand.getLocation().getDirection().setY(0).normalize().multiply(5)));
                 compassMeta.setLodestoneTracked(true);

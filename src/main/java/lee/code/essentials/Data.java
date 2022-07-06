@@ -1,6 +1,7 @@
 package lee.code.essentials;
 
 import lee.code.core.util.bukkit.BukkitUtils;
+import lee.code.essentials.database.DatabaseManager;
 import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
 import lee.code.essentials.menusystem.PlayerMU;
@@ -31,7 +32,6 @@ public class Data {
     @Getter private final List<String> advancementNames = new ArrayList<>();
     @Getter private final List<String> materialNames = new ArrayList<>();
     @Getter private final List<UUID> vanishedPlayers = new ArrayList<>();
-    @Getter private final List<UUID> playerClickDelay = new ArrayList<>();
     @Getter private final List<NamespacedKey> recipeKeys = new ArrayList<>();
     @Getter private final List<Component> serverMOTD = new ArrayList<>();
     @Getter private final List<String> pluginCommands = new ArrayList<>();
@@ -70,6 +70,11 @@ public class Data {
     private final ConcurrentHashMap<UUID, UUID> playerCurrentlyDueling = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Integer> playerSpamLoggerCount = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Component> playerSpamLoggerString = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, UUID> lastReplier = new ConcurrentHashMap<>();
+
+    public UUID getLastReplier(UUID uuid) { return lastReplier.get(uuid); }
+    public void setLastReplier(UUID player, UUID target) { lastReplier.put(player, target); }
+    public boolean hasReplier(UUID uuid) { return lastReplier.containsKey(uuid); }
 
     public boolean addSpamLoggerViolationCount(UUID uuid) {
         if (!playerSpamLoggerCount.containsKey(uuid)) playerSpamLoggerCount.put(uuid, 1);
@@ -235,16 +240,6 @@ public class Data {
     }
     public long getPlayerLastMovedTime(UUID uuid) { return playerLastMovedTimer.get(uuid); }
 
-    public boolean hasPlayerClickDelay(UUID uuid) {
-        return playerClickDelay.contains(uuid);
-    }
-    public void addPlayerClickDelay(UUID uuid) {
-        playerClickDelay.add(uuid);
-    }
-    public void removePlayerClickDelay(UUID uuid) {
-        playerClickDelay.remove(uuid);
-    }
-
     public void addSleepingPlayer(String world, UUID uuid) {
         List<UUID> newList = new ArrayList<>(sleepingPlayers.getOrDefault(world, new ArrayList<>()));
         newList.add(uuid);
@@ -268,12 +263,8 @@ public class Data {
 
     public void cacheDatabase() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        SQLite SQL = plugin.getSqLite();
-        SQL.createServerDataColumn();
-        SQL.loadPlayerData();
-        SQL.loadBoosterData();
-        SQL.loadServerData();
-        SQL.loadPunishmentData();
+        plugin.getDatabaseManager().initialize();
+        plugin.getCacheManager().createServerData();
     }
 
     public PlayerMU getPlayerMU(UUID uuid) {
@@ -287,24 +278,22 @@ public class Data {
     }
 
     public void loadMOTDFile() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
         String line;
         serverMOTD.clear();
         try {
-            File file = new File(plugin.getDataFolder(), "motd.txt");
+            File file = new File(GoldmanEssentials.getPlugin().getDataFolder(), "motd.txt");
             if (!file.exists()) {
                 boolean created = file.createNewFile();
             }
             BufferedReader br = new BufferedReader(new FileReader(file));
             while ((line = br.readLine()) != null) {
                 if (line.contains("{store}")) {
-                    serverMOTD.add(plugin.getPU().formatC(line.replace("{store}", Lang.STORE.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.STORE.getString())));
+                    serverMOTD.add(BukkitUtils.parseColorComponent(line.replace("{store}", Lang.STORE.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.STORE.getString())));
                 } else if (line.contains("{discord}")) {
-                    serverMOTD.add(plugin.getPU().formatC(line.replace("{discord}", Lang.DISCORD.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.DISCORD.getString())));
+                    serverMOTD.add(BukkitUtils.parseColorComponent(line.replace("{discord}", Lang.DISCORD.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.DISCORD.getString())));
                 } else if (line.contains("{map}")) {
-                    serverMOTD.add(plugin.getPU().formatC(line.replace("{map}", Lang.MAP.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.MAP.getString())));
-                } else serverMOTD.add(plugin.getPU().formatC(line));
+                    serverMOTD.add(BukkitUtils.parseColorComponent(line.replace("{map}", Lang.MAP.getString())).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, Lang.MAP.getString())));
+                } else serverMOTD.add(BukkitUtils.parseColorComponent(line));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -345,10 +334,10 @@ public class Data {
         entityHeadKeys.addAll(EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).toList());
 
         //premium rank keys
-        premiumRankKeys.addAll(EnumSet.allOf(PremiumRankList.class).stream().map(PremiumRankList::name).toList());
+        premiumRankKeys.addAll(EnumSet.allOf(PremiumRank.class).stream().map(PremiumRank::name).toList());
 
         //rank keys
-        rankKeys.addAll(EnumSet.allOf(RankList.class).stream().map(RankList::name).toList());
+        rankKeys.addAll(EnumSet.allOf(Rank.class).stream().map(Rank::name).toList());
 
         //emoji keys
         emojiKeys.addAll(EnumSet.allOf(Emoji.class).stream().map(Emoji::name).toList());

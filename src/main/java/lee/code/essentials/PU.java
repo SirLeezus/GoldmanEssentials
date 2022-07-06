@@ -7,11 +7,10 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.google.common.base.Strings;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.enchants.EnchantsAPI;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
+import lee.code.essentials.database.tables.PunishmentTable;
 import lee.code.essentials.lists.*;
 import lee.code.essentials.managers.CountdownTimer;
 import lombok.Getter;
@@ -20,12 +19,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -34,7 +28,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -45,15 +38,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import org.bukkit.util.io.BukkitObjectOutputStream;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -66,59 +50,11 @@ public class PU {
     private final String lRegex = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)";
     private final String iRegex = "(?i)\\[item]";
     private final String eRegex = "(?<=\\:)(.*?)(?=\\:)";
-    private final Pattern hexRegex = Pattern.compile("\\&#[a-fA-F0-9]{6}");
     private final Pattern itemRegex = Pattern.compile(iRegex, Pattern.DOTALL);
     private final Pattern linkRegex = Pattern.compile(lRegex, Pattern.DOTALL);
     private final Pattern emojiRegex = Pattern.compile(eRegex, Pattern.DOTALL);
     private final Random random = new Random();
     @Getter private BossBar boosterBar;
-
-    public String format(String message) {
-        if (message == null) return "";
-        Matcher matcher = hexRegex.matcher(message);
-
-        while (matcher.find()) {
-            String color = message.substring(matcher.start(), matcher.end()).replaceAll("&", "");
-            message = message.replace("&" + color, ChatColor.of(color) + "");
-            matcher = hexRegex.matcher(message);
-        }
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
-    public Component formatC(String message) {
-        LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
-        return Component.empty().decoration(TextDecoration.ITALIC, false).append(serializer.deserialize(message));
-    }
-
-    public String unFormatC(Component message) {
-        PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
-        return message != null ? serializer.serialize(message) : "";
-    }
-
-    public String formatAmount(int value) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(value);
-    }
-
-    public String formatAmount(double value) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(value);
-    }
-
-    public String formatAmount(long value) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(value);
-    }
-
-    public String formatCapitalization(String message) {
-        String format = message.toLowerCase().replaceAll("_", " ");
-        return WordUtils.capitalize(format);
-    }
-
-    public String formatDecimal(double value) {
-        DecimalFormat formatter = new DecimalFormat("#,###.00");
-        return formatter.format(value);
-    }
 
     public void rtpPlayer(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
@@ -131,7 +67,7 @@ public class PU {
             long time = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
             long delay = data.getRTPTimer(uuid);
             if (time < delay) {
-                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOM_TELEPORT_DELAY.getComponent(new String[] { formatSeconds(delay - time) })));
+                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOM_TELEPORT_DELAY.getComponent(new String[] { BukkitUtils.parseSeconds(delay - time) })));
                 return;
             }
         }
@@ -185,79 +121,9 @@ public class PU {
         }
     }
 
-    public String getDate() {
-        long milliseconds = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm aa");
-        sdf.setTimeZone(TimeZone.getTimeZone("PST"));
-        Date resultDate = new Date(milliseconds);
-        return sdf.format(resultDate);
-    }
-
-    public String getDate(long date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm aa");
-        sdf.setTimeZone(TimeZone.getTimeZone("PST"));
-        Date resultDate = new Date(date);
-        return sdf.format(resultDate) + " PST";
-    }
-
     public Component parseVariables(Player player, Component message) {
         Component newComponent = parseChatItem(player, message);
         return parseVariables(newComponent);
-    }
-
-    private Component parseChatItem(Player player, Component message) {
-        EnchantsAPI enchantsAPI = GoldmanEssentials.getPlugin().getEnchantsAPI();
-
-        String text = PlainTextComponentSerializer.plainText().serialize(message);
-        ItemStack item = player.getInventory().getItemInMainHand();
-        String materialName = formatCapitalization(item.getType().name());
-        Component itemName = Component.text(materialName).color(NamedTextColor.WHITE);
-        Component lore = Component.empty();
-        Component newMessage = message;
-
-        Matcher itemMatcher = itemRegex.matcher(text);
-        if (itemMatcher.find()) {
-            if (item.hasItemMeta()) {
-                ItemMeta itemMeta = item.getItemMeta();
-
-                //hat check
-                if (itemMeta.hasCustomModelData()) materialName = "Magic";
-
-                //display name
-                if (itemMeta.hasDisplayName()) itemName = itemMeta.displayName();
-                else if (itemMeta instanceof SkullMeta skullMeta && skullMeta.getOwningPlayer() != null) { itemName = formatC("&e" + skullMeta.getOwningPlayer().getName() + "'s Head"); }
-                else if (itemMeta.hasEnchants()) itemName = itemName.color(NamedTextColor.AQUA);
-                else if (itemMeta instanceof EnchantmentStorageMeta) itemName = itemName.color(NamedTextColor.YELLOW);
-
-                //enchants
-                if (itemMeta.hasEnchants() || itemMeta instanceof EnchantmentStorageMeta) {
-                    Map<Enchantment, Integer> enchants = itemMeta instanceof EnchantmentStorageMeta book ? book.getStoredEnchants() : itemMeta.getEnchants();
-                    Component downSpacer = formatC("\n");
-                    Component spacer = Component.text(" ");
-
-                    for (Map.Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
-                        String key = enchant.getKey().getKey().getKey().toUpperCase();
-                        if (!enchantsAPI.isCustomEnchant(key)) {
-                            Component enchantment = formatC(formatCapitalization(key));
-                            Component enchantmentLevel = enchant.getKey().getMaxLevel() > 1 ? formatC(getRomanNumber(enchant.getValue())) : Component.empty();
-                            Component newLoreLine = downSpacer.append(enchantment.append(spacer).append(enchantmentLevel)).color(enchant.getKey().isCursed() ? NamedTextColor.RED : NamedTextColor.GRAY);
-                            lore = lore.append(newLoreLine);
-                        }
-                    }
-                }
-                //lore
-                if (itemMeta.hasLore()) for (Component loreLine : Objects.requireNonNull(itemMeta.lore())) lore = lore.append(formatC("\n&5&o")).append(loreLine);
-
-            }
-
-            if (itemName != null) {
-                String match = itemMatcher.group();
-                Component newInfo = formatC("&6[&f").append(itemName).append(formatC("&6]")).hoverEvent(itemName.append(formatC(" &7(&f" + materialName + "&7)")).append(lore));
-                TextReplacementConfig replace = TextReplacementConfig.builder().matchLiteral(match).replacement(newInfo).build();
-                newMessage = newMessage.replaceText(replace);
-            }
-        }
-        return newMessage;
     }
 
     public Component parseVariables(Component message) {
@@ -285,7 +151,7 @@ public class PU {
         Matcher linkMatcher = linkRegex.matcher(text);
         while (linkMatcher.find()) {
             String match = linkMatcher.group();
-            Component newInfo = formatC("&6[&cLINK&6]").hoverEvent(formatC("&6Click to preview link!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, match));
+            Component newInfo = BukkitUtils.parseColorComponent("&6[&cLINK&6]").hoverEvent(BukkitUtils.parseColorComponent("&6Click to preview link!")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, match));
             TextReplacementConfig replace = TextReplacementConfig.builder().matchLiteral(match).replacement(newInfo).build();
             newMessage = newMessage.replaceText(replace);
         }
@@ -293,121 +159,85 @@ public class PU {
         return newMessage;
     }
 
-    public String getRomanNumber(int number) {
-        switch (number) {
-            case 1 -> { return "I"; }
-            case 2 -> { return "II"; }
-            case 3 -> { return "III"; }
-            case 4 -> { return "IV"; }
-            case 5 -> { return "V"; }
-            case 6 -> { return "VI"; }
-            case 7 -> { return "VII"; }
-            case 8 -> { return "VIII"; }
-            case 9 -> { return "IX"; }
-            case 10 -> { return "X"; }
-            default -> { return String.valueOf(number); }
+    private Component parseChatItem(Player player, Component message) {
+        EnchantsAPI enchantsAPI = GoldmanEssentials.getPlugin().getEnchantsAPI();
+
+        String text = PlainTextComponentSerializer.plainText().serialize(message);
+        ItemStack item = player.getInventory().getItemInMainHand();
+        String materialName = BukkitUtils.parseCapitalization(item.getType().name());
+        Component itemName = Component.text(materialName).color(NamedTextColor.WHITE);
+        Component lore = Component.empty();
+        Component newMessage = message;
+
+        Matcher itemMatcher = itemRegex.matcher(text);
+        if (itemMatcher.find()) {
+            if (item.hasItemMeta()) {
+                ItemMeta itemMeta = item.getItemMeta();
+
+                //hat check
+                if (itemMeta.hasCustomModelData()) materialName = "Magic";
+
+                //display name
+                if (itemMeta.hasDisplayName()) itemName = itemMeta.displayName();
+                else if (itemMeta instanceof SkullMeta skullMeta && skullMeta.getOwningPlayer() != null) { itemName = BukkitUtils.parseColorComponent("&e" + skullMeta.getOwningPlayer().getName() + "'s Head"); }
+                else if (itemMeta.hasEnchants()) itemName = itemName.color(NamedTextColor.AQUA);
+                else if (itemMeta instanceof EnchantmentStorageMeta) itemName = itemName.color(NamedTextColor.YELLOW);
+
+                //enchants
+                if (itemMeta.hasEnchants() || itemMeta instanceof EnchantmentStorageMeta) {
+                    Map<Enchantment, Integer> enchants = itemMeta instanceof EnchantmentStorageMeta book ? book.getStoredEnchants() : itemMeta.getEnchants();
+                    Component downSpacer = BukkitUtils.parseColorComponent("\n");
+                    Component spacer = Component.text(" ");
+
+                    for (Map.Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
+                        String key = enchant.getKey().getKey().getKey().toUpperCase();
+                        if (!enchantsAPI.isCustomEnchant(key)) {
+                            Component enchantment = BukkitUtils.parseColorComponent(BukkitUtils.parseCapitalization(key));
+                            Component enchantmentLevel = enchant.getKey().getMaxLevel() > 1 ? BukkitUtils.parseColorComponent(BukkitUtils.getRomanNumber(enchant.getValue())) : Component.empty();
+                            Component newLoreLine = downSpacer.append(enchantment.append(spacer).append(enchantmentLevel)).color(enchant.getKey().isCursed() ? NamedTextColor.RED : NamedTextColor.GRAY);
+                            lore = lore.append(newLoreLine);
+                        }
+                    }
+                }
+                //lore
+                if (itemMeta.hasLore()) for (Component loreLine : Objects.requireNonNull(itemMeta.lore())) lore = lore.append(BukkitUtils.parseColorComponent("\n&5&o")).append(loreLine);
+
+            }
+
+            if (itemName != null) {
+                String match = itemMatcher.group();
+                Component newInfo = BukkitUtils.parseColorComponent("&6[&f").append(itemName).append(BukkitUtils.parseColorComponent("&6]")).hoverEvent(itemName.append(BukkitUtils.parseColorComponent(" &7(&f" + materialName + "&7)")).append(lore));
+                TextReplacementConfig replace = TextReplacementConfig.builder().matchLiteral(match).replacement(newInfo).build();
+                newMessage = newMessage.replaceText(replace);
+            }
         }
+        return newMessage;
     }
 
-    public int rng() {
+    public int headDropRNG() {
         return random.nextInt(1000);
     }
 
-    public String shortenDouble(double value) {
-        DecimalFormat formatter = new DecimalFormat("#.##");
-        return formatter.format(value);
-    }
-
-    public int getItemAmount(Player player, ItemStack targetItem) {
-        ItemStack item = new ItemStack(targetItem);
-        item.setAmount(1);
-        int amount = 0;
-        for (int i = 0; i < 36; i++) {
-            ItemStack slot = player.getInventory().getItem(i);
-            if (slot == null || !slot.isSimilar(item)) continue;
-            amount += slot.getAmount();
-        }
-        return amount;
-    }
-
-    public void takeItems(Player player, ItemStack item, int count) {
-        Material mat = item.getType();
-        Map<Integer, ? extends ItemStack> ammo = player.getInventory().all(mat);
-
-        int found = 0;
-        for (ItemStack stack : ammo.values()) found += stack.getAmount();
-        if (count > found) return;
-
-        for (Integer index : ammo.keySet()) {
-            ItemStack stack = ammo.get(index);
-
-            if (stack.isSimilar(item)) {
-                int removed = Math.min(count, stack.getAmount());
-                count -= removed;
-
-                if (stack.getAmount() == removed) player.getInventory().setItem(index, null);
-                else stack.setAmount(stack.getAmount() - removed);
-
-                if (count <= 0) break;
-            }
-        }
-        player.updateInventory();
-    }
-
-    public String buildStringFromArgs(String[] args, int start) {
-        StringBuilder w = new StringBuilder();
-        for(int i = start; i < args.length; i++) {
-            w.append(args[i]).append(" ");
-        }
-        w = new StringBuilder(w.substring(0, w.length() - 1));
-        return w.toString();
-    }
-
-    public String formatPlayerLocation(Location location) {
-        return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
-    }
-
-    public String formatBlockLocation(Location location) {
-        return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ();
-    }
-
-    public Location unFormatPlayerLocation(String location) {
-        String[] split = location.split(",", 6);
-        return new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), (float) Double.parseDouble(split[4]), (float) Double.parseDouble(split[5]));
-    }
-
-    public Location unFormatBlockLocation(String location) {
-        String[] split = location.split(",", 4);
-        return new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]));
-    }
-
-    public String formatPlayerHomeLocation(String name, Location location) {
+    public String serializeHomeLocation(String name, Location location) {
         return name + "+" + location.getWorld().getName() + "+" + location.getX() + "+" + location.getY() + "+" + location.getZ() + "+" + location.getYaw() + "+" + location.getPitch();
     }
 
-    public Location unFormatPlayerHomeLocation(String home) {
+    public Location parseHomeLocation(String home) {
         String[] split = home.split("\\+", 7);
         return new Location(Bukkit.getWorld(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), Double.parseDouble(split[4]), (float) Double.parseDouble(split[5]), (float) Double.parseDouble(split[6]));
     }
 
-    public String unFormatPlayerHomeName(String home) {
+    public String parseHomeName(String home) {
         String[] split = home.split("\\+", 7);
         return split[0];
     }
 
-    public String unFormatPlayerHomeWorld(String home) {
+    public String parseHomeWorld(String home) {
         String[] split = home.split("\\+", 7);
         return split[1];
     }
 
-    public List<String> getOnlinePlayers() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        List<String> players = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()) if (!plugin.getData().getVanishedPlayers().contains(player.getUniqueId())) players.add(player.getName());
-        return players;
-    }
-
-    public void teleportTimer(Player player, Player target) {
+    public void teleportTimeoutTimer(Player player, Player target) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
@@ -421,7 +251,7 @@ public class PU {
         },1200L);
     }
 
-    public void tradeRequestTimer(Player owner, Player trader) {
+    public void tradeRequestTimeoutTimer(Player owner, Player trader) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
@@ -435,7 +265,7 @@ public class PU {
         },1200L));
     }
 
-    public void pvpRequestTimer(Player owner, Player target) {
+    public void pvpRequestTimeoutTimer(Player owner, Player target) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
@@ -447,14 +277,6 @@ public class PU {
                 data.removeDuelRequesting(ownerUUID);
             }
         },1200L));
-    }
-
-    public void addPlayerClickDelay(UUID uuid) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Data data = plugin.getData();
-        data.addPlayerClickDelay(uuid);
-        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.runTaskLater(plugin, () -> data.removePlayerClickDelay(uuid), Settings.CLICK_DELAY.getValue());
     }
 
     public void addRandomTeleportDelay(UUID uuid) {
@@ -531,7 +353,7 @@ public class PU {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             if (!Bukkit.getOnlinePlayers().isEmpty()) {
-                Bukkit.getServer().sendPlayerListHeaderAndFooter(Lang.TABLIST_HEADER.getComponent(null), Lang.TABLIST_FOOTER.getComponent(new String[] { String.valueOf(getOnlinePlayers().size()) }));
+                Bukkit.getServer().sendPlayerListHeaderAndFooter(Lang.TABLIST_HEADER.getComponent(null), Lang.TABLIST_FOOTER.getComponent(new String[] { String.valueOf( BukkitUtils.getOnlinePlayers().size()) }));
             }
         }, 10, 40);
     }
@@ -548,10 +370,9 @@ public class PU {
         for (Team team : board.getTeams()) team.unregister();
     }
 
-
     public void updateDisplayName(Player player, boolean afk) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         Data data = plugin.getData();
 
         UUID uuid = player.getUniqueId();
@@ -561,12 +382,12 @@ public class PU {
         Objective health = board.getObjective("health");
 
         if (health == null) {
-            Objective o = board.registerNewObjective("health", "health", Component.text(format("\uE78E")), RenderType.HEARTS);
+            Objective o = board.registerNewObjective("health", "health", BukkitUtils.parseColorComponent("\uE78E"), RenderType.HEARTS);
             o.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
 
-        String rank = cache.getRank(uuid);
-        String priority = RankList.valueOf(rank).getPriority();
+        String rank = cacheManager.getRank(uuid);
+        String priority = Rank.valueOf(rank).getPriority();
 
         String name = priority + data.getTeamNumber();
         data.setTeamNumber(data.getTeamNumber() + 1);
@@ -578,23 +399,22 @@ public class PU {
         if (team != null) {
             team.addEntry(player.getName());
 
-            String prefix = cache.getPrefix(uuid) + " ";
-            String suffix = cache.getSuffix(uuid);
-            String colorString = cache.getColor(uuid);
-            String colorChar = "&" + org.bukkit.ChatColor.valueOf(colorString).getChar();
-            NamedTextColor namedTextColor = NameTextColors.valueOf(colorString).getColor();
-            int prestigeLevel = cache.getPrestige(uuid);
+            String prefix = cacheManager.getPrefix(uuid) + " ";
+            String suffix = cacheManager.getSuffix(uuid);
+            ChatColor chatColor = cacheManager.getColor(uuid);
+            String colorChar = "&" + chatColor.getChar();
+            NamedTextColor namedTextColor = NameTextColors.valueOf(chatColor.name()).getColor();
+            int prestigeLevel = cacheManager.getPrestige(uuid);
             String levelColor = "&a&l";
             if (prestigeLevel >= 10) levelColor = "&e&l";
             String prestige = prestigeLevel != 0 ? "&6[" + levelColor + prestigeLevel + "&6] " : "";
             suffix = afk ? suffix + " &c&lAFK" : suffix;
 
             team.color(namedTextColor);
-            team.suffix(formatC(suffix));
-            team.prefix(formatC(prefix + prestige));
-
-            player.displayName(formatC(prefix + prestige + colorChar + player.getName() + suffix));
-            player.playerListName(formatC(prefix + prestige + colorChar + player.getName() + suffix));
+            team.suffix(BukkitUtils.parseColorComponent(suffix));
+            team.prefix(BukkitUtils.parseColorComponent(prefix + prestige));
+            player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
+            player.playerListName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
         }
     }
 
@@ -654,35 +474,35 @@ public class PU {
 
     public void scheduleBoosterChecker() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            if (cache.areBoosters()) {
-                String id = cache.getActiveBoosterID() != null ? cache.getActiveBoosterID() : cache.getNextBoosterQueueID();
-                String name = cache.getBoosterPlayerName(id);
-                String multiplier = cache.getBoosterMultiplier(id);
-                long time = cache.getBoosterTime(id);
-                long duration = cache.getBoosterDuration(id);
+            if (cacheManager.areBoosters()) {
+                int id = cacheManager.getActiveBoosterID() != 0 ? cacheManager.getActiveBoosterID() : cacheManager.getNextBoosterQueueID();
+                String name = cacheManager.getBoosterPlayerName(id);
+                int multiplier = cacheManager.getBoosterMultiplier(id);
+                long time = cacheManager.getBoosterTime(id);
+                long duration = cacheManager.getBoosterDuration(id);
                 float barProgress = (float) time / duration * 1 < 0 ? 0 : (float) time / duration * 1;
 
-                if (boosterBar == null) boosterBar = BossBar.bossBar(Lang.BOOSTER_TITLE.getComponent(new String[] { multiplier, formatSeconds(time) }), barProgress, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_20);
+                if (boosterBar == null) boosterBar = BossBar.bossBar(Lang.BOOSTER_TITLE.getComponent(new String[] { String.valueOf(multiplier), BukkitUtils.parseSeconds(time) }), barProgress, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_20);
 
-                if (cache.isBoosterActive()) {
+                if (cacheManager.isBoosterActive()) {
                     if (time > 0) {
-                        boosterBar.name(Lang.BOOSTER_TITLE.getComponent(new String[] { multiplier, formatSeconds(time) }));
+                        boosterBar.name(Lang.BOOSTER_TITLE.getComponent(new String[] { String.valueOf(multiplier), BukkitUtils.parseSeconds(time) }));
                         boosterBar.progress(barProgress);
                     } else {
-                        cache.removeBooster(id);
-                        Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BOOSTER_ENDED.getComponent(new String[] { multiplier, name })));
+                        cacheManager.removeBooster(id);
+                        Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BOOSTER_ENDED.getComponent(new String[] { String.valueOf(multiplier), name })));
                         Bukkit.getServer().hideBossBar(boosterBar);
                     }
-                } else if (id != null) {
-                    cache.setBoosterActive(id, true);
-                    time = cache.getBoosterTime(id);
-                    boosterBar.name(Lang.BOOSTER_TITLE.getComponent(new String[] { multiplier, formatSeconds(time) }));
+                } else if (id != 0) {
+                    cacheManager.setBoosterActive(id, true);
+                    time = cacheManager.getBoosterTime(id);
+                    boosterBar.name(Lang.BOOSTER_TITLE.getComponent(new String[] { String.valueOf(multiplier), BukkitUtils.parseSeconds(time) }));
                     boosterBar.progress(1);
-                    Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BOOSTER_STARTED.getComponent(new String[] { multiplier, name })));
+                    Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.BROADCAST_BOOSTER_STARTED.getComponent(new String[] { String.valueOf(multiplier), name })));
                     Bukkit.getServer().showBossBar(boosterBar);
                 }
             }
@@ -711,77 +531,14 @@ public class PU {
 
     public void schedulePlayTimeChecker() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 UUID uuid = player.getUniqueId();
-                cache.setPlayTime(uuid, player.getStatistic(Statistic.PLAY_ONE_MINUTE));
+                cacheManager.setPlayTime(uuid, player.getStatistic(Statistic.PLAY_ONE_MINUTE));
             }
         }), 0L, 1200L);
-    }
-
-    public String formatTime(long time) {
-        long hours = time / 1000 + 6;
-        long minutes = (time % 1000) * 60 / 1000;
-        String ampm = "AM";
-        if (hours >= 12) {
-            hours -= 12;
-            ampm = "PM";
-        }
-        if (hours >= 12) {
-            hours -= 12;
-            ampm = "AM";
-        }
-        if (hours == 0) hours = 12;
-        String mm = "0" + minutes;
-        mm = mm.substring(mm.length() - 2);
-        return hours + ":" + mm + " " + ampm;
-    }
-
-    public String formatSeconds(long time) {
-        long days = TimeUnit.SECONDS.toDays(time);
-        long hours = (TimeUnit.SECONDS.toHours(time) - TimeUnit.DAYS.toHours(days));
-        long minutes = (TimeUnit.SECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(hours) - TimeUnit.DAYS.toMinutes(days));
-        long seconds = (TimeUnit.SECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(minutes) - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.DAYS.toSeconds(days));
-
-        if (days != 0) return "&e" + days + "&6d&e, " + hours + "&6h&e, " + minutes + "&6m&e, " + seconds + "&6s";
-        else if (hours != 0) return "&e" + hours + "&6h&e, " + minutes + "&6m&e, " + seconds + "&6s";
-        else if (minutes != 0) return "&e" + minutes + "&6m&e, " + seconds + "&6s";
-        else return "&e" + seconds + "&6s";
-    }
-
-    public long unFormatSeconds(String time) {
-        String numberOnly = time.replaceAll("[^0-9]", "");
-        Scanner numberScanner = new Scanner(numberOnly);
-        if (numberScanner.hasNextInt()) {
-            int value = Integer.parseInt(numberOnly);
-            String letter = time.replaceAll("[^A-Za-z]+", "").toLowerCase();
-            switch (letter) {
-                case "w": return value * 604800L;
-                case "d": return value * 86400L;
-                case "h": return value * 3600L;
-                case "m": return value * 60L;
-                case "s": return value;
-            }
-        }
-        return 0;
-    }
-
-    public void applyHeadSkin(ItemStack head, String base64, UUID uuid) {
-        try {
-            SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-            GameProfile profile = new GameProfile(uuid, null);
-            profile.getProperties().put("textures", new Property("textures", base64));
-            if (skullMeta != null) {
-                Method mtd = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
-                mtd.setAccessible(true);
-                mtd.invoke(skullMeta, profile);
-            }
-            head.setItemMeta(skullMeta);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-            ex.printStackTrace();
-        }
     }
 
     public ItemStack createSpawner(EntityType type) {
@@ -791,47 +548,10 @@ public class PU {
             CreatureSpawner spawnerCS = (CreatureSpawner) spawnerMeta.getBlockState();
             spawnerCS.setSpawnedType(type);
             spawnerMeta.setBlockState(spawnerCS);
-            spawnerMeta.displayName(Lang.SPAWNER_NAME.getComponent(new String[] { formatCapitalization(type.name()) }));
+            spawnerMeta.displayName(Lang.SPAWNER_NAME.getComponent(new String[] { BukkitUtils.parseCapitalization(type.name()) }));
             spawner.setItemMeta(spawnerMeta);
         }
         return spawner;
-    }
-
-    public ItemStack getItem(Material type, String name, String lore, String skin) {
-
-        ItemStack item = new ItemStack(type);
-        if (skin != null) applyHeadSkin(item, skin, UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffffff"));
-        ItemMeta itemMeta = item.getItemMeta();
-        if (name != null) itemMeta.displayName(formatC(name));
-        if (lore != null) {
-            String[] split = StringUtils.split(lore, "\n");
-            List<Component> lines = new ArrayList<>();
-            for (String line : split) lines.add(formatC(line));
-            itemMeta.lore(lines);
-        }
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        item.setItemMeta(itemMeta);
-        return item;
-    }
-
-    public int getExpToLevelUp(int level) {
-        if (level <= 15) return 2 * level + 7;
-        else if (level <= 30) return 5 * level - 38;
-        else return 9 * level - 158;
-    }
-
-    public int getExpAtLevel(int level) {
-        if (level <= 16) return (int) (Math.pow(level, 2) + 6 * level);
-        else if(level <= 31) return (int) (2.5 * Math.pow(level, 2) - 40.5 * level + 360.0);
-        else return (int) (4.5 * Math.pow(level, 2) - 162.5 * level + 2220.0);
-    }
-
-    public int getPlayerExp(Player player) {
-        int exp = 0;
-        int level = player.getLevel();
-        exp += getExpAtLevel(level);
-        exp += Math.round(getExpToLevelUp(level) * player.getExp());
-        return exp;
     }
 
     public int getMaxHomes(Player player) {
@@ -847,65 +567,19 @@ public class PU {
         return accruedHomes + defaultHomeAmount;
     }
 
-    public int getFreeSpace(Player player, ItemStack itemStack) {
-        ItemStack item = new ItemStack(itemStack);
-        item.setAmount(1);
-        int freeSpaceCount = 0;
-        for (int slot = 0; slot <= 35; slot++) {
-            ItemStack slotItem = player.getInventory().getItem(slot);
-            if (slotItem == null || slotItem.getType() == Material.AIR) {
-                freeSpaceCount += item.getMaxStackSize();
-            } else if (slotItem.isSimilar(item)) freeSpaceCount += Math.max(0, slotItem.getMaxStackSize() - slotItem.getAmount());
-        }
-        return freeSpaceCount;
-    }
-
-    public boolean containOnlyNumbers(String string) {
-        return string.matches("-?[1-9]\\d*|0");
-    }
-
-    public int getDropCount(int level) {
-        int j = random.nextInt(level + 2) - 1;
-        if (j < 0) j = 0;
-        return (j + 1);
-    }
-
-    public String serializeItemStack(ItemStack item) {
-        try {
-            ByteArrayOutputStream io = new ByteArrayOutputStream();
-            BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
-            os.writeObject(item);
-            os.flush();
-            byte[] serializedObject = io.toByteArray();
-            return Base64.getEncoder().encodeToString(serializedObject);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public ItemStack decodeItemStack(String serialized) {
-        try {
-            byte[] serializedObject = Base64.getDecoder().decode(serialized);
-            ByteArrayInputStream in = new ByteArrayInputStream(serializedObject);
-            BukkitObjectInputStream is = new BukkitObjectInputStream(in);
-            return (ItemStack) is.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public HashMap<String, Long> sortByValue(HashMap<String, Long> hm) {
-        // Create a list from elements of HashMap
-        List<Map.Entry<String, Long>> list = new LinkedList<>(hm.entrySet());
-
-        // Sort the list
+    public HashMap<UUID, Long> sortByLong(Map<UUID, Long> hm) {
+        List<Map.Entry<UUID, Long>> list = new LinkedList<>(hm.entrySet());
         list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        HashMap<UUID, Long> temp = new LinkedHashMap<>();
+        for (Map.Entry<UUID, Long> aa : list) temp.put(aa.getKey(), aa.getValue());
+        return temp;
+    }
 
-        // put data from sorted list to hashmap
-        HashMap<String, Long> temp = new LinkedHashMap<>();
-        for (Map.Entry<String, Long> aa : list) temp.put(aa.getKey(), aa.getValue());
+    public HashMap<UUID, Integer> sortByInteger(Map<UUID, Integer> hm) {
+        List<Map.Entry<UUID, Integer>> list = new LinkedList<>(hm.entrySet());
+        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        HashMap<UUID, Integer> temp = new LinkedHashMap<>();
+        for (Map.Entry<UUID, Integer> aa : list) temp.put(aa.getKey(), aa.getValue());
         return temp;
     }
 }

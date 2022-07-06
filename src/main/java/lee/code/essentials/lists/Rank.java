@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public enum RankList {
+public enum Rank {
 
     //NORMAL
     NOMAD(false, "&7[&#00C1FENomad&7]", "YELLOW", 5, "ADVENTURER", 1000, 1000, "9"),

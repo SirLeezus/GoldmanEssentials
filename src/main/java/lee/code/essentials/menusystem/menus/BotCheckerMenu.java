@@ -1,7 +1,7 @@
 package lee.code.essentials.menusystem.menus;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.menusystem.Menu;
 import lee.code.essentials.menusystem.PlayerMU;
@@ -34,7 +34,7 @@ public class BotCheckerMenu extends Menu {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Player player = pmu.getOwner();
         UUID uuid = player.getUniqueId();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         ItemStack clickedItem = e.getCurrentItem();
 
@@ -44,7 +44,7 @@ public class BotCheckerMenu extends Menu {
         if (clickedItem.equals(fillerGlass)) return;
 
         if (clickedItem.equals(botChecker)) {
-            cache.setBotChecked(uuid);
+            cacheManager.setBotStatus(uuid, false);
             player.closeInventory();
             playClickSound(player);
         }

@@ -1,7 +1,7 @@
 package lee.code.essentials.lists;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
@@ -40,12 +40,11 @@ public enum CustomCraftingRecipe {
 
     public void registerRecipe() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         NamespacedKey key = new NamespacedKey(plugin, item.getType().name());
 
         ItemMeta itemMeta = item.getItemMeta();
         if (id != 0) itemMeta.setCustomModelData(id);
-        if (customName != null) itemMeta.displayName(pu.formatC(customName));
+        if (customName != null) itemMeta.displayName(BukkitUtils.parseColorComponent(customName));
         item.setItemMeta(itemMeta);
 
         if (shapeless) {

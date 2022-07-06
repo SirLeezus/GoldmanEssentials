@@ -2,6 +2,7 @@ package lee.code.essentials.listeners;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import lee.code.essentials.GoldmanEssentials;
+import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.Settings;
 import org.bukkit.Chunk;
@@ -52,31 +53,43 @@ public class ChunkEntityListener implements Listener {
     @EventHandler
     public void onEntityPlace(PlayerInteractEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        PU pu = plugin.getPU();
         if (e.hasBlock()) {
             ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
             Material type = item.getType();
             Chunk chunk = e.getPlayer().getChunk();
             Player player =  e.getPlayer();
 
-            if (type.name().contains("BOAT")) {
-                if (plugin.getPU().countEntitiesInChunk(chunk, EntityType.BOAT) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
-                    e.setCancelled(true);
-                    player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+            switch (type) {
+                case SPRUCE_BOAT, OAK_BOAT, BIRCH_BOAT, DARK_OAK_BOAT, ACACIA_BOAT, JUNGLE_BOAT, MANGROVE_BOAT -> {
+                    if (pu.countEntitiesInChunk(chunk, EntityType.BOAT) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
+                        e.setCancelled(true);
+                        player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                    }
                 }
-            } else if (type.equals(Material.ITEM_FRAME)) {
-                if (plugin.getPU().countEntitiesInChunk(chunk, EntityType.ITEM_FRAME) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
-                    e.setCancelled(true);
-                    player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                case SPRUCE_CHEST_BOAT, OAK_CHEST_BOAT, BIRCH_CHEST_BOAT, DARK_OAK_CHEST_BOAT, ACACIA_CHEST_BOAT, JUNGLE_CHEST_BOAT, MANGROVE_CHEST_BOAT -> {
+                    if (pu.countEntitiesInChunk(chunk, EntityType.CHEST_BOAT) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
+                        e.setCancelled(true);
+                        player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                    }
                 }
-            } else if (type.equals(Material.ARMOR_STAND)) {
-                if (plugin.getPU().countEntitiesInChunk(chunk, EntityType.ARMOR_STAND) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
-                    e.setCancelled(true);
-                    player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                case ITEM_FRAME -> {
+                    if (pu.countEntitiesInChunk(chunk, EntityType.ITEM_FRAME) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
+                        e.setCancelled(true);
+                        player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                    }
                 }
-            } else if (type.equals(Material.GLOW_ITEM_FRAME)) {
-                if (plugin.getPU().countEntitiesInChunk(chunk, EntityType.GLOW_ITEM_FRAME) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
-                    e.setCancelled(true);
-                    player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                case GLOW_ITEM_FRAME -> {
+                    if (pu.countEntitiesInChunk(chunk, EntityType.GLOW_ITEM_FRAME) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
+                        e.setCancelled(true);
+                        player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                    }
+                }
+                case ARMOR_STAND -> {
+                    if (pu.countEntitiesInChunk(chunk, EntityType.ARMOR_STAND) >= Settings.MAX_ENTITY_PER_CHUNK.getValue()) {
+                        e.setCancelled(true);
+                        player.sendActionBar(Lang.ERROR_CHUNK_MAX_ENTITIES.getComponent(new String[] { String.valueOf(Settings.MAX_ENTITY_PER_CHUNK.getValue()) }));
+                    }
                 }
             }
         }

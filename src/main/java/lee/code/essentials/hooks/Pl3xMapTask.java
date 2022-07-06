@@ -2,7 +2,7 @@ package lee.code.essentials.hooks;
 
 import lee.code.chunks.ChunkAPI;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import net.pl3x.map.api.Key;
 import net.pl3x.map.api.MapWorld;
@@ -70,8 +70,8 @@ public class Pl3xMapTask extends BukkitRunnable {
 
     private MarkerOptions.Builder options(UUID owner, boolean isAdminChunk) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
-        Color color = isAdminChunk ? Color.RED : ChunkColors.valueOf(cache.getColor(owner)).getColor();
+        CacheManager cacheManager = plugin.getCacheManager();
+        Color color = isAdminChunk ? Color.RED : ChunkColors.valueOf(cacheManager.getColor(owner).name()).getColor();
         OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
         String ownerName = player.getName() == null ? "Unknown" : player.getName();
         String clickMessage = isAdminChunk ? "Admin Chunk" : "{owner}'s Chunk".replace("{owner}", ownerName);

@@ -1,5 +1,6 @@
 package lee.code.essentials.database;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import org.bukkit.Bukkit;
@@ -183,7 +184,7 @@ public class SQLite {
                     } else pstmt.setString(i, "0");
                 }
                 pstmt.addBatch();
-                System.out.println(pu.format("&e" + rs.getString(1) + " converted: &a#" + convertedNumber++));
+                System.out.println(BukkitUtils.parseColorString("&e" + rs.getString(1) + " converted: &a#" + convertedNumber++));
             }
 
             pstmt.executeBatch();
@@ -368,7 +369,7 @@ public class SQLite {
 
     public void loadPunishmentData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         try {
             ResultSet rs = getResult("SELECT * FROM punishment;");
 
@@ -385,12 +386,12 @@ public class SQLite {
                 String banreason = rs.getString("banreason");
                 String mutereason = rs.getString("mutereason");
                 String bot = rs.getString("bot");
-                cache.setPunishmentData(uuid, staff, datebanned, datemuted, banned, tempbanned, tempmuted, muted, banreason, mutereason, bot, false);
-                if (!banned.equals("0")) cache.setBanList(uuid, true);
-                else if (!tempbanned.equals("0")) cache.setBanList(uuid, true);
+                //cacheManager.setPunishmentData(uuid, staff, datebanned, datemuted, banned, tempbanned, tempmuted, muted, banreason, mutereason, bot, false);
+                //if (!banned.equals("0")) cacheManager.setBanList(uuid, true);
+                //else if (!tempbanned.equals("0")) cacheManager.setBanList(uuid, true);
                 count++;
             }
-            Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bPlayer Punishment Data Loaded: &3" + count));
+            Bukkit.getLogger().log(Level.INFO, BukkitUtils.parseColorString("&bPlayer Punishment Data Loaded: &3" + count));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -398,7 +399,7 @@ public class SQLite {
 
     public void loadPlayerData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         try {
             ResultSet rs = getResult("SELECT * FROM player_data;");
 
@@ -420,10 +421,10 @@ public class SQLite {
                 String votes = rs.getString("votes");
                 String playtime = rs.getString("playtime");
 
-                cache.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes, playtime, false);
+                //cacheManager.setPlayerData(uuid, balance, ranked, perms, prefix, suffix, color, level, prestige, vanish, god, homes, flying, votes, playtime, false);
                 count++;
             }
-            Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bPlayer Account Data Loaded: &3" + count));
+            Bukkit.getLogger().log(Level.INFO, BukkitUtils.parseColorString("&bPlayer Account Data Loaded: &3" + count));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -432,7 +433,7 @@ public class SQLite {
 
     public void loadBoosterData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         try {
             ResultSet rs = getResult("SELECT * FROM boosters;");
 
@@ -446,10 +447,10 @@ public class SQLite {
                 String active = rs.getString("active");
                 String duration = rs.getString("duration");
 
-                cache.setBoosterData(id, uuid, multiplier, time, active, duration, false);
+                //cacheManager.setBoosterData(id, uuid, multiplier, time, active, duration, false);
                 count++;
             }
-            Bukkit.getLogger().log(Level.INFO, plugin.getPU().format("&bBoosters Loaded: &3" + count));
+            Bukkit.getLogger().log(Level.INFO, BukkitUtils.parseColorString("&bBoosters Loaded: &3" + count));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -457,7 +458,7 @@ public class SQLite {
 
     public void loadServerData() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         try {
             ResultSet rs = getResult("SELECT * FROM server WHERE server = 'server';");
             if (rs.next()) {
@@ -468,7 +469,7 @@ public class SQLite {
                 String netherResourceSpawn = rs.getString("nether_resource_spawn");
                 String endResourceSpawn = rs.getString("end_resource_spawn");
 
-                cache.setServerData(spawn, joins, worldResourceTime, worldResourceSpawn, netherResourceSpawn, endResourceSpawn);
+                //cacheManager.setServerData(spawn, joins, worldResourceTime, worldResourceSpawn, netherResourceSpawn, endResourceSpawn);
             }
         } catch (SQLException e) {
             e.printStackTrace();

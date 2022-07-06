@@ -1,7 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -25,16 +24,13 @@ public class ItemInfoCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
-
         if (sender instanceof Player player) {
             ItemStack handItem = player.getInventory().getItemInMainHand();
             ItemMeta itemMeta = handItem.getItemMeta();
             Component id = Component.text(handItem.getType().name()).color(NamedTextColor.YELLOW);
             Component displayName = itemMeta.hasDisplayName() ? itemMeta.displayName() : Component.empty();
             Component spacer = Component.text(" ");
-            Component downSpacer = pu.formatC("\n");
+            Component downSpacer = BukkitUtils.parseColorComponent("\n");
             Component lore = Component.empty();
             Component enchantments = Component.empty();
             Component durability = Component.empty();
@@ -42,12 +38,12 @@ public class ItemInfoCMD implements CommandExecutor {
             if (displayName != null) {
                 List<Component> lines = new ArrayList<>();
 
-                if (itemMeta.hasLore()) for (Component loreLine : Objects.requireNonNull(itemMeta.lore())) lore = lore.append(pu.formatC("\n&5&o")).append(loreLine);
+                if (itemMeta.hasLore()) for (Component loreLine : Objects.requireNonNull(itemMeta.lore())) lore = lore.append(BukkitUtils.parseColorComponent("\n&5&o")).append(loreLine);
                 if (itemMeta.hasEnchants() || itemMeta instanceof EnchantmentStorageMeta) {
                     Map<Enchantment, Integer> enchants = itemMeta instanceof EnchantmentStorageMeta book ? book.getStoredEnchants() : itemMeta.getEnchants();
                     for (Map.Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
-                        Component enchantment = pu.formatC(pu.formatCapitalization(enchant.getKey().getKey().getKey()));
-                        Component enchantmentLevel = enchant.getKey().getMaxLevel() > 1 ? pu.formatC(pu.getRomanNumber(enchant.getValue())) : Component.empty();
+                        Component enchantment = BukkitUtils.parseColorComponent(BukkitUtils.parseCapitalization(enchant.getKey().getKey().getKey()));
+                        Component enchantmentLevel = enchant.getKey().getMaxLevel() > 1 ? BukkitUtils.parseColorComponent(BukkitUtils.getRomanNumber(enchant.getValue())) : Component.empty();
                         Component newEnchantLine = downSpacer.append(enchantment.append(spacer).append(enchantmentLevel)).color(enchant.getKey().isCursed() ? NamedTextColor.RED : NamedTextColor.GRAY);
                         enchantments = enchantments.append(newEnchantLine);
                     }
@@ -55,16 +51,16 @@ public class ItemInfoCMD implements CommandExecutor {
                 if (itemMeta instanceof Damageable damageable) {
                     int maxDam = handItem.getType().getMaxDurability();
                     int dam = maxDam - damageable.getDamage();
-                    durability = pu.formatC("&e" + dam + "/" + maxDam);
+                    durability = BukkitUtils.parseColorComponent("&e" + dam + "/" + maxDam);
                 }
 
                 lines.add(Lang.COMMAND_ITEM_INFO_TITLE.getComponent(null));
                 lines.add(spacer);
-                lines.add(pu.formatC("&6&lItem ID: ").append(id));
-                lines.add(pu.formatC("&6&lDisplay Name: ").append(displayName));
-                lines.add(pu.formatC("&6&lLore: ").append(lore));
-                lines.add(pu.formatC("&6&lEnchantments: ").append(enchantments));
-                lines.add(pu.formatC("&6&lDurability: ").append(durability));
+                lines.add(BukkitUtils.parseColorComponent("&6&lItem ID: ").append(id));
+                lines.add(BukkitUtils.parseColorComponent("&6&lDisplay Name: ").append(displayName));
+                lines.add(BukkitUtils.parseColorComponent("&6&lLore: ").append(lore));
+                lines.add(BukkitUtils.parseColorComponent("&6&lEnchantments: ").append(enchantments));
+                lines.add(BukkitUtils.parseColorComponent("&6&lDurability: ").append(durability));
                 lines.add(spacer);
                 lines.add(Lang.COMMAND_ITEM_INFO_SPLITTER.getComponent(null));
 

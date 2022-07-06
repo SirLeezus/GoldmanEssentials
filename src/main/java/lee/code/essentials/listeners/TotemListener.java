@@ -17,7 +17,7 @@ public class TotemListener implements Listener {
                 if (player.getInventory().contains(new ItemStack(Material.TOTEM_OF_UNDYING))) {
                     if ((player.getHealth() - e.getFinalDamage()) <= 0) {
                         e.setCancelled(true);
-                        player.teleport(GoldmanEssentials.getPlugin().getCache().getSpawn());
+                        player.teleport(GoldmanEssentials.getPlugin().getCacheManager().getSpawn());
                     }
                 }
             }

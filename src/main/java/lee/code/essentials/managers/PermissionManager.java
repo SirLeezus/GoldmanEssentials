@@ -1,9 +1,9 @@
 package lee.code.essentials.managers;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
-import lee.code.essentials.lists.PremiumRankList;
-import lee.code.essentials.lists.RankList;
+import lee.code.essentials.database.CacheManager;
+import lee.code.essentials.lists.PremiumRank;
+import lee.code.essentials.lists.Rank;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
@@ -22,7 +22,7 @@ public class PermissionManager {
 
     public void register(Player player) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
         UUID uuid = player.getUniqueId();
 
         PermissionAttachment attachment = player.addAttachment(plugin);
@@ -31,7 +31,7 @@ public class PermissionManager {
 
             for (PermissionAttachmentInfo perm : player.getEffectivePermissions()) attachment.setPermission(perm.getPermission(), false);
 
-            RankList rank = RankList.valueOf(cache.getRank(uuid));
+            Rank rank = Rank.valueOf(cacheManager.getRank(uuid));
             switch (rank) {
                 case MOD:
                 case ADMIN:
@@ -40,7 +40,7 @@ public class PermissionManager {
                     break;
                 default: for (String perm : defaultPerms) attachment.setPermission(perm, true);
             }
-            for (String perm : cache.getPerms(uuid)) attachment.setPermission(perm, true);
+            for (String perm : cacheManager.getPerms(uuid)) attachment.setPermission(perm, true);
         } else for (String perm : defaultPerms) attachment.setPermission(perm, true);
 
         player.recalculatePermissions();
@@ -155,6 +155,7 @@ public class PermissionManager {
 
         // staff
         staffPerms.add("essentials.command.ban");
+        staffPerms.add("essentials.command.punished");
         staffPerms.add("essentials.command.unban");
         staffPerms.add("essentials.command.tempban");
         staffPerms.add("essentials.command.mute");
@@ -234,14 +235,14 @@ public class PermissionManager {
         elitePerms.add("trails.use.ender_pearl_throw");
     }
 
-    public void addPremiumPerms(UUID uuid, PremiumRankList rank) {
+    public void addPremiumPerms(UUID uuid, PremiumRank rank) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         switch (rank) {
-            case VIP -> cache.addPermList(uuid, vipPerms);
-            case MVP -> cache.addPermList(uuid, mvpPerms);
-            case ELITE -> cache.addPermList(uuid, elitePerms);
+            case VIP -> cacheManager.addPermList(uuid, vipPerms);
+            case MVP -> cacheManager.addPermList(uuid, mvpPerms);
+            case ELITE -> cacheManager.addPermList(uuid, elitePerms);
         }
     }
 }

@@ -228,10 +228,11 @@ commands:
     description: Unbans a player that has been banned.
     permission: essentials.command.unban
     usage: "/unban &f<player>"
-  banlist:
-    description: Lists all the players that are banned.
-    permission: essentials.command.banlist
-    usage: "/banlist"
+  punished:
+    description: Lists all the players that are punished.
+    permission: essentials.command.punished
+    aliases: [banlist]
+    usage: "/punished"
   mute:
     description: Mutes a player from server chat.
     permission: essentials.command.mute

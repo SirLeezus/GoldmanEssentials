@@ -1,6 +1,6 @@
 package lee.code.essentials.commands.tabs;
 
-import lee.code.essentials.GoldmanEssentials;
+import lee.code.core.util.bukkit.BukkitUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -18,11 +18,9 @@ public class TempBanTab implements TabCompleter {
     
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
         if (sender instanceof Player) {
             if (args.length == 1) {
-                return StringUtil.copyPartialMatches(args[0], plugin.getPU().getOnlinePlayers(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[0], BukkitUtils.getOnlinePlayers(), new ArrayList<>());
             } else if (args.length == 2) {
                 return StringUtil.copyPartialMatches(args[1], Arrays.asList("1w", "1d", "1h", "1m", "1s"), new ArrayList<>());
             } else return blank;

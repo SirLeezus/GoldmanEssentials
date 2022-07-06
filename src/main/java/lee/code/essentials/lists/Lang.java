@@ -1,7 +1,6 @@
 package lee.code.essentials.lists;
 
-import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -68,6 +67,7 @@ public enum Lang {
     KICKED("&cYou have been kicked from the server for: &7{0}"),
     MUTED("&cYou have been muted from chat forever for: &7{0}"),
     TEMPMUTED("&cYou have been temporarily muted from chat for &e{0} &cfor: &7{1}"),
+    BOTMUTED("&cYou need to verify you're not a bot. Relog if you don't see a menu."),
     TEMPUNMUTED("&aYour temporary mute is now over. Please follow our rules."),
     SPAM_CHAT("&cPlease slow down the speed you're sending messages."),
     SPAM_COMMAND("&cPlease slow down the speed you're requesting commands."),
@@ -117,6 +117,7 @@ public enum Lang {
     COMMAND_STAFFCHAT_TOGGLE_SUCCESSFUL("&aStaff chat has been toggled {0}&a."),
     COMMAND_SETRANK_PREMIUM_SUCCESSFUL("&dThank you for supporting our server by purchasing the {0} &drank! Your new suffix, trails, commands and pets have been set!"),
     COMMAND_BALANCE_SUCCESSFUL("&2Balance&7: &6${0}"),
+    COMMAND_BALANCE_TARGET_SUCCESSFUL("&2{0}'s balance&7: &6${1}"),
     COMMAND_SETPREFIX_SUCCESSFUL("&aYou successfully set &6{0}'s &aprefix to: &f{1}"),
     COMMAND_SETSUFFIX_SUCCESSFUL("&aYou successfully set &6{0}'s &asuffix to: &f{1}"),
     COMMAND_GLOW_SUCCESSFUL("&aYour glow was successfully toggled {0}&a."),
@@ -138,7 +139,7 @@ public enum Lang {
     COMMAND_SELL_SUCCESSFUL("&aYou successfully sold &b{0} x{1} &afor &6${2}&a!"),
     COMMAND_WORTH_SUCCESSFUL("&aThe item &b{0} &acan be sold to the server for &6${1} &aeach!\n" + PREFIX.getString() + "&aYour hand is holding &6${2} &aworth.\n" + PREFIX.getString() + "&aYour inventory is holding &6${3} &aworth."),
     COMMAND_WORTH_LIST_LINE("&3{0}. &e{1} &7- &6${2}"),
-    COMMAND_BANLIST_NO_BANS("&aThere are currently no players banned."),
+    COMMAND_PUNISHED_NO_BANS("&aThere are currently no players banned."),
     COMMAND_TIME_SUCCESSFUL("&aThe time for world &e{0} &awas changed to &e{1}&a."),
     COMMAND_SEEN_SUCCESSFUL("&aThe last time the player &6{0} &ajoined was &b{1}&a."),
     COMMAND_BOOSTER_ID_HOVER("&9&lID&7: &e{0}"),
@@ -157,7 +158,7 @@ public enum Lang {
     COMMAND_BALANCETOP_TITLE("&a----- &e[ &2&lBalance Leaderboard &e] &a-----"),
     COMMAND_PLAYTIMETOP_TITLE("&a---- &e[ &2&lPlay Time Leaderboard &e] &a----"),
     COMMAND_EMOJI_TITLE("&a--------------- &e[ &2&lEmojis &e] &a---------------"),
-    COMMAND_BANLIST_TITLE("&a--------- &e[ &2&lBanned Players &e] &a---------"),
+    COMMAND_PUNISHED_TITLE("&a--------- &e[ &2&lPunished Players &e] &a---------"),
     COMMAND_RANKUP_TITLE("&a-------------- &e[ &2&lRankup &e] &a--------------"),
     COMMAND_RANKUP_SPLITTER("&a---------------------------------------"),
     COMMAND_RANKLIST_TITLE("&a------------ &e[ &2&lRank List &e] &a------------"),
@@ -332,20 +333,16 @@ public enum Lang {
     @Getter private final String string;
 
     public String getString(String[] variables) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         String value = string;
-        if (variables == null || variables.length == 0) return pu.format(value);
+        if (variables == null || variables.length == 0) return BukkitUtils.parseColorString(value);
         for (int i = 0; i < variables.length; i++) value = value.replace("{" + i + "}", variables[i]);
-        return pu.format(value);
+        return BukkitUtils.parseColorString(value);
     }
 
     public Component getComponent(String[] variables) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         String value = string;
-        if (variables == null || variables.length == 0) return pu.formatC(value);
+        if (variables == null || variables.length == 0) return BukkitUtils.parseColorComponent(value);
         for (int i = 0; i < variables.length; i++) value = value.replace("{" + i + "}", variables[i]);
-        return pu.formatC(value);
+        return BukkitUtils.parseColorComponent(value);
     }
 }

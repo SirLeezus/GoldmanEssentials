@@ -7,8 +7,8 @@ import lee.code.chunks.ChunkAPI;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
-import lee.code.essentials.database.Cache;
-import lee.code.essentials.database.SQLite;
+import lee.code.essentials.database.CacheManager;
+import lee.code.essentials.database.DatabaseManager;
 import lee.code.essentials.hooks.Pl3xMapHook;
 import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;
@@ -21,9 +21,10 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private PU pU;
     @Getter private PermissionManager permissionManager;
     @Getter private Data data;
-    @Getter private SQLite sqLite;
+    //@Getter private SQLite sqLite;
     @Getter private WorldManager worldManager;
-    @Getter private Cache cache;
+    @Getter private CacheManager cacheManager;
+    @Getter private DatabaseManager databaseManager;
     @Getter private CacheAPI cacheAPI;
     @Getter private EssentialsAPI essentialsAPI;
     @Getter private EnchantsAPI enchantsAPI;
@@ -39,8 +40,9 @@ public class GoldmanEssentials extends JavaPlugin {
         this.pU = new PU();
         this.permissionManager = new PermissionManager();
         this.data = new Data();
-        this.sqLite = new SQLite();
-        this.cache = new Cache();
+        ///this.sqLite = new SQLite();
+        this.cacheManager = new CacheManager();
+        this.databaseManager = new DatabaseManager();
         this.chunkAPI = new ChunkAPI();
         this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
@@ -52,10 +54,9 @@ public class GoldmanEssentials extends JavaPlugin {
         registerCommands();
         registerListeners();
 
-        sqLite.connect();
-        //sqLite.updateTable(SQLTables.PLAYER_DATA);
+        //sqLite.connect();
 
-        sqLite.loadTables();
+        //sqLite.loadTables();
         data.cacheDatabase();
 
         worldManager.resourceWorldResets();
@@ -76,7 +77,8 @@ public class GoldmanEssentials extends JavaPlugin {
     @Override
     public void onDisable() {
         pU.kickOnlinePlayers();
-        sqLite.disconnect();
+        //sqLite.disconnect();
+        databaseManager.closeConnection();
         if (pl3xMapInstalled) pl3xMapHook.disable();
     }
 
@@ -131,7 +133,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("ban").setExecutor(new BanCMD());
         getCommand("tempban").setExecutor(new TempBanCMD());
         getCommand("unban").setExecutor(new UnBanCMD());
-        getCommand("banlist").setExecutor(new BanListCMD());
+        getCommand("punished").setExecutor(new PunishedCMD());
         getCommand("mute").setExecutor(new MuteCMD());
         getCommand("tempmute").setExecutor(new TempMuteCMD());
         getCommand("unmute").setExecutor(new UnMuteCMD());
@@ -218,7 +220,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("ban").setTabCompleter(new BanTab());
         getCommand("tempban").setTabCompleter(new TempBanTab());
         getCommand("unban").setTabCompleter(new UnBanTab());
-        getCommand("banlist").setTabCompleter(new BanListTab());
+        getCommand("punished").setTabCompleter(new PunishedTab());
         getCommand("mute").setTabCompleter(new MuteTab());
         getCommand("tempmute").setTabCompleter(new TempMuteTab());
         getCommand("unmute").setTabCompleter(new UnMuteTab());
@@ -296,6 +298,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CustomMobSpawnListener(), this);
         getServer().getPluginManager().registerEvents(new MineCartListener(), this);
         getServer().getPluginManager().registerEvents(new TotemListener(), this);
+        getServer().getPluginManager().registerEvents(new MuteListener(), this);
     }
 
     private void checkDependencies() {

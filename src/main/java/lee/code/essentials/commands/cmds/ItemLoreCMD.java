@@ -1,7 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
-import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -20,32 +19,29 @@ public class ItemLoreCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
-
         if (sender instanceof Player player) {
             if (args.length > 0) {
-                if (pu.containOnlyNumbers(args[0])) {
+                if (BukkitUtils.containOnlyNumbers(args[0])) {
                     int number = Integer.parseInt(args[0]);
                     if (args.length > 1) {
                         ItemStack item = player.getInventory().getItemInMainHand();
-                        String itemName = pu.formatCapitalization(item.getType().name());
+                        String itemName = BukkitUtils.parseCapitalization(item.getType().name());
                         if (item.getType() != Material.AIR) {
-                            String message = "&5&o" + pu.buildStringFromArgs(args, 1);
+                            String message = "&5&o" + BukkitUtils.buildStringFromArgs(args, 1);
                             ItemMeta itemMeta = item.getItemMeta();
                             if (itemMeta != null) {
                                 List<Component> lore = new ArrayList<>();
                                 if (itemMeta.hasLore() && itemMeta.lore() != null) {
                                     lore = new ArrayList<>(Objects.requireNonNull(itemMeta.lore()));
                                     if (lore.size() > number) {
-                                        lore.set(number, pu.formatC(message));
+                                        lore.set(number, BukkitUtils.parseColorComponent(message));
                                     } else {
                                         for (int i = lore.size(); i < number; i++) lore.add(Component.text(""));
-                                        lore.add(pu.formatC(message));
+                                        lore.add(BukkitUtils.parseColorComponent(message));
                                     }
                                 } else {
                                     for (int i = 0; i < number; i++) lore.add(Component.text(""));
-                                    lore.add(pu.formatC(message));
+                                    lore.add(BukkitUtils.parseColorComponent(message));
                                 }
                                 itemMeta.lore(lore);
                                 item.setItemMeta(itemMeta);

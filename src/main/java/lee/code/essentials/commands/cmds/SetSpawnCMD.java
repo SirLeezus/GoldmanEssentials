@@ -1,8 +1,9 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -17,7 +18,7 @@ public class SetSpawnCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (sender instanceof Player player) {
             String worldName = player.getWorld().getName();
@@ -26,20 +27,20 @@ public class SetSpawnCMD implements CommandExecutor {
                 String world = args[0].toLowerCase();
                 switch (world) {
                     case "resource_world" -> {
-                        cache.setWorldResourceSpawn(location);
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[]{pu.formatCapitalization(worldName), worldName})));
+                        cacheManager.setWorldResourceSpawn(location);
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[]{ BukkitUtils.parseCapitalization(worldName), worldName })));
                     }
                     case "resource_nether" -> {
-                        cache.setNetherResourceSpawn(location);
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[]{pu.formatCapitalization(worldName), worldName})));
+                        cacheManager.setNetherResourceSpawn(location);
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[]{ BukkitUtils.parseCapitalization(worldName), worldName })));
                     }
                     case "resource_end" -> {
-                        cache.setEndResourceSpawn(location);
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { pu.formatCapitalization(worldName), worldName })));
+                        cacheManager.setEndResourceSpawn(location);
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_RESOURCE_SUCCESSFUL.getComponent(new String[] { BukkitUtils.parseCapitalization(worldName), worldName })));
                     }
                 }
             } else {
-                cache.setSpawn(location);
+                cacheManager.setSpawn(location);
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSPAWN_MAIN_SUCCESSFUL.getComponent(new String[] { worldName })));
             }
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));

@@ -1,7 +1,8 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -18,17 +19,17 @@ public class BanCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (args.length > 1) {
             OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
             UUID senderUUID = sender instanceof Player player ? player.getUniqueId() : UUID.fromString(Lang.SERVER_UUID.getString());
             if (target != null) {
                 UUID tUUID = target.getUniqueId();
-                if (!cache.isTempBanned(tUUID) && !cache.isBanned(tUUID)) {
-                    String reason = plugin.getPU().buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
+                if (!cacheManager.isTempBanned(tUUID) && !cacheManager.isBanned(tUUID)) {
+                    String reason = BukkitUtils.buildStringFromArgs(args, 1).replaceAll("[^a-zA-Z0-9 ]", "");
                     if (!reason.isBlank()) {
-                        cache.setBannedPlayer(tUUID, senderUUID, reason, true);
+                        cacheManager.setBannedPlayer(tUUID, senderUUID, reason, true);
                         if (target.isOnline()) {
                             Player tPlayer = target.getPlayer();
                             if (tPlayer != null) tPlayer.kick(Lang.BANNED.getComponent(new String[] { reason }));

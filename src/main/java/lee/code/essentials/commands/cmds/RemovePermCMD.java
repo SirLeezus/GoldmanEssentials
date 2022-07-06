@@ -1,7 +1,7 @@
 package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.managers.PermissionManager;
 import org.bukkit.Bukkit;
@@ -20,7 +20,7 @@ public class RemovePermCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PermissionManager pm = plugin.getPermissionManager();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (args.length > 1) {
             OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0]);
@@ -28,8 +28,8 @@ public class RemovePermCMD implements CommandExecutor {
                 UUID tUUID = targetPlayer.getUniqueId();
                 String name = targetPlayer.getName();
                 String perm = args[1];
-                if (cache.hasPerm(tUUID, perm)) {
-                    cache.removePerm(tUUID, perm);
+                if (cacheManager.hasPerm(tUUID, perm)) {
+                    cacheManager.removePerm(tUUID, perm);
                     if (targetPlayer.isOnline()) {
                         Player tPlayer = targetPlayer.getPlayer();
                         if (tPlayer != null && !tPlayer.isOp()) pm.register(tPlayer);

@@ -1,8 +1,7 @@
 package lee.code.essentials.commands.tabs;
 
-import lee.code.essentials.Data;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -20,14 +19,12 @@ public class SetRankTab implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Data data = plugin.getData();
-        PU pu = plugin.getPU();
 
         if (sender instanceof Player) {
             if (args.length == 1) {
-                return StringUtil.copyPartialMatches(args[0], pu.getOnlinePlayers(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[0], BukkitUtils.getOnlinePlayers(), new ArrayList<>());
             } else if (args.length == 2) {
-                return StringUtil.copyPartialMatches(args[1], data.getAllRankKeys(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[1], plugin.getData().getAllRankKeys(), new ArrayList<>());
             } else return blank;
         } else return blank;
     }

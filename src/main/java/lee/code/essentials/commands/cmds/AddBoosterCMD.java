@@ -1,8 +1,8 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -18,19 +18,18 @@ public class AddBoosterCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (args.length > 2) {
             OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
             if (target != null) {
                 UUID uuid = target.getUniqueId();
-                long durationBooster = pu.unFormatSeconds(args[1]);
+                long durationBooster = BukkitUtils.serializeSeconds(args[1]);
                 if (durationBooster != 0) {
-                    if (pu.containOnlyNumbers(args[2])) {
-                        String multiplier = args[2];
-                        cache.queueBooster(uuid, multiplier, durationBooster);
-                        sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_BOOSTER_ADD_SUCCESSFUL.getComponent(new String[] { target.getName(), multiplier })));
+                    if (BukkitUtils.containOnlyNumbers(args[2])) {
+                        int multiplier = Integer.parseInt(args[2]);
+                        cacheManager.queueBooster(uuid, multiplier, durationBooster);
+                        sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_BOOSTER_ADD_SUCCESSFUL.getComponent(new String[] { target.getName(), String.valueOf(multiplier) })));
                     }
                 }
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));

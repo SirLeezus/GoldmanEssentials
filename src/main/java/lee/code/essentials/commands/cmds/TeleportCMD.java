@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
@@ -27,7 +28,7 @@ public class TeleportCMD implements CommandExecutor {
             UUID uuid = player.getUniqueId();
 
             if (args.length > 0) {
-                if (pu.getOnlinePlayers().contains(args[0])) {
+                if (BukkitUtils.getOnlinePlayers().contains(args[0])) {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         if (target != player) {
@@ -46,7 +47,7 @@ public class TeleportCMD implements CommandExecutor {
 
                                 data.setPlayerRequestingTeleport(uuid, targetUUID);
                                 target.sendMessage(targetMessage.append(accept).append(deny));
-                                pu.teleportTimer(player, target);
+                                pu.teleportTimeoutTimer(player, target);
                                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_REQUEST_SUCCESSFUL.getComponent(new String[] { target.getName() })));
                             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_ALREADY_REQUESTED.getComponent(new String[] { target.getName() })));
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getComponent(null)));

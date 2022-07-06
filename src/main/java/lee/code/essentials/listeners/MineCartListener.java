@@ -1,8 +1,6 @@
 package lee.code.essentials.listeners;
 
-import lee.code.essentials.Data;
-import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
+import lee.code.core.util.bukkit.BukkitUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -12,25 +10,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
-
 public class MineCartListener implements Listener {
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onMineCartArmorStand(PlayerInteractAtEntityEvent e) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        Data data = plugin.getData();
-        PU pu = plugin.getPU();
-
         if (!e.isCancelled()) {
             Player player = e.getPlayer();
-            UUID uuid = player.getUniqueId();
             ItemStack handItem = player.getInventory().getItemInMainHand();
             if (handItem.getType().equals(Material.ARMOR_STAND)) {
                 if (e.getRightClicked() instanceof Minecart minecart) {
                     e.setCancelled(true);
-                    if (data.hasPlayerClickDelay(uuid)) return;
-                    else pu.addPlayerClickDelay(uuid);
+                    if (BukkitUtils.hasClickDelay(player)) return;
 
                     if (minecart.getPassengers().isEmpty() && minecart.getType().equals(EntityType.MINECART)) {
                         Location location = minecart.getLocation();

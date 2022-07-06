@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.lists.Lang;
@@ -22,7 +23,7 @@ public class TimeCMD implements CommandExecutor {
                 String time = args[0];
                 World world = player.getWorld();
                 String worldName = player.getWorld().getName();
-                String worldTime = pu.formatTime(world.getTime());
+                String worldTime = BukkitUtils.parseMinecraftTime(world.getTime());
 
                 switch (time) {
                     case "day" -> {

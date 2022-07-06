@@ -1,5 +1,6 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 
@@ -25,11 +26,11 @@ public class StaffChatCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
             if (args.length > 0) {
-                String message = plugin.getPU().buildStringFromArgs(args, 0);
+                String message = BukkitUtils.buildStringFromArgs(args, 0);
 
                 for (Player oPlayer : Bukkit.getOnlinePlayers()) {
                     if (oPlayer.hasPermission("essentials.command.staffchat")) {
-                        oPlayer.sendMessage(Lang.STAFF_CHAT_PREFIX.getComponent(null).append(player.displayName()).append(plugin.getPU().formatC("&3: ")).append(Component.text(message)).color(TextColor.color(86, 40, 255)));
+                        oPlayer.sendMessage(Lang.STAFF_CHAT_PREFIX.getComponent(null).append(player.displayName()).append(BukkitUtils.parseColorComponent("&3: ")).append(Component.text(message)).color(TextColor.color(86, 40, 255)));
                     }
                 }
             } else {

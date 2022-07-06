@@ -1,5 +1,6 @@
 package lee.code.essentials.listeners;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +19,7 @@ public class BackListener implements Listener {
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)) {
             Player player = e.getPlayer();
             UUID uuid = player.getUniqueId();
-            String location = plugin.getPU().formatPlayerLocation(player.getLocation());
+            String location = BukkitUtils.serializeLocation(player.getLocation());
             plugin.getData().setBackLocation(uuid, location);
         }
     }
@@ -29,7 +30,7 @@ public class BackListener implements Listener {
 
         Player player = e.getEntity();
         UUID uuid = player.getUniqueId();
-        String location = plugin.getPU().formatPlayerLocation(player.getLocation());
+        String location = BukkitUtils.serializeLocation(player.getLocation());
         plugin.getData().setBackLocation(uuid, location);
     }
 }

@@ -84,6 +84,7 @@ public class AFKListener implements Listener {
         UUID uuid = player.getUniqueId();
 
         long milliseconds = System.currentTimeMillis();
+        if (data.isAFK(uuid)) setNotAFK(player);
         data.setPlayerLastMovedTime(uuid, milliseconds);
     }
 

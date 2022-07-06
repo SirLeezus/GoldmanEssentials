@@ -1,13 +1,13 @@
 package lee.code.essentials.commands.cmds;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,15 +23,13 @@ public class VoteTopCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         if (sender instanceof Player player) {
             UUID uuid = player.getUniqueId();
 
-            Map<String, String> cPlayers = cache.getTopVotes();
-            HashMap<String, Long> newMap = new HashMap<>();
-            for (Map.Entry<String, String> entry : cPlayers.entrySet()) newMap.put(entry.getKey(), Long.parseLong(entry.getValue()));
-            HashMap<String, Long> sortedMap = pu.sortByValue(newMap);
+            Map<UUID, Integer> cPlayers = cacheManager.getTopVotes();
+            HashMap<UUID, Integer> sortedMap = pu.sortByInteger(cPlayers);
 
             int index;
             int maxDisplayed = 10;
@@ -39,7 +37,7 @@ public class VoteTopCMD implements CommandExecutor {
 
             //page check
             if (args.length > 0) {
-                if (pu.containOnlyNumbers(args[0])) {
+                if (BukkitUtils.containOnlyNumbers(args[0])) {
                     page = Integer.parseInt(args[0]);
                 } else {
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_LIST_PAGE_NOT_NUMBER.getComponent(new String[]{ args[0] } )));
@@ -51,7 +49,7 @@ public class VoteTopCMD implements CommandExecutor {
             boolean onPage = false;
             int position = page * maxDisplayed + 1;
 
-            List<String> players = new ArrayList<>(sortedMap.keySet());
+            List<UUID> players = new ArrayList<>(sortedMap.keySet());
             List<Component> lines = new ArrayList<>();
 
             lines.add(Lang.COMMAND_VOTETOP_TITLE.getComponent(null));
@@ -61,19 +59,18 @@ public class VoteTopCMD implements CommandExecutor {
                 index = maxDisplayed * page + i;
                 if (index >= players.size()) break;
                 if (players.get(index) != null) {
-                    String thePlayer = players.get(index);
-                    UUID pUUID = UUID.fromString(thePlayer);
+                    UUID pUUID = players.get(index);
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(pUUID);
                     String posColor = "&3";
                     if (offlinePlayer.getName() != null) {
                         String name = offlinePlayer.getName();
-                        String votes = pu.formatAmount(sortedMap.get(thePlayer));
+                        String votes = BukkitUtils.parseValue(sortedMap.get(pUUID));
                         if (name.equals(player.getName())) {
                             posColor = "&2";
                             onPage = true;
                         }
-                        char nameColor = ChatColor.valueOf(cache.getColor(pUUID)).getChar();
-                        lines.add(pu.formatC(posColor + position + ". &" + nameColor + name + " &7| &a" + votes));
+                        char nameColor = cacheManager.getColor(pUUID).getChar();
+                        lines.add(BukkitUtils.parseColorComponent(posColor + position + ". &" + nameColor + name + " &7| &a" + votes));
                         position++;
                     }
                 }
@@ -83,7 +80,7 @@ public class VoteTopCMD implements CommandExecutor {
 
             if (!onPage) {
                 lines.add(Component.text(""));
-                lines.add(pu.formatC("&2" + (players.indexOf(String.valueOf(uuid)) + 1) + ". &" + ChatColor.valueOf(cache.getColor(uuid)).getChar() + player.getName() + " &7| &a" + pu.formatAmount(sortedMap.get(String.valueOf(uuid)))));
+                lines.add(BukkitUtils.parseColorComponent("&2" + (players.indexOf(uuid) + 1) + ". &" + cacheManager.getColor(uuid).getChar() + player.getName() + " &7| &a" + BukkitUtils.parseValue(sortedMap.get(uuid))));
             }
 
             lines.add(Component.text(""));

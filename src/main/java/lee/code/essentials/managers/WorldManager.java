@@ -1,8 +1,9 @@
 package lee.code.essentials.managers;
 
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.Cache;
+import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Settings;
 import net.pl3x.map.plugin.configuration.WorldConfig;
 import org.apache.commons.io.FileUtils;
@@ -18,13 +19,13 @@ public class WorldManager {
     public void resourceWorldResets() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         PU pu = plugin.getPU();
-        Cache cache = plugin.getCache();
+        CacheManager cacheManager = plugin.getCacheManager();
 
         long worldSeed = -3589987965699307043L;
         long netherSeed = -3589987965699307043L;
         long endSeed = -3589987965699307043L;
 
-        if (cache.isResourceWorldsResetReady()) {
+        if (cacheManager.isResourceResetReady()) {
             WorldCreator wcWorld = new WorldCreator("world_resource_golden");
             wcWorld.environment(World.Environment.NORMAL);
             wcWorld.seed(worldSeed);
@@ -41,7 +42,7 @@ public class WorldManager {
             World end = wcEnd.createWorld();
 
             if (world != null && nether != null && end != null) {
-                cache.setResourceWorldsTime(Settings.RESOURCE_WORLD_RESET.getValue());
+                cacheManager.setResourceResetTime(Settings.RESOURCE_WORLD_RESET.getValue());
                 Bukkit.getServer().unloadWorld(world, false);
                 Bukkit.getServer().unloadWorld(nether, false);
                 Bukkit.getServer().unloadWorld(end, false);
@@ -54,32 +55,29 @@ public class WorldManager {
             wcWorld.environment(World.Environment.NORMAL);
             wcWorld.seed(worldSeed);
             wcWorld.createWorld();
-            Bukkit.getLogger().log(Level.INFO, pu.format("&aWorld Loaded: &6" + wcWorld.name()));
+            Bukkit.getLogger().log(Level.INFO, BukkitUtils.parseColorString("&aWorld Loaded: &6" + wcWorld.name()));
 
             WorldCreator wcNether = new WorldCreator("nether_resource");
             wcNether.environment(World.Environment.NETHER);
             wcNether.seed(netherSeed);
             wcNether.createWorld();
-            Bukkit.getLogger().log(Level.INFO, pu.format("&aWorld Loaded: &6" + wcNether.name()));
+            Bukkit.getLogger().log(Level.INFO, BukkitUtils.parseColorString("&aWorld Loaded: &6" + wcNether.name()));
 
             WorldCreator wcEnd = new WorldCreator("end_resource");
             wcEnd.environment(World.Environment.THE_END);
             wcEnd.seed(endSeed);
             wcEnd.createWorld();
-            Bukkit.getLogger().log(Level.INFO, pu.format("&aWorld Loaded: &6" + wcEnd.name()));
+            Bukkit.getLogger().log(Level.INFO, BukkitUtils.parseColorString("&aWorld Loaded: &6" + wcEnd.name()));
         }
     }
 
     private void copyWorld(World originalWorld, String newWorldName) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
-
         copyWorldFolder(originalWorld.getWorldFolder(), new File(Bukkit.getWorldContainer(), newWorldName));
         WorldCreator wcWorld = new WorldCreator(newWorldName);
         wcWorld.environment(originalWorld.getEnvironment());
         wcWorld.seed(originalWorld.getSeed());
         disablePl3xMapWorld(wcWorld.createWorld());
-        Bukkit.getLogger().log(Level.INFO, pu.format("&2World Created: &6" + newWorldName));
+        Bukkit.getLogger().log(Level.INFO, BukkitUtils.parseColorString("&2World Created: &6" + newWorldName));
     }
 
     private void copyWorldFolder(File source, File target) {
