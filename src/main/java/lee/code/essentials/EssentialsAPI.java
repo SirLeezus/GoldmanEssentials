@@ -1,7 +1,7 @@
 package lee.code.essentials;
 
 import lee.code.essentials.database.CacheManager;
-import lee.code.essentials.lists.ItemSellValues;
+import lee.code.essentials.lists.ItemSellValue;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -30,7 +30,7 @@ public class EssentialsAPI {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         Data data = plugin.getData();
         ItemStack checkItem = new ItemStack(item.getType());
-        if (data.getSupportedSellItems().contains(checkItem)) return ItemSellValues.valueOf(checkItem.getType().name()).getValue();
+        if (data.getSupportedSellItems().contains(checkItem)) return ItemSellValue.valueOf(checkItem.getType().name()).getValue();
         else return 0;
     }
 

@@ -3,8 +3,8 @@ package lee.code.essentials.listeners;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.lists.EntityHeads;
-import lee.code.essentials.lists.Settings;
+import lee.code.essentials.lists.EntityHead;
+import lee.code.essentials.lists.Setting;
 import net.kyori.adventure.text.Component;
 import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
@@ -37,9 +37,9 @@ public class HeadDropListener implements Listener {
                 ItemStack dragonHead = new ItemStack(Material.DRAGON_HEAD);
                 if (!e.getDrops().contains(dragonHead)) e.getDrops().add(dragonHead);
             } else if (entity instanceof Warden) {
-                e.getDrops().add(EntityHeads.valueOf(e.getEntityType().name()).getHead());
+                e.getDrops().add(EntityHead.valueOf(e.getEntityType().name()).getHead());
             } else {
-                if (pu.headDropRNG() >= Settings.HEAD_DROP_RNG.getValue() || killer.getGameMode().equals(GameMode.CREATIVE)) {
+                if (pu.headDropRNG() >= Setting.HEAD_DROP_RNG.getValue() || killer.getGameMode().equals(GameMode.CREATIVE)) {
                     String type = e.getEntityType().name();
                     if (entity instanceof Sheep sheep) {
                         if (sheep.name().equals(Component.text("jeb_"))) {
@@ -77,7 +77,7 @@ public class HeadDropListener implements Listener {
                         type = variant.name() + "_" + type;
                     }
                     if (data.getEntityHeadKeys().contains(type)) {
-                        ItemStack head = EntityHeads.valueOf(type).getHead();
+                        ItemStack head = EntityHead.valueOf(type).getHead();
                         entity.getWorld().dropItemNaturally(entity.getLocation(), head);
                     }
                 }

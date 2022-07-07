@@ -3,8 +3,7 @@ package lee.code.essentials.commands.cmds;
 import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
-import lee.code.essentials.lists.ItemSellValues;
+import lee.code.essentials.lists.ItemSellValue;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -24,7 +23,6 @@ public class WorthCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         Data data = plugin.getData();
 
         if (sender instanceof Player player) {
@@ -39,16 +37,22 @@ public class WorthCMD implements CommandExecutor {
                             name = BukkitUtils.serializeComponent(handItem.getItemMeta().displayName());
                         }
                     }
-                    if (ItemSellValues.valueOf(name).getItem().equals(handItem)) {
-                        long value = ItemSellValues.valueOf(name).getValue();
+                    if (ItemSellValue.valueOf(name).getItem().equals(handItem)) {
+                        long value = ItemSellValue.valueOf(name).getValue();
                         long handValue = value * stackSize;
                         long inventoryValue = value * BukkitUtils.getItemAmount(player, handItem);
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { BukkitUtils.parseCapitalization(name), BukkitUtils.parseValue(value), BukkitUtils.parseValue(handValue), BukkitUtils.parseValue(inventoryValue) })));
+                        List<Component> lines = new ArrayList<>();
+                        lines.add(Lang.COMMAND_WORTH_TITLE.getComponent(null));
+                        lines.add(Component.text(""));
+                        lines.add(Lang.COMMAND_WORTH_SUCCESSFUL.getComponent(new String[] { BukkitUtils.parseCapitalization(name), BukkitUtils.parseValue(value), BukkitUtils.parseValue(handValue), BukkitUtils.parseValue(inventoryValue) }));
+                        lines.add(Component.text(""));
+                        lines.add(Lang.COMMAND_WORTH_SPLITTER.getComponent(null));
+                        for (Component line : lines) player.sendMessage(line);
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_SELL_NOT_SELLABLE.getComponent(null)));
             } else {
                 String arg = args[0].toLowerCase();
-                if (arg.equals("list")) {
+                if (arg.equalsIgnoreCase("list")) {
 
                     int index;
                     int maxDisplayed = 20;
@@ -77,7 +81,7 @@ public class WorthCMD implements CommandExecutor {
                         if (index >= items.size()) break;
                         if (items.get(index) != null) {
                             Material type = items.get(index).getType();
-                            lines.add(Lang.COMMAND_WORTH_LIST_LINE.getComponent(new String[] { String.valueOf(position), BukkitUtils.parseCapitalization(type.name()), BukkitUtils.parseValue(ItemSellValues.valueOf(type.name()).getValue()) }));
+                            lines.add(Lang.COMMAND_WORTH_LIST_LINE.getComponent(new String[] { String.valueOf(position), BukkitUtils.parseCapitalization(type.name()), BukkitUtils.parseValue(ItemSellValue.valueOf(type.name()).getValue()) }));
                             position++;
                         }
                     }

@@ -62,32 +62,34 @@ public class PunishedCMD implements CommandExecutor {
                 UUID pUUID = players.get(index);
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(pUUID);
                 String name = "null";
-                String staff = "&cConsole";
-                String time = "&cForever";
+                String staff = "Console";
+                String time = "Forever";
                 String type = "None";
                 String reason = "None";
                 if (offlinePlayer.getName() != null) name = offlinePlayer.getName();
                 if (cacheManager.isBanned(pUUID)) {
                     reason = cacheManager.getBanReason(pUUID);
+                    staff = cacheManager.getBanStaffName(pUUID);
                     type = "&eBanned";
                 } else if (cacheManager.isTempBanned(pUUID)) {
                     long timeBanned = cacheManager.getTempBanTime(pUUID);
                     if (timeBanned < 0) timeBanned = 0;
                     time = BukkitUtils.parseSeconds(timeBanned);
                     reason = cacheManager.getBanReason(pUUID);
+                    staff = cacheManager.getBanStaffName(pUUID);
                     type = "&eTempBanned";
                 } else if (cacheManager.isMuted(pUUID)) {
                     reason = cacheManager.getMuteReason(pUUID);
+                    staff = cacheManager.getMuteStaffName(pUUID);
                     type = "&eMuted";
                 } else if (cacheManager.isTempMuted(pUUID)) {
                     long timeMuted = cacheManager.getTempMuteTime(pUUID);
                     if (timeMuted < 0) timeMuted = 0;
                     time = BukkitUtils.parseSeconds(timeMuted);
                     reason = cacheManager.getMuteReason(pUUID);
+                    staff = cacheManager.getMuteStaffName(pUUID);
                     type = "&eTempMuted";
                 }
-                OfflinePlayer offlineStaff = Bukkit.getOfflinePlayer(cacheManager.getStaffWhoPunished(pUUID));
-                if (offlineStaff.getName() != null) staff = offlineStaff.getName();
                 lines.add(BukkitUtils.parseColorComponent("&3" + position + ". &6" + name + " &3Type&7: " + type + " &3Time&7: " + time)
                         .hoverEvent(BukkitUtils.parseColorComponent("&3Date: &7" + BukkitUtils.getDate(cacheManager.getBanDate(pUUID)) + "\n&3Staff Member: &7" + staff + "\n&3Reason: &7" + reason)));
             }

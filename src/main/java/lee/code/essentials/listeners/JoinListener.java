@@ -6,7 +6,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.Settings;
+import lee.code.essentials.lists.Setting;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -73,7 +73,7 @@ public class JoinListener implements Listener {
             BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
             scheduler.runTaskLater(plugin, () -> {
                 if (cacheManager.isBot(uuid)) player.kick(Lang.BOT_CHECKER_KICK.getComponent(null));
-            }, Settings.BOT_KICK_DELAY.getValue() * 20L);
+            }, Setting.BOT_KICK_DELAY.getValue() * 20L);
         }
 
         //booster bar check

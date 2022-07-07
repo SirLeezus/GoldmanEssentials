@@ -10,7 +10,6 @@ import com.google.common.base.Strings;
 import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.database.CacheManager;
-import lee.code.essentials.database.tables.PunishmentTable;
 import lee.code.essentials.lists.*;
 import lee.code.essentials.managers.CountdownTimer;
 import lombok.Getter;
@@ -289,7 +288,7 @@ public class PU {
         }
 
         long milliseconds = System.currentTimeMillis();
-        long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + Settings.RTP_DELAY.getValue();
+        long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + Setting.RTP_DELAY.getValue();
         data.setRTPTimer(uuid, time);
 
         data.addRTPTaskActive(uuid, new BukkitRunnable() {
@@ -299,7 +298,7 @@ public class PU {
                 data.removeRTPTaskActive(uuid);
             }
 
-        }.runTaskLater(plugin, Settings.RTP_DELAY.getValue() * 20L));
+        }.runTaskLater(plugin, Setting.RTP_DELAY.getValue() * 20L));
     }
 
     public void addSpamDelay(UUID uuid) {
@@ -403,7 +402,7 @@ public class PU {
             String suffix = cacheManager.getSuffix(uuid);
             ChatColor chatColor = cacheManager.getColor(uuid);
             String colorChar = "&" + chatColor.getChar();
-            NamedTextColor namedTextColor = NameTextColors.valueOf(chatColor.name()).getColor();
+            NamedTextColor namedTextColor = NameTextColor.valueOf(chatColor.name()).getColor();
             int prestigeLevel = cacheManager.getPrestige(uuid);
             String levelColor = "&a&l";
             if (prestigeLevel >= 10) levelColor = "&e&l";
@@ -432,7 +431,7 @@ public class PU {
                     for (Chunk chunk : world.getLoadedChunks()) {
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             for (Entity entity : chunk.getEntities()) {
-                                if (!(entity instanceof Item) && entity.getCustomName() == null && countEntitiesInChunk(chunk, entity.getType()) > Settings.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+                                if (!(entity instanceof Item) && entity.getCustomName() == null && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
                             }
                         });
                     }
@@ -520,7 +519,7 @@ public class PU {
                     long time = data.getPlayerLastMovedTime(uuid);
                     long milliseconds = System.currentTimeMillis();
                     long currentTimeDifferance =  TimeUnit.MILLISECONDS.toSeconds(milliseconds) - TimeUnit.MILLISECONDS.toSeconds(time);
-                    if (currentTimeDifferance > Settings.AFK_TIME.getValue()) {
+                    if (currentTimeDifferance > Setting.AFK_TIME.getValue()) {
                         data.addAFK(uuid);
                         updateDisplayName(player, true);
                     }
@@ -555,10 +554,10 @@ public class PU {
     }
 
     public int getMaxHomes(Player player) {
-        int defaultHomeAmount = Settings.DEFAULT_PLAYER_HOMES.getValue();
-        int homeAmountGiven = Settings.ACCRUED_HOME_AMOUNT_GIVEN.getValue();
-        int maxAccruedClaims = Settings.ACCRUED_HOME_MAX.getValue();
-        int baseTimeRequired = Settings.ACCRUED_HOME_BASE_TIME_REQUIRED.getValue();
+        int defaultHomeAmount = Setting.DEFAULT_PLAYER_HOMES.getValue();
+        int homeAmountGiven = Setting.ACCRUED_HOME_AMOUNT_GIVEN.getValue();
+        int maxAccruedClaims = Setting.ACCRUED_HOME_MAX.getValue();
+        int baseTimeRequired = Setting.ACCRUED_HOME_BASE_TIME_REQUIRED.getValue();
 
         int time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20;
         int accruedHomes = time / baseTimeRequired * homeAmountGiven;

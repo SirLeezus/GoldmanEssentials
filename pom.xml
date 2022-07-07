@@ -127,13 +127,6 @@
             <classifier>remapped-mojang</classifier>
             <scope>provided</scope>
         </dependency>
-        <!-- Redis Cache API -->
-        <dependency>
-            <groupId>lee.code.redis</groupId>
-            <artifactId>redis-cache</artifactId>
-            <version>1.0.0</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- GoldmanEnchants API -->
         <dependency>
             <groupId>lee.code.enchants</groupId>

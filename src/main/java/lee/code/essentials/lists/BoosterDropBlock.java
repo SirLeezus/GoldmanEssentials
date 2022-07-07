@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 
 @AllArgsConstructor
-public enum BoosterDropBlocks {
+public enum BoosterDropBlock {
 
     COAL_ORE(Material.COAL_ORE),
     DEEPSLATE_COAL_ORE(Material.DEEPSLATE_COAL_ORE),

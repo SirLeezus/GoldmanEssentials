@@ -5,7 +5,7 @@ import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
-import lee.code.essentials.lists.ItemSellValues;
+import lee.code.essentials.lists.ItemSellValue;
 import lee.code.essentials.lists.Lang;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -35,9 +35,9 @@ public class SellCMD implements CommandExecutor {
             if (data.getSupportedSellItems().contains(itemHand)) {
                 String name = itemHand.getType().name();
                 if (itemHand.hasItemMeta()) if (itemHand.getItemMeta().hasDisplayName()) name = itemHand.getItemMeta().getDisplayName();
-                if (ItemSellValues.valueOf(name).getItem().equals(itemHand)) {
+                if (ItemSellValue.valueOf(name).getItem().equals(itemHand)) {
                     int amount = player.getInventory().getItemInMainHand().getAmount();
-                    long value = ItemSellValues.valueOf(name).getValue() * amount;
+                    long value = ItemSellValue.valueOf(name).getValue() * amount;
                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                     cacheManager.deposit(uuid, value);
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SELL_SUCCESSFUL.getComponent(new String[] { BukkitUtils.parseCapitalization(name), String.valueOf(amount), BukkitUtils.parseValue(value) })));

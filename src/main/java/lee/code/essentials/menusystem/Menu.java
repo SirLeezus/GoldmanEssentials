@@ -1,7 +1,7 @@
 package lee.code.essentials.menusystem;
 
 import lee.code.essentials.lists.MenuItems;
-import lee.code.essentials.lists.NameColorList;
+import lee.code.essentials.lists.NameColor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -101,6 +101,6 @@ public abstract class Menu implements InventoryHolder {
     }
 
     private List<ItemStack> getColorItems() {
-        return EnumSet.allOf(NameColorList.class).stream().map(NameColorList::getItem).collect(Collectors.toList());
+        return EnumSet.allOf(NameColor.class).stream().map(NameColor::getItem).collect(Collectors.toList());
     }
 }

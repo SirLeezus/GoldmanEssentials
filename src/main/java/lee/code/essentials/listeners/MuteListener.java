@@ -7,7 +7,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.Settings;
+import lee.code.essentials.lists.Setting;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,7 +41,7 @@ public class MuteListener implements Listener {
             if (data.addSpamLoggerViolationCount(uuid)) {
                 e.setCancelled(true);
                 String reason = "Chat Spam";
-                int timeMuted = Settings.AUTO_MUTE_TIME.getValue();
+                int timeMuted = Setting.AUTO_MUTE_TIME.getValue();
                 long milliseconds = System.currentTimeMillis();
                 long time = TimeUnit.MILLISECONDS.toSeconds(milliseconds) + timeMuted;
                 cacheManager.setTempMutedPlayer(uuid, UUID.fromString(Lang.SERVER_UUID.getString()), reason, time);

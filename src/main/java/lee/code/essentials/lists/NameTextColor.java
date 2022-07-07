@@ -5,7 +5,7 @@ import lombok.Getter;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 @AllArgsConstructor
-public enum NameTextColors {
+public enum NameTextColor {
 
     DARK_BLUE(NamedTextColor.DARK_BLUE),
     BLUE(NamedTextColor.BLUE),

@@ -4,7 +4,7 @@ import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
-import lee.code.essentials.lists.Settings;
+import lee.code.essentials.lists.Setting;
 import net.pl3x.map.plugin.configuration.WorldConfig;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
@@ -42,7 +42,7 @@ public class WorldManager {
             World end = wcEnd.createWorld();
 
             if (world != null && nether != null && end != null) {
-                cacheManager.setResourceResetTime(Settings.RESOURCE_WORLD_RESET.getValue());
+                cacheManager.setResourceResetTime(Setting.RESOURCE_WORLD_RESET.getValue());
                 Bukkit.getServer().unloadWorld(world, false);
                 Bukkit.getServer().unloadWorld(nether, false);
                 Bukkit.getServer().unloadWorld(end, false);

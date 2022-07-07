@@ -1,8 +1,6 @@
 package lee.code.essentials;
 
 import lee.code.core.util.bukkit.BukkitUtils;
-import lee.code.essentials.database.DatabaseManager;
-import lee.code.essentials.database.SQLite;
 import lee.code.essentials.lists.*;
 import lee.code.essentials.menusystem.PlayerMU;
 import lombok.Getter;
@@ -46,6 +44,7 @@ public class Data {
     @Getter private final List<String> allRankKeys = new ArrayList<>();
     @Getter private final List<String> emojiKeys = new ArrayList<>();
     @Getter private final List<Component> emojiLines = new ArrayList<>();
+    @Getter private final List<Material> entityPlaceLimitedItems = new ArrayList<>();
 
     @Getter @Setter private int teamNumber = 0;
     @Getter @Setter private boolean isAutoRestarting = false;
@@ -79,7 +78,7 @@ public class Data {
     public boolean addSpamLoggerViolationCount(UUID uuid) {
         if (!playerSpamLoggerCount.containsKey(uuid)) playerSpamLoggerCount.put(uuid, 1);
         else playerSpamLoggerCount.put(uuid, playerSpamLoggerCount.get(uuid) + 1);
-        return playerSpamLoggerCount.get(uuid) >= Settings.SPAM_ATTEMPTS.getValue();
+        return playerSpamLoggerCount.get(uuid) >= Setting.SPAM_ATTEMPTS.getValue();
     }
     public boolean isSpamLoggerViolation(UUID uuid, Component component) {
         if (!playerSpamLoggerString.containsKey(uuid)) return false;
@@ -325,13 +324,13 @@ public class Data {
         for (Material material : Material.values()) materialNames.add(material.name().toLowerCase());
 
         //supported booster blocks
-        supportedBoosterBlocks.addAll(EnumSet.allOf(BoosterDropBlocks.class).stream().map(BoosterDropBlocks::getBlock).toList());
+        supportedBoosterBlocks.addAll(EnumSet.allOf(BoosterDropBlock.class).stream().map(BoosterDropBlock::getBlock).toList());
 
         //supported sell items
-        supportedSellItems.addAll(EnumSet.allOf(ItemSellValues.class).stream().map(ItemSellValues::getItem).toList());
+        supportedSellItems.addAll(EnumSet.allOf(ItemSellValue.class).stream().map(ItemSellValue::getItem).toList());
 
         //entity head keys
-        entityHeadKeys.addAll(EnumSet.allOf(EntityHeads.class).stream().map(EntityHeads::name).toList());
+        entityHeadKeys.addAll(EnumSet.allOf(EntityHead.class).stream().map(EntityHead::name).toList());
 
         //premium rank keys
         premiumRankKeys.addAll(EnumSet.allOf(PremiumRank.class).stream().map(PremiumRank::name).toList());
@@ -341,6 +340,9 @@ public class Data {
 
         //emoji keys
         emojiKeys.addAll(EnumSet.allOf(Emoji.class).stream().map(Emoji::name).toList());
+
+        //limited entity items
+        entityPlaceLimitedItems.addAll(EnumSet.allOf(EntityPlaceLimit.class).stream().map(EntityPlaceLimit::getMaterial).toList());
 
         //all rank keys
         allRankKeys.addAll(premiumRankKeys);

@@ -16,8 +16,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -61,7 +61,7 @@ public class CacheManager {
         return getServerCache().getIfPresent(serverKey);
     }
 
-    private void updateServerTable(ServerTable serverTable) {
+    public void updateServerTable(ServerTable serverTable) {
         getServerCache().put(serverTable.getServer(), serverTable);
         GoldmanEssentials.getPlugin().getDatabaseManager().updateServerTable(serverTable);
     }
@@ -477,10 +477,6 @@ public class CacheManager {
         GoldmanEssentials.getPlugin().getDatabaseManager().updatePunishmentTable(punishmentTable);
     }
 
-    public Map<UUID, Long> getBanList() {
-        return getPunishmentCache().asMap().values().stream().filter(PunishmentTable::isBanned).collect(Collectors.toMap(PunishmentTable::getPlayer, PunishmentTable::getDateBanned));
-    }
-
     public Map<UUID, Long> getPunishList() {
         Map<UUID, Long> punMap = new HashMap<>();
         for (PunishmentTable punishmentTable : getPunishmentCache().asMap().values()) {
@@ -551,21 +547,23 @@ public class CacheManager {
          updatePunishmentTable(punishmentTable);
     }
 
-    public UUID getStaffWhoPunished(UUID uuid) {
-        return UUID.fromString(getPunishmentTable(uuid).getStaff());
+    public String getBanStaffName(UUID uuid) {
+        OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(UUID.fromString(getPunishmentTable(uuid).getBanStaff()));
+        if (oPlayer.getName() != null) return oPlayer.getName();
+        else return "Console";
     }
 
-    public void setStaffWhoPunished(UUID uuid, UUID staff) {
-        PunishmentTable punishmentTable = getPunishmentTable(uuid);
-        punishmentTable.setStaff(String.valueOf(staff));
-        updatePunishmentTable(punishmentTable);
+    public String getMuteStaffName(UUID uuid) {
+        OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(UUID.fromString(getPunishmentTable(uuid).getMuteStaff()));
+        if (oPlayer.getName() != null) return oPlayer.getName();
+        else return "Console";
     }
 
     public void setMutedPlayer(UUID uuid, UUID staff, String reason, boolean isMuted) {
         PunishmentTable punishmentTable = getPunishmentTable(uuid);
         punishmentTable.setMuted(isMuted);
         punishmentTable.setMuteReason(reason);
-        punishmentTable.setStaff(String.valueOf(staff));
+        punishmentTable.setMuteStaff(String.valueOf(staff));
         punishmentTable.setDateMuted(System.currentTimeMillis());
         updatePunishmentTable(punishmentTable);
     }
@@ -573,7 +571,7 @@ public class CacheManager {
     public void setBannedPlayer(UUID uuid, UUID staff, String reason, boolean isBanned) {
         PunishmentTable punishmentTable = getPunishmentTable(uuid);
         punishmentTable.setBanned(isBanned);
-        punishmentTable.setStaff(staff == null ? "0" : String.valueOf(staff));
+        punishmentTable.setBanStaff(staff == null ? "0" : String.valueOf(staff));
         punishmentTable.setBanReason(reason);
         punishmentTable.setDateBanned(System.currentTimeMillis());
         updatePunishmentTable(punishmentTable);
@@ -583,7 +581,7 @@ public class CacheManager {
         PunishmentTable punishmentTable = getPunishmentTable(uuid);
         punishmentTable.setTempBanned(time);
         punishmentTable.setBanReason(reason);
-        punishmentTable.setStaff(staff == null ? "0" : String.valueOf(staff));
+        punishmentTable.setBanStaff(staff == null ? "0" : String.valueOf(staff));
         punishmentTable.setDateBanned(System.currentTimeMillis());
         updatePunishmentTable(punishmentTable);
     }
@@ -592,7 +590,7 @@ public class CacheManager {
         PunishmentTable punishmentTable = getPunishmentTable(uuid);
         punishmentTable.setTempMuted(time);
         punishmentTable.setMuteReason(reason);
-        punishmentTable.setStaff(staff == null ? "0" : String.valueOf(staff));
+        punishmentTable.setMuteStaff(staff == null ? "0" : String.valueOf(staff));
         punishmentTable.setDateMuted(System.currentTimeMillis());
         updatePunishmentTable(punishmentTable);
     }

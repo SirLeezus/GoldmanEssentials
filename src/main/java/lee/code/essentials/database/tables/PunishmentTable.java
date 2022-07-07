@@ -17,8 +17,11 @@ public class PunishmentTable {
     @DatabaseField(id = true, canBeNull = false)
     private UUID player;
 
-    @DatabaseField(columnName = "staff", canBeNull = false)
-    private String staff;
+    @DatabaseField(columnName = "ban_staff", canBeNull = false)
+    private String banStaff;
+
+    @DatabaseField(columnName = "mute_staff", canBeNull = false)
+    private String muteStaff;
 
     @DatabaseField(columnName = "date_banned", canBeNull = false)
     private long dateBanned;
@@ -49,7 +52,8 @@ public class PunishmentTable {
 
     public PunishmentTable(UUID player) {
         this.player = player;
-        this.staff = "0";
+        this.banStaff = "0";
+        this.muteStaff = "0";
         this.dateBanned = 0;
         this.dateMuted = 0;
         this.banned = false;

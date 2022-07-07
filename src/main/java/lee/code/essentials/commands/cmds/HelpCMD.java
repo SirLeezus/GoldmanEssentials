@@ -92,7 +92,7 @@ public class HelpCMD implements CommandExecutor {
                     lines.add(Component.text(""));
                     lines.add(BukkitUtils.parseColorComponent("&6Step 1&7: &eStand on the chunk you want to claim."));
                     lines.add(Component.text(""));
-                    lines.add(BukkitUtils.parseColorComponent("&6Step 2&7: &eRun the command /chunk claim."));
+                    lines.add(BukkitUtils.parseColorComponent("&6Step 2&7: &eRun the command &6/chunk claim&e."));
                     lines.add(Component.text(""));
                     lines.add(BukkitUtils.parseColorComponent("&eCongratulations! If you followed this guide you should have claimed the chunk you're standing on."));
                     lines.add(Component.text(""));

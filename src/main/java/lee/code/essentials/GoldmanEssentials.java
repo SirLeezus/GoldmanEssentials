@@ -2,7 +2,6 @@ package lee.code.essentials;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import lee.code.cache.CacheAPI;
 import lee.code.chunks.ChunkAPI;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
@@ -21,11 +20,9 @@ public class GoldmanEssentials extends JavaPlugin {
     @Getter private PU pU;
     @Getter private PermissionManager permissionManager;
     @Getter private Data data;
-    //@Getter private SQLite sqLite;
     @Getter private WorldManager worldManager;
     @Getter private CacheManager cacheManager;
     @Getter private DatabaseManager databaseManager;
-    @Getter private CacheAPI cacheAPI;
     @Getter private EssentialsAPI essentialsAPI;
     @Getter private EnchantsAPI enchantsAPI;
     @Getter private ProtocolManager protocolManagerAPI;
@@ -40,11 +37,9 @@ public class GoldmanEssentials extends JavaPlugin {
         this.pU = new PU();
         this.permissionManager = new PermissionManager();
         this.data = new Data();
-        ///this.sqLite = new SQLite();
         this.cacheManager = new CacheManager();
         this.databaseManager = new DatabaseManager();
         this.chunkAPI = new ChunkAPI();
-        this.cacheAPI = new CacheAPI();
         this.essentialsAPI = new EssentialsAPI();
         this.enchantsAPI = new EnchantsAPI();
         this.worldManager = new WorldManager();
@@ -54,9 +49,6 @@ public class GoldmanEssentials extends JavaPlugin {
         registerCommands();
         registerListeners();
 
-        //sqLite.connect();
-
-        //sqLite.loadTables();
         data.cacheDatabase();
 
         worldManager.resourceWorldResets();
@@ -77,7 +69,6 @@ public class GoldmanEssentials extends JavaPlugin {
     @Override
     public void onDisable() {
         pU.kickOnlinePlayers();
-        //sqLite.disconnect();
         databaseManager.closeConnection();
         if (pl3xMapInstalled) pl3xMapHook.disable();
     }

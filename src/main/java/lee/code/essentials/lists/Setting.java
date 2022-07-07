@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public enum Settings {
+public enum Setting {
 
     CLICK_DELAY(5),
     PVP_DELAY(10),

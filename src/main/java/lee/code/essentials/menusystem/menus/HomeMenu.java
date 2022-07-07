@@ -6,7 +6,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
-import lee.code.essentials.lists.Settings;
+import lee.code.essentials.lists.Setting;
 import lee.code.essentials.menusystem.PaginatedMenu;
 import lee.code.essentials.menusystem.PlayerMU;
 import net.kyori.adventure.text.Component;
@@ -172,7 +172,7 @@ public class HomeMenu extends PaginatedMenu {
         PU pu = plugin.getPU();
 
         UUID uuid = player.getUniqueId();
-        int defaultHomes = Settings.DEFAULT_PLAYER_HOMES.getValue();
+        int defaultHomes = Setting.DEFAULT_PLAYER_HOMES.getValue();
         int maxHomes = pu.getMaxHomes(player);
         int usedHomes = homes.size();
         int accruedHomes = maxHomes - defaultHomes;
@@ -183,11 +183,11 @@ public class HomeMenu extends PaginatedMenu {
                 public void run() {
                     long time = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20;
                     String timePlayed = BukkitUtils.parseSeconds(time);
-                    String timeRequired = BukkitUtils.parseSeconds(Settings.ACCRUED_HOME_BASE_TIME_REQUIRED.getValue());
+                    String timeRequired = BukkitUtils.parseSeconds(Setting.ACCRUED_HOME_BASE_TIME_REQUIRED.getValue());
                     ItemStack clock = BukkitUtils.getItem(Material.CLOCK,
                             Lang.MENU_HOME_CLOCK_NAME.getString(),
                             Lang.MENU_HOME_CLOCK_LORE.getString(new String[] { timePlayed, timeRequired, String.valueOf(defaultHomes),
-                                    String.valueOf(accruedHomes), String.valueOf(Settings.ACCRUED_HOME_MAX.getValue()),
+                                    String.valueOf(accruedHomes), String.valueOf(Setting.ACCRUED_HOME_MAX.getValue()),
                                     String.valueOf(usedHomes), String.valueOf(maxHomes) }), null, true);
                     inventory.setItem(4, clock);
                 }

@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 @AllArgsConstructor
-public enum ItemSellValues {
+public enum ItemSellValue {
 
     BAMBOO(new ItemStack(Material.BAMBOO), 1),
     STONE(new ItemStack(Material.STONE), 1),

@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 @AllArgsConstructor
-public enum NameColorList {
+public enum NameColor {
 
     COLOR_DARK_RED(Material.RED_CONCRETE, "&4&lDark Red", null),
     COLOR_RED(Material.RED_CONCRETE_POWDER, "&c&lRed", null),
