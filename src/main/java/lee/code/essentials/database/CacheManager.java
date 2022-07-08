@@ -148,7 +148,7 @@ public class CacheManager {
     }
 
     public long getResourceResetTime() {
-        return getServerTable().getResourceResetTime();
+        return getServerTable().getResourceResetTime() - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
     }
 
     public boolean isResourceResetReady() {
@@ -294,7 +294,7 @@ public class CacheManager {
         StringBuilder sPerms = new StringBuilder(playerTable.getPerms());
         if (sPerms.toString().equals("0")) sPerms = new StringBuilder();
         for (String sPerm : newPerms) {
-            if (sPerm.isBlank()) new StringBuilder(sPerm);
+            if (sPerms.isEmpty()) new StringBuilder(sPerm);
             else sPerms.append(",").append(sPerm);
         }
         playerTable.setPerms(sPerms.toString());

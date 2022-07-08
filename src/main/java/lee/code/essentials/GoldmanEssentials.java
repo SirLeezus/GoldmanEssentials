@@ -50,7 +50,6 @@ public class GoldmanEssentials extends JavaPlugin {
         registerListeners();
 
         data.cacheDatabase();
-
         worldManager.resourceWorldResets();
         data.loadListData();
         data.loadMOTDFile();

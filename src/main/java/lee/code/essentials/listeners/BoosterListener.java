@@ -3,7 +3,6 @@ package lee.code.essentials.listeners;
 import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -22,7 +21,7 @@ import java.util.List;
 
 public class BoosterListener implements Listener {
 
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onBoosterBlockBreak(BlockBreakEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         CacheManager cacheManager = plugin.getCacheManager();

@@ -23,10 +23,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -580,5 +577,83 @@ public class PU {
         HashMap<UUID, Integer> temp = new LinkedHashMap<>();
         for (Map.Entry<UUID, Integer> aa : list) temp.put(aa.getKey(), aa.getValue());
         return temp;
+    }
+
+    public ItemStack getEntityHead(Entity entity, int rng) {
+        if (entity instanceof Player || entity.getType().equals(EntityType.ENDER_DRAGON) || entity.getType().equals(EntityType.WARDEN)) {
+            return getEntityHead(entity);
+        } else if (rng >= Setting.HEAD_DROP_RNG.getValue()) {
+            return getEntityHead(entity);
+        }
+        return null;
+    }
+
+    public ItemStack getEntityHead(Entity entity) {
+        Data data = GoldmanEssentials.getPlugin().getData();
+        if (entity instanceof Player player) {
+            ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+            headMeta.setOwningPlayer(player);
+            head.setItemMeta(headMeta);
+            return head;
+        } else if (entity instanceof EnderDragon) {
+            return new ItemStack(Material.DRAGON_HEAD);
+        } else if (entity instanceof Creeper creeper) {
+            if (creeper.isPowered()) return EntityHead.valueOf("CHARGED_" + entity.getType().name()).getHead();
+            else return new ItemStack(Material.CREEPER_HEAD);
+        } else if (entity instanceof WitherSkeleton) {
+            return new ItemStack(Material.WITHER_SKELETON_SKULL);
+        } else if (entity instanceof Skeleton) {
+            return new ItemStack(Material.SKELETON_SKULL);
+        } else if (entity instanceof Zombie) {
+            return new ItemStack(Material.ZOMBIE_HEAD);
+        } else if (entity instanceof Warden) {
+            return EntityHead.valueOf(entity.getType().name()).getHead();
+        } else {
+            String type = entity.getType().name();
+            if (entity instanceof Sheep sheep) {
+                if (sheep.name().equals(Component.text("jeb_"))) {
+                    type = "RAINBOW_" + type;
+                } else {
+                    DyeColor color = sheep.getColor();
+                    if (color != null) type = color.name() + "_" + type;
+                    else type = "WHITE_" + type;
+                }
+            } else if (entity instanceof Axolotl axolotl) {
+                Axolotl.Variant variant = axolotl.getVariant();
+                type = variant.name() + "_" + type;
+            } else if (entity instanceof Parrot parrot) {
+                Parrot.Variant variant = parrot.getVariant();
+                type = variant.name() + "_" + type;
+            } else if (entity instanceof Llama llama) {
+                if (entity instanceof TraderLlama traderLlama) {
+                    Llama.Color color = traderLlama.getColor();
+                    type = color.name() + "_" + type;
+                } else {
+                    Llama.Color color = llama.getColor();
+                    type = color.name() + "_" + type;
+                }
+            } else if (entity instanceof Villager villager) {
+                Villager.Profession villagerProfession = villager.getProfession();
+                Villager.Type villagerType = villager.getVillagerType();
+                if (villagerProfession != Villager.Profession.NONE) {
+                    type = villagerType.name() + "_" + villagerProfession.name() + "_" + type;
+                } else type = villagerType.name() + "_" + type;
+            } else if (entity instanceof MushroomCow mushroomCow) {
+                MushroomCow.Variant variant = mushroomCow.getVariant();
+                type = variant.name() + "_" + type;
+            } else if (entity instanceof Frog frog) {
+                Frog.Variant variant = frog.getVariant();
+                type = variant.name() + "_" + type;
+            } else if (entity instanceof Horse horse) {
+                Horse.Color color = horse.getColor();
+                type = color.name() + "_" + type;
+            } else if (entity instanceof Rabbit rabbit) {
+                Rabbit.Type variant = rabbit.getRabbitType();
+                type = variant.name() + "_" + type;
+            }
+            if (data.getEntityHeadKeys().contains(type)) return EntityHead.valueOf(type).getHead();
+        }
+        return null;
     }
 }

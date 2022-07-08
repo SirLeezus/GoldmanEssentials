@@ -2,7 +2,6 @@ package lee.code.essentials.managers;
 
 import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Setting;
 import net.pl3x.map.plugin.configuration.WorldConfig;
@@ -18,10 +17,9 @@ public class WorldManager {
 
     public void resourceWorldResets() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         CacheManager cacheManager = plugin.getCacheManager();
 
-        long worldSeed = -3589987965699307043L;
+        long worldSeed = -561772;
         long netherSeed = -3589987965699307043L;
         long endSeed = -3589987965699307043L;
 
