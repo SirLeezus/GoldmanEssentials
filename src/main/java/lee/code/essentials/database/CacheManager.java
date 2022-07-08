@@ -284,9 +284,11 @@ public class CacheManager {
     public void addPerm(UUID uuid, String perm) {
         PlayerTable playerTable = getPlayerTable(uuid);
         StringBuilder sPerms = new StringBuilder(playerTable.getPerms());
-        sPerms = sPerms.toString().equals("0") ? new StringBuilder(perm) : sPerms.append(",").append(perm);
-        playerTable.setPerms(sPerms.toString());
-        updatePlayerTable(playerTable);
+        if (!sPerms.toString().contains(perm)) {
+            sPerms = sPerms.toString().equals("0") ? new StringBuilder(perm) : sPerms.append(",").append(perm);
+            playerTable.setPerms(sPerms.toString());
+            updatePlayerTable(playerTable);
+        }
     }
 
     public void addPermList(UUID uuid, List<String> newPerms) {
@@ -294,8 +296,11 @@ public class CacheManager {
         StringBuilder sPerms = new StringBuilder(playerTable.getPerms());
         if (sPerms.toString().equals("0")) sPerms = new StringBuilder();
         for (String sPerm : newPerms) {
-            if (sPerms.isEmpty()) new StringBuilder(sPerm);
-            else sPerms.append(",").append(sPerm);
+            if (sPerms.isEmpty()) {
+                new StringBuilder(sPerm);
+            } else {
+                if (!sPerms.toString().contains(sPerm)) sPerms.append(",").append(sPerm);
+            }
         }
         playerTable.setPerms(sPerms.toString());
         updatePlayerTable(playerTable);

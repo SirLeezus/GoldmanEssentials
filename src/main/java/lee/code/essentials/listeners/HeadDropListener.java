@@ -11,6 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HeadDropListener implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST)
@@ -20,13 +23,18 @@ public class HeadDropListener implements Listener {
         Entity entity = e.getEntity();
 
         if (e.getEntity().getKiller() != null) {
-            for (ItemStack item : e.getDrops()) {
-                if (item.getType().equals(Material.CREEPER_HEAD)) e.getDrops().remove(item);
-                else if (item.getType().equals(Material.ZOMBIE_HEAD)) e.getDrops().remove(item);
-                else if (item.getType().equals(Material.WITHER_SKELETON_SKULL)) e.getDrops().remove(item);
-                else if (item.getType().equals(Material.ZOMBIE_HEAD)) e.getDrops().remove(item);
-                else if (item.getType().equals(Material.DRAGON_HEAD)) e.getDrops().remove(item);
+            List<ItemStack> drops = new ArrayList<>(e.getDrops());
+            if (!e.getDrops().isEmpty()) {
+                for (ItemStack item : drops) {
+                    if (item.getType().equals(Material.CREEPER_HEAD)) { drops.remove(item); }
+                    else if (item.getType().equals(Material.ZOMBIE_HEAD)) drops.remove(item);
+                    else if (item.getType().equals(Material.WITHER_SKELETON_SKULL)) drops.remove(item);
+                    else if (item.getType().equals(Material.ZOMBIE_HEAD)) drops.remove(item);
+                    else if (item.getType().equals(Material.DRAGON_HEAD)) drops.remove(item);
+                }
             }
+            e.getDrops().clear();
+            e.getDrops().addAll(drops);
             Player killer = e.getEntity().getKiller();
             ItemStack handItem =  killer.getInventory().getItemInMainHand();
             if (handItem.hasItemMeta() && handItem.getItemMeta().hasEnchant(plugin.getEnchantsAPI().getCustomEnchant().HEAD_HUNTER)) return;
