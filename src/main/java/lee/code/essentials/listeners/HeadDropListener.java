@@ -11,8 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 public class HeadDropListener implements Listener {
 
@@ -23,18 +22,17 @@ public class HeadDropListener implements Listener {
         Entity entity = e.getEntity();
 
         if (e.getEntity().getKiller() != null) {
-            List<ItemStack> drops = new ArrayList<>(e.getDrops());
-            if (!e.getDrops().isEmpty()) {
-                for (ItemStack item : drops) {
-                    if (item.getType().equals(Material.CREEPER_HEAD)) { drops.remove(item); }
-                    else if (item.getType().equals(Material.ZOMBIE_HEAD)) drops.remove(item);
-                    else if (item.getType().equals(Material.WITHER_SKELETON_SKULL)) drops.remove(item);
-                    else if (item.getType().equals(Material.ZOMBIE_HEAD)) drops.remove(item);
-                    else if (item.getType().equals(Material.DRAGON_HEAD)) drops.remove(item);
-                }
+            Iterator<ItemStack> iterator = e.getDrops().iterator();
+
+            while (iterator.hasNext()) {
+                ItemStack item = iterator.next();
+                if (item.getType().equals(Material.CREEPER_HEAD)) iterator.remove();
+                else if (item.getType().equals(Material.ZOMBIE_HEAD)) iterator.remove();
+                else if (item.getType().equals(Material.CREEPER_HEAD)) iterator.remove();
+                else if (item.getType().equals(Material.WITHER_SKELETON_SKULL)) iterator.remove();
+                else if (item.getType().equals(Material.ZOMBIE_HEAD)) iterator.remove();
+                else if (item.getType().equals(Material.DRAGON_HEAD)) iterator.remove();
             }
-            e.getDrops().clear();
-            e.getDrops().addAll(drops);
             Player killer = e.getEntity().getKiller();
             ItemStack handItem =  killer.getInventory().getItemInMainHand();
             if (handItem.hasItemMeta() && handItem.getItemMeta().hasEnchant(plugin.getEnchantsAPI().getCustomEnchant().HEAD_HUNTER)) return;
