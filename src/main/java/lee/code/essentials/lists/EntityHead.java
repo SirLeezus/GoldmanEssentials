@@ -1,7 +1,6 @@
 package lee.code.essentials.lists;
 
 import lee.code.core.util.bukkit.BukkitUtils;
-import lee.code.essentials.GoldmanEssentials;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -246,7 +245,6 @@ public enum EntityHead {
     @Getter private final String name;
 
     public ItemStack getHead() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         BukkitUtils.applyHeadSkin(head, skin, UUID.fromString(Lang.SERVER_UUID.getString()));
         ItemMeta headMeta = head.getItemMeta();

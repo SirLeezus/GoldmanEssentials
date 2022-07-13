@@ -15,7 +15,6 @@ public class BackListener implements Listener {
     @EventHandler
     public void onTeleportBackSave(PlayerTeleportEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)) {
             Player player = e.getPlayer();
             UUID uuid = player.getUniqueId();
@@ -27,7 +26,6 @@ public class BackListener implements Listener {
     @EventHandler
     public void onDeathBackSave(PlayerDeathEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-
         Player player = e.getEntity();
         UUID uuid = player.getUniqueId();
         String location = BukkitUtils.serializeLocation(player.getLocation());

@@ -367,3 +367,7 @@ commands:
     description: List of all emojis you can use in chat, anvils, books and sings.
     permission: essentials.command.emojis
     usage: "/emojis"
+  effect:
+    description: Apply an effect to a target player.
+    permission: essentials.command.effect
+    usage: "/effect &f<player> <effect> <time>"

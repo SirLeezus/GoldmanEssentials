@@ -42,7 +42,7 @@ public class DuelCMD implements CommandExecutor {
                                             if (args[1].equalsIgnoreCase("accept")) {
                                                 data.removeDuelRequesting(tUUID);
                                                 player.teleport(target.getLocation());
-                                                Title.Times times = Title.Times.of(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(100));
+                                                Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(100));
                                                 CountdownTimer timer = new CountdownTimer(plugin,
                                                         10,
                                                         () -> {

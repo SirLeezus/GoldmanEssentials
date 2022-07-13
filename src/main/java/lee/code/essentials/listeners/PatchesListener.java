@@ -10,7 +10,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PatchesListener implements Listener {
@@ -75,6 +78,16 @@ public class PatchesListener implements Listener {
                         entity.getWorld().dropItemNaturally(entity.getLocation(), trident);
                     }
                 }
+            }
+        }
+    }
+
+    //patch end portals working with entities
+    @EventHandler
+    public void onEndPortalUse(EntityPortalEvent e) {
+        if (e.getFrom().getWorld().getEnvironment().equals(World.Environment.THE_END)) {
+            if (e.getFrom().getBlock().getType().equals(Material.END_PORTAL)) {
+                e.setCancelled(true);
             }
         }
     }

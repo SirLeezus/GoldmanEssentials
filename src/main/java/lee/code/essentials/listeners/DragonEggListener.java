@@ -22,7 +22,7 @@ public class DragonEggListener implements Listener {
             if (world.getEnvironment().equals(World.Environment.THE_END)) {
                 DragonBattle battle = world.getEnderDragonBattle();
                 if (battle != null && battle.hasBeenPreviouslyKilled()) {
-                    Location eggLoc = new Location(world, 0, 67, 0);
+                    Location eggLoc = new Location(world, 0, 69, 0);
                     Block eggBlock = eggLoc.getBlock();
                     eggBlock.setType(Material.DRAGON_EGG);
                 }

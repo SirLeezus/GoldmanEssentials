@@ -124,15 +124,14 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("No swing delay with tools or weapons.");
                     changes.add("You can put any item on your head.");
                     changes.add("Item frames can be used to filter hoppers.");
-                    changes.add("Armor stands can be edited by sneak-right-clicking them.");
-                    changes.add("You can store exp by sneak-clicking glass bottles.");
+                    changes.add("Armor stands can be modified by sneak-right-clicking them.");
                     changes.add("Trampling is disabled.");
                     changes.add("Llamas can be controlled when they have carpet on them.");
                     changes.add("Ender crystals will shoot phantoms.");
                     changes.add("Villagers will follow you if you're holding a emerald block.");
                     changes.add("Villagers can be leashed.");
                     changes.add("Villager clerics can farm nether wart.");
-                    changes.add("Polar bears can be bread with salmon.");
+                    changes.add("Polar bears can be bred with salmon.");
                     changes.add("Chests can be opened with any block above it.");
                     changes.add("The more people sleeping the faster the night will be.");
                     changes.add("Anvils, signs and books support hex and normal color codes.");
@@ -161,10 +160,10 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("All entities have a chance of dropping a head.");
                     changes.add("You can toggle item frame invisibility by sneak-right-clicking them with shears.");
                     changes.add("Enchantments can be taken off items in anvils and put on enchanted books.");
-                    changes.add("You can cross-enchant items instead of it requiring the same type.");
+                    changes.add("You can cross-enchant items instead of it requiring the same tool type.");
                     changes.add("All enchants that can be put on a type of tool or weapon no longer have enchantment conflicts.");
                     changes.add("You can disenchant enchanted books if you hold a normal book in your off-hand and sneak-click the enchanted book you want to disenchant.");
-                    changes.add("Witches, Elder Guardians and Villagers have a chance to dropping a hat on death.");
+                    changes.add("Witches, Elder Guardians and Villagers have a chance of dropping a hat on death.");
                     changes.add("Dolphins can be controlled by right-clicking them, you can also use space bar to spit when riding a dolphin.");
                     changes.add("If you hold a compass a direction bar will appear on your screen.");
                     changes.add("Hoes will replant crops if you break them with one.");
@@ -173,6 +172,7 @@ public class HelpCMD implements CommandExecutor {
                     changes.add("Giants have a 5% chance to spawn with zombies in the resource world.");
                     changes.add("Illusioners have a 10% chance to spawn with pillagers in the resource world.");
                     changes.add("Drowned have a 50% chance of dropping a trident if they're holding one.");
+                    changes.add("Killer Rabbits have a 3% chance to spawn with rabbits in the resource world.");
                     changes.add("Ocelots are more common in jungles.");
                     changes.add("You can right-click minecarts with a armor stand to insert a armor stand inside a minecart.");
 
@@ -191,7 +191,7 @@ public class HelpCMD implements CommandExecutor {
 
                     lines.add(BukkitUtils.parseColorComponent("&31&b. &#964B00Logger").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment:\n&#964B00Logger\n\n&e&lHow does it work:\n&7When you chop a log it'll cut down the tree.\n\n&e&lSupported Items:\n&7All Axes")));
                     lines.add(BukkitUtils.parseColorComponent("&32&b. &#FCFF35Lightning Strike").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment:\n&#FCFF35Lightning Strike\n\n&e&lHow does it work:\n&7When you sneak-left-click it'll summon lightning.\n\n&e&lSupported Items:\n&7All Swords")));
-                    lines.add(BukkitUtils.parseColorComponent("&33&b. &#DE0000Destroyer").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment:\n&#DE0000Destroyer\n\n&e&lHow does it work:\n&7When you break a block it will break a 3x3 area of blocks.\n\n&e&lSupported Items:\n&7All Shovels, All Pickaxes\n\n&e&lSide Effects:\n&7Does not drop exp when a ore is broken.")));
+                    lines.add(BukkitUtils.parseColorComponent("&33&b. &#DE0000Destroyer").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment:\n&#DE0000Destroyer\n\n&e&lHow does it work:\n&7When you break a block it will break a 3x3x3 area of blocks.\n\n&e&lSupported Items:\n&7All Shovels, All Pickaxes\n\n&e&lSide Effects:\n&7Does not drop exp when a ore is broken.")));
                     lines.add(BukkitUtils.parseColorComponent("&34&b. &#6A00E1Soul Bound").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment:\n&#6A00E1Soul Bound\n\n&e&lHow does it work:\n&7Keep item on death.\n\n&e&lSupported Items:\n&7Elytra, Fishing Rod, Bow, Crossbow, Trident, Bundle, All Armor, All Tools, All Weapons")));
                     lines.add(BukkitUtils.parseColorComponent("&35&b. &#FF00E4Soul Reaper").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment:\n&#FF00E4Soul Reaper\n\n&e&lHow does it work:\n&7Capture and release mobs by sneak-right-clicking them.\n\n&e&lSupported Items:\n&7All Hoes")));
                     lines.add(BukkitUtils.parseColorComponent("&36&b. &#FF9709Auto Sell").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment:\n&#FF9709Auto Sell\n\n&e&lHow does it work:\n&7When you sneak-right-click a chest, barrel or shulker box it'll sell the items inside it.\n\n&e&lSupported Items:\n&7All Hoes")));

@@ -161,6 +161,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("sort").setExecutor(new SortCMD());
         getCommand("bottlexp").setExecutor(new BottleXPCMD());
         getCommand("emojis").setExecutor(new EmojisCMD());
+        getCommand("effect").setExecutor(new EffectCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -249,6 +250,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("sort").setTabCompleter(new SortTab());
         getCommand("bottlexp").setTabCompleter(new BottleXPTab());
         getCommand("emojis").setTabCompleter(new EmojisTab());
+        getCommand("effect").setTabCompleter(new EffectTab());
     }
 
     private void registerListeners() {
