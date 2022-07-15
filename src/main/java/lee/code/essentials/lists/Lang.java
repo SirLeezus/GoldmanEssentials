@@ -258,6 +258,7 @@ public enum Lang {
     ERROR_LIST_PAGE_NOT_NUMBER("&cThe input &6{0} &cis not a number. &a&lUse&7: &e(1)"),
     ERROR_ARMOR_STAND_EDIT("&cThat armor stand is currently being edited by another player."),
     ERROR_RANDOM_TELEPORT_DELAY("&7You will need to wait {0} &7to use random teleport again."),
+    ERROR_RANDOM_TELEPORT_ACTIVE("&7You must wait for the server to find you a safe location before you can run this command again."),
     ERROR_RANDOM_WORLD_TYPE("&cYou can only use random teleport in normal worlds."),
     ERROR_EXP_BOTTLE_POINTS("&cYou need at least 8 exp to store some in a bottle!"),
     ERROR_EXP_BOTTLE_NO_BOTTLE("&cYou need to be holding a glass bottle to use this command."),

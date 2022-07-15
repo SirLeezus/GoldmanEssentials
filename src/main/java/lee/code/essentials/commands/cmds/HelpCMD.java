@@ -186,7 +186,7 @@ public class HelpCMD implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("enchants")) {
                     lines.add(Lang.COMMAND_HELP_ENCHANTS_TITLE.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(BukkitUtils.parseColorComponent(" &dCustom enchants can be obtained from normal enchanting tables when you enchant a item at level 30. Custom enchants do work with books. Keep in mind you only have a small chance of receiving one. Hover over the enchantments down below for more details."));
+                    lines.add(BukkitUtils.parseColorComponent(" &dLegendary enchants can be obtained from normal enchanting tables when you enchant a item at level 30. Custom enchants do work with books. Keep in mind you only have a small chance of receiving one. Hover over the enchantments down below for more details."));
                     lines.add(Component.text(""));
 
                     lines.add(BukkitUtils.parseColorComponent("&31&b. &#964B00Logger").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment:\n&#964B00Logger\n\n&e&lHow does it work:\n&7When you chop a log it'll cut down the tree.\n\n&e&lSupported Items:\n&7All Axes")));

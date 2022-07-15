@@ -45,6 +45,7 @@ public class Data {
     @Getter private final List<String> emojiKeys = new ArrayList<>();
     @Getter private final List<Component> emojiLines = new ArrayList<>();
     @Getter private final List<Material> entityPlaceLimitedItems = new ArrayList<>();
+    @Getter private final List<UUID> randomTeleportingPlayers = new ArrayList<>();
 
     @Getter @Setter private int teamNumber = 0;
     @Getter @Setter private boolean isAutoRestarting = false;
@@ -163,6 +164,12 @@ public class Data {
     }
     public void clearRTPAttempts(UUID player) { playerRTPAttempts.remove(player); }
     public void addRTPAttempt(UUID player, int number) { playerRTPAttempts.put(player, getRTPAttempt(player) + number); }
+
+    public boolean isRandomTeleporting(UUID player) {
+        return randomTeleportingPlayers.contains(player);
+    }
+    public void addRandomTeleporting(UUID player) { randomTeleportingPlayers.add(player); }
+    public void removeRandomTeleporting(UUID player) { randomTeleportingPlayers.remove(player); }
 
     public boolean isRTPTaskActive(UUID player) {
         return playerRTPTask.containsKey(player);

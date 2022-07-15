@@ -57,17 +57,7 @@ public class PU {
         Data data = plugin.getData();
 
         UUID uuid = player.getUniqueId();
-        int maxAttempts = 10;
-
-        if (data.isRTPTaskActive(uuid) && !player.hasPermission("essentials.command.bypass")) {
-            long time = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-            long delay = data.getRTPTimer(uuid);
-            if (time < delay) {
-                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOM_TELEPORT_DELAY.getComponent(new String[] { BukkitUtils.parseSeconds(delay - time) })));
-                return;
-            }
-        }
-
+        final int maxAttempts = 10;
         if (data.getRTPAttempt(uuid) < maxAttempts) {
             World world = player.getWorld();
 
@@ -86,31 +76,33 @@ public class PU {
             Location location = new Location(player.getWorld(), x, y, z);
             Material[] blackList = new Material[] { Material.AIR, Material.CAVE_AIR, Material.VOID_AIR, Material.WATER, Material.LAVA, Material.BEDROCK };
 
-            if (world.getWorldBorder().isInside(location)) {
-                world.getChunkAtAsync(location, false);
-                for (double i = location.getY(); i > 50; i--) {
-                    Location loc = new Location(player.getWorld(), location.getX(), i, location.getZ());
-                    if (loc.getBlock().getType() == Material.AIR) {
-                        Location ground = loc.subtract(0, 1, 0);
-                        Block block = ground.getBlock();
-                        Material groundType = block.getType();
-                        Vector box = block.getBoundingBox().getCenter();
-                        if (!box.equals(new Vector(0, 0, 0)) && !Arrays.asList(blackList).contains(groundType) ) {
-                            double bX = box.getX();
-                            double bY = box.getY() + 0.5;
-                            double bZ = box.getZ();
-                            Location teleportLocation = new Location(block.getWorld(), bX, bY, bZ);
-                            player.teleportAsync(teleportLocation);
-                            player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                            addRandomTeleportDelay(uuid);
-                            data.clearRTPAttempts(uuid);
-                            return;
+            world.getChunkAtAsync(location, true).thenAccept(result -> {
+                if (world.getWorldBorder().isInside(location)) {
+                    for (double i = location.getY(); i > 50; i--) {
+                        Location loc = new Location(player.getWorld(), location.getX(), i, location.getZ());
+                        if (loc.getBlock().getType() == Material.AIR) {
+                            Location ground = loc.subtract(0, 1, 0);
+                            Block block = ground.getBlock();
+                            Material groundType = block.getType();
+                            Vector box = block.getBoundingBox().getCenter();
+                            if (!box.equals(new Vector(0, 0, 0)) && !Arrays.asList(blackList).contains(groundType) ) {
+                                double bX = box.getX();
+                                double bY = box.getY() + 0.5;
+                                double bZ = box.getZ();
+                                Location teleportLocation = new Location(block.getWorld(), bX, bY, bZ);
+                                addRandomTeleportDelay(uuid);
+                                data.clearRTPAttempts(uuid);
+                                data.removeRandomTeleporting(uuid);
+                                player.teleport(teleportLocation);
+                                player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                                return;
+                            }
                         }
                     }
                 }
-            }
-            data.addRTPAttempt(uuid, 1);
-            rtpPlayer(player);
+                data.addRTPAttempt(uuid, 1);
+                rtpPlayer(player);
+            });
         } else {
             data.clearRTPAttempts(uuid);
             player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND.getComponent(null)));
@@ -363,6 +355,7 @@ public class PU {
     public void clearScoreBoard() {
         ScoreboardManager boardManager = Bukkit.getScoreboardManager();
         Scoreboard board = boardManager.getMainScoreboard();
+        for (String ent : board.getEntries()) board.resetScores(ent);
         for (Team team : board.getTeams()) team.unregister();
     }
 
