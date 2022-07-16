@@ -113,7 +113,7 @@ public class AFKListener implements Listener {
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
-    public void onAFKChat(AsyncChatEvent e) {
+    public void onAFKChat(PlayerChatEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();;
         Data data = plugin.getData();
         Player player = e.getPlayer();
