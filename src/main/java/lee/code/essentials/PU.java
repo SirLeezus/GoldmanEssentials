@@ -5,12 +5,14 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.google.common.base.Strings;
 import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.*;
+import lee.code.essentials.managers.BoardManager;
 import lee.code.essentials.managers.CountdownTimer;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;
@@ -34,6 +36,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -363,6 +366,87 @@ public class PU {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         CacheManager cacheManager = plugin.getCacheManager();
         Data data = plugin.getData();
+        UUID uuid = player.getUniqueId();
+        BoardManager boardManager = new BoardManager(uuid);
+
+        String rank = cacheManager.getRank(uuid);
+        String priority = Rank.valueOf(rank).getPriority();
+
+        String name = priority + data.getTeamNumber();
+        data.setTeamNumber(data.getTeamNumber() + 1);
+
+        String prefix = cacheManager.getPrefix(uuid) + " ";
+        String suffix = cacheManager.getSuffix(uuid);
+        ChatColor chatColor = cacheManager.getColor(uuid);
+        String colorChar = "&" + chatColor.getChar();
+        String levelColor = "&a&l";
+        int prestigeLevel = cacheManager.getPrestige(uuid);
+        if (prestigeLevel >= 10) levelColor = "&e&l";
+        String prestige = prestigeLevel != 0 ? "&6[" + levelColor + prestigeLevel + "&6] " : "";
+        suffix = afk ? suffix + " &c&lAFK" : suffix;
+
+
+        boardManager.setTeamName(name);
+        boardManager.setPlayers(Collections.singletonList(player.getName()));
+        boardManager.setColor(chatColor);
+        boardManager.setPrefix(WrappedChatComponent.fromJson(BukkitUtils.serializeColorComponentJson(prefix + prestige)));
+        boardManager.setSuffix(WrappedChatComponent.fromJson(BukkitUtils.serializeColorComponentJson(suffix)));
+
+        player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix.replace(" &c&lAFK", "")));
+        player.playerListName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
+        data.setBoardPacket(uuid, boardManager);
+        boardManager.broadcastPacket();
+    }
+
+    public void updateDisplayNameV3(Player player, boolean afk) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        CacheManager cacheManager = plugin.getCacheManager();
+        Data data = plugin.getData();
+
+        UUID uuid = player.getUniqueId();
+        ScoreboardManager boardManager = Bukkit.getScoreboardManager();
+        Scoreboard board = boardManager.getNewScoreboard();
+
+        Objective health = board.getObjective("health");
+
+        if (health == null) {
+            Objective o = board.registerNewObjective("health", "health", BukkitUtils.parseColorComponent("\uE78E"), RenderType.HEARTS);
+            o.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        }
+
+        String rank = cacheManager.getRank(uuid);
+        String priority = Rank.valueOf(rank).getPriority();
+        int prestigeLevel = cacheManager.getPrestige(uuid);
+
+        String name = priority + prestigeLevel + data.getTeamNumber();
+        data.setTeamNumber(data.getTeamNumber() + 1);
+
+        Team team = board.registerNewTeam(name);
+
+        team.addEntry(player.getName());
+
+        String prefix = cacheManager.getPrefix(uuid) + " ";
+        String suffix = cacheManager.getSuffix(uuid);
+        ChatColor chatColor = cacheManager.getColor(uuid);
+        String colorChar = "&" + chatColor.getChar();
+        NamedTextColor namedTextColor = NameTextColor.valueOf(chatColor.name()).getColor();
+        String levelColor = "&a&l";
+        if (prestigeLevel >= 10) levelColor = "&e&l";
+        String prestige = prestigeLevel != 0 ? "&6[" + levelColor + prestigeLevel + "&6] " : "";
+        suffix = afk ? suffix + " &c&lAFK" : suffix;
+
+        team.color(namedTextColor);
+        team.suffix(BukkitUtils.parseColorComponent(suffix));
+        team.prefix(BukkitUtils.parseColorComponent(prefix + prestige));
+        player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
+        player.playerListName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
+        player.setScoreboard(board);
+    }
+
+    public void updateDisplayNameOLD(Player player, boolean afk) {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        CacheManager cacheManager = plugin.getCacheManager();
+        Data data = plugin.getData();
 
         UUID uuid = player.getUniqueId();
         ScoreboardManager boardManager = Bukkit.getScoreboardManager();
@@ -421,13 +505,31 @@ public class PU {
                     for (Chunk chunk : world.getLoadedChunks()) {
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             for (Entity entity : chunk.getEntities()) {
-                                if (!(entity instanceof Item) && entity.getCustomName() == null && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+                                if (entity.getType().equals(EntityType.DROPPED_ITEM) && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_DROP_ITEM_PER_CHUNK.getValue()) entity.remove();
+                                else if (entity.customName() == null && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
                             }
                         });
                     }
                 }
             }
         }), 0L, 20L * 30);
+    }
+
+    public void scheduleHeathChecker() {
+        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
+        Data data = plugin.getData();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    UUID uuid = player.getUniqueId();
+                    double health = player.getAbsorptionAmount() + player.getHealth();
+                    if (data.getHeathTracker(uuid) != health && data.hasBoard(uuid)) {
+                        data.setHeathTracker(uuid, health);
+                        plugin.getData().getBoardPacket(uuid).updateHeath();
+                    }
+                }
+            }
+        }), 1, 1);
     }
 
     public void scheduleAutoRestart() {

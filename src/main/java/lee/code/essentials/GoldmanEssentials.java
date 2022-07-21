@@ -62,7 +62,8 @@ public class GoldmanEssentials extends JavaPlugin {
         pU.scheduleTabListUpdater();
         pU.scheduleAFKChecker();
         pU.schedulePlayTimeChecker();
-        pU.clearScoreBoard();
+        pU.scheduleHeathChecker();
+        //pU.clearScoreBoard();
     }
 
     @Override

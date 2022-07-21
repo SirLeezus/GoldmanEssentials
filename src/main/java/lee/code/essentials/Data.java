@@ -2,6 +2,7 @@ package lee.code.essentials;
 
 import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.lists.*;
+import lee.code.essentials.managers.BoardManager;
 import lee.code.essentials.menusystem.PlayerMU;
 import lombok.Getter;
 import lombok.Setter;
@@ -71,6 +72,23 @@ public class Data {
     private final ConcurrentHashMap<UUID, Integer> playerSpamLoggerCount = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Component> playerSpamLoggerString = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, UUID> lastReplier = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BoardManager> activeBoardPackets = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Double> playerHeathTracker = new ConcurrentHashMap<>();
+
+    public void setHeathTracker(UUID uuid, double amount) { playerHeathTracker.put(uuid, amount); }
+    public double getHeathTracker(UUID uuid) {
+        if (!playerHeathTracker.containsKey(uuid)) playerHeathTracker.put(uuid, 0.0);
+        return playerHeathTracker.get(uuid);
+    }
+    public void removeHeathTracker(UUID uuid) { playerHeathTracker.remove(uuid); }
+
+    public void setBoardPacket(UUID player, BoardManager boardManager) { activeBoardPackets.put(player, boardManager); }
+    public BoardManager getBoardPacket(UUID player) {
+        return activeBoardPackets.get(player);
+    }
+    public List<BoardManager> getBoardPackets() { return activeBoardPackets.values().stream().toList();}
+    public void removeBoard(UUID uuid) { activeBoardPackets.get(uuid); }
+    public boolean hasBoard(UUID uuid) { return activeBoardPackets.containsKey(uuid); }
 
     public UUID getLastReplier(UUID uuid) { return lastReplier.get(uuid); }
     public void setLastReplier(UUID player, UUID target) { lastReplier.put(player, target); }

@@ -33,6 +33,12 @@ public class QuitListener implements Listener {
         //playtime update
         cacheManager.setPlayTime(uuid, player.getStatistic(Statistic.PLAY_ONE_MINUTE));
 
+        //remove board packet
+        data.removeBoard(e.getPlayer().getUniqueId());
+
+        //remove heath tracker
+        data.removeHeathTracker(uuid);
+
         //set quit message format
         if (data.getVanishedPlayers().contains(uuid)) {
             e.quitMessage(null);

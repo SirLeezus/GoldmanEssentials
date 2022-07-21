@@ -7,6 +7,7 @@ import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.Setting;
+import lee.code.essentials.managers.BoardManager;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -20,6 +21,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class JoinListener implements Listener {
@@ -116,6 +118,7 @@ public class JoinListener implements Listener {
 
         //update player display name
         pu.updateDisplayName(player, false);
+        for (BoardManager board : data.getBoardPackets()) board.sendPacket(player);
 
         //set join message format
         if (data.getVanishedPlayers().contains(uuid)) e.joinMessage(null);

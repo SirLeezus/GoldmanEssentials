@@ -1,12 +1,11 @@
 package lee.code.essentials.listeners;
 
 import lee.code.core.util.bukkit.BukkitUtils;
-import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -16,30 +15,38 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import java.util.UUID;
-
 public class DeathListener implements Listener {
 
     @EventHandler
     public void onPlayerDeathMessage(PlayerDeathEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         CacheManager cacheManager = plugin.getCacheManager();
-        Data data = plugin.getData();
 
         Player player = e.getEntity();
         Location location = player.getLocation();
-        UUID uuid = player.getUniqueId();
+        Player killer = player.getKiller();
+
+        String match = player.getName();
         Component dm = e.deathMessage();
+        if (dm != null) {
+            TextReplacementConfig textReplacementConfig = TextReplacementConfig.builder()
+                    .matchLiteral(match)
+                    .replacement(player.displayName())
+                    .build();
+            dm = dm.replaceText(textReplacementConfig);
 
-        //afk check
-        if (data.isAFK(uuid)) {
-            data.removeAFK(uuid);
-            pu.updateDisplayName(player, false);
+            if (killer != null) {
+                String match2 = killer.getName();
+                TextReplacementConfig textReplacementConfig2 = TextReplacementConfig.builder()
+                        .matchLiteral(match2)
+                        .replacement(killer.displayName())
+                        .build();
+                dm = dm.replaceText(textReplacementConfig2);
+            }
+
+            if (!cacheManager.isVanishPlayer(player.getUniqueId())) plugin.getServer().sendMessage(Lang.DEATH_PREFIX.getComponent(null).append(dm).append(Component.text(".")).color(NamedTextColor.GRAY));
+            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.DEATH_CORDS.getComponent(new String[] { player.getWorld().getName(), BukkitUtils.parseDecimalValue(location.getX()), BukkitUtils.parseDecimalValue(location.getY()), BukkitUtils.parseDecimalValue(location.getZ()) })));
         }
-
-        if (dm != null && !cacheManager.isVanishPlayer(uuid)) plugin.getServer().sendMessage(Lang.DEATH_PREFIX.getComponent(null).append(dm).append(Component.text(".")).color(NamedTextColor.GRAY));
-        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.DEATH_CORDS.getComponent(new String[] { player.getWorld().getName(), BukkitUtils.parseDecimalValue(location.getX()), BukkitUtils.parseDecimalValue(location.getY()), BukkitUtils.parseDecimalValue(location.getZ()) })));
     }
 
     @EventHandler

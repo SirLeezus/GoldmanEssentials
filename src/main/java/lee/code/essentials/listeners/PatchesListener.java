@@ -1,16 +1,22 @@
 package lee.code.essentials.listeners;
 
+import lee.code.essentials.lists.Lang;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftCat;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftParrot;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftWolf;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -88,6 +94,46 @@ public class PatchesListener implements Listener {
         if (e.getFrom().getWorld().getEnvironment().equals(World.Environment.THE_END)) {
             if (e.getFrom().getBlock().getType().equals(Material.END_PORTAL)) {
                 e.setCancelled(true);
+            }
+        }
+    }
+
+    //patch for scoreboards not sending owner info to prevent prefix from showing
+    @EventHandler (priority = EventPriority.MONITOR)
+    public void onPlayerInteractWithTamed(PlayerInteractEntityEvent e) {
+        Player player = e.getPlayer();
+        if (!e.isCancelled() && player.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+            if (e.getRightClicked() instanceof Parrot targetParrot) {
+                if (targetParrot.isTamed()) {
+                    if (targetParrot.getOwner() != null) {
+                        if (targetParrot.getOwner().getUniqueId().equals(player.getUniqueId())) {
+                            e.setCancelled(true);
+                            net.minecraft.world.entity.animal.Parrot parrotHandle = ((CraftParrot)targetParrot).getHandle();
+                            parrotHandle.setOrderedToSit(!parrotHandle.isInSittingPose());
+                        } else player.sendActionBar(Lang.ERROR_TAMED_SIT.getComponent(new String[] { targetParrot.getOwner().getName() }));
+                    }
+
+                }
+            } else if (e.getRightClicked() instanceof Wolf targetWolf) {
+                if (targetWolf.isTamed()) {
+                    if (targetWolf.getOwner() != null) {
+                        if (targetWolf.getOwner().getUniqueId().equals(player.getUniqueId())) {
+                            e.setCancelled(true);
+                            net.minecraft.world.entity.animal.Wolf wolfHandle = ((CraftWolf)targetWolf).getHandle();
+                            wolfHandle.setOrderedToSit(!targetWolf.isSitting());
+                        } else player.sendActionBar(Lang.ERROR_TAMED_SIT.getComponent(new String[] { targetWolf.getOwner().getName() }));
+                    }
+                }
+            } else if (e.getRightClicked() instanceof Cat targetCat) {
+                if (targetCat.isTamed()) {
+                    if (targetCat.getOwner() != null) {
+                        if (targetCat.getOwner().getUniqueId().equals(player.getUniqueId())) {
+                            e.setCancelled(true);
+                            net.minecraft.world.entity.animal.Cat catHandle = ((CraftCat)targetCat).getHandle();
+                            catHandle.setOrderedToSit(!targetCat.isSitting());
+                        } else player.sendActionBar(Lang.ERROR_TAMED_SIT.getComponent(new String[] { targetCat.getOwner().getName() }));
+                    }
+                }
             }
         }
     }
