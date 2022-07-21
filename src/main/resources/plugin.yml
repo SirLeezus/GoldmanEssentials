@@ -282,6 +282,10 @@ commands:
     description: Removes a permission from a player.
     permission: essentials.command.removeperm
     usage: "/removeperm &f<player> <perm>"
+  checkperms:
+    description: A list of perms the target player has.
+    permission: essentials.command.checkperms
+    usage: "/checkperms &f<player>"
   serversendmessage:
     description: Sends a message to any online player from the server.
     permission: essentials.command.serversendmessage

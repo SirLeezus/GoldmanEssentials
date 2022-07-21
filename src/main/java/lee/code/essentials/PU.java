@@ -355,13 +355,6 @@ public class PU {
         return Strings.repeat("" + completedColor + symbol, progressBars) + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
     }
 
-    public void clearScoreBoard() {
-        ScoreboardManager boardManager = Bukkit.getScoreboardManager();
-        Scoreboard board = boardManager.getMainScoreboard();
-        for (String ent : board.getEntries()) board.resetScores(ent);
-        for (Team team : board.getTeams()) team.unregister();
-    }
-
     public void updateDisplayName(Player player, boolean afk) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         CacheManager cacheManager = plugin.getCacheManager();
@@ -395,100 +388,7 @@ public class PU {
         player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix.replace(" &c&lAFK", "")));
         player.playerListName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
         data.setBoardPacket(uuid, boardManager);
-        boardManager.broadcastPacket();
-    }
-
-    public void updateDisplayNameV3(Player player, boolean afk) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        CacheManager cacheManager = plugin.getCacheManager();
-        Data data = plugin.getData();
-
-        UUID uuid = player.getUniqueId();
-        ScoreboardManager boardManager = Bukkit.getScoreboardManager();
-        Scoreboard board = boardManager.getNewScoreboard();
-
-        Objective health = board.getObjective("health");
-
-        if (health == null) {
-            Objective o = board.registerNewObjective("health", "health", BukkitUtils.parseColorComponent("\uE78E"), RenderType.HEARTS);
-            o.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        }
-
-        String rank = cacheManager.getRank(uuid);
-        String priority = Rank.valueOf(rank).getPriority();
-        int prestigeLevel = cacheManager.getPrestige(uuid);
-
-        String name = priority + prestigeLevel + data.getTeamNumber();
-        data.setTeamNumber(data.getTeamNumber() + 1);
-
-        Team team = board.registerNewTeam(name);
-
-        team.addEntry(player.getName());
-
-        String prefix = cacheManager.getPrefix(uuid) + " ";
-        String suffix = cacheManager.getSuffix(uuid);
-        ChatColor chatColor = cacheManager.getColor(uuid);
-        String colorChar = "&" + chatColor.getChar();
-        NamedTextColor namedTextColor = NameTextColor.valueOf(chatColor.name()).getColor();
-        String levelColor = "&a&l";
-        if (prestigeLevel >= 10) levelColor = "&e&l";
-        String prestige = prestigeLevel != 0 ? "&6[" + levelColor + prestigeLevel + "&6] " : "";
-        suffix = afk ? suffix + " &c&lAFK" : suffix;
-
-        team.color(namedTextColor);
-        team.suffix(BukkitUtils.parseColorComponent(suffix));
-        team.prefix(BukkitUtils.parseColorComponent(prefix + prestige));
-        player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
-        player.playerListName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
-        player.setScoreboard(board);
-    }
-
-    public void updateDisplayNameOLD(Player player, boolean afk) {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        CacheManager cacheManager = plugin.getCacheManager();
-        Data data = plugin.getData();
-
-        UUID uuid = player.getUniqueId();
-        ScoreboardManager boardManager = Bukkit.getScoreboardManager();
-        Scoreboard board = boardManager.getMainScoreboard();
-
-        Objective health = board.getObjective("health");
-
-        if (health == null) {
-            Objective o = board.registerNewObjective("health", "health", BukkitUtils.parseColorComponent("\uE78E"), RenderType.HEARTS);
-            o.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        }
-
-        String rank = cacheManager.getRank(uuid);
-        String priority = Rank.valueOf(rank).getPriority();
-
-        String name = priority + data.getTeamNumber();
-        data.setTeamNumber(data.getTeamNumber() + 1);
-
-        if (board.getTeam(name) == null) board.registerNewTeam(name);
-
-        Team team = board.getTeam(name);
-
-        if (team != null) {
-            team.addEntry(player.getName());
-
-            String prefix = cacheManager.getPrefix(uuid) + " ";
-            String suffix = cacheManager.getSuffix(uuid);
-            ChatColor chatColor = cacheManager.getColor(uuid);
-            String colorChar = "&" + chatColor.getChar();
-            NamedTextColor namedTextColor = NameTextColor.valueOf(chatColor.name()).getColor();
-            int prestigeLevel = cacheManager.getPrestige(uuid);
-            String levelColor = "&a&l";
-            if (prestigeLevel >= 10) levelColor = "&e&l";
-            String prestige = prestigeLevel != 0 ? "&6[" + levelColor + prestigeLevel + "&6] " : "";
-            suffix = afk ? suffix + " &c&lAFK" : suffix;
-
-            team.color(namedTextColor);
-            team.suffix(BukkitUtils.parseColorComponent(suffix));
-            team.prefix(BukkitUtils.parseColorComponent(prefix + prestige));
-            player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
-            player.playerListName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
-        }
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, boardManager::broadcastPacket, 20L);
     }
 
     public int countEntitiesInChunk(Chunk chunk, EntityType type) {

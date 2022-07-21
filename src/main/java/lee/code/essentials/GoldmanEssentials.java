@@ -63,7 +63,6 @@ public class GoldmanEssentials extends JavaPlugin {
         pU.scheduleAFKChecker();
         pU.schedulePlayTimeChecker();
         pU.scheduleHeathChecker();
-        //pU.clearScoreBoard();
     }
 
     @Override
@@ -163,6 +162,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("bottlexp").setExecutor(new BottleXPCMD());
         getCommand("emojis").setExecutor(new EmojisCMD());
         getCommand("effect").setExecutor(new EffectCMD());
+        getCommand("checkperms").setExecutor(new CheckPermsCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -252,6 +252,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("bottlexp").setTabCompleter(new BottleXPTab());
         getCommand("emojis").setTabCompleter(new EmojisTab());
         getCommand("effect").setTabCompleter(new EffectTab());
+        getCommand("checkperms").setTabCompleter(new CheckPermsTab());
     }
 
     private void registerListeners() {
