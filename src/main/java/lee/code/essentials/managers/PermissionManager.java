@@ -153,6 +153,10 @@ public class PermissionManager {
         defaultPerms.add("trails.command.trails");
         defaultPerms.add("trails.use.normal");
 
+        // skins
+        defaultPerms.add("skins.command.skins");
+
+
         // staff
         staffPerms.add("essentials.command.ban");
         staffPerms.add("essentials.command.punished");

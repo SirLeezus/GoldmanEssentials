@@ -186,7 +186,7 @@ public class HelpCMD implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("enchants")) {
                     lines.add(Lang.COMMAND_HELP_ENCHANTS_TITLE.getComponent(null));
                     lines.add(Component.text(""));
-                    lines.add(BukkitUtils.parseColorComponent(" &dLegendary enchants can be obtained from normal enchanting tables when you enchant a item at level 30. Custom enchants do work with books. Keep in mind you only have a small chance of receiving one. Hover over the enchantments down below for more details."));
+                    lines.add(BukkitUtils.parseColorComponent(" &dLegendary enchants can be obtained from normal enchanting tables when you enchant a item at level 30. Custom enchants do work with enchanted books. Keep in mind you only have a small chance of receiving one. All legendary enchantments cost 1 exp in forge in anvils and are reduced to 0 exp cost when enchanting with multiple enchantments, this only applies to the enchantment cost itself. Hover over the enchantments down below for more details."));
                     lines.add(Component.text(""));
 
                     lines.add(BukkitUtils.parseColorComponent("&31&b. &#964B00Logger").hoverEvent(BukkitUtils.parseColorComponent("&5&lEnchantment&7:\n&#964B00Logger\n\n&e&lHow does it work&7:\n&7When you chop a log it'll cut down the tree.\n\n&e&lSupported Items&7:\n&7All Axes\n\n&e&lMax Level&7: \n&70")));
@@ -203,6 +203,19 @@ public class HelpCMD implements CommandExecutor {
                     lines.add(Component.text(""));
                     lines.add(Lang.COMMAND_HELP_ENCHANTS_DIVIDER.getComponent(null));
 
+                } else if (args[0].equalsIgnoreCase("mysterybox")) {
+                    lines.add(Lang.COMMAND_HELP_MYSTERY_BOX_TITLE.getComponent(null));
+                    lines.add(Component.text(""));
+                    lines.add(BukkitUtils.parseColorComponent(" &5You can earn mystery boxes by ranking up or in our online shop! Each rank up you earn 1 mystery box. Each box will reward you one cosmetic. Currently we offer pets, trails, trail styles and skins!"));
+                    lines.add(Component.text(""));
+                    lines.add(Lang.COMMAND_HELP_MYSTERY_BOX_DIVIDER.getComponent(null));
+
+                } else if (args[0].equalsIgnoreCase("skins")) {
+                    lines.add(Lang.COMMAND_HELP_SKINS_TITLE.getComponent(null));
+                    lines.add(Component.text(""));
+                    lines.add(BukkitUtils.parseColorComponent(" &9You can earn skins by getting lucky from the mystery box! Skins can be forged in anvils, to figure out what items the skin supports look at the lore. To preview all the skins run the command &6/skins&9. For more info about the mystery box run the command &6/help mysterybox&9."));
+                    lines.add(Component.text(""));
+                    lines.add(Lang.COMMAND_HELP_SKINS_DIVIDER.getComponent(null));
                 } else if (args[0].equalsIgnoreCase("shops")) {
                     player.chat("/shops help");
                 } else if (args[0].equalsIgnoreCase("locker")) {
@@ -224,10 +237,12 @@ public class HelpCMD implements CommandExecutor {
                 lines.add(BukkitUtils.parseColorComponent("&e2&7. &6&lShops").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "shop" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/shop help")));
                 lines.add(BukkitUtils.parseColorComponent("&e3&7. &c&lLocker").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "locker" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/lock help")));
                 lines.add(BukkitUtils.parseColorComponent("&e4&7. &e&lChunks").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "chunk" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/chunk help")));
-                lines.add(BukkitUtils.parseColorComponent("&e5&7. &b&lPets").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "pets" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/pet help")));
-                lines.add(BukkitUtils.parseColorComponent("&e6&7. &d&lTrails").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "trails" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/trail help")));
-                lines.add(BukkitUtils.parseColorComponent("&e7&8. &#8D27FF&lEnchants").hoverEvent(Lang.COMMAND_HELP_ENCHANT_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help enchants")));
-                lines.add(BukkitUtils.parseColorComponent("&e8&7. &#ff843d&lVanilla").hoverEvent(Lang.COMMAND_HELP_PLUGIN_VANILLA_CHANGES_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help vanilla")));
+                lines.add(BukkitUtils.parseColorComponent("&e5&8. &#8D27FF&lEnchants").hoverEvent(Lang.COMMAND_HELP_ENCHANT_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help enchants")));
+                lines.add(BukkitUtils.parseColorComponent("&e6&7. &b&lPets").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "pets" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/pet help")));
+                lines.add(BukkitUtils.parseColorComponent("&e7&7. &d&lTrails").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "trails" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/trail help")));
+                lines.add(BukkitUtils.parseColorComponent("&e8&7. &9&lSkins").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "skins" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help skins")));
+                lines.add(BukkitUtils.parseColorComponent("&e9&7. &5&lMystery Box").hoverEvent(Lang.COMMAND_HELP_PLUGIN_HOVER.getComponent(new String[] { "mystery box" })).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help mysterybox")));
+                lines.add(BukkitUtils.parseColorComponent("&e10&7. &#ff843d&lVanilla").hoverEvent(Lang.COMMAND_HELP_PLUGIN_VANILLA_CHANGES_HOVER.getComponent(null)).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/help vanilla")));
 
                 lines.add(Component.text(""));
                 lines.add(Lang.COMMAND_HELP_SPLITTER.getComponent(null));

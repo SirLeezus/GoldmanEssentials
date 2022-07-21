@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class QuitListener implements Listener {
 
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         CacheManager cacheManager = plugin.getCacheManager();

@@ -17,6 +17,7 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -98,6 +99,7 @@ public class RankupCMD implements CommandExecutor {
                         cacheManager.deposit(uuid, cashAmount);
                         player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_CASH.getComponent(new String[] { BukkitUtils.parseValue(cashAmount) })));
                         player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_EXP.getComponent(new String[] { BukkitUtils.parseValue(expAmount) })));
+                        Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "givemysterybox " + player.getName());
                         plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_BROADCAST.getComponent(new String[]{ player.getName(), nextRankPrefix })));
                         for (Player oPlayer : Bukkit.getOnlinePlayers()) oPlayer.playSound(oPlayer.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, 1);
                     }
@@ -128,6 +130,7 @@ public class RankupCMD implements CommandExecutor {
                     cacheManager.deposit(uuid, cashAmount);
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_CASH.getComponent(new String[] { BukkitUtils.parseValue(cashAmount) })));
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_EXP.getComponent(new String[] { BukkitUtils.parseValue(expAmount) })));
+                    Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "givemysterybox " + player.getName());
                     plugin.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.COMMAND_RANKUP_PRESTIGE_BROADCAST.getComponent(new String[]{player.getName(), playerNextPrestige})));
                     for (Player oPlayer : Bukkit.getOnlinePlayers()) oPlayer.playSound(oPlayer.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 1, 1);
                 } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_PRESTIGE.getComponent(new String[] { BukkitUtils.parseValue(level), BukkitUtils.parseValue(maxLevel) })));

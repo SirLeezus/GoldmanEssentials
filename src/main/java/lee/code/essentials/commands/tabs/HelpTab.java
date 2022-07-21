@@ -20,7 +20,7 @@ public class HelpTab implements TabCompleter {
 
         if (sender instanceof Player) {
             if (args.length == 1) {
-                return StringUtil.copyPartialMatches(args[0], Arrays.asList("essentials", "shops", "locker", "chunks", "pets", "trails", "enchants", "vanilla", "store", "discord", "welcome"), new ArrayList<>());
+                return StringUtil.copyPartialMatches(args[0], Arrays.asList("essentials", "shops", "locker", "chunks", "pets", "trails", "enchants", "vanilla", "store", "discord", "welcome", "mysterybox", "skins"), new ArrayList<>());
             } else return blank;
         } else return blank;
     }
