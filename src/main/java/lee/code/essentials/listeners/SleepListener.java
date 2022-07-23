@@ -46,7 +46,8 @@ public class SleepListener implements Listener {
 
                     @Override
                     public void run() {
-                        int percent = data.getSleepingPlayersSize(worldName) * 100 / BukkitUtils.getOnlinePlayers().size();
+                        int playerCount = BukkitUtils.getOnlinePlayers().size() - data.getAfkPlayers().size();
+                        int percent = data.getSleepingPlayersSize(worldName) * 100 / playerCount;
                         double base = Math.round(percent * 10.0) / 20.0;
                         long speed = (long) base;
                         long worldTime = world.getTime();
@@ -62,7 +63,7 @@ public class SleepListener implements Listener {
                                 if (oPlayer.isOnline()) {
                                     Player sleepingPlayer = oPlayer.getPlayer();
                                     if (sleepingPlayer != null) {
-                                        sleepingPlayer.showTitle(Title.title(Lang.SLEEPING_TITLE.getComponent(new String[] { BukkitUtils.parseMinecraftTime(world.getTime()) }), Lang.SLEEPING_SUBTITLE.getComponent(new String[] { String.valueOf(data.getSleepingPlayersSize(worldName)), String.valueOf(BukkitUtils.getOnlinePlayers().size()) }), times));
+                                        sleepingPlayer.showTitle(Title.title(Lang.SLEEPING_TITLE.getComponent(new String[] { BukkitUtils.parseMinecraftTime(world.getTime()) }), Lang.SLEEPING_SUBTITLE.getComponent(new String[] { String.valueOf(data.getSleepingPlayersSize(worldName)), String.valueOf(playerCount) }), times));
                                     } else data.removeSleepingPlayer(worldName, sUUID);
                                 }
                             }

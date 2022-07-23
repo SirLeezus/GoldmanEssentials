@@ -78,7 +78,7 @@ public enum Lang {
     FIRST_JOIN_MESSAGE("&aThe player &6{0} &ajoined for the first time! Welcome to &2&lJourney Survival&a! &d#{1}"),
     SLEEPING_WEATHER_CLEARED_SUBTITLE("&#00E0FFWeather has been cleared!"),
     SLEEPING_TITLE("&#FF8300{0}"),
-    SLEEPING_SUBTITLE("&#00E0FFPlayers Sleeping&7: &a{0}&7/&a{1}"),
+    SLEEPING_SUBTITLE("&#00E0FFActive Players Sleeping&7: &a{0}&7/&a{1}"),
     TRADE_COMPLETED_SUBTITLE("&#46C646with the player &6{0}"),
     TRADE_COMPLETED_TITLE("&#46C646Trade Completed"),
     TRADE_FAILED_SUBTITLE("&#D71E1Ewith the player &6{0}"),
