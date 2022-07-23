@@ -31,7 +31,7 @@ public class SetPrefixCMD implements CommandExecutor {
                 cacheManager.setPrefix(uuid, prefix);
                 if (target.isOnline()) {
                     Player tPlayer = target.getPlayer();
-                    if (tPlayer != null) pu.updateDisplayName(tPlayer, false);
+                    if (tPlayer != null) pu.updateDisplayName(tPlayer, false, false);
                 }
                 sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETPREFIX_SUCCESSFUL.getComponent(new String[]{ target.getName(), prefix })));
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));

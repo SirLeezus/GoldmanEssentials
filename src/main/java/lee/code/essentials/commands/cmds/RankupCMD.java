@@ -94,7 +94,7 @@ public class RankupCMD implements CommandExecutor {
                         if (!player.hasPermission("essentials.command.namecolor")) cacheManager.setColor(uuid, nextColor);
                         cacheManager.setRank(uuid, nextRank);
                         cacheManager.setPrefix(uuid, nextRankPrefix);
-                        pu.updateDisplayName(player, false);
+                        pu.updateDisplayName(player, false, false);
                         player.giveExp(expAmount);
                         cacheManager.deposit(uuid, cashAmount);
                         player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_CASH.getComponent(new String[] { BukkitUtils.parseValue(cashAmount) })));
@@ -125,7 +125,7 @@ public class RankupCMD implements CommandExecutor {
                             for (String criteria : progress.getAwardedCriteria()) progress.revokeCriteria(criteria);
                         }
                     }
-                    pu.updateDisplayName(player, false);
+                    pu.updateDisplayName(player, false, false);
                     player.giveExp(expAmount);
                     cacheManager.deposit(uuid, cashAmount);
                     player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_RANKUP_REWARD_CASH.getComponent(new String[] { BukkitUtils.parseValue(cashAmount) })));

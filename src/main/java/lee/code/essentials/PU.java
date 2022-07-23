@@ -34,7 +34,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
 
 import java.text.SimpleDateFormat;
@@ -355,7 +354,7 @@ public class PU {
         return Strings.repeat("" + completedColor + symbol, progressBars) + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
     }
 
-    public void updateDisplayName(Player player, boolean afk) {
+    public void updateDisplayName(Player player, boolean afk, boolean delayed) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         CacheManager cacheManager = plugin.getCacheManager();
         Data data = plugin.getData();
@@ -388,7 +387,8 @@ public class PU {
         player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix.replace(" &c&lAFK", "")));
         player.playerListName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
         data.setBoardPacket(uuid, boardManager);
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, boardManager::broadcastPacket, 20L);
+        if (delayed) Bukkit.getServer().getScheduler().runTaskLater(plugin, boardManager::broadcastPacket, 20L);
+        else boardManager.broadcastPacket();
     }
 
     public int countEntitiesInChunk(Chunk chunk, EntityType type) {
@@ -429,7 +429,7 @@ public class PU {
                     }
                 }
             }
-        }), 1, 1);
+        }), 1L, 1L);
     }
 
     public void scheduleAutoRestart() {
@@ -513,7 +513,7 @@ public class PU {
                     long currentTimeDifferance =  TimeUnit.MILLISECONDS.toSeconds(milliseconds) - TimeUnit.MILLISECONDS.toSeconds(time);
                     if (currentTimeDifferance > Setting.AFK_TIME.getValue()) {
                         data.addAFK(uuid);
-                        updateDisplayName(player, true);
+                        updateDisplayName(player, true, false);
                     }
                 }
             }

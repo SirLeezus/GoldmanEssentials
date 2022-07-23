@@ -77,9 +77,11 @@ public class HomeMenu extends PaginatedMenu {
         } else if (clickedItem.equals(homeBed)) {
             Location bedLocation = player.getBedSpawnLocation();
             if (bedLocation != null) {
-                player.teleportAsync(bedLocation);
-                player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_BED_SUCCESSFUL.getComponent(null)));
+                inventory.close();
+                player.teleportAsync(bedLocation).thenAccept(result -> {
+                    player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_BED_SUCCESSFUL.getComponent(null)));
+                });
             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_BED_NOT_SAVED.getComponent(null)));
             player.getInventory().close();
         } else {
@@ -88,9 +90,11 @@ public class HomeMenu extends PaginatedMenu {
                 Location homeLocation = getItemHomeLocation(clickedItem);
                 String name = getItemHomeName(clickedItem);
                 if (homeLocation != null) {
-                    player.teleportAsync(homeLocation);
-                    player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getComponent(new String[] { name })));
+                    inventory.close();
+                    player.teleportAsync(homeLocation).thenAccept(result -> {
+                        player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getComponent(new String[] { name })));
+                    });
                 }
                 player.getInventory().close();
             }

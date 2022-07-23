@@ -33,17 +33,19 @@ public class HomeCMD implements CommandExecutor {
                     if (cacheManager.hasHome(uuid)) {
                         Location homeLocation = cacheManager.getHome(uuid, name);
                         if (homeLocation != null) {
-                            player.teleportAsync(homeLocation);
-                            player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getComponent(new String[] { name })));
+                            player.teleportAsync(homeLocation).thenAccept(result -> {
+                                player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                                player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_SUCCESSFUL.getComponent(new String[] { name })));
+                            });
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_NOT_SAVED.getComponent(new String[] { name })));
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_NO_SAVED_HOMES.getComponent(null)));
                 } else {
                     Location bedLocation = player.getBedSpawnLocation();
                     if (bedLocation != null) {
-                        player.teleportAsync(bedLocation);
-                        player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_BED_SUCCESSFUL.getComponent(null)));
+                        player.teleportAsync(bedLocation).thenAccept(result -> {
+                            player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                            player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_HOME_TELEPORT_BED_SUCCESSFUL.getComponent(null)));
+                        });
                     } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_HOME_BED_NOT_SAVED.getComponent(null)));
                 }
             } else {

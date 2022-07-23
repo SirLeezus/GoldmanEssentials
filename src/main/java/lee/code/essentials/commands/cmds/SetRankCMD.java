@@ -48,7 +48,7 @@ public class SetRankCMD implements CommandExecutor {
                 if (target.isOnline()) {
                     Player tPlayer = target.getPlayer();
                     if (tPlayer != null) {
-                        pu.updateDisplayName(tPlayer, false);
+                        pu.updateDisplayName(tPlayer, false, false);
                         pm.register(tPlayer);
                         if (premium) tPlayer.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETRANK_PREMIUM_SUCCESSFUL.getComponent(new String[] { PremiumRank.valueOf(rank).getDisplayName() })));
                     }

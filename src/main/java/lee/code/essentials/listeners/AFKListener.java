@@ -131,6 +131,6 @@ public class AFKListener implements Listener {
         UUID uuid = player.getUniqueId();
 
         data.removeAFK(uuid);
-        pu.updateDisplayName(player, false);
+        pu.updateDisplayName(player, false, false);
     }
 }

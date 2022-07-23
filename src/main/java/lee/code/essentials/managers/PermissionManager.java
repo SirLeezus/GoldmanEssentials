@@ -4,6 +4,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.PremiumRank;
 import lee.code.essentials.lists.Rank;
+import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
@@ -14,7 +15,7 @@ import java.util.*;
 
 public class PermissionManager {
 
-    private final List<String> defaultPerms = new ArrayList<>();
+    @Getter private final List<String> defaultPerms = new ArrayList<>();
     private final List<String> staffPerms = new ArrayList<>();
     private final List<String> vipPerms = new ArrayList<>();
     private final List<String> mvpPerms = new ArrayList<>();

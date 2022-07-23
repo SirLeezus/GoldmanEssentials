@@ -31,7 +31,7 @@ public class SetSuffixCMD implements CommandExecutor {
                 cacheManager.setSuffix(uuid, suffix);
                 if (target.isOnline()) {
                     Player tPlayer = target.getPlayer();
-                    if (tPlayer != null) pu.updateDisplayName(tPlayer, false);
+                    if (tPlayer != null) pu.updateDisplayName(tPlayer, false, false);
                 }
                 sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_SETSUFFIX_SUCCESSFUL.getComponent(new String[]{ target.getName(), suffix })));
             } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_PLAYER_NOT_FOUND.getComponent(new String[] { args[0] })));

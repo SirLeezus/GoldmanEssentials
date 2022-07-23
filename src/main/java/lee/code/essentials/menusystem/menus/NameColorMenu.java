@@ -54,7 +54,7 @@ public class NameColorMenu extends Menu {
         if (colorItems.contains(clickedItem)) {
             String id = getColorID(clickedItem);
             cacheManager.setColor(uuid, id);
-            pu.updateDisplayName(player, false);
+            pu.updateDisplayName(player, false, false);
             player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COLOR_MENU_SELECT.getComponent(new String[] { ChatColor.valueOf(id) + BukkitUtils.parseCapitalization(id) })));
             player.getInventory().close();
         }

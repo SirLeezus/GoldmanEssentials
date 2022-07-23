@@ -117,7 +117,7 @@ public class JoinListener implements Listener {
         for (NamespacedKey key : data.getRecipeKeys()) e.getPlayer().discoverRecipe(key);
 
         //update player display name
-        pu.updateDisplayName(player, false);
+        pu.updateDisplayName(player, false, true);
         for (BoardManager board : data.getBoardPackets()) board.sendPacket(player);
 
         //set join message format

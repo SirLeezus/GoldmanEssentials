@@ -20,8 +20,7 @@ public class SpawnCMD implements CommandExecutor {
         if (sender instanceof Player player) {
             Location spawn = cacheManager.getSpawn();
             if (spawn != null) {
-                player.teleportAsync(spawn);
-                player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                player.teleportAsync(spawn).thenAccept(result -> player.sendActionBar(Lang.TELEPORT.getComponent(null)));
             }
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;

@@ -47,6 +47,7 @@ public class CheckPermsCMD implements CommandExecutor {
                 int position = page * maxDisplayed + 1;
 
                 List<String> perms = cacheManager.getPerms(tUUID);
+                perms.addAll(plugin.getPermissionManager().getDefaultPerms());
                 List<Component> lines = new ArrayList<>();
 
                 lines.add(Lang.COMMAND_CHECKPERMS_TITLE.getComponent(null));

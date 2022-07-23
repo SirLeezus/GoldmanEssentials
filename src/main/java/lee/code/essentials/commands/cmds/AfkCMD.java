@@ -25,7 +25,7 @@ public class AfkCMD implements CommandExecutor {
             if (!data.isAFK(uuid)) {
                 data.addAFK(uuid);
                 player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK_ON.getComponent(null)));
-                pu.updateDisplayName(player, true);
+                pu.updateDisplayName(player, true, false);
             }
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;
