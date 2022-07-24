@@ -23,8 +23,7 @@ public class BackCMD implements CommandExecutor {
             UUID uuid = player.getUniqueId();
             if (data.hasBackLocation(uuid)) {
                 Location location = BukkitUtils.parseLocation(data.getBackLocation(uuid));
-                player.teleportAsync(location);
-                player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                player.teleportAsync(location).thenAccept(result -> player.sendActionBar(Lang.TELEPORT.getComponent(null)));
             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_BACK.getComponent(null)));
         } else sender.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_NOT_CONSOLE_COMMAND.getComponent(null)));
         return true;

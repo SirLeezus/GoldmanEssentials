@@ -405,8 +405,8 @@ public class PU {
                     for (Chunk chunk : world.getLoadedChunks()) {
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             for (Entity entity : chunk.getEntities()) {
-                                if (entity.getType().equals(EntityType.DROPPED_ITEM) && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_DROP_ITEM_PER_CHUNK.getValue()) entity.remove();
-                                else if (entity.customName() == null && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+                                //if (entity.getType().equals(EntityType.DROPPED_ITEM) && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_DROP_ITEM_PER_CHUNK.getValue()) entity.remove();
+                                if (entity.customName() == null && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
                             }
                         });
                     }

@@ -3,7 +3,7 @@ main: lee.code.essentials.GoldmanEssentials
 version: ${project.version}
 api-version: 1.19
 author: Lee
-depend: [ProtocolLib, RedisCache, GoldmanCore]
+depend: [ProtocolLib, GoldmanCore]
 softdepend: [GoldmanEnchants, Votifier]
 commands:
   essreload:
