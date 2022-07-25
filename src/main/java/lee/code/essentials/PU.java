@@ -318,7 +318,7 @@ public class PU {
 
     public void registerTamedEntityFix() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        plugin.getProtocolManagerAPI().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_METADATA) {
+        plugin.getProtocolManagerAPI().addPacketListener(new PacketAdapter(plugin, ListenerPriority.HIGHEST, PacketType.Play.Server.ENTITY_METADATA) {
 
             @Override
             public void onPacketSending(PacketEvent event) {
@@ -328,7 +328,8 @@ public class PU {
                     for (WrappedWatchableObject object : watchableCollection) {
                         if (object != null && object.getIndex() == 18) {
                             String value = object.getValue().toString();
-                            if (value.startsWith("Optional") && !value.startsWith("OptionalInt") && object.getValue() != Optional.empty()) {
+                            if (value.startsWith("Optional[") && object.getValue() != Optional.empty()) {
+                                System.out.println("BLOCKED: " + value);
                                 object.setValue(Optional.empty());
                             }
                         }
@@ -371,10 +372,9 @@ public class PU {
         String suffix = cacheManager.getSuffix(uuid);
         ChatColor chatColor = cacheManager.getColor(uuid);
         String colorChar = "&" + chatColor.getChar();
-        String levelColor = "&a&l";
         int prestigeLevel = cacheManager.getPrestige(uuid);
-        if (prestigeLevel >= 10) levelColor = "&e&l";
-        String prestige = prestigeLevel != 0 ? "&6[" + levelColor + prestigeLevel + "&6] " : "";
+        String levelColor = "&l" + getPrestigeColor(prestigeLevel);
+        String prestige = prestigeLevel != 0 ? "&#FFBA40[" + levelColor + prestigeLevel + "&#FFBA40] " : "";
         suffix = afk ? suffix + " &c&lAFK" : suffix;
 
 
@@ -406,7 +406,9 @@ public class PU {
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             for (Entity entity : chunk.getEntities()) {
                                 //if (entity.getType().equals(EntityType.DROPPED_ITEM) && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_DROP_ITEM_PER_CHUNK.getValue()) entity.remove();
-                                if (entity.customName() == null && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+                                if (!entity.getType().equals(EntityType.DROPPED_ITEM)) {
+                                    if (entity.customName() == null && countEntitiesInChunk(chunk, entity.getType()) > Setting.MAX_ENTITY_PER_CHUNK.getValue()) entity.remove();
+                                }
                             }
                         });
                     }
@@ -650,5 +652,28 @@ public class PU {
             if (data.getEntityHeadKeys().contains(type)) return EntityHead.valueOf(type).getHead();
         }
         return null;
+    }
+
+    private String getPrestigeColor(int prestige) {
+        if (prestige < 5) return "&a";
+        else if (prestige < 10) return "&e";
+        else if (prestige < 15) return "&6";
+        else if (prestige < 20) return "&d";
+        else if (prestige < 25) return "&5";
+        else if (prestige < 30) return "&3";
+        else if (prestige < 35) return "&9";
+        else if (prestige < 40) return "&b";
+        else if (prestige < 45) return "&c";
+        else if (prestige < 50) return "&#1CFF11";
+        else if (prestige < 55) return "&#F7FF00";
+        else if (prestige < 60) return "&#FFB407";
+        else if (prestige < 65) return "&#FF07F4";
+        else if (prestige < 70) return "&#CB28FF";
+        else if (prestige < 75) return "&#0FCCFF";
+        else if (prestige < 80) return "&#0FFBFF";
+        else if (prestige < 85) return "&#21FFC2";
+        else if (prestige < 90) return "&#F9FF71";
+        else if (prestige < 100) return "&#FF6262";
+        else return "&#FF0000";
     }
 }

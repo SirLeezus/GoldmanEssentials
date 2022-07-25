@@ -3,7 +3,6 @@ package lee.code.essentials.commands.cmds;
 import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.ItemSellValue;
 import lee.code.essentials.lists.Lang;
@@ -23,7 +22,6 @@ public class SellCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         CacheManager cacheManager = plugin.getCacheManager();
-        PU pu = plugin.getPU();
         Data data = plugin.getData();
 
         if (sender instanceof Player player) {

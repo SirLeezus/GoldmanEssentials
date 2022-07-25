@@ -112,7 +112,6 @@ public class PatchesListener implements Listener {
                             parrotHandle.setOrderedToSit(!parrotHandle.isInSittingPose());
                         } else player.sendActionBar(Lang.ERROR_TAMED_SIT.getComponent(new String[] { targetParrot.getOwner().getName() }));
                     }
-
                 }
             } else if (e.getRightClicked() instanceof Wolf targetWolf) {
                 if (targetWolf.isTamed()) {
@@ -135,6 +134,15 @@ public class PatchesListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    //patch to prevent players from going outside of world border
+    @EventHandler
+    public void onWorldBorderTeleport(PlayerTeleportEvent e) {
+        Location locationTo = e.getTo();
+        if (!locationTo.getWorld().getWorldBorder().isInside(locationTo)) {
+            e.setCancelled(true);
         }
     }
 }

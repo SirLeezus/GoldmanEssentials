@@ -1,9 +1,11 @@
 package lee.code.essentials.listeners;
 
 import lee.code.core.util.bukkit.BukkitUtils;
+import org.bukkit.Axis;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Orientable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -19,7 +21,7 @@ public class WrenchListener implements Listener {
     @EventHandler (priority= EventPriority.MONITOR)
     public void onWrenchInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        if (e.hasBlock() && e.useInteractedBlock().equals(Event.Result.ALLOW) && e.useItemInHand().equals(Event.Result.ALLOW)) {
+        if (e.hasBlock() && e.useInteractedBlock().equals(Event.Result.ALLOW) && e.getAction().isRightClick()) {
             ItemStack handItem = player.getInventory().getItemInMainHand();
             ItemMeta handItemMeta = handItem.getItemMeta();
             if (handItemMeta != null && handItemMeta.hasCustomModelData() && handItemMeta.getCustomModelData() == 3000) {
@@ -33,7 +35,8 @@ public class WrenchListener implements Listener {
                         if (block.getState() instanceof Chest chest) {
                             InventoryHolder inventoryHolder = chest.getInventory().getHolder();
                             if (inventoryHolder instanceof DoubleChest) return;
-                        }
+                        } else if (block.getState() instanceof Bed) return;
+
                         switch (directional.getFacing()) {
                             case NORTH -> directional.setFacing(BlockFace.EAST);
                             case EAST -> directional.setFacing(BlockFace.SOUTH);
@@ -45,7 +48,14 @@ public class WrenchListener implements Listener {
                             case UP -> directional.setFacing(BlockFace.DOWN);
                             case DOWN -> directional.setFacing(BlockFace.NORTH);
                         }
-                        block.setBlockData(directional);
+                        block.setBlockData(blockData);
+                    } else if (blockData instanceof Orientable orientable) {
+                        switch (orientable.getAxis()) {
+                            case X -> orientable.setAxis(Axis.Y);
+                            case Y -> orientable.setAxis(Axis.Z);
+                            case Z -> orientable.setAxis(Axis.X);
+                        }
+                        block.setBlockData(blockData);
                     }
                 }
             }

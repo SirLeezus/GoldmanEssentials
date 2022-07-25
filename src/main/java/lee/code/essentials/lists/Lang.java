@@ -332,7 +332,7 @@ public enum Lang {
     MENU_HOME_CLOCK_LORE("&6Time Played&7: &2{0}\n&6Accrued Timer&7: &21 home every {1} &2played\n&6Default Homes&7: &2{2}\n&6Accrued Homes&7: &2&2{3}&7/&2{4}\n&6Total Homes&7: &2{5}&7/&2{6}"),
     MENU_HOME_ITEM_HOME_NAME("&e&l{0}"),
     MENU_TRADE_TITLE("&2&lTrading Interface"),
-    MENU_RESOURCE_WORLDS_TITLE("&2&lResource Worlds"),
+    MENU_RESOURCE_WORLDS_TITLE("&#FF8300&lResource Worlds"),
     MENU_SPAWNER_TITLE("&e&lSpawner Shop"),
     MENU_BOT_CHECKER_TITLE("&e&lPlayer Verification"),
     MENU_WELCOME_TITLE("&2&lJourney Survival"),
