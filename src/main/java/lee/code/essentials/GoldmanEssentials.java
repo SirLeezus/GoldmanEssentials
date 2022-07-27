@@ -163,6 +163,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("emojis").setExecutor(new EmojisCMD());
         getCommand("effect").setExecutor(new EffectCMD());
         getCommand("checkperms").setExecutor(new CheckPermsCMD());
+        getCommand("lockhotbar").setExecutor(new LockHotbarCMD());
 
         //tabs
         getCommand("spawn").setTabCompleter(new SpawnTab());
@@ -253,6 +254,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("emojis").setTabCompleter(new EmojisTab());
         getCommand("effect").setTabCompleter(new EffectTab());
         getCommand("checkperms").setTabCompleter(new CheckPermsTab());
+        getCommand("lockhotbar").setTabCompleter(new LockHotbarTab());
     }
 
     private void registerListeners() {
@@ -293,6 +295,7 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MineCartListener(), this);
         getServer().getPluginManager().registerEvents(new TotemListener(), this);
         getServer().getPluginManager().registerEvents(new MuteListener(), this);
+        getServer().getPluginManager().registerEvents(new HotbarListener(), this);
     }
 
     private void checkDependencies() {

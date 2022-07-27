@@ -110,6 +110,7 @@ public class PermissionManager {
         defaultPerms.add("essentials.command.votetop");
         defaultPerms.add("essentials.command.bottlexp");
         defaultPerms.add("essentials.command.emojis");
+        defaultPerms.add("essentials.command.lockhotbar");
 
         // chunks
         defaultPerms.add("chunk.command.chunk");

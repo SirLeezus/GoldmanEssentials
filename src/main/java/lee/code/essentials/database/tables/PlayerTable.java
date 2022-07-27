@@ -61,6 +61,9 @@ public class PlayerTable {
     @DatabaseField(columnName = "playtime", canBeNull = false)
     private long playtime;
 
+    @DatabaseField(columnName = "locked_hotbar", canBeNull = false)
+    private boolean lockedHotbar;
+
     public PlayerTable(UUID player) {
         this.player = player;
         this.balance = 0;
@@ -77,5 +80,6 @@ public class PlayerTable {
         this.flying = false;
         this.votes = 0;
         this.playtime = 0;
+        this.lockedHotbar = false;
     }
 }

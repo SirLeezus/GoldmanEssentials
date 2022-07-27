@@ -184,6 +184,16 @@ public class CacheManager {
         GoldmanEssentials.getPlugin().getDatabaseManager().updatePlayerTable(playerTable);
     }
 
+    public boolean isHotbarLocked(UUID uuid) {
+        return getPlayerTable(uuid).isLockedHotbar();
+    }
+
+    public void setHotbarLocked(UUID uuid, boolean locked) {
+        PlayerTable playerTable = getPlayerTable(uuid);
+        playerTable.setLockedHotbar(locked);
+        updatePlayerTable(playerTable);
+    }
+
     public void deposit(UUID uuid, long amount) {
         PlayerTable playerTable = getPlayerTable(uuid);
         playerTable.setBalance(playerTable.getBalance() + amount);

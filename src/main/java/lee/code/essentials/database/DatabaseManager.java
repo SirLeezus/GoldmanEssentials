@@ -82,6 +82,14 @@ public class DatabaseManager {
 
     }
 
+    public void update() {
+        try {
+            playerDao.executeRaw("ALTER TABLE `player` ADD COLUMN locked_hotbar BOOLEAN NOT NULL DEFAULT 'false';");
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void closeConnection() {
         try {
             connectionSource.close();

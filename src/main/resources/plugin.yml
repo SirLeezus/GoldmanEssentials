@@ -375,3 +375,7 @@ commands:
     description: Apply an effect to a target player.
     permission: essentials.command.effect
     usage: "/effect &f<player> <effect> <time>"
+  lockhotbar:
+    description: Toggle locking your hotbar so you can't drop items.
+    permission: essentials.command.lockhotbar
+    usage: "/lockhotbar"
