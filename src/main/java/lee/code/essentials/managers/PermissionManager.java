@@ -130,6 +130,9 @@ public class PermissionManager {
         defaultPerms.add("chunk.command.unclaim");
         defaultPerms.add("chunk.command.untrust");
         defaultPerms.add("chunk.command.untrustall");
+        defaultPerms.add("chunk.command.block");
+        defaultPerms.add("chunk.command.unblock");
+        defaultPerms.add("chunk.command.blocked");
 
         // shops
         defaultPerms.add("shop.command.shop");

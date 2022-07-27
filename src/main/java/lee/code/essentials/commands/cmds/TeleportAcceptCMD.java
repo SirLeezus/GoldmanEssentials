@@ -31,9 +31,11 @@ public class TeleportAcceptCMD implements CommandExecutor {
                             if (data.isPlayerRequestingTeleportForTarget(target.getUniqueId(), uuid)) {
                                 target.teleportAsync(player.getLocation()).thenAccept(result -> {
                                     data.removePlayerRequestingTeleport(target.getUniqueId());
-                                    target.sendActionBar(Lang.TELEPORT.getComponent(null));
-                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL.getComponent(new String[] { target.getName() })));
-                                    target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL_TARGET.getComponent(new String[] { player.getName() })));
+                                    if (result) {
+                                        target.sendActionBar(Lang.TELEPORT.getComponent(null));
+                                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL.getComponent(new String[] { target.getName() })));
+                                        target.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ACCEPT_SUCCESSFUL_TARGET.getComponent(new String[] { player.getName() })));
+                                    }
                                 });
                             } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_NOT_REQUESTING.getComponent(new String[] { target.getName() })));
                         } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_COMMAND_TELEPORT_TO_SELF.getComponent(null)));

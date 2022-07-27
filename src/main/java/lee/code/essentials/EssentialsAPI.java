@@ -2,6 +2,7 @@ package lee.code.essentials;
 
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.ItemSellValue;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
@@ -53,5 +54,9 @@ public class EssentialsAPI {
 
     public ItemStack getEntityHead(Entity entity, int rng) {
         return GoldmanEssentials.getPlugin().getPU().getEntityHead(entity, rng);
+    }
+
+    public Location getSpawn() {
+        return GoldmanEssentials.getPlugin().getCacheManager().getSpawn();
     }
 }

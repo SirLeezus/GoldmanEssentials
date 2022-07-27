@@ -35,7 +35,7 @@ public class DeathListener implements Listener {
                     .build();
             dm = dm.replaceText(textReplacementConfig);
 
-            if (killer != null) {
+            if (killer != null && killer != player) {
                 String match2 = killer.getName();
                 TextReplacementConfig textReplacementConfig2 = TextReplacementConfig.builder()
                         .matchLiteral(match2)

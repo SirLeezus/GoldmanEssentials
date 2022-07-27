@@ -10,8 +10,6 @@ import lee.code.essentials.menusystem.PlayerMU;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -56,40 +54,25 @@ public class ResourceWorldMenu extends Menu {
                 Location location = cacheManager.getWorldResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
-                    player.teleportAsync(location);
-                    player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                    player.teleportAsync(location).thenAccept(result -> player.sendActionBar(Lang.TELEPORT.getComponent(null)));
                 }
-                player.getInventory().close();
+                inventory.close();
             }
             case 31 -> {
                 Location location = cacheManager.getNetherResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
-                    NamespacedKey key = NamespacedKey.minecraft("story/enter_the_nether");
-                    Advancement advancement = plugin.getServer().getAdvancement(key);
-                    if (advancement != null) {
-                        if (player.getAdvancementProgress(advancement).isDone()) {
-                            player.teleportAsync(location);
-                            player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MENU_RESOURCE_WORLD_LOCKED.getComponent(null)));
-                    }
+                    player.teleportAsync(location).thenAccept(result -> player.sendActionBar(Lang.TELEPORT.getComponent(null)));
                 }
-                player.getInventory().close();
+                inventory.close();
             }
             case 34 -> {
                 Location location = cacheManager.getEndResourceSpawn();
                 playClickSound(player);
                 if (location != null) {
-                    NamespacedKey key = NamespacedKey.minecraft("story/enter_the_end");
-                    Advancement advancement = plugin.getServer().getAdvancement(key);
-                    if (advancement != null) {
-                        if (player.getAdvancementProgress(advancement).isDone()) {
-                            player.teleportAsync(location);
-                            player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                        } else player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.MENU_RESOURCE_WORLD_LOCKED.getComponent(null)));
-                    }
+                    player.teleportAsync(location).thenAccept(result -> player.sendActionBar(Lang.TELEPORT.getComponent(null)));
                 }
-                player.getInventory().close();
+                inventory.close();
             }
         }
     }

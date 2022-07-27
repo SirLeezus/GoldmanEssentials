@@ -92,12 +92,15 @@ public class PU {
                                 double bY = box.getY() + 0.5;
                                 double bZ = box.getZ();
                                 Location teleportLocation = new Location(block.getWorld(), bX, bY, bZ);
-                                addRandomTeleportDelay(uuid);
-                                data.clearRTPAttempts(uuid);
-                                data.removeRandomTeleporting(uuid);
-                                player.teleport(teleportLocation);
-                                player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                                return;
+                                if (!plugin.getChunkAPI().isClaimed(teleportLocation.getChunk())) {
+                                    addRandomTeleportDelay(uuid);
+                                    data.clearRTPAttempts(uuid);
+                                    data.removeRandomTeleporting(uuid);
+                                    player.teleportAsync(teleportLocation).thenAccept(result2 -> {
+                                        if (result2) player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                                    });
+                                    return;
+                                }
                             }
                         }
                     }
@@ -107,6 +110,7 @@ public class PU {
             });
         } else {
             data.clearRTPAttempts(uuid);
+            data.removeRandomTeleporting(uuid);
             player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.ERROR_RANDOMTELEPORT_LOCATION_NOT_FOUND.getComponent(null)));
         }
     }
@@ -329,7 +333,6 @@ public class PU {
                         if (object != null && object.getIndex() == 18) {
                             String value = object.getValue().toString();
                             if (value.startsWith("Optional[") && object.getValue() != Optional.empty()) {
-                                System.out.println("BLOCKED: " + value);
                                 object.setValue(Optional.empty());
                             }
                         }

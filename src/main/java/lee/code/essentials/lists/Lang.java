@@ -338,7 +338,6 @@ public enum Lang {
     MENU_WELCOME_TITLE("&2&lJourney Survival"),
     MENU_BOT_CHECKER_ITEM_LORE("&7Click to verify you're not a bot."),
     MENU_BOT_CHECKER_ITEM_NAME("&6&lPlayer Verification"),
-    MENU_RESOURCE_WORLD_LOCKED("&cYou need to unlock the advancement for entering this world type before you can use this resource world."),
     MENU_RESOURCE_WORLD_CLOCK_NAME("&d&lNext Reset&7: {0}"),
     ;
 

@@ -35,10 +35,11 @@ public class TeleportCMD implements CommandExecutor {
                             UUID targetUUID = target.getUniqueId();
                             if (player.isOp()) {
                                 player.teleportAsync(target.getLocation()).thenAccept(result -> {
-                                    player.sendActionBar(Lang.TELEPORT.getComponent(null));
-                                    player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getComponent(new String[] { target.getName() })));
+                                    if (result) {
+                                        player.sendActionBar(Lang.TELEPORT.getComponent(null));
+                                        player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.COMMAND_TELEPORT_ADMIN_SUCCESSFUL.getComponent(new String[] { target.getName() })));
+                                    }
                                 });
-
                             } else if (!data.isPlayerRequestingTeleportForTarget(uuid, targetUUID)) {
                                 if (data.isAFK(targetUUID)) player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK.getComponent(new String[] { target.getName() })));
 
