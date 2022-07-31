@@ -27,7 +27,7 @@ public class SetSuffixCMD implements CommandExecutor {
             OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
             if (target != null) {
                 UUID uuid = target.getUniqueId();
-                String suffix = " " + BukkitUtils.buildStringFromArgs(args, 1);
+                String suffix = BukkitUtils.buildStringFromArgs(args, 1);
                 cacheManager.setSuffix(uuid, suffix);
                 if (target.isOnline()) {
                     Player tPlayer = target.getPlayer();

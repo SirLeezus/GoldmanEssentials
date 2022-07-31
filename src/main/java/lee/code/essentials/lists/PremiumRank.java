@@ -6,9 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PremiumRank {
 
-    VIP("&#ffffff\uE507", "&#FCFF2D&lVIP"),
-    MVP("&#ffffff\uE505", "&#00D8F6&lMVP"),
-    ELITE("&#ffffff\uE64C", "&#33cc33&lElite"),
+    VIP("&#ffffff\ue8e0", "&#FCFF2D&lVIP"),
+    MVP("&#ffffff\ue8e1", "&#00D8F6&lMVP"),
+    ELITE("&#ffffff\ue8e2", "&#33cc33&lElite"),
     ;
 
     @Getter private final String suffix;

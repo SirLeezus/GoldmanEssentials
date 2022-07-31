@@ -8,7 +8,7 @@ import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.database.DatabaseManager;
-import lee.code.essentials.hooks.Pl3xMapHook;
+import lee.code.essentials.hooks.map.Pl3xMapHook;
 import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.WorldManager;

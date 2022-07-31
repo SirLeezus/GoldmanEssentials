@@ -4,7 +4,7 @@ version: ${project.version}
 api-version: 1.19
 author: Lee
 depend: [ProtocolLib, GoldmanCore]
-softdepend: [GoldmanEnchants, Votifier]
+softdepend: [GoldmanEnchants, Votifier, Pl3xMap]
 commands:
   essreload:
     description: Reloads plugin text files.

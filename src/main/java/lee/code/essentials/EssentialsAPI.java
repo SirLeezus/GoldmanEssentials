@@ -59,4 +59,16 @@ public class EssentialsAPI {
     public Location getSpawn() {
         return GoldmanEssentials.getPlugin().getCacheManager().getSpawn();
     }
+
+    public void drawOnlineChunk(String chunk, UUID uuid, boolean adminChunk) {
+        if (GoldmanEssentials.getPlugin().isPl3xMapInstalled()) {
+            GoldmanEssentials.getPlugin().getPl3xMapHook().drawChunk(chunk, uuid, adminChunk);
+        }
+    }
+
+    public void removeOnlineChunk(String chunk, UUID uuid, boolean adminChunk) {
+        if (GoldmanEssentials.getPlugin().isPl3xMapInstalled()) {
+            GoldmanEssentials.getPlugin().getPl3xMapHook().removeChunk(chunk, uuid, adminChunk);
+        }
+    }
 }

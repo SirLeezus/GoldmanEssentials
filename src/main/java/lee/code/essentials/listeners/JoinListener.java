@@ -6,6 +6,7 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
+import lee.code.essentials.lists.PremiumRank;
 import lee.code.essentials.lists.Setting;
 import lee.code.essentials.managers.BoardManager;
 import lee.code.essentials.menusystem.menus.BotCheckerMenu;
@@ -115,6 +116,13 @@ public class JoinListener implements Listener {
 
         //give all recipes
         for (NamespacedKey key : data.getRecipeKeys()) e.getPlayer().discoverRecipe(key);
+
+        //fix premium suffix
+        switch (cacheManager.getSuffix(uuid)) {
+            case "&#ffffff\uE507" -> cacheManager.setSuffix(uuid, PremiumRank.VIP.getSuffix());
+            case "&#ffffff\uE505" -> cacheManager.setSuffix(uuid, PremiumRank.MVP.getSuffix());
+            case "&#ffffff\uE64C" -> cacheManager.setSuffix(uuid, PremiumRank.ELITE.getSuffix());
+        }
 
         //update player display name
         pu.updateDisplayName(player, false, true);

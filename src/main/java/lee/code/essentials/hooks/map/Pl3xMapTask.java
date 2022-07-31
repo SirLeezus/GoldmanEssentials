@@ -1,6 +1,7 @@
-package lee.code.essentials.hooks;
+package lee.code.essentials.hooks.map;
 
-import lee.code.chunks.ChunkAPI;
+import lee.code.chunks.database.tables.AdminChunkTable;
+import lee.code.chunks.database.tables.ChunkTable;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
@@ -16,8 +17,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
 
 public class Pl3xMapTask extends BukkitRunnable {
     private final MapWorld world;
@@ -31,41 +32,60 @@ public class Pl3xMapTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (stop) {
-            cancel();
-        }
+        if (stop) cancel();
         updateClaims();
     }
 
     void updateClaims() {
-        GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        ChunkAPI chunkAPI = plugin.getChunkAPI();
-        provider.clearMarkers(); // TODO track markers instead of clearing them
-        for (UUID uuid : chunkAPI.getUserList()) {
-            if (chunkAPI.hasClaims(uuid)) {
-                List<String> chunks = chunkAPI.getChunks(uuid);
-                for (String chunk : chunks) {
-                    if (isCurrentWorld(chunk)) drawChunk(chunk, uuid, false);
-                }
-            }
-        }
-        for (String adminChunk : chunkAPI.getAdminChunks()) {
-            if (isCurrentWorld(adminChunk)) drawChunk(adminChunk, UUID.fromString(Lang.SERVER_UUID.getString()), true);
-        }
+        //player chunks
+        List<ChunkTable> chunks = GoldmanEssentials.getPlugin().getChunkAPI().getAllChunkData();
+        List<Claim> claims = chunks.stream()
+                .filter(c -> isCurrentWorld(c.getChunk()))
+                .map(dataChunk -> new Claim(
+                        getChunkX(dataChunk.getChunk()),
+                        getChunkZ(dataChunk.getChunk()),
+                        dataChunk.getOwner(),
+                        false
+                )).toList();
+        claims.forEach(this::drawChunk);
+
+        //admin chunks
+        List<AdminChunkTable> adminChunks = GoldmanEssentials.getPlugin().getChunkAPI().getAllAdminChunkData();
+        List<Claim> adminClaims = adminChunks.stream()
+                .filter(c -> isCurrentWorld(c.getChunk()))
+                .map(dataChunk -> new Claim(
+                        getChunkX(dataChunk.getChunk()),
+                        getChunkZ(dataChunk.getChunk()),
+                        UUID.fromString(Lang.SERVER_UUID.getString(null)),
+                        true
+                )).toList();
+        adminClaims.forEach(this::drawChunk);
     }
 
-    private void drawChunk(String chunk, UUID uuid, boolean isAdminChunk) {
-        int minX = getChunkX(chunk) << 4;
-        int maxX = (getChunkX(chunk) + 1) << 4;
-        int minZ = getChunkZ(chunk) << 4;
-        int maxZ = (getChunkZ(chunk) + 1) << 4;
+    public void drawChunk(Claim claim) {
+        int minX = claim.getX() << 4;
+        int maxX = (claim.getX() + 1) << 4;
+        int minZ = claim.getZ() << 4;
+        int maxZ = (claim.getZ() + 1) << 4;
 
         Rectangle rect = Marker.rectangle(Point.of(minX, minZ), Point.of(maxX, maxZ));
-        MarkerOptions.Builder options = options(uuid, isAdminChunk);
+        MarkerOptions.Builder options = options(claim.getOwner(), claim.isAdminChunk());
         rect.markerOptions(options);
 
         String markerID = "chunks_" + world.name() + "_chunk_" + minX + "_" + minZ;
-        this.provider.addMarker(Key.of(markerID), rect);
+        if (provider.hasMarker(Key.of(markerID))) {
+            provider.removeMarker(Key.of(markerID));
+            provider.addMarker(Key.of(markerID), rect);
+        } else {
+            provider.addMarker(Key.of(markerID), rect);
+        }
+    }
+
+    public void removeChunk(Claim claim) {
+        int minX = claim.getX() << 4;
+        int minZ = claim.getZ() << 4;
+        String markerID = "chunks_" + world.name() + "_chunk_" + minX + "_" + minZ;
+        if (provider.hasMarker(Key.of(markerID))) provider.removeMarker(Key.of(markerID));
     }
 
     private MarkerOptions.Builder options(UUID owner, boolean isAdminChunk) {
@@ -91,12 +111,12 @@ public class Pl3xMapTask extends BukkitRunnable {
         this.provider.clearMarkers();
     }
 
-    private int getChunkX(String chunk) {
+    public int getChunkX(String chunk) {
         String[] split = chunk.split(",", 3);
         return Integer.parseInt(split[1]);
     }
 
-    private int getChunkZ(String chunk) {
+    public int getChunkZ(String chunk) {
         String[] split = chunk.split(",", 3);
         return Integer.parseInt(split[2]);
     }

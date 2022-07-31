@@ -378,7 +378,7 @@ public class PU {
         int prestigeLevel = cacheManager.getPrestige(uuid);
         String levelColor = "&l" + getPrestigeColor(prestigeLevel);
         String prestige = prestigeLevel != 0 ? "&#FFBA40[" + levelColor + prestigeLevel + "&#FFBA40] " : "";
-        suffix = afk ? suffix + " &c&lAFK" : suffix;
+        suffix = afk ? suffix + " &f\ue8e3" : suffix;
 
 
         boardManager.setTeamName(name);

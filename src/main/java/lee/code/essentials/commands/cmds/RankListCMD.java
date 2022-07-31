@@ -2,7 +2,6 @@ package lee.code.essentials.commands.cmds;
 
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
-import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.PremiumRank;
@@ -23,7 +22,6 @@ public class RankListCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        PU pu = plugin.getPU();
         Data data = plugin.getData();
         CacheManager cacheManager = plugin.getCacheManager();
 
@@ -65,7 +63,7 @@ public class RankListCMD implements CommandExecutor {
             lines.add(Lang.COMMAND_RANKLIST_PREMIUM_RANKS.getComponent(null));
             for (String rank : data.getPremiumRankKeys()) {
                 PremiumRank sRank = PremiumRank.valueOf(rank);
-                Component line = playerSuffix.equals(sRank.getSuffix()) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + sRank.getSuffix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + sRank.getSuffix() });
+                Component line = playerSuffix.equals(sRank.getSuffix()) ? Lang.COMMAND_RANKLIST_HAS_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + " " + sRank.getSuffix() }) : Lang.COMMAND_RANKLIST_LINE.getComponent(new String[] { String.valueOf(number), sRank.getDisplayName() + " " +  sRank.getSuffix() });
                 lines.add(line);
                 number++;
             }
