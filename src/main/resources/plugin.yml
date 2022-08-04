@@ -140,7 +140,7 @@ commands:
     aliases: [msg, tell, whisper]
     usage: "/message &f<player> <message>"
   reply:
-    description: Replies to a online player.
+    description: Reply to a online player.
     permission: essentials.command.reply
     aliases: [r]
     usage: "/r &f<message>"

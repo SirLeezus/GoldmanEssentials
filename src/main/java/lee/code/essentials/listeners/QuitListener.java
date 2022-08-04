@@ -34,7 +34,7 @@ public class QuitListener implements Listener {
         cacheManager.setPlayTime(uuid, player.getStatistic(Statistic.PLAY_ONE_MINUTE));
 
         //remove board packet
-        data.removeBoard(e.getPlayer().getUniqueId());
+        data.removeBoard(uuid);
 
         //remove heath tracker
         data.removeHeathTracker(uuid);

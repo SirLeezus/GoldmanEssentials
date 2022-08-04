@@ -44,7 +44,6 @@ public class RulesCMD implements CommandExecutor {
             lines.add(spacer);
             lines.add(BukkitUtils.parseColorComponent("&6&lPvP Rules:"));
             lines.add(BukkitUtils.parseColorComponent("&31. &eYou don't need to return items if you kill someone but if you give your word you'll return the items you do have to return them."));
-            lines.add(BukkitUtils.parseColorComponent("&32. &eTP killing is frowned upon but allowed, be careful who you trust."));
             lines.add(spacer);
             lines.add(BukkitUtils.parseColorComponent("&6&lPlayer Shop Rules:"));
             lines.add(BukkitUtils.parseColorComponent("&31. &eDo not set a spawn for your shop if you don't have a shop area claimed and setup."));

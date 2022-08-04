@@ -387,7 +387,7 @@ public class PU {
         boardManager.setPrefix(WrappedChatComponent.fromJson(BukkitUtils.serializeColorComponentJson(prefix + prestige)));
         boardManager.setSuffix(WrappedChatComponent.fromJson(BukkitUtils.serializeColorComponentJson(suffix)));
 
-        player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix.replace(" &c&lAFK", "")));
+        player.displayName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix.replace(" &f\ue8e3", "")));
         player.playerListName(BukkitUtils.parseColorComponent(prefix + prestige + colorChar + player.getName() + suffix));
         data.setBoardPacket(uuid, boardManager);
         if (delayed) Bukkit.getServer().getScheduler().runTaskLater(plugin, boardManager::broadcastPacket, 20L);

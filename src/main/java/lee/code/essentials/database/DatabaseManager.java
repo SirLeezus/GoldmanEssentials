@@ -38,7 +38,7 @@ public class DatabaseManager {
     }
 
     public void initialize() {
-        //LoggerFactory.setLogBackendFactory(LogBackendType.NULL);
+        LoggerFactory.setLogBackendFactory(LogBackendType.NULL);
 
         try {
             String databaseURL = getDatabaseURL();

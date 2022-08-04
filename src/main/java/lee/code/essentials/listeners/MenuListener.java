@@ -86,8 +86,10 @@ public class MenuListener implements Listener {
             }
 
         } else  if (holder instanceof HomeMenu) {
-            data.getHomeMenuTask(uuid).cancel();
-            data.removeHomeMenuTaskActive(uuid);
+            if (data.isHomeMenuTaskActive(uuid)) {
+                data.getHomeMenuTask(uuid).cancel();
+                data.removeHomeMenuTaskActive(uuid);
+            }
         }
     }
 }
