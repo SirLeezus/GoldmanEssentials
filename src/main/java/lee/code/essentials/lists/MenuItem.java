@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 @AllArgsConstructor
-public enum MenuItems {
+public enum MenuItem {
 
     BOT_CHECKER(Material.LIME_STAINED_GLASS_PANE, Lang.MENU_BOT_CHECKER_ITEM_NAME.getString(), Lang.MENU_BOT_CHECKER_ITEM_LORE.getString()),
 

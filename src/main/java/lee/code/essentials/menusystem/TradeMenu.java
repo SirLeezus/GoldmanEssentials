@@ -1,6 +1,6 @@
 package lee.code.essentials.menusystem;
 
-import lee.code.essentials.lists.MenuItems;
+import lee.code.essentials.lists.MenuItem;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -25,10 +25,10 @@ public abstract class TradeMenu implements InventoryHolder {
     protected Inventory inventory;
     @Getter protected UUID trading;
 
-    protected ItemStack fillerGlass = MenuItems.FILLER_GLASS.getItem();
-    protected ItemStack tradeCountDown = MenuItems.TRADE_COUNT_DOWN.getItem();
-    protected ItemStack confirmTradeTrue = MenuItems.TRADE_CONFIRM_TRUE.getItem();
-    protected ItemStack confirmTradeFalse = MenuItems.TRADE_CONFIRM_FALSE.getItem();
+    protected ItemStack fillerGlass = MenuItem.FILLER_GLASS.getItem();
+    protected ItemStack tradeCountDown = MenuItem.TRADE_COUNT_DOWN.getItem();
+    protected ItemStack confirmTradeTrue = MenuItem.TRADE_CONFIRM_TRUE.getItem();
+    protected ItemStack confirmTradeFalse = MenuItem.TRADE_CONFIRM_FALSE.getItem();
 
     public abstract Component getMenuName();
 

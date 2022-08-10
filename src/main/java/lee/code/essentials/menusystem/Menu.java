@@ -1,6 +1,6 @@
 package lee.code.essentials.menusystem;
 
-import lee.code.essentials.lists.MenuItems;
+import lee.code.essentials.lists.MenuItem;
 import lee.code.essentials.lists.NameColor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -25,42 +25,42 @@ public abstract class Menu implements InventoryHolder {
     protected PlayerMU pmu;
     protected Inventory inventory;
 
-    protected ItemStack botChecker = MenuItems.BOT_CHECKER.getItem();
+    protected ItemStack botChecker = MenuItem.BOT_CHECKER.getItem();
 
-    protected ItemStack fillerGlass = MenuItems.FILLER_GLASS.getItem();
-    protected ItemStack nextPage = MenuItems.NEXT_PAGE.getItem();
-    protected ItemStack previousPage = MenuItems.PREVIOUS_PAGE.getItem();
+    protected ItemStack fillerGlass = MenuItem.FILLER_GLASS.getItem();
+    protected ItemStack nextPage = MenuItem.NEXT_PAGE.getItem();
+    protected ItemStack previousPage = MenuItem.PREVIOUS_PAGE.getItem();
 
-    protected ItemStack asSettingTrue = MenuItems.ARMOR_STAND_SETTING_TRUE.getItem();
-    protected ItemStack asSettingFalse = MenuItems.ARMOR_STAND_SETTING_FALSE.getItem();
-    protected ItemStack asPosition = MenuItems.ARMOR_STAND_POSITION.getItem();
-    protected ItemStack asHeadPosition = MenuItems.ARMOR_STAND_HEAD_POSITION.getItem();
-    protected ItemStack asTorsoPosition = MenuItems.ARMOR_STAND_TORSO_POSITION.getItem();
-    protected ItemStack asLeftArmPosition = MenuItems.ARMOR_STAND_LEFT_ARM_POSITION.getItem();
-    protected ItemStack asRightArmPosition = MenuItems.ARMOR_STAND_RIGHT_ARM_POSITION.getItem();
-    protected ItemStack asLeftLegPosition = MenuItems.ARMOR_STAND_LEFT_LEG_POSITION.getItem();
-    protected ItemStack asRightLegPosition = MenuItems.ARMOR_STAND_RIGHT_LEG_POSITION.getItem();
-    protected ItemStack asDirectionPosition = MenuItems.ARMOR_STAND_DIRECTION_POSITION.getItem();
+    protected ItemStack asSettingTrue = MenuItem.ARMOR_STAND_SETTING_TRUE.getItem();
+    protected ItemStack asSettingFalse = MenuItem.ARMOR_STAND_SETTING_FALSE.getItem();
+    protected ItemStack asPosition = MenuItem.ARMOR_STAND_POSITION.getItem();
+    protected ItemStack asHeadPosition = MenuItem.ARMOR_STAND_HEAD_POSITION.getItem();
+    protected ItemStack asTorsoPosition = MenuItem.ARMOR_STAND_TORSO_POSITION.getItem();
+    protected ItemStack asLeftArmPosition = MenuItem.ARMOR_STAND_LEFT_ARM_POSITION.getItem();
+    protected ItemStack asRightArmPosition = MenuItem.ARMOR_STAND_RIGHT_ARM_POSITION.getItem();
+    protected ItemStack asLeftLegPosition = MenuItem.ARMOR_STAND_LEFT_LEG_POSITION.getItem();
+    protected ItemStack asRightLegPosition = MenuItem.ARMOR_STAND_RIGHT_LEG_POSITION.getItem();
+    protected ItemStack asDirectionPosition = MenuItem.ARMOR_STAND_DIRECTION_POSITION.getItem();
 
-    protected ItemStack resourceWorld = MenuItems.RESOURCE_WORLD.getItem();
-    protected ItemStack resourceEnd = MenuItems.RESOURCE_END.getItem();
-    protected ItemStack resourceNether = MenuItems.RESOURCE_NETHER.getItem();
+    protected ItemStack resourceWorld = MenuItem.RESOURCE_WORLD.getItem();
+    protected ItemStack resourceEnd = MenuItem.RESOURCE_END.getItem();
+    protected ItemStack resourceNether = MenuItem.RESOURCE_NETHER.getItem();
 
-    protected ItemStack homeBed = MenuItems.HOME_BED.getItem();
-    protected ItemStack homeClock = MenuItems.HOME_CLOCK.getItem();
+    protected ItemStack homeBed = MenuItem.HOME_BED.getItem();
+    protected ItemStack homeClock = MenuItem.HOME_CLOCK.getItem();
 
-    protected ItemStack welcome1 = MenuItems.WELCOME_1.getItem();
-    protected ItemStack welcome2 = MenuItems.WELCOME_2.getItem();
-    protected ItemStack welcome3 = MenuItems.WELCOME_3.getItem();
-    protected ItemStack welcome4 = MenuItems.WELCOME_4.getItem();
-    protected ItemStack welcome5 = MenuItems.WELCOME_5.getItem();
-    protected ItemStack welcome6 = MenuItems.WELCOME_6.getItem();
-    protected ItemStack welcome7 = MenuItems.WELCOME_7.getItem();
-    protected ItemStack welcome8 = MenuItems.WELCOME_8.getItem();
-    protected ItemStack welcome9 = MenuItems.WELCOME_9.getItem();
-    protected ItemStack welcome10 = MenuItems.WELCOME_10.getItem();
-    protected ItemStack welcome11 = MenuItems.WELCOME_11.getItem();
-    protected ItemStack welcome12 = MenuItems.WELCOME_12.getItem();
+    protected ItemStack welcome1 = MenuItem.WELCOME_1.getItem();
+    protected ItemStack welcome2 = MenuItem.WELCOME_2.getItem();
+    protected ItemStack welcome3 = MenuItem.WELCOME_3.getItem();
+    protected ItemStack welcome4 = MenuItem.WELCOME_4.getItem();
+    protected ItemStack welcome5 = MenuItem.WELCOME_5.getItem();
+    protected ItemStack welcome6 = MenuItem.WELCOME_6.getItem();
+    protected ItemStack welcome7 = MenuItem.WELCOME_7.getItem();
+    protected ItemStack welcome8 = MenuItem.WELCOME_8.getItem();
+    protected ItemStack welcome9 = MenuItem.WELCOME_9.getItem();
+    protected ItemStack welcome10 = MenuItem.WELCOME_10.getItem();
+    protected ItemStack welcome11 = MenuItem.WELCOME_11.getItem();
+    protected ItemStack welcome12 = MenuItem.WELCOME_12.getItem();
 
     protected List<ItemStack> colorItems = getColorItems();
 
