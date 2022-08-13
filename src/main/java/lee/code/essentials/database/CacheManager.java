@@ -7,16 +7,12 @@ import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.tables.BoosterTable;
 import lee.code.essentials.database.tables.PlayerTable;
-import lee.code.essentials.database.tables.PunishmentTable;
 import lee.code.essentials.database.tables.ServerTable;
-import lee.code.essentials.lists.Lang;
 import lombok.Getter;
-import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 
 import java.util.*;
 import java.util.List;
@@ -36,13 +32,6 @@ public class CacheManager {
 
     @Getter
     private final Cache<String, ServerTable> serverCache = CacheBuilder
-            .newBuilder()
-            .initialCapacity(5000)
-            .recordStats()
-            .build();
-
-    @Getter
-    private final Cache<UUID, PunishmentTable> punishmentCache = CacheBuilder
             .newBuilder()
             .initialCapacity(5000)
             .recordStats()
@@ -172,7 +161,6 @@ public class CacheManager {
 
     public void createDefaultColumns(UUID uuid) {
         createPlayerData(new PlayerTable(uuid));
-        createPunishmentData(new PunishmentTable(uuid));
     }
 
     private PlayerTable getPlayerTable(UUID player) {
@@ -466,158 +454,6 @@ public class CacheManager {
 
     public List<UUID> getUserList() {
         return new ArrayList<>(getPlayerCache().asMap().keySet());
-    }
-
-    //punishment data
-
-    public boolean hasPunishmentData(UUID uuid) {
-        return getPunishmentCache().getIfPresent(uuid) != null;
-    }
-
-    public void createPunishmentData(PunishmentTable punishmentTable) {
-        getPunishmentCache().put(punishmentTable.getPlayer(), punishmentTable);
-        GoldmanEssentials.getPlugin().getDatabaseManager().createPunishmentTable(punishmentTable);
-    }
-
-    public void setPunishmentData(PunishmentTable punishmentTable) {
-        getPunishmentCache().put(punishmentTable.getPlayer(), punishmentTable);
-    }
-
-    private PunishmentTable getPunishmentTable(UUID player) {
-        return getPunishmentCache().getIfPresent(player);
-    }
-
-    private void updatePunishmentTable(PunishmentTable punishmentTable) {
-        getPunishmentCache().put(punishmentTable.getPlayer(), punishmentTable);
-        GoldmanEssentials.getPlugin().getDatabaseManager().updatePunishmentTable(punishmentTable);
-    }
-
-    public Map<UUID, Long> getPunishList() {
-        Map<UUID, Long> punMap = new HashMap<>();
-        for (PunishmentTable punishmentTable : getPunishmentCache().asMap().values()) {
-            if (punishmentTable.isBanned()) punMap.put(punishmentTable.getPlayer(), punishmentTable.getDateBanned());
-            else if (punishmentTable.getTempBanned() > 0) punMap.put(punishmentTable.getPlayer(), punishmentTable.getDateBanned());
-            else if (punishmentTable.isMuted()) punMap.put(punishmentTable.getPlayer(), punishmentTable.getDateMuted());
-            else if (punishmentTable.getTempMuted() > 0) punMap.put(punishmentTable.getPlayer(), punishmentTable.getDateMuted());
-        }
-        return punMap;
-    }
-
-    public String getBanReason(UUID uuid) {
-        return getPunishmentTable(uuid).getBanReason();
-    }
-
-    public long getTempBanTime(UUID uuid) {
-        return getPunishmentTable(uuid).getTempBanned() - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-    }
-
-    public long getTempMuteTime(UUID uuid) {
-        return getPunishmentTable(uuid).getTempMuted() - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-    }
-
-    public boolean isBanned(UUID uuid) {
-        return getPunishmentTable(uuid).isBanned();
-    }
-
-    public boolean isTempBanned(UUID uuid) {
-        return getPunishmentTable(uuid).getTempBanned() != 0;
-    }
-
-    public boolean isTempMuted(UUID uuid) {
-        return getPunishmentTable(uuid).getTempMuted() != 0;
-    }
-
-    public Component shouldMute(UUID uuid) {
-        PunishmentTable punishmentTable = getPunishmentTable(uuid);
-        if (punishmentTable.isMuted()) {
-            return Lang.PREFIX.getComponent(null).append(Lang.MUTED.getComponent(new String[]{ punishmentTable.getMuteReason() }));
-        } else if (punishmentTable.getTempMuted() != 0) {
-            long time = punishmentTable.getTempMuted() - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-            if (time > 0) {
-                return Lang.PREFIX.getComponent(null).append(Lang.TEMPMUTED.getComponent(new String[]{ BukkitUtils.parseSeconds(time), punishmentTable.getMuteReason() }));
-            } else {
-                setTempMutedPlayer(uuid, null, "", 0);
-                return Lang.PREFIX.getComponent(null).append(Lang.TEMPUNMUTED.getComponent(null));
-            }
-        } else if (isBotCheckEnabled() && punishmentTable.isBot()) {
-            return Lang.PREFIX.getComponent(null).append(Lang.BOTMUTED.getComponent(null));
-        } else return null;
-    }
-
-    public boolean isMuted(UUID uuid) {
-        return getPunishmentTable(uuid).isMuted();
-    }
-
-    public String getMuteReason(UUID uuid) {
-        return getPunishmentTable(uuid).getMuteReason();
-    }
-
-    public long getBanDate(UUID uuid) {
-        return getPunishmentTable(uuid).getDateBanned();
-    }
-
-    public void setBanDate(UUID uuid, long time) {
-         PunishmentTable punishmentTable = getPunishmentTable(uuid);
-         punishmentTable.setDateBanned(time);
-         updatePunishmentTable(punishmentTable);
-    }
-
-    public String getBanStaffName(UUID uuid) {
-        OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(UUID.fromString(getPunishmentTable(uuid).getBanStaff()));
-        if (oPlayer.getName() != null) return oPlayer.getName();
-        else return "Console";
-    }
-
-    public String getMuteStaffName(UUID uuid) {
-        OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(UUID.fromString(getPunishmentTable(uuid).getMuteStaff()));
-        if (oPlayer.getName() != null) return oPlayer.getName();
-        else return "Console";
-    }
-
-    public void setMutedPlayer(UUID uuid, UUID staff, String reason, boolean isMuted) {
-        PunishmentTable punishmentTable = getPunishmentTable(uuid);
-        punishmentTable.setMuted(isMuted);
-        punishmentTable.setMuteReason(reason);
-        punishmentTable.setMuteStaff(String.valueOf(staff));
-        punishmentTable.setDateMuted(System.currentTimeMillis());
-        updatePunishmentTable(punishmentTable);
-    }
-
-    public void setBannedPlayer(UUID uuid, UUID staff, String reason, boolean isBanned) {
-        PunishmentTable punishmentTable = getPunishmentTable(uuid);
-        punishmentTable.setBanned(isBanned);
-        punishmentTable.setBanStaff(staff == null ? "0" : String.valueOf(staff));
-        punishmentTable.setBanReason(reason);
-        punishmentTable.setDateBanned(System.currentTimeMillis());
-        updatePunishmentTable(punishmentTable);
-    }
-
-    public void setTempBannedPlayer(UUID uuid, UUID staff, String reason, long time) {
-        PunishmentTable punishmentTable = getPunishmentTable(uuid);
-        punishmentTable.setTempBanned(time);
-        punishmentTable.setBanReason(reason);
-        punishmentTable.setBanStaff(staff == null ? "0" : String.valueOf(staff));
-        punishmentTable.setDateBanned(System.currentTimeMillis());
-        updatePunishmentTable(punishmentTable);
-    }
-
-    public void setTempMutedPlayer(UUID uuid, UUID staff, String reason, long time) {
-        PunishmentTable punishmentTable = getPunishmentTable(uuid);
-        punishmentTable.setTempMuted(time);
-        punishmentTable.setMuteReason(reason);
-        punishmentTable.setMuteStaff(staff == null ? "0" : String.valueOf(staff));
-        punishmentTable.setDateMuted(System.currentTimeMillis());
-        updatePunishmentTable(punishmentTable);
-    }
-
-    public boolean isBot(UUID uuid) {
-        return getPunishmentTable(uuid).isBot();
-    }
-
-    public void setBotStatus(UUID uuid, boolean isBot) {
-        PunishmentTable punishmentTable = getPunishmentTable(uuid);
-        punishmentTable.setBot(isBot);
-        updatePunishmentTable(punishmentTable);
     }
 
     //booster data

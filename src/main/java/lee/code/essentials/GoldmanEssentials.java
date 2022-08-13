@@ -3,6 +3,7 @@ package lee.code.essentials;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import lee.code.chunks.ChunkAPI;
+import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.enchants.EnchantsAPI;
 import lee.code.essentials.commands.cmds.*;
 import lee.code.essentials.commands.tabs.*;
@@ -13,6 +14,8 @@ import lee.code.essentials.listeners.*;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.WorldManager;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class GoldmanEssentials extends JavaPlugin {
@@ -67,7 +70,7 @@ public class GoldmanEssentials extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        pU.kickOnlinePlayers();
+        for (Player player : Bukkit.getOnlinePlayers()) BukkitUtils.sendPlayerServer(player, "hub");
         databaseManager.closeConnection();
         if (pl3xMapInstalled) pl3xMapHook.disable();
     }
@@ -120,14 +123,6 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("home").setExecutor(new HomeCMD());
         getCommand("sethome").setExecutor(new SetHomeCMD());
         getCommand("deletehome").setExecutor(new DeleteHomeCMD());
-        getCommand("ban").setExecutor(new BanCMD());
-        getCommand("tempban").setExecutor(new TempBanCMD());
-        getCommand("unban").setExecutor(new UnBanCMD());
-        getCommand("punished").setExecutor(new PunishedCMD());
-        getCommand("mute").setExecutor(new MuteCMD());
-        getCommand("tempmute").setExecutor(new TempMuteCMD());
-        getCommand("unmute").setExecutor(new UnMuteCMD());
-        getCommand("kick").setExecutor(new KickCMD());
         getCommand("colors").setExecutor(new ColorsCMD());
         getCommand("playtime").setExecutor(new PlayTimeCMD());
         getCommand("playtimetop").setExecutor(new PlayTimeTopCMD());
@@ -210,14 +205,6 @@ public class GoldmanEssentials extends JavaPlugin {
         getCommand("home").setTabCompleter(new HomeTab());
         getCommand("sethome").setTabCompleter(new SetHomeTab());
         getCommand("deletehome").setTabCompleter(new DeleteHomeTab());
-        getCommand("ban").setTabCompleter(new BanTab());
-        getCommand("tempban").setTabCompleter(new TempBanTab());
-        getCommand("unban").setTabCompleter(new UnBanTab());
-        getCommand("punished").setTabCompleter(new PunishedTab());
-        getCommand("mute").setTabCompleter(new MuteTab());
-        getCommand("tempmute").setTabCompleter(new TempMuteTab());
-        getCommand("unmute").setTabCompleter(new UnMuteTab());
-        getCommand("kick").setTabCompleter(new KickTab());
         getCommand("colors").setTabCompleter(new ColorsTab());
         getCommand("playtime").setTabCompleter(new PlayTimeTab());
         getCommand("playtimetop").setTabCompleter(new PlayTimeTopTab());
@@ -294,7 +281,6 @@ public class GoldmanEssentials extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CustomMobSpawnListener(), this);
         getServer().getPluginManager().registerEvents(new MineCartListener(), this);
         getServer().getPluginManager().registerEvents(new TotemListener(), this);
-        getServer().getPluginManager().registerEvents(new MuteListener(), this);
         getServer().getPluginManager().registerEvents(new HotbarListener(), this);
     }
 

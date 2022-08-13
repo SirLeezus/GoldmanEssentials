@@ -4,7 +4,6 @@ import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -23,7 +22,6 @@ public class MessageCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        CacheManager cacheManager = plugin.getCacheManager();
         Data data = plugin.getData();
         PU pu = plugin.getPU();
 
@@ -34,12 +32,6 @@ public class MessageCMD implements CommandExecutor {
                 if (BukkitUtils.getOnlinePlayers().contains(args[0])) {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null && target != player) {
-
-                        Component mute = cacheManager.shouldMute(uuid);
-                        if (mute != null) {
-                            player.sendMessage(mute);
-                            return true;
-                        }
 
                         UUID targetUUID = target.getUniqueId();
                         if (data.isAFK(targetUUID)) player.sendMessage(Lang.PREFIX.getComponent(null).append(Lang.AFK.getComponent(new String[]{ target.getName() })));

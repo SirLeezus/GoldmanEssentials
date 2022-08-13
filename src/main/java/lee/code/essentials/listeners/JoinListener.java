@@ -1,15 +1,12 @@
 package lee.code.essentials.listeners;
 
-import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
 import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import lee.code.essentials.lists.PremiumRank;
-import lee.code.essentials.lists.Setting;
 import lee.code.essentials.managers.BoardManager;
-import lee.code.essentials.menusystem.menus.BotCheckerMenu;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -20,9 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.Map;
 import java.util.UUID;
 
 public class JoinListener implements Listener {
@@ -36,18 +31,6 @@ public class JoinListener implements Listener {
 
         //player data check
         if (!cacheManager.hasPlayerData(uuid)) cacheManager.createDefaultColumns(uuid);
-
-        //ban check
-        if (cacheManager.isBanned(uuid)) {
-            e.setResult(PlayerLoginEvent.Result.KICK_BANNED);
-            e.kickMessage(Lang.BANNED.getComponent(new String[] { cacheManager.getBanReason(uuid) }));
-        } else if (cacheManager.isTempBanned(uuid)) {
-            e.setResult(PlayerLoginEvent.Result.KICK_BANNED);
-            long secondsLeft = cacheManager.getTempBanTime(uuid);
-            if (secondsLeft > 0) {
-                e.kickMessage(Lang.TEMPBANNED.getComponent(new String[] { BukkitUtils.parseSeconds(secondsLeft), cacheManager.getBanReason(uuid) }));
-            } else cacheManager.setTempBannedPlayer(uuid, null, "0", 0);
-        }
     }
 
     @EventHandler
@@ -67,16 +50,6 @@ public class JoinListener implements Listener {
             if (spawn != null) player.teleportAsync(spawn);
             player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 25));
             Bukkit.getServer().sendMessage(Lang.ANNOUNCEMENT.getComponent(null).append(Lang.FIRST_JOIN_MESSAGE.getComponent(new String[] { player.getName(), String.valueOf(cacheManager.getPlayerCounter()) })));
-        }
-
-        //bot check
-        if (cacheManager.isBotCheckEnabled() && cacheManager.isBot(uuid)) {
-            new BotCheckerMenu(data.getPlayerMU(uuid)).open();
-            player.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SWAG, 1, 1);
-            BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-            scheduler.runTaskLater(plugin, () -> {
-                if (cacheManager.isBot(uuid)) player.kick(Lang.BOT_CHECKER_KICK.getComponent(null));
-            }, Setting.BOT_KICK_DELAY.getValue() * 20L);
         }
 
         //booster bar check

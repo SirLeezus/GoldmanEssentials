@@ -7,7 +7,6 @@ import lee.code.essentials.lists.Lang;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -23,12 +22,6 @@ public class QuitListener implements Listener {
 
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
-
-        //ban check
-        if (cacheManager.isBanned(uuid) || cacheManager.isTempBanned(uuid)) {
-            e.quitMessage(null);
-            return;
-        }
 
         //playtime update
         cacheManager.setPlayTime(uuid, player.getStatistic(Statistic.PLAY_ONE_MINUTE));

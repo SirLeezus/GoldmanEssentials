@@ -11,7 +11,6 @@ import lee.code.core.ormlite.table.TableUtils;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.database.tables.BoosterTable;
 import lee.code.essentials.database.tables.PlayerTable;
-import lee.code.essentials.database.tables.PunishmentTable;
 import lee.code.essentials.database.tables.ServerTable;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,7 +24,6 @@ public class DatabaseManager {
 
     private Dao<PlayerTable, UUID> playerDao;
     private Dao<ServerTable, UUID> serverDao;
-    private Dao<PunishmentTable, UUID> punishmentDao;
     private Dao<BoosterTable, Integer> boosterDao;
 
     @Getter(AccessLevel.NONE)
@@ -67,12 +65,6 @@ public class DatabaseManager {
         serverDao = DaoManager.createDao(connectionSource, ServerTable.class);
         //load server data into cache
         for (ServerTable serverTable : serverDao.queryForAll()) cacheManager.setServerData(serverTable);
-
-        //punishment data
-        TableUtils.createTableIfNotExists(connectionSource, PunishmentTable.class);
-        punishmentDao = DaoManager.createDao(connectionSource, PunishmentTable.class);
-        //load punishment data into cache
-        for (PunishmentTable punishmentTable : punishmentDao.queryForAll()) cacheManager.setPunishmentData(punishmentTable);
 
         //booster data
         TableUtils.createTableIfNotExists(connectionSource, BoosterTable.class);
@@ -132,26 +124,6 @@ public class DatabaseManager {
         Bukkit.getScheduler().runTaskAsynchronously(GoldmanEssentials.getPlugin(), () -> {
             try {
                 serverDao.update(serverTable);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public synchronized void createPunishmentTable(PunishmentTable punishmentTable) {
-        Bukkit.getScheduler().runTaskAsynchronously(GoldmanEssentials.getPlugin(), () -> {
-            try {
-                punishmentDao.create(punishmentTable);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public synchronized void updatePunishmentTable(PunishmentTable punishmentTable) {
-        Bukkit.getScheduler().runTaskAsynchronously(GoldmanEssentials.getPlugin(), () -> {
-            try {
-                punishmentDao.update(punishmentTable);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

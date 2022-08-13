@@ -4,7 +4,6 @@ import lee.code.core.util.bukkit.BukkitUtils;
 import lee.code.essentials.Data;
 import lee.code.essentials.GoldmanEssentials;
 import lee.code.essentials.PU;
-import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.lists.Lang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -24,19 +23,13 @@ public class ReplyCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
-        CacheManager cacheManager = plugin.getCacheManager();
         Data data = plugin.getData();
         PU pu = plugin.getPU();
 
         if (sender instanceof Player player) {
             if (args.length > 0) {
                 UUID uuid = player.getUniqueId();
-
-                Component mute = cacheManager.shouldMute(uuid);
-                if (mute != null) {
-                    player.sendMessage(mute);
-                    return true;
-                } else if (data.hasReplier(uuid)) {
+                if (data.hasReplier(uuid)) {
                     UUID tUUID = data.getLastReplier(uuid);
                     OfflinePlayer oTarget = Bukkit.getPlayer(tUUID);
                     if (oTarget != null) {
