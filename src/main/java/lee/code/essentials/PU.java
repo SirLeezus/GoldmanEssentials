@@ -314,12 +314,6 @@ public class PU {
         }.runTaskLater(plugin, 10));
     }
 
-    public void kickOnlinePlayers() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.kick(Component.text(Lang.SERVER_RESTART.getString(null)));
-        }
-    }
-
     public void registerTamedEntityFix() {
         GoldmanEssentials plugin = GoldmanEssentials.getPlugin();
         plugin.getProtocolManagerAPI().addPacketListener(new PacketAdapter(plugin, ListenerPriority.HIGHEST, PacketType.Play.Server.ENTITY_METADATA) {

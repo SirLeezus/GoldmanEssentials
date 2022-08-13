@@ -97,7 +97,7 @@ public enum Lang {
     BROADCAST_UNMUTED("&aThe player &6{0} &ahas been unmuted!"),
     BROADCAST_BOOSTER_ENDED("&aThe &6&lDrops x{0} Booster &ahas ended. You can thank the player &6{1} &afor activating it!"),
     BROADCAST_BOOSTER_STARTED("&aA &6&lDrops x{0} Booster &ahas started thanks to the player &6{1}&a!"),
-    SERVER_RESTART("&aThe server is restarting! Journey will be back online soon!"),
+    SERVER_RESTART("&aThe server is restarting! Journey Advancement will be back online soon!"),
     COMMAND_TRADE_DENY_SENDER("&7The player &6{0} &7has denied your trade request."),
     COMMAND_TRADE_DENY_RECEIVER("&aYou have successfully denied &6{0}'s &atrade request."),
     COMMAND_DUEL_DENY_SENDER("&7The player &6{0} &7has denied your duel request."),

@@ -11,6 +11,7 @@ import lee.code.essentials.database.CacheManager;
 import lee.code.essentials.database.DatabaseManager;
 import lee.code.essentials.hooks.map.Pl3xMapHook;
 import lee.code.essentials.listeners.*;
+import lee.code.essentials.lists.Lang;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.WorldManager;
 import lombok.Getter;
@@ -70,7 +71,7 @@ public class GoldmanEssentials extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (Player player : Bukkit.getOnlinePlayers()) BukkitUtils.sendPlayerServer(player, "hub");
+        BukkitUtils.kickOnlinePlayers(Lang.SERVER_RESTART.getComponent(null));
         databaseManager.closeConnection();
         if (pl3xMapInstalled) pl3xMapHook.disable();
     }
