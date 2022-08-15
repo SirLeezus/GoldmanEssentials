@@ -15,8 +15,6 @@ import lee.code.essentials.lists.Lang;
 import lee.code.essentials.managers.PermissionManager;
 import lee.code.essentials.managers.WorldManager;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class GoldmanEssentials extends JavaPlugin {

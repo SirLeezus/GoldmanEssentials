@@ -599,7 +599,7 @@ public class PU {
             return new ItemStack(Material.WITHER_SKELETON_SKULL);
         } else if (entity instanceof Skeleton) {
             return new ItemStack(Material.SKELETON_SKULL);
-        } else if (entity instanceof Zombie) {
+        } else if (entity.getType().equals(EntityType.ZOMBIE)) {
             return new ItemStack(Material.ZOMBIE_HEAD);
         } else if (entity instanceof Warden) {
             return EntityHead.valueOf(entity.getType().name()).getHead();
